@@ -3,7 +3,7 @@ import { LetheanCli } from "./lethean-cli.ts";
 await LetheanCli.init();
 try {
   let args = ["--help"];
-  if (Deno.args) {
+  if (Deno.args.length) {
     args = Deno.args;
   }
   await LetheanCli.run(args);
