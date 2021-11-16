@@ -19,7 +19,7 @@ else
 	esac
 fi
 
-	lthn_uri="https://gitlab.com/lthn/projects/vpn/node/-/jobs/artifacts/dvpn-v2/download?job=${target}"
+	lthn_uri="https://gitlab.com/lthn/projects/vpn/dvpn/-/jobs/artifacts/main/download?job=${target}"
 
 
 deno_install="${HOME}/Lethean"

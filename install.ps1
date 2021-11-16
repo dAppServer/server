@@ -22,7 +22,7 @@ $Target = 'windows'
 # GitHub requires TLS 1.2
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-$DenoUri = "https://gitlab.com/lthn/projects/vpn/node/-/jobs/artifacts/dvpn-v2/download?job=${Target}"
+$DenoUri = "https://gitlab.com/lthn/projects/vpn/dvpn/-/jobs/artifacts/main/download?job=${Target}"
 
 
 if (!(Test-Path $BinDir)) {
