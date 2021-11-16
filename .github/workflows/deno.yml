@@ -25,7 +25,7 @@ jobs:
       - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-unknown-linux-gnu src/server.ts
       - uses: actions/upload-artifact@v2
         with:
-          name: lthn
+          name: linux
           path: build/lthn
   windows:
     runs-on: ubuntu-latest
@@ -37,7 +37,7 @@ jobs:
       - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-pc-windows-msvc src/server.ts
       - uses: actions/upload-artifact@v2
         with:
-          name: lthn.exe
+          name: windows
           path: build/lthn.exe
   macos-intel:
     runs-on: ubuntu-latest
@@ -49,7 +49,7 @@ jobs:
       - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-apple-darwin src/server.ts
       - uses: actions/upload-artifact@v2
         with:
-          name: lthn
+          name: macos-intel
           path: build/lthn
   macos-arm:
     runs-on: ubuntu-latest
@@ -61,5 +61,5 @@ jobs:
       - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target aarch64-apple-darwin src/server.ts
       - uses: actions/upload-artifact@v2
         with:
-          name: lthn
+          name: macos-m1
           path: build/lthn
