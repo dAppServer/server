@@ -86,19 +86,30 @@ export class LetheanUpdater {
         { overwrite: true },
       );
       console.log("Cleaning up");
-      await Deno.remove(
-        path.join(
-          homeDir
-            ? homeDir
-            : "",
-          "Lethean",
-          "cli",
-          `${filename?.replace(".zip", "")}`,
-        ),
-        { recursive: true },
-      );
-      await Deno.remove(fileObj.fullPath);
-      console.log("FIN");
+      try {
+        await Deno.remove(
+            path.join(
+                homeDir
+                    ? homeDir
+                    : "",
+                "Lethean",
+                "cli",
+                `${filename?.replace(".zip", "")}`,
+            ),
+            { recursive: true },
+        );
+        await Deno.remove(path.join(
+            homeDir
+                ? homeDir
+                : "",
+            "Lethean",
+            filename ? filename : '',
+        ));
+        console.log("FIN");
+      }catch (e){
+
+      }
+
     } catch (err) {
       console.log("ERROR, the following log might have helpful information.");
       console.log(err);
