@@ -70,13 +70,13 @@ export class LetheanDaemonLetheand {
           console.log(stdout);
         }
       }).on("stderr", (stderr) => {
-        if (this.debug) {
+
           console.log(stderr);
-        }
+
       }).on("end", (status) => {
-        if (this.debug) {
+
           console.log(status);
-        }
+
       }).run(this.command, ...cmdArgs);
     });
   }
