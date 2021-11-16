@@ -15,4 +15,3 @@ iwr https://gitlab.com/lthn/projects/vpn/node/-/raw/dvpn-v2/install.ps1 -useb | 
 The CLI install will give you the $PATH variable to add
 
 - `lthn --help` or for windows `lthn.exe --help`
-
