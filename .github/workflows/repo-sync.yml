@@ -2,7 +2,7 @@
 
 name: Mirror commit to gitlab
 
-on: [ pull_request ]
+on: [ push ]
 
 jobs:
   build:
