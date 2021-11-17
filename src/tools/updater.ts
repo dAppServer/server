@@ -126,8 +126,7 @@ export class LetheanUpdater {
           args: ["--version main"],
           provider: [
             new GithubProvider({
-              repository: "letheanVPN/dvpn",
-              branches: true,
+              repository: "letheanVPN/dvpn"
             }),
           ],
         }),
