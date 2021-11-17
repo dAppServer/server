@@ -123,7 +123,7 @@ export class LetheanUpdater {
         "lthn",
         new UpgradeCommand({
           main: "src/server.ts",
-          args: ["--allow-net", "--unstable", "--allow-env", "--allow-run", "--allow-read", "--allow-write", "--unstable"],
+          args: ["--registry github", "--version main"],
           provider: [
             new GithubProvider({
               repository: "letheanVPN/dvpn",
