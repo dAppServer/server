@@ -1,6 +1,6 @@
 {
   "name": "lethean-dvpn",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Lethean VPN Node",
   "main": "main.js",
   "scripts": {

@@ -20,7 +20,7 @@ export class LetheanCli {
   static async init() {
     LetheanCli.options = await new Command()
       .name("lthn")
-      .version("0.1.0")
+      .version("0.1.1")
       .description("Command line interface for Lethean")
       .command("daemon", LetheanDaemons.config())
       .command("update", LetheanUpdater.config())
