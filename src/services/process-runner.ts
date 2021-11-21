@@ -118,11 +118,35 @@ export class ProcessManager {
 		return this.process[process.key] = new ProcessManagerProcess(process);
 	}
 
+	public static getProcess(key: string) {
+		if (!this.process[key]) {
+			throw new Error(`Can't find process ${key}`);
+		}
+		return this.process[key]
+	}
+
+
 	public static startProcess(key: string) {
 		if (!this.process[key]) {
 			throw new Error(`Can't find process ${key}`);
 		}
-
+//@todo ad a feeder to centralised io handling, eg websocket srv
 		this.process[key].run()
+	}
+
+	public static stopProcess(key: string) {
+		if (!this.process[key]) {
+			throw new Error(`Can't find process ${key}`);
+		}
+
+		this.process[key].process.stop()
+	}
+
+	public static killProcess(key: string) {
+		if (!this.process[key]) {
+			throw new Error(`Can't find process ${key}`);
+		}
+
+		this.process[key].process.kill()
 	}
 }

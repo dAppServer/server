@@ -9,8 +9,8 @@ import {ProcessManager, ProcessManagerRequest} from '../../services/process-runn
 
 export class LetheanDaemonLetheand {
 
-  public static config() {
-    const home = os.homeDir();
+	public static config() {
+		const home = os.homeDir();
 
 		return new Command()
 			.description('Blockchain Functions')
