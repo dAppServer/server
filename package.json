@@ -14,7 +14,9 @@
     "server:build:macos-intel": "npm run server:compile -- x86_64-apple-darwin src/server.ts",
     "server:build:macos-arm": "npm run server:compile -- aarch64-apple-darwin src/server.ts",
     "release:windows": "npm run server:compile -- x86_64-pc-windows-msvc src/server.ts",
-    "ci:windows": "%HOME%\\.deno\\bin\\deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output ../build/cli/lthn --target x86_64-pc-windows-msvc src/server.ts"
+    "ci:windows": "%HOME%\\.deno\\bin\\deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output ../build/cli/lthn --target x86_64-pc-windows-msvc src/server.ts",
+    "lint": "eslint 'src/**/*.{ts,html,scss}' --cache",
+    "lint:fix": "eslint 'src/**/*.{ts,html,scss}' --cache --fix"
   },
   "repository": {
     "type": "git",
@@ -34,5 +36,13 @@
     "npm": "^8.1.2",
     "openpgp": "^5.0.0",
     "pem-ts": "^3.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.3.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1"
   }
 }
