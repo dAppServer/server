@@ -1,11 +1,11 @@
-import { createApp } from "https://deno.land/x/servest@v1.3.1/mod.ts";
-import { cors } from "https://deno.land/x/servest@v1.3.1/middleware/cors.ts";
-import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
-import * as path from "https://deno.land/std/path/mod.ts";
-import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
-import { LetheanCli } from "../lethean-cli.ts";
-import { Filter } from "../tools/toHTML.ts";
-import {existsSync} from "https://deno.land/std/fs/mod.ts";
+import {createApp} from 'https://deno.land/x/servest@v1.3.1/mod.ts';
+import {cors} from 'https://deno.land/x/servest@v1.3.1/middleware/cors.ts';
+import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
+import * as path from 'https://deno.land/std/path/mod.ts';
+import os from 'https://deno.land/x/dos@v0.11.0/mod.ts';
+import {LetheanCli} from '../lethean-cli.ts';
+import {existsSync} from 'https://deno.land/std/fs/mod.ts';
+import {Filter} from './console-to-html.service.ts';
 
 export class RestService {
   static app = createApp();
@@ -48,7 +48,7 @@ export class RestService {
     });
 
     this.app.post(path, async (req) => {
-      let cmdArgs: any = req.url.replace("/", "").split("/");
+      let cmdArgs = req.url.replace("/", "").split("/");
 
       let payload = await req.json();
       for (let key in payload) {

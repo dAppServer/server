@@ -1,11 +1,11 @@
-import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
-import { CompletionsCommand } from "https://deno.land/x/cliffy/command/completions/mod.ts";
-import { HelpCommand } from "https://deno.land/x/cliffy/command/help/mod.ts";
-import { RestService } from "./daemons/rest.service.ts";
-import { LetheanDaemons } from "./daemons/lethean-daemons.ts";
-import { LetheanAccount } from "./accounts/user.ts";
-import { LetheanUpdater } from "./tools/updater.ts";
-import { Filesystem } from "./tools/filesystem.ts";
+import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
+import {CompletionsCommand} from 'https://deno.land/x/cliffy/command/completions/mod.ts';
+import {HelpCommand} from 'https://deno.land/x/cliffy/command/help/mod.ts';
+import {LetheanAccount} from './accounts/user.ts';
+import {RestService} from './services/rest.service.ts';
+import {LetheanUpdater} from './services/update.service.ts';
+import {LetheanDaemonConf} from './daemons/lthn/lethean.daemon.conf.ts';
+import {FilesystemService} from './services/filesystem.service.ts';
 
 export class LetheanCli {
   static options: any;
@@ -22,10 +22,10 @@ export class LetheanCli {
       .name("lthn")
       .version("0.1.2")
       .description("Command line interface for Lethean")
-      .command("daemon", LetheanDaemons.config())
+      .command("daemon", LetheanDaemonConf.config())
       .command("update", LetheanUpdater.config())
       .command("backend", RestService.config())
-      .command("filesystem", Filesystem.config())
+      .command("filesystem", FilesystemService.config())
       .command("account", LetheanAccount.config())
       //			.command("vpn",
       //				new Command().description('VPN Functions')

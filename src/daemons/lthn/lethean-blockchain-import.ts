@@ -1,77 +1,10 @@
 import os from 'https://deno.land/x/dos@v0.11.0/mod.ts';
-import { readLines } from 'https://deno.land/std@0.79.0/io/bufio.ts';
-import EventEmitter from 'https://deno.land/std@0.79.0/node/events.ts';
 import * as path from 'https://deno.land/std/path/mod.ts';
-import { Command } from 'https://deno.land/x/cliffy/command/mod.ts';
-import { StringResponse } from '../../tools/string-response.ts';
-
-export class stdOutStream extends EventEmitter {
-  constructor() {
-    super();
-  }
-
-  public async run(...command: Array<string>): Promise<void> {
-    const p = Deno.run({
-      cmd: command,
-      stderr: 'piped',
-      stdout: 'piped',
-    });
-    for await (const line of readLines(p.stdout)) {
-      if (line.trim()) {
-        super.emit('stdout', line);
-      }
-    }
-    for await (const line of readLines(p.stderr)) {
-      if (line.trim()) {
-        super.emit('stderr', line);
-      }
-    }
-    super.emit('end', await p.status());
-    p.close();
-    return;
-  }
-}
+import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
+import {StringResponse} from '../../interfaces/string-response.ts';
+import {ProcessManager, ProcessManagerRequest} from '../../services/process.service.ts';
 
 export class LetheanBlockchainImport {
-  private static command: any;
-  private static exeFile: string;
-  private static debug = 1;
-  private static process: stdOutStream;
-
-  static run(args: any) {
-    const homeDir = os.homeDir();
-
-    this.exeFile = 'lethean-blockchain-import' +
-      (os.platform() === 'windows' ? '.exe' : '');
-    LetheanBlockchainImport.command = path.join(
-      homeDir ? homeDir : './',
-      'Lethean',
-      'cli',
-      this.exeFile,
-    );
-
-    LetheanBlockchainImport.process = new stdOutStream();
-    const cmdArgs: any = [];
-
-    for (const arg in args) {
-      if (arg !== 'igd') {
-        const value = args[arg].length > 1 ? `=${args[arg]}` : '';
-        cmdArgs.push(
-          '--' + arg.replace(/([A-Z])/g, (x) => '-' + x.toLowerCase()) + value,
-        );
-      }
-    }
-
-    //return ensureDir(args['dataDir']).then(async () => {
-    console.log(LetheanBlockchainImport.command, cmdArgs);
-    return LetheanBlockchainImport.process.on('stdout', (stdout) => {
-      console.log(stdout);
-    }).on('stderr', (stderr) => {
-      console.log(stderr);
-    }).run(this.command, ...cmdArgs);
-
-    //});
-  }
 
   public static config() {
     const home = os.homeDir();
@@ -109,7 +42,21 @@ export class LetheanBlockchainImport {
       .option('--batch <string>', 'Batch transactions for faster import')
       .option('--resume <string>', 'Resume from current height if output database already exists')
       .action((args) => {
-        LetheanBlockchainImport.run(args);
+        const homeDir = os.homeDir();
+
+        const exeFile =
+            'lethean-blockchain-import' + (os.platform() === 'windows' ? '.exe' : '');
+
+        ProcessManager.run(
+            path.join(homeDir ? homeDir : './', 'Lethean', 'cli', exeFile),
+            args,
+            {
+              key: exeFile,
+              stdErr: (stdErr: unknown) => console.log(stdErr),
+              stdIn: (stdIn: unknown) => console.log(stdIn),
+              stdOut: (stdOut: unknown) => console.log(stdOut)
+            } as ProcessManagerRequest
+        );
         if (Deno.env.get('REST')) {
           throw new StringResponse('Started');
         }

@@ -1,15 +1,12 @@
-import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
-import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
-import { Destination, download } from "https://deno.land/x/download/mod.ts";
-import { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/mod.ts";
-import * as path from "https://deno.land/std/path/mod.ts";
-import { copy } from "https://deno.land/std@0.95.0/fs/mod.ts";
-import { StringResponse } from "./string-response.ts";
+import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
+import os from 'https://deno.land/x/dos@v0.11.0/mod.ts';
+import {Destination, download} from 'https://deno.land/x/download/mod.ts';
+import {unZipFromFile} from 'https://deno.land/x/zip@v1.1.0/mod.ts';
+import * as path from 'https://deno.land/std/path/mod.ts';
+import {copy} from 'https://deno.land/std@0.95.0/fs/mod.ts';
 
-import {
-  GithubProvider,
-  UpgradeCommand,
-} from "https://deno.land/x/cliffy/command/upgrade/mod.ts";
+import {GithubProvider, UpgradeCommand} from 'https://deno.land/x/cliffy/command/upgrade/mod.ts';
+import {StringResponse} from '../interfaces/string-response.ts';
 
 export class LetheanUpdater {
   public static downloads = {

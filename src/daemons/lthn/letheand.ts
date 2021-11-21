@@ -1,10 +1,10 @@
 import os from 'https://deno.land/x/dos@v0.11.0/mod.ts';
 import * as path from 'https://deno.land/std/path/mod.ts';
 import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
-import {StringResponse} from '../../tools/string-response.ts';
+import {StringResponse} from '../../interfaces/string-response.ts';
 import {LetheanBlockchainExport} from './lethean-blockchain-export.ts';
 import {LetheanBlockchainImport} from './lethean-blockchain-import.ts';
-import {ProcessManager, ProcessManagerRequest} from '../../services/process-runner.ts';
+import {ProcessManager, ProcessManagerRequest} from '../../services/process.service.ts';
 
 
 export class LetheanDaemonLetheand {

@@ -1,9 +1,9 @@
-import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
-import * as path from "https://deno.land/std/path/mod.ts";
-import { StringResponse } from "./string-response.ts";
-import { ensureDirSync } from "https://deno.land/std@0.114.0/fs/mod.ts";
+import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
+import * as path from 'https://deno.land/std/path/mod.ts';
+import {ensureDirSync} from 'https://deno.land/std@0.114.0/fs/mod.ts';
+import {StringResponse} from '../interfaces/string-response.ts';
 
-export class Filesystem {
+export class FilesystemService {
   /**
    * Return a system path to the Lethean data folder
    *
@@ -35,12 +35,12 @@ export class Filesystem {
    * @returns {string}
    */
   static read(args: any) {
-    return Deno.readTextFileSync(Filesystem.path(args.path));
+    return Deno.readTextFileSync(FilesystemService.path(args.path));
   }
 
   static list(args: any) {
     const ret = [];
-    for (const dirEntry of Deno.readDirSync(Filesystem.path(args.path))) {
+    for (const dirEntry of Deno.readDirSync(FilesystemService.path(args.path))) {
       if (!dirEntry.name.startsWith(".")) {
         ret.push(dirEntry.name);
       }
@@ -57,7 +57,7 @@ export class Filesystem {
    */
   static write(path: string, data: string) {
     ensureDirSync(path);
-    Deno.writeTextFileSync(Filesystem.path(path), data);
+    Deno.writeTextFileSync(FilesystemService.path(path), data);
     return "1";
   }
 
@@ -66,7 +66,7 @@ export class Filesystem {
       .command("list", "List entities in path")
       .option("--path <string>", "File path to view")
       .action((args) => {
-        const req = Filesystem.list(args);
+        const req = FilesystemService.list(args);
         if (Deno.env.get("REST")) {
           throw new StringResponse(req);
         }
@@ -74,7 +74,7 @@ export class Filesystem {
       .command("path", "Returns correct")
       .option("--convert <string>", "File path to convert")
       .action((args) => {
-        const req = Filesystem.path(args.convert);
+        const req = FilesystemService.path(args.convert);
         if (Deno.env.get("REST")) {
           throw new StringResponse(req);
         }
@@ -82,7 +82,7 @@ export class Filesystem {
       .command("read", "Returns file")
       .option("--path <string>", "File path to read")
       .action((args) => {
-        const req = Filesystem.read(args);
+        const req = FilesystemService.read(args);
         if (Deno.env.get("REST")) {
           throw new StringResponse(req);
         }
@@ -91,7 +91,7 @@ export class Filesystem {
       .option("--path <string>", "File path to read")
       .option("--data <string>", "File data to save")
       .action((args) => {
-        const req = Filesystem.write(args.path, args.data);
+        const req = FilesystemService.write(args.path, args.data);
         if (Deno.env.get("REST")) {
           throw new StringResponse(req);
         }
