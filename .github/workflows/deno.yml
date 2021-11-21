@@ -34,7 +34,7 @@ jobs:
           prerelease: true
           title: "Linux amd64"
           files: |
-            README.md
+            LICENCE
             build/lthn
   windows:
     runs-on: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
           prerelease: true
           title: "Windows 64"
           files: |
-            README.md
+            LICENCE
             build/lthn.exe
 
   macos-intel:
@@ -77,7 +77,7 @@ jobs:
           prerelease: true
           title: "MacOS Intel"
           files: |
-            README.md
+            LICENCE
             build/lthn
 
   macos-arm:
@@ -99,5 +99,5 @@ jobs:
           prerelease: true
           title: "MacOS ARM"
           files: |
-            README.md
+            LICENCE
             build/lthn
