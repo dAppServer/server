@@ -1,8 +1,8 @@
 {
-  "name": "lethean-dvpn",
+  "name": "lthn",
   "version": "0.1.2",
   "description": "Lethean VPN Node",
-  "main": "main.js",
+  "main": "src/server.ts",
   "scripts": {
     "start": "$HOME/.deno/bin/deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/server.ts",
     "backend": "$HOME/.deno/bin/deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/server.ts backend start --home-dir=$HOME/Lethean",
@@ -15,19 +15,19 @@
     "server:build:macos-arm": "npm run server:compile -- aarch64-apple-darwin src/server.ts",
     "release:windows": "npm run server:compile -- x86_64-pc-windows-msvc src/server.ts",
     "ci:windows": "%HOME%\\.deno\\bin\\deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output ../build/cli/lthn --target x86_64-pc-windows-msvc src/server.ts",
-    "lint": "eslint 'src/**/*.{ts,html,scss}' --cache",
-    "lint:fix": "eslint 'src/**/*.{ts,html,scss}' --cache --fix"
+    "lint": "eslint 'src/**/*.{ts,html,scss}' --cache"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/letheanVPN/dvpn.git"
   },
-  "author": "",
-  "license": "GPL-3",
+  "author": "Snider <snider@lt.hn> (https://lt.hn)",
+  "license": "EUPL-1.2",
   "bugs": {
-    "url": "https://gitlab.com/lthn/projects/vpn/node/issues"
+    "url": "https://github.com/letheanVPN/dvpn/issues",
+    "email": "hello@lt.hn"
   },
-  "homepage": "https://gitlab.com/lthn/projects/vpn/node#readme",
+  "homepage": "https://github.com/letheanVPN/dvpn/wiki",
   "dependencies": {
     "ansi_up": "^5.1.0",
     "ansi-to-html": "^0.7.2",
@@ -44,5 +44,15 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.4.1"
-  }
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "ia32",
+    "arm"
+  ]
 }
