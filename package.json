@@ -22,19 +22,16 @@
   "cpu": [
     "x64",
     "ia32",
-    "arm"
+    "arm64"
   ],
   "scripts": {
-    "start": "$HOME/.deno/bin/deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/server.ts",
-    "backend": "$HOME/.deno/bin/deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/server.ts backend start --home-dir=$HOME/Lethean",
-    "chain": "$HOME/.deno/bin/deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/server.ts daemon chain start",
-    "vpn": "$HOME/.deno/bin/deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/server.ts vpn provider  --help",
+    "dev": "deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/server.ts",
+    "start": "deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/server.ts backend start --home-dir=$HOME/Lethean",
     "server:compile": "deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output ../build/cli/lthn --target  ",
-    "bundle": "deno bundle --unstable src/lethean-cli.ts ../build/lthn.js",
     "server:build:linux": "npm run server:compile -- x86_64-unknown-linux-gnu src/server.ts",
     "server:build:macos-intel": "npm run server:compile -- x86_64-apple-darwin src/server.ts",
     "server:build:macos-arm": "npm run server:compile -- aarch64-apple-darwin src/server.ts",
-    "release:windows": "npm run server:compile -- x86_64-pc-windows-msvc src/server.ts",
+    "server:build:windows": "npm run server:compile -- x86_64-pc-windows-msvc src/server.ts",
     "ci:windows": "%HOME%\\.deno\\bin\\deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output ../build/cli/lthn --target x86_64-pc-windows-msvc src/server.ts",
     "lint": "eslint 'src/**/*.{ts,html,scss}' --cache"
   },

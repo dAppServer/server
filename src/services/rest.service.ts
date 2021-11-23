@@ -77,7 +77,7 @@ export class RestService {
 
   public static run(args: any) {
     Deno.env.set("REST", "1");
-    let home = os.homeDir();
+    const home = os.homeDir();
     this.discoverRoute("", LetheanCli.options.commands);
 
     this.app.handle("/", async (req) => {
@@ -95,15 +95,20 @@ export class RestService {
       origin: "*",
     }));
 
-    if (!existsSync(path.join(home ? home : '~', "Lethean", "conf", "private.pem"))) {
+    console.log(`Check for localhost private key: ${path.join(home ? home : args.homeDir, "Lethean", "conf", "private.pem")}`)
+
+    if(Deno.readFileSync(path.join(home ? home : args.homeDir, "Lethean", "conf", "private.pem"))){
+      console.log('found')
+    }else{
+      console.log('No localhost ssl cert found, injecting a pre made one so we can start a tls server and fix this')
       RestService.injectPem();
     }
 
     this.app.listenTls({
       "hostname": "localhost",
       "port": 36911,
-      "certFile": `${path.join(args.homeDir, "conf", "public.pem")}`,
-      "keyFile": `${path.join(args.homeDir, "conf", "private.pem")}`,
+      "certFile": `${path.join(home ? home : args.homeDir, "Lethean", "conf", "public.pem")}`,
+      "keyFile": `${path.join(home ? home : args.homeDir, "Lethean", "conf", "private.pem")}`
     });
   }
 
@@ -126,6 +131,8 @@ export class RestService {
 
   private static injectPem(){
     let home = os.homeDir();
+    Deno.mkdirSync(path.join(home ? home : '~', "Lethean", "conf"))
+
      Deno.writeTextFileSync(path.join(home ? home : '~', "Lethean", "conf", "private.pem"), `-----BEGIN RSA PRIVATE KEY-----
 MIIEogIBAAKCAQEAqX/7sHcFXtk5fvfeAMU+m+zuiF6IegEef0NrwaaYvxlpC0I6
 vcksaHNFzAu0KArDwow8n+xtRg+07UXSdphO+D0tnHHpfamESPysz4Ik3q8cVnQM
