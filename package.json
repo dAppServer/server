@@ -19,15 +19,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/letheanVPN/dvpn.git"
+    "url": "https://github.com/letheanVPN/lthn.git"
   },
   "author": "Snider <snider@lt.hn> (https://lt.hn)",
   "license": "EUPL-1.2",
   "bugs": {
-    "url": "https://github.com/letheanVPN/dvpn/issues",
+    "url": "https://github.com/letheanVPN/lthn/issues",
     "email": "hello@lt.hn"
   },
-  "homepage": "https://github.com/letheanVPN/dvpn/wiki",
+  "homepage": "https://github.com/letheanVPN/lthn/wiki",
   "dependencies": {
     "ansi_up": "^5.1.0",
     "ansi-to-html": "^0.7.2",
