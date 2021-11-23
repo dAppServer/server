@@ -1,8 +1,29 @@
 {
   "name": "lthn",
   "version": "0.1.2",
+  "license": "EUPL-1.2",
   "description": "Lethean VPN Node",
+  "homepage": "https://github.com/letheanVPN/lthn/wiki",
+  "bugs": {
+    "url": "https://github.com/letheanVPN/lthn/issues",
+    "email": "hello@lt.hn"
+  },
+  "author": "Snider <snider@lt.hn> (https://lt.hn)",
   "main": "src/server.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/letheanVPN/lthn.git"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "ia32",
+    "arm"
+  ],
   "scripts": {
     "start": "$HOME/.deno/bin/deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/server.ts",
     "backend": "$HOME/.deno/bin/deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/server.ts backend start --home-dir=$HOME/Lethean",
@@ -17,17 +38,6 @@
     "ci:windows": "%HOME%\\.deno\\bin\\deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output ../build/cli/lthn --target x86_64-pc-windows-msvc src/server.ts",
     "lint": "eslint 'src/**/*.{ts,html,scss}' --cache"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/letheanVPN/lthn.git"
-  },
-  "author": "Snider <snider@lt.hn> (https://lt.hn)",
-  "license": "EUPL-1.2",
-  "bugs": {
-    "url": "https://github.com/letheanVPN/lthn/issues",
-    "email": "hello@lt.hn"
-  },
-  "homepage": "https://github.com/letheanVPN/lthn/wiki",
   "dependencies": {
     "ansi_up": "^5.1.0",
     "ansi-to-html": "^0.7.2",
@@ -44,15 +54,5 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.4.1"
-  },
-  "os": [
-    "darwin",
-    "linux",
-    "win32"
-  ],
-  "cpu": [
-    "x64",
-    "ia32",
-    "arm"
-  ]
+  }
 }
