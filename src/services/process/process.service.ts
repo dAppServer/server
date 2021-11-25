@@ -1,68 +1,9 @@
-import {readLines} from 'https://deno.land/std@0.79.0/io/bufio.ts';
-import EventEmitter from 'https://deno.land/std@0.79.0/node/events.ts';
-
-export interface ProcessManagerRequest {
-	key: string;
-	command: [];
-	stdOut: any;
-	stdIn: any;
-	stdErr: any;
-}
-
-export class ProcessManagerProcess extends EventEmitter {
-	private request;
-
-	public process: any;
-
-	constructor(request: ProcessManagerRequest) {
-		super();
-		this.request = request;
-	}
-
-	public async run() {
-		const processArgs: any = {
-			cmd: this.request.command
-		};
-
-		// check if we have a stdOut
-		if (this.request.stdOut) {
-			processArgs['stdout'] = 'piped';
-		}
-		// check if we have a stdIn
-		if (this.request.stdErr) {
-			processArgs['stderr'] = 'piped';
-		}
-		console.log(processArgs)
-
-
-		const process = Deno.run(processArgs);
-
-		if (this.request.stdOut) {
-			//@ts-ignore
-			for await (const line of readLines(process.stdout)) {
-				if (line.trim()) {
-					this.request.stdOut(line);
-					super.emit('stdout', line);
-				}
-			}
-		}
-		if (this.request.stdErr) {
-			//@ts-ignore
-			for await (const line of readLines(process.stderr)) {
-				if (line.trim()) {
-					this.request.stdErr(line);
-					super.emit('stderr', line);
-				}
-			}
-		}
-
-		super.emit('end', await this.process.status());
-		this.process.close();
-		return;
-	}
-}
+import {ProcessManagerRequest} from './processManagerRequest.ts';
+import {ProcessManagerProcess} from './processManagerProcess.ts';
 
 /**
+ * Lethean ProcessManager handles all aspects of running external binaries
+ * you need to provide the correct binary for the OS, all other host differences are handled for you
  * @example
  * ProcessManager.run(path.join(homeDir, 'Lethean', 'cli', exeFile),args,
  * {
@@ -74,9 +15,32 @@ export class ProcessManagerProcess extends EventEmitter {
  * 	);
  */
 export class ProcessManager {
-	private static debug = 1;
+	/**
+	 * Turns on console.log with 1 or 0
+	 *
+	 * @type {number}
+	 * @private
+	 */
+	private static debug = 0;
+
+	/**
+	 * Keeps record of processes managed by the class
+	 *
+	 * @type {{[p: string]: ProcessManagerProcess}}
+	 * @private
+	 */
 	private static process: { [name: string]: ProcessManagerProcess } = {};
 
+	/**
+	 * Creates a process record and then starts it...
+	 * to be expanded as you can do ProcessManager.startProcess('letheand.exe')
+	 * so starting right away is optional
+	 *
+	 * @param {string} command
+	 * @param args
+	 * @param {ProcessManagerRequest} options
+	 * @returns {Promise<void>}
+	 */
 	static run(command: string, args: any, options: ProcessManagerRequest) {
 		if (!args) {
 			console.log('No arguments passed to ProcessManager');
@@ -111,6 +75,13 @@ export class ProcessManager {
 		} as ProcessManagerRequest).run();
 	}
 
+	/**
+	 * Adds an external binary to the system so that it can be interacted with
+	 *
+	 * @param {ProcessManagerRequest} process
+	 * @returns {ProcessManagerProcess}
+	 * @private
+	 */
 	private static addProcess(process: ProcessManagerRequest) {
 		if (this.process && this.process[process.key]) {
 			return this.process[process.key];
@@ -118,6 +89,13 @@ export class ProcessManager {
 		return this.process[process.key] = new ProcessManagerProcess(process);
 	}
 
+	/**
+	 * Returns the process for the key, if we know about it
+	 *
+	 * @example ProcessManager.getProcess('letheand.exe')
+	 * @param {string} key
+	 * @returns {ProcessManagerProcess}
+	 */
 	public static getProcess(key: string) {
 		if (!this.process[key]) {
 			throw new Error(`Can't find process ${key}`);
@@ -125,7 +103,12 @@ export class ProcessManager {
 		return this.process[key]
 	}
 
-
+	/**
+	 * Start a process from its key, e.g executable file name
+	 *
+	 * @example ProcessManager.startProcess('letheand.exe')
+	 * @param {string} key
+	 */
 	public static startProcess(key: string) {
 		if (!this.process[key]) {
 			throw new Error(`Can't find process ${key}`);
@@ -134,6 +117,12 @@ export class ProcessManager {
 		this.process[key].run()
 	}
 
+	/**
+	 * Stops a process managed by the ProcessManager
+	 *
+	 * @example ProcessManager.stopProcess('letheand.exe')
+	 * @param {string} key
+	 */
 	public static stopProcess(key: string) {
 		if (!this.process[key]) {
 			throw new Error(`Can't find process ${key}`);
@@ -142,6 +131,12 @@ export class ProcessManager {
 		this.process[key].process.stop()
 	}
 
+	/**
+	 * Sends a force quit to the process
+	 *
+	 * @example ProcessManager.killProcess('letheand.exe')
+	 * @param {string} key
+	 */
 	public static killProcess(key: string) {
 		if (!this.process[key]) {
 			throw new Error(`Can't find process ${key}`);
