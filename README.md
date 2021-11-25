@@ -33,6 +33,20 @@ To gather the stdOut from the process please subscribe to the executables WebSoc
 
 Currently you can read and write files, download the cli, interact with all Lethean daemons via CMD or REST
 
+### Commands (in dev mode)
+
+- `npm run dev update cli`
+- `npm run dev daemon chain start`
+- `npm run dev daemon chain import`
+- `npm run dev daemon chain export`
+- `npm run dev daemon wallet cli`
+- `npm run dev daemon wallet rpc`
+- `npm run dev daemon wallet vpn`
+- `npm run dev filesystem read --path=~/Lethean/(path is relative from here)`
+- `npm run dev filesystem write --path=~/Lethean/(path is relative from here)`
+- `npm run dev filesystem list --path=~/Lethean/(path is relative from here)`
+- `npm run dev filesystem path --convert=(OS Aware path is returned)`
+
 ### One line installer
 * Mac/Linux
 
