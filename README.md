@@ -8,6 +8,7 @@ To fire up a development server run the below and visit: https://localhost:36911
 
 ```shell
 npm install
+# Replace 'lthn' with 'npm run dev' for examples below
 npm run dev backend start
 ```
 
@@ -17,7 +18,7 @@ To navigate the HTML help documentation visit https://localhost:36911 and conver
 
 For example, the chain start command: 
 
-`npm run dev daemon chain start`
+`daemon chain start`
 
 becomes: https://localhost:36911/daemon/chain/start
 
@@ -35,17 +36,17 @@ Currently you can read and write files, download the cli, interact with all Leth
 
 ### Commands (in dev mode)
 
-- `npm run dev update cli`
-- `npm run dev daemon chain start`
-- `npm run dev daemon chain import`
-- `npm run dev daemon chain export`
-- `npm run dev daemon wallet cli`
-- `npm run dev daemon wallet rpc`
-- `npm run dev daemon wallet vpn`
-- `npm run dev filesystem read --path=~/Lethean/(path is relative from here)`
-- `npm run dev filesystem write --path=~/Lethean/(path is relative from here)`
-- `npm run dev filesystem list --path=~/Lethean/(path is relative from here)`
-- `npm run dev filesystem path --convert=(OS Aware path is returned)`
+- `lthn update cli`
+- `lthn daemon chain start`
+- `lthn daemon chain import`
+- `lthn daemon chain export`
+- `lthn daemon wallet cli`
+- `lthn daemon wallet rpc`
+- `lthn daemon wallet vpn`
+- `lthn filesystem read --path=~/Lethean/(path is relative from here)`
+- `lthn filesystem write --path=~/Lethean/(path is relative from here)`
+- `lthn filesystem list --path=~/Lethean/(path is relative from here)`
+- `lthn filesystem path --convert=(OS Aware path is returned)`
 
 ### One line installer
 * Mac/Linux
