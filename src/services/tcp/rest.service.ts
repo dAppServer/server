@@ -3,8 +3,9 @@ import {cors} from 'https://deno.land/x/servest@v1.3.1/middleware/cors.ts';
 import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
 import * as path from 'https://deno.land/std/path/mod.ts';
 import os from 'https://deno.land/x/dos@v0.11.0/mod.ts';
-import {LetheanCli} from '../lethean-cli.ts';
-import {Filter} from './console-to-html.service.ts';
+import {LetheanCli} from '../../lethean-cli.ts';
+import {Filter} from '../console-to-html.service.ts';
+import {WebsocketServer} from './websocket.server.ts';
 
 export class RestService {
   static app = createApp();
@@ -52,6 +53,9 @@ export class RestService {
    * @param handle
    */
   static addRoute(path: string, handle: any) {
+    /**
+     * setup the help documentation
+     */
     this.app.get(path, async (req) => {
       await req.respond({
         status: 200,
@@ -63,12 +67,14 @@ export class RestService {
       });
     });
 
+    /**
+     * Setup the action runner
+     */
     this.app.post(path, async (req) => {
       const cmdArgs = req.url.replace("/", "").split("/");
 
       const payload = await req.json();
       for (const key in payload) {
-        console.log(payload[key]);
         const value = payload[key].length > 1 ? `=${payload[key]}` : "";
         cmdArgs.push(
           "--" + key.replace(/([A-Z])/g, (x: string) => "-" + x.toLowerCase()) +
@@ -89,6 +95,7 @@ export class RestService {
         });
       }
     });
+
   }
 
   /**
@@ -110,6 +117,10 @@ export class RestService {
     });
 
   }
+
+  /**
+   * Start TLS HTTP Rest Server & ZeroMQ Websocket
+   */
   public static run() {
 
     this.loadRoutes()
@@ -119,7 +130,7 @@ export class RestService {
     }));
 
     if (Deno.readFileSync(path.join(RestService.home, "Lethean", "conf", "private.pem"))) {
-      console.log('found')
+      console.log(`Localhost SSL Found: ${path.join(RestService.home, "Lethean", "conf", "private.pem")}`)
     } else {
       console.log('No localhost ssl cert found, injecting a pre made one so we can start a tls server and fix this')
       RestService.injectPem();
@@ -131,6 +142,8 @@ export class RestService {
       "certFile": `${path.join(RestService.home, "Lethean", "conf", "public.pem")}`,
       "keyFile": `${path.join(RestService.home, "Lethean", "conf", "private.pem")}`
     });
+    WebsocketServer.init()
+    WebsocketServer.startServer()
   }
 
   static templateOutput(input: string) {

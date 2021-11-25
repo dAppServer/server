@@ -1,6 +1,7 @@
 import {ProcessManagerRequest} from './processManagerRequest.ts';
 import EventEmitter from 'https://deno.land/std@0.79.0/node/events.ts';
 import {readLines} from 'https://deno.land/std@0.79.0/io/bufio.ts';
+import {WebsocketServer} from '../tcp/websocket.server.ts';
 
 /**
  * Interacts with the external binary directly handling its stdIn, stdOut, stdErr
@@ -38,12 +39,13 @@ export class ProcessManagerProcess extends EventEmitter {
 
 
 		const process = Deno.run(processArgs);
-
+		const that = this
 		if (this.request.stdOut) {
 			//@ts-ignore
 			for await (const line of readLines(process.stdout)) {
 				if (line.trim()) {
 					this.request.stdOut(line);
+					WebsocketServer.sendPubSubMessage(that.request.key, line)
 					super.emit('stdout', line);
 				}
 			}
