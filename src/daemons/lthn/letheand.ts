@@ -4,7 +4,8 @@ import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
 import {StringResponse} from '../../interfaces/string-response.ts';
 import {LetheanBlockchainExport} from './lethean-blockchain-export.ts';
 import {LetheanBlockchainImport} from './lethean-blockchain-import.ts';
-import {ProcessManager, ProcessManagerRequest} from '../../services/process.service.ts';
+import {ProcessManager} from '../../services/process/process.service.ts';
+import {ProcessManagerRequest} from '../../services/process/processManagerRequest.ts';
 
 
 export class LetheanDaemonLetheand {

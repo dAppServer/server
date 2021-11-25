@@ -8,12 +8,10 @@ import {LetheanDaemonConf} from './daemons/lthn/lethean.daemon.conf.ts';
 import {FilesystemService} from './services/filesystem.service.ts';
 
 export class LetheanCli {
-  static options: any;
 
-  constructor() {
-  }
+  public static options: any;
 
-  static async run(args: any) {
+  static async run(args: string[]) {
     return await LetheanCli.options.parse(args);
   }
 

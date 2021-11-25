@@ -4,11 +4,12 @@ import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
 import * as path from 'https://deno.land/std/path/mod.ts';
 import os from 'https://deno.land/x/dos@v0.11.0/mod.ts';
 import {LetheanCli} from '../lethean-cli.ts';
-import {existsSync} from 'https://deno.land/std/fs/mod.ts';
 import {Filter} from './console-to-html.service.ts';
 
 export class RestService {
   static app = createApp();
+
+  static home: string = (os.homeDir() ? os.homeDir() : '') as string;
 
   static pathPerms: any = {
     backend: false,
@@ -19,9 +20,15 @@ export class RestService {
     completions: false,
   };
 
+  /**
+   * Recursive tree scan of known commands adding addRoute() to each one found
+   *
+   * @param {string} base
+   * @param routes
+   */
   static discoverRoute(base: string, routes: any) {
-    for (let dat of routes) {
-      let key = dat[0], value = dat[1];
+    for (const dat of routes) {
+      const key = dat[0], value = dat[1];
       if (
         RestService.pathPerms[key] === undefined ||
         RestService.pathPerms[key] !== false
@@ -35,6 +42,15 @@ export class RestService {
     }
   }
 
+  /**
+   * Creates the cors enabled HTTPS Endpoint for the path and attaches the run() function
+   *
+   * GET - Will trigger the --help docs for the path and display a HTML page
+   * POST - Will trigger the run() function and convert the POST data to commands
+   *
+   * @param {string} path url path
+   * @param handle
+   */
   static addRoute(path: string, handle: any) {
     this.app.get(path, async (req) => {
       await req.respond({
@@ -48,20 +64,20 @@ export class RestService {
     });
 
     this.app.post(path, async (req) => {
-      let cmdArgs = req.url.replace("/", "").split("/");
+      const cmdArgs = req.url.replace("/", "").split("/");
 
-      let payload = await req.json();
-      for (let key in payload) {
+      const payload = await req.json();
+      for (const key in payload) {
         console.log(payload[key]);
-        //@ts-ignore
-        let value = payload[key].length > 1 ? `=${payload[key]}` : "";
+        const value = payload[key].length > 1 ? `=${payload[key]}` : "";
         cmdArgs.push(
-          "--" + key.replace(/([A-Z])/g, (x: any) => "-" + x.toLowerCase()) +
+          "--" + key.replace(/([A-Z])/g, (x: string) => "-" + x.toLowerCase()) +
             value,
         );
       }
       try {
         await LetheanCli.run(cmdArgs);
+        // to send a response throw new StringResponse()
       } catch (error) {
         return await req.respond({
           status: 200,
@@ -75,9 +91,11 @@ export class RestService {
     });
   }
 
-  public static run(args: any) {
+  /**
+   * Bootstraps the REST Router
+   */
+  static loadRoutes(){
     Deno.env.set("REST", "1");
-    const home = os.homeDir();
     this.discoverRoute("", LetheanCli.options.commands);
 
     this.app.handle("/", async (req) => {
@@ -91,15 +109,18 @@ export class RestService {
       });
     });
 
+  }
+  public static run() {
+
+    this.loadRoutes()
+
     this.app.use(cors({
       origin: "*",
     }));
 
-    console.log(`Check for localhost private key: ${path.join(home ? home : args.homeDir, "Lethean", "conf", "private.pem")}`)
-
-    if(Deno.readFileSync(path.join(home ? home : args.homeDir, "Lethean", "conf", "private.pem"))){
+    if (Deno.readFileSync(path.join(RestService.home, "Lethean", "conf", "private.pem"))) {
       console.log('found')
-    }else{
+    } else {
       console.log('No localhost ssl cert found, injecting a pre made one so we can start a tls server and fix this')
       RestService.injectPem();
     }
@@ -107,8 +128,8 @@ export class RestService {
     this.app.listenTls({
       "hostname": "localhost",
       "port": 36911,
-      "certFile": `${path.join(home ? home : args.homeDir, "Lethean", "conf", "public.pem")}`,
-      "keyFile": `${path.join(home ? home : args.homeDir, "Lethean", "conf", "private.pem")}`
+      "certFile": `${path.join(RestService.home, "Lethean", "conf", "public.pem")}`,
+      "keyFile": `${path.join(RestService.home, "Lethean", "conf", "private.pem")}`
     });
   }
 
@@ -119,18 +140,14 @@ export class RestService {
   }
 
   public static config() {
-    let home = os.homeDir();
     return new Command()
       .description("Backend Services for Application GUI")
       .command("start", "Start Application Helper Daemon")
-      .option("-h, --home-dir <string>", "Home directory.", {
-        default: path.join(home ? home : "/", "Lethean"),
-      })
-      .action((args) => RestService.run(args));
+      .action(() => RestService.run());
   }
 
   private static injectPem(){
-    let home = os.homeDir();
+    const home = os.homeDir();
     Deno.mkdirSync(path.join(home ? home : '~', "Lethean", "conf"))
 
      Deno.writeTextFileSync(path.join(home ? home : '~', "Lethean", "conf", "private.pem"), `-----BEGIN RSA PRIVATE KEY-----

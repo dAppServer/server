@@ -2,7 +2,8 @@ import os from 'https://deno.land/x/dos@v0.11.0/mod.ts';
 import * as path from 'https://deno.land/std/path/mod.ts';
 import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
 import {StringResponse} from '../../interfaces/string-response.ts';
-import {ProcessManager, ProcessManagerRequest} from '../../services/process.service.ts';
+import {ProcessManager} from '../../services/process/process.service.ts';
+import {ProcessManagerRequest} from '../../services/process/processManagerRequest.ts';
 
 export class LetheanBlockchainImport {
 

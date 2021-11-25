@@ -4,7 +4,8 @@ import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
 import {StringResponse} from '../../interfaces/string-response.ts';
 import {LetheanWalletVpnRpc} from './lethean-wallet-vpn-rpc.ts';
 import {LetheanWalletCli} from './lethean-wallet-cli.ts';
-import {ProcessManager, ProcessManagerRequest} from '../../services/process.service.ts';
+import {ProcessManager} from '../../services/process/process.service.ts';
+import {ProcessManagerRequest} from '../../services/process/processManagerRequest.ts';
 
 
 export class LetheanWalletRpc {
