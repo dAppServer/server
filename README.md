@@ -51,13 +51,13 @@ Currently you can read and write files, download the cli, interact with all Leth
 * Mac/Linux
 
 ```shell
-curl -fsSL https://gitlab.com/lthn/projects/vpn/dvpn/-/raw/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/letheanVPN/lthn/main/install.sh | sh
 ```
 
 * Windows Powershell
 
 ```shell
-iwr https://gitlab.com/lthn/projects/vpn/dvpn/-/raw/main/install.ps1 -useb | iex
+iwr https://raw.githubusercontent.com/letheanVPN/lthn/main/install.ps1 -useb | iex
 ```
 
 The CLI install will give you the $PATH variable to add
