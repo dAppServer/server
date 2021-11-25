@@ -2,7 +2,7 @@ import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
 import {CompletionsCommand} from 'https://deno.land/x/cliffy/command/completions/mod.ts';
 import {HelpCommand} from 'https://deno.land/x/cliffy/command/help/mod.ts';
 import {LetheanAccount} from './accounts/user.ts';
-import {RestService} from './services/rest.service.ts';
+import {RestService} from './services/tcp/rest.service.ts';
 import {LetheanUpdater} from './services/update.service.ts';
 import {LetheanDaemonConf} from './daemons/lthn/lethean.daemon.conf.ts';
 import {FilesystemService} from './services/filesystem.service.ts';
