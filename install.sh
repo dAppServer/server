@@ -4,11 +4,6 @@
 
 set -e
 
-if ! command -v unzip >/dev/null; then
-	echo "Error: unzip is required to install lthn." 1>&2
-	exit 1
-fi
-
 if [ "$OS" = "Windows_NT" ]; then
 	target="latest-windows-64/lthn.exe"
 else
