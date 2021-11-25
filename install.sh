@@ -10,16 +10,16 @@ if ! command -v unzip >/dev/null; then
 fi
 
 if [ "$OS" = "Windows_NT" ]; then
-	target="windows"
+	target="latest-windows-64/lthn.exe"
 else
 	case $(uname -sm) in
-	"Darwin x86_64") target="macos-intel" ;;
-	"Darwin arm64") target="macos-arm64" ;;
-	*) target="linux" ;;
+	"Darwin x86_64") target="latest-macos-intel/lthn" ;;
+	"Darwin arm64") target="latest-macos-arm/lthn" ;;
+	*) target="latest-linux-amd64/lthn" ;;
 	esac
 fi
 
-	lthn_uri="https://gitlab.com/lthn/projects/vpn/dvpn/-/jobs/artifacts/main/download?job=${target}"
+	lthn_uri="https://github.com/letheanVPN/lthn/releases/download/${target}"
 
 
 deno_install="${HOME}/Lethean"
@@ -30,10 +30,8 @@ if [ ! -d "$bin_dir" ]; then
 	mkdir -p "$bin_dir"
 fi
 
-curl --fail --location --progress-bar --output "$exe.zip" "$lthn_uri"
-unzip -d "$bin_dir" -o "$exe.zip"
+curl --fail --location --progress-bar --output "$exe" "$lthn_uri"
 chmod +x "$exe"
-rm "$exe.zip"
 
 echo "Lethean CLI was installed successfully to $exe"
 if command -v lthn >/dev/null; then
