@@ -15,12 +15,17 @@ The whole process will get better over time, for now.
 
 To navigate the HTML help documentation visit https://localhost:36911 and convert the commands to the path 
 
-For example, the chain start command: `npm run dev daemon chain start`
-becomes https://localhost:36911/daemon/chain/start
+For example, the chain start command: 
+
+`npm run dev daemon chain start`
+
+becomes: https://localhost:36911/daemon/chain/start
 
 The arguments documented can be sent as a POST request with a json body.
 
-Conversion rule: `--confirm-external-bind` = `{"confirmExternalBind": true}`
+Conversion rule: `--confirm-external-bind` 
+
+Becomes: `{"confirmExternalBind": true}`
 
 You will get confirmation that the process has been created instantly.
 
