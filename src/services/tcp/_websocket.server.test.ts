@@ -3,11 +3,11 @@ import {WebsocketServer} from './websocket.server.ts';
 import { Sub } from "https://deno.land/x/jszmq/mod.ts";
 import { delay } from "https://deno.land/std@0.116.0/async/delay.ts";
 
-console.log("ZeroMQ Websocket: ws://localhost:36910")
+console.log("ZeroMQ Websocket: ws://localhost:36910/pub")
 
 	const sock = new Sub();
 
-	sock.connect("ws://localhost:36910");
+	sock.connect("ws://localhost:36910/pub");
 	sock.subscribe("letheand");
 	console.log("Subscriber connected to port 36910");
 

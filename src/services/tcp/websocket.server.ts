@@ -1,26 +1,38 @@
+import { WebSocketClient, WebSocketServer } from "https://deno.land/x/websocket@v0.1.3/mod.ts";
 import * as zmq from "https://deno.land/x/jszmq/mod.ts";
-
+import { Sub } from "https://deno.land/x/jszmq/mod.ts";
 export class WebsocketServer {
 
-	public static socketServer:  zmq.DenoHttpServer<any>;
-
-	private static reqrep: zmq.Rep;
-	public static pubsub: zmq.Pub;
-
 	public static init(){
-//		WebsocketServer.reqrep = new zmq.Rep()
-//		WebsocketServer.reqrep.bind(WebsocketServer.socketServer);
-		WebsocketServer.socketServer = new zmq.DenoHttpServer("ws://localhost:36910")
-		WebsocketServer.pubsub = new zmq.Pub()
-		WebsocketServer.pubsub.bind(WebsocketServer.socketServer );
+
+		const wss = new WebSocketServer(36909);
+		wss.on("connection", function (ws: WebSocketClient) {
+
+			ws.on("message", function(daemon: string) {
+				const subDaemon = daemon.replace(/"/g, '')
+				console.log(`Subscribing to ${subDaemon}`)
+				const sock = new Sub();
+
+				sock.connect("ws://localhost:36910/pub");
+				sock.subscribe(subDaemon);
+				console.log("Subscriber connected to port 36909");
+				const wsClient = ws
+				sock.on("message", function (endpoint, topic, message) {
+					wsClient.send(JSON.stringify([subDaemon,message.toString()]));
+				});
+			});
+
+
+		});
 	}
 
-	public static startServer() : void{
-		console.log("Starting ZeroMQ WebSocket: ws://localhost:36910")
-		WebsocketServer.socketServer.listen()
+
+	public static startServer() {
+		console.log("Starting stdOut WebSocket: ws://localhost:36909")
+		WebsocketServer.init();
 	}
 	public static sendPubSubMessage(channel: string, message: string){
 		console.log(`ZeroMQ PubSub ${channel} message length: ${message.length}`)
-		WebsocketServer.pubsub.send([channel, message])
+		//WebsocketServer.pubsub.send([channel, message])
 	}
 }

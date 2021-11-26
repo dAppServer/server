@@ -2,6 +2,7 @@ import {ProcessManagerRequest} from './processManagerRequest.ts';
 import EventEmitter from 'https://deno.land/std@0.79.0/node/events.ts';
 import {readLines} from 'https://deno.land/std@0.79.0/io/bufio.ts';
 import {WebsocketServer} from '../tcp/websocket.server.ts';
+import {ZeroMQServer} from '../ipc/zeromq/server.ts';
 
 /**
  * Interacts with the external binary directly handling its stdIn, stdOut, stdErr
@@ -30,6 +31,7 @@ export class ProcessManagerProcess extends EventEmitter {
 		// check if we have a stdOut
 		if (this.request.stdOut) {
 			processArgs['stdout'] = 'piped';
+
 		}
 		// check if we have a stdIn
 		if (this.request.stdErr) {
@@ -45,7 +47,7 @@ export class ProcessManagerProcess extends EventEmitter {
 			for await (const line of readLines(process.stdout)) {
 				if (line.trim()) {
 					this.request.stdOut(line);
-					WebsocketServer.sendPubSubMessage(that.request.key, line)
+					ZeroMQServer.sendPubMessage(that.request.key, line)
 					super.emit('stdout', line);
 				}
 			}
