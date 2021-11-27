@@ -64,8 +64,10 @@ export class RestService {
 				status: 200,
 				headers: new Headers({
 					'content-type': 'text/html',
-					'Access-Control-Allow-Origin': '*'
-				}),
+					'Access-Control-Allow-Origin': '*',
+					'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,HEAD',
+					'Access-Control-Max-Age': '240'
+		}),
 				body: RestService.templateOutput(handle.getHelp())
 			});
 		});
@@ -77,13 +79,19 @@ export class RestService {
 			const cmdArgs = req.url.replace('/', '').split('/');
 
 			const payload = await req.json();
-			for (const key in payload) {
-				const value = payload[key].length > 1 ? `=${payload[key]}` : '';
-				cmdArgs.push(
-					'--' + key.replace(/([A-Z])/g, (x: string) => '-' + x.toLowerCase()) +
-					value
-				);
+			console.log(payload)
+			if(payload['jsonrpc']){
+				cmdArgs.push(`--request="${JSON.stringify(payload)}"`)
+			}else{
+				for (const key in payload) {
+					const value = payload[key].length > 1 ? `=${payload[key]}` : '';
+					cmdArgs.push(
+						'--' + key.replace(/([A-Z])/g, (x: string) => '-' + x.toLowerCase()) +
+						value
+					);
+				}
 			}
+
 			try {
 				await LetheanCli.run(cmdArgs);
 				// to send a response throw new StringResponse()
@@ -91,14 +99,28 @@ export class RestService {
 				return await req.respond({
 					status: 200,
 					headers: new Headers({
-						'content-type': 'text/plain',
-						'Access-Control-Allow-Origin': '*'
+						'content-type': 'application/x-www-form-urlencoded, text/plain, application/json',
+						'Access-Control-Allow-Origin': '*',
+						'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,HEAD',
+						'Access-Control-Max-Age': '240'
 					}),
 					body: error.message
 				});
 			}
 		});
 
+		this.app.options(path, async (req) => {
+			console.log('OPTIONS')
+			return await req.respond({
+				status: 204,
+				headers: new Headers({
+					'Content-Type': 'application/x-www-form-urlencoded, text/plain, application/json',
+					'Access-Control-Allow-Origin': '*',
+					'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,HEAD',
+					'Access-Control-Max-Age': '240'
+				})
+			});
+		});
 	}
 
 	/**
@@ -113,7 +135,9 @@ export class RestService {
 				status: 200,
 				headers: new Headers({
 					'content-type': 'text/html',
-					'Access-Control-Allow-Origin': 'https://localhost'
+					'Access-Control-Allow-Origin': '*',
+					'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,HEAD',
+					'Access-Control-Max-Age': '240'
 				}),
 				body: RestService.templateOutput(LetheanCli.options.getHelp())
 			});
@@ -129,9 +153,14 @@ export class RestService {
 		this.loadRoutes();
 
 		this.app.use(cors({
-			origin: '*'
+			origin: '*',
+			methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
+			allowedHeaders: ["content-type"],
+			maxAge: 1,
 		}));
 
+// 'content-type': 'application/x-www-form-urlencoded, text/plain, application/json',
+//						'Access-Control-Allow-Origin': 'https://localhost'
 
 		if (Deno.readFileSync(path.join(RestService.home, 'Lethean', 'conf', 'private.pem'))) {
 			console.log(`Localhost SSL Found: ${path.join(RestService.home, 'Lethean', 'conf', 'private.pem')}`);
