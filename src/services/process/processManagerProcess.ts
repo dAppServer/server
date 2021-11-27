@@ -81,6 +81,7 @@ export class ProcessManagerProcess extends EventEmitter {
 			for await (const line of readLines(process.stderr)) {
 				if (line.trim()) {
 					that.request.stdErr(line);
+					ZeroMQServer.sendPubMessage(that.request.key, line);
 					super.emit('stderr', line);
 				}
 			}
