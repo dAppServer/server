@@ -6,8 +6,16 @@ export interface WebSocketMessageRequest{
 	daemon:string
 }
 
+/**
+ * this class enables realtime feedback
+ */
 export class WebsocketServer {
 
+	/**
+	 * supported cmd's
+	 * daemon:* - Subscribe to a Daemons stdOut
+	 * cmd:${daemon}:${command string}
+	 */
 	static init() {
 
 		const wss = new WebSocketServer(36909);
@@ -30,7 +38,6 @@ export class WebsocketServer {
 				}else if (daemon.substr(0,3) === 'cmd'){
 					const req = daemon.split(':');
 					ZeroMQServer.sendPubMessage(req[1]+"-stdIn", `${req[2]}\n`)
-					//console.log(daemon)
 				}
 			});
 		});

@@ -2,7 +2,7 @@ import {ProcessManagerRequest} from './processManagerRequest.ts';
 import EventEmitter from 'https://deno.land/std@0.79.0/node/events.ts';
 import {readLines} from 'https://deno.land/std@0.79.0/io/bufio.ts';
 import {WebsocketServer} from '../tcp/websocket.server.ts';
-import { Sub } from "https://deno.land/x/jszmq/mod.ts";
+import {Sub} from 'https://deno.land/x/jszmq/mod.ts';
 import {ZeroMQServer} from '../ipc/zeromq.ts';
 
 /**
@@ -29,7 +29,7 @@ export class ProcessManagerProcess extends EventEmitter {
 			cmd: this.request.command
 		};
 
-		// check if we have a stdOut
+		// check if we have a stdIn
 		if (this.request.stdIn) {
 			processArgs['stdin'] = 'piped';
 
@@ -51,16 +51,14 @@ export class ProcessManagerProcess extends EventEmitter {
 		const that = this;
 		sock.connect('ws://localhost:36910/pub');
 		await sock.subscribe(`${this.request.key}-stdIn`);
-		console.log(`Subscribed to ${this.request.key}-stdIn/pub`)
-		sock.on('message',  function (endpoint, topic, message) {
-			console.log(message.toString())
+		console.log(`Subscribed to ${this.request.key}-stdIn/pub`);
+		sock.on('message', function (endpoint, topic, message) {
+
 			if (topic.toString() === `${that.request.key}-stdIn`) {
-				console.log(that.process)
+				console.log(that.process);
 				if (process.stdin) {
-					console.log("win")
-					console.log(message.toString())
-					//process.std(message);
-					 process.stdin.write(message);
+					that.request.stdOut(message.toString());
+					process.stdin.write(message);
 				}
 			}
 
@@ -69,10 +67,10 @@ export class ProcessManagerProcess extends EventEmitter {
 		if (this.request.stdOut) {
 			//@ts-ignore
 			for await (const line of readLines(process.stdout)) {
-				console.log(line)
+				console.log(line);
 				if (line.trim()) {
 					that.request.stdOut(line);
-					ZeroMQServer.sendPubMessage(that.request.key, line)
+					ZeroMQServer.sendPubMessage(that.request.key, line);
 					super.emit('stdout', line);
 				}
 			}
