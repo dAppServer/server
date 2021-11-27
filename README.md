@@ -32,7 +32,29 @@ You will get confirmation that the process has been created instantly.
 
 To gather the stdOut from the process please subscribe to the executables WebSocket channel.
 
-Currently you can read and write files, download the cli, interact with all Lethean daemons via CMD or REST
+Currently, you can read and write files, download the cli, interact with all Lethean daemons via CMD or REST
+
+## IPC
+
+A ZeroMQ websocket is loaded to:  ws://localhost:36910 to start a development service run
+
+The following endpoints can be used
+
+- ws://localhost:36910/rep
+- ws://localhost:36910/pub
+- ws://localhost:36910/push
+
+- `ZeroMQServer.sendPubMessage(channel: string, message: string)`
+- `ZeroMQServer.sendRepMessage(channel: string, message: string)`
+- `ZeroMQServer.sendPushMessage(channel: string, message: string)`
+
+```shell
+npm run dev backend ipc
+```
+
+## ProcessManager IO
+
+You can access the input/output from ws://localhost:36909
 
 ### Commands (in dev mode)
 

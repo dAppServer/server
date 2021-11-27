@@ -5,8 +5,8 @@ import * as path from 'https://deno.land/std/path/mod.ts';
 import os from 'https://deno.land/x/dos@v0.11.0/mod.ts';
 import {LetheanCli} from '../../lethean-cli.ts';
 import {Filter} from '../console-to-html.service.ts';
-import {ZeroMQServer} from '../ipc/zeromq/server.ts';
 import {WebsocketServer} from './websocket.server.ts';
+import {ZeroMQServer} from '../ipc/zeromq.ts';
 
 
 
