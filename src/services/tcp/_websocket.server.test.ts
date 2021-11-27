@@ -2,16 +2,12 @@ import { assertEquals } from "https://deno.land/std@0.116.0/testing/asserts.ts";
 import {WebsocketServer} from './websocket.server.ts';
 import { Sub } from "https://deno.land/x/jszmq/mod.ts";
 import { delay } from "https://deno.land/std@0.116.0/async/delay.ts";
+import {ZeroMQServer} from '../ipc/zeromq.ts';
 
 console.log("ZeroMQ Websocket: ws://localhost:36910/pub")
 
-	const sock = new Sub();
 
-	sock.connect("ws://localhost:36910/pub");
-	sock.subscribe("letheand");
-	console.log("Subscriber connected to port 36910");
-
-	sock.on("message", function (endpoint, topic, message) {
+ZeroMQServer.subscribeSubMessage("letheand", function (endpoint:string, topic: string, message: string) {
 		console.log(
 			"received a message related to:",
 			topic.toString(),
