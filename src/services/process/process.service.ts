@@ -47,6 +47,10 @@ export class ProcessManager {
 			return;
 		}
 
+		if(options.key && this.process[options.key]){
+			return this.getProcess(options.key)
+		}
+
 		if (ProcessManager.debug) {
 			console.log('Arguments passed to ProcessManager:', args);
 		}
