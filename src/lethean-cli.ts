@@ -6,6 +6,8 @@ import {RestService} from './services/tcp/rest.service.ts';
 import {LetheanUpdater} from './services/update.service.ts';
 import {LetheanDaemonConf} from './daemons/lthn/lethean.daemon.conf.ts';
 import {FilesystemService} from './services/filesystem.service.ts';
+import {ConfigFileService} from './services/config/file.service.ts';
+import {StoredObjectService} from './services/config/store.ts';
 
 export class LetheanCli {
 
@@ -24,6 +26,8 @@ export class LetheanCli {
       .command("update", LetheanUpdater.config())
       .command("backend", RestService.config())
       .command("filesystem", FilesystemService.config())
+      .command("config", ConfigFileService.config())
+      .command("object", StoredObjectService.config())
       .command("account", LetheanAccount.config())
       //			.command("vpn",
       //				new Command().description('VPN Functions')
