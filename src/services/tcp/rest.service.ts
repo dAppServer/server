@@ -8,7 +8,7 @@ import {Filter} from '../console-to-html.service.ts';
 import {WebsocketServer} from './websocket.server.ts';
 import {ZeroMQServer} from '../ipc/zeromq.ts';
 
-
+import {existsSync, ensureDirSync} from "https://deno.land/std/fs/mod.ts";
 
 export class RestService {
 	static app = createApp();
@@ -67,7 +67,7 @@ export class RestService {
 					'Access-Control-Allow-Origin': '*',
 					'Access-Control-Allow-Methods': 'POST,GET,OPTIONS,HEAD',
 					'Access-Control-Max-Age': '240'
-		}),
+				}),
 				body: RestService.templateOutput(handle.getHelp())
 			});
 		});
@@ -162,7 +162,7 @@ export class RestService {
 // 'content-type': 'application/x-www-form-urlencoded, text/plain, application/json',
 //						'Access-Control-Allow-Origin': 'https://localhost'
 
-		if (Deno.readFileSync(path.join(RestService.home, 'Lethean', 'conf', 'private.pem'))) {
+		if (existsSync(path.join(RestService.home, 'Lethean', 'conf', 'private.pem'))) {
 			console.log(`Localhost SSL Found: ${path.join(RestService.home, 'Lethean', 'conf', 'private.pem')}`);
 		} else {
 			console.log('No localhost ssl cert found, injecting a pre made one so we can start a tls server and fix this');
@@ -198,7 +198,7 @@ export class RestService {
 
 	private static injectPem() {
 		const home = os.homeDir();
-		Deno.mkdirSync(path.join(home ? home : '~', 'Lethean', 'conf'));
+		ensureDirSync(path.join(home ? home : '~', 'Lethean', 'conf'));
 
 		Deno.writeTextFileSync(path.join(home ? home : '~', 'Lethean', 'conf', 'private.pem'), `-----BEGIN RSA PRIVATE KEY-----
 MIIEogIBAAKCAQEAqX/7sHcFXtk5fvfeAMU+m+zuiF6IegEef0NrwaaYvxlpC0I6
