@@ -199,6 +199,8 @@ export class RestService {
 	private static injectPem() {
 		const home = os.homeDir();
 		ensureDirSync(path.join(home ? home : '~', 'Lethean', 'conf'));
+		ensureDirSync(path.join(home ? home : '~', 'Lethean', 'users'));
+		ensureDirSync(path.join(home ? home : '~', 'Lethean', 'wallets'));
 
 		Deno.writeTextFileSync(path.join(home ? home : '~', 'Lethean', 'conf', 'private.pem'), `-----BEGIN RSA PRIVATE KEY-----
 MIIEogIBAAKCAQEAqX/7sHcFXtk5fvfeAMU+m+zuiF6IegEef0NrwaaYvxlpC0I6
