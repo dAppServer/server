@@ -3,6 +3,17 @@ import * as path from 'https://deno.land/std/path/mod.ts';
 import {ensureDirSync} from 'https://deno.land/std@0.114.0/fs/mod.ts';
 import {StringResponse} from '../interfaces/string-response.ts';
 
+import {
+
+  decode as base64Decode,
+
+  encode as base64Encode,
+
+} from 'https://deno.land/std@0.82.0/encoding/base64.ts';
+
+
+
+export { base64Decode, base64Encode };
 export class FilesystemService {
   /**
    * Return a system path to the Lethean data folder
@@ -84,14 +95,20 @@ export class FilesystemService {
       .action((args) => {
         const req = FilesystemService.read(args);
         if (Deno.env.get("REST")) {
-          throw new StringResponse(req);
+          const textEncoder = new TextEncoder();
+
+          const encodedValue = base64Encode(textEncoder.encode(req));
+          throw new StringResponse(encodedValue);
         }
       })
       .command("write", "Write a file")
       .option("--path <string>", "File path to read")
       .option("--data <string>", "File data to save")
       .action((args) => {
-        const req = FilesystemService.write(args.path, args.data);
+        const textDecoder = new TextDecoder('utf-8');
+
+        const decodedValue = textDecoder.decode(base64Decode(args.data));
+        const req = FilesystemService.write(args.path, decodedValue);
         if (Deno.env.get("REST")) {
           throw new StringResponse(req);
         }
