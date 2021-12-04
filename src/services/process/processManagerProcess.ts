@@ -67,10 +67,9 @@ export class ProcessManagerProcess extends EventEmitter {
 		if (this.request.stdOut) {
 			//@ts-ignore
 			for await (const line of readLines(process.stdout)) {
-				console.log(line);
 				if (line.trim()) {
 					that.request.stdOut(line);
-					ZeroMQServer.sendPubMessage(that.request.key, line);
+					ZeroMQServer.sendPubMessage(that.request.key, line.toString());
 					super.emit('stdout', line);
 				}
 			}
@@ -81,12 +80,11 @@ export class ProcessManagerProcess extends EventEmitter {
 			for await (const line of readLines(process.stderr)) {
 				if (line.trim()) {
 					that.request.stdErr(line);
-					ZeroMQServer.sendPubMessage(that.request.key, line);
+					ZeroMQServer.sendPubMessage(that.request.key, line.toString());
 					super.emit('stderr', line);
 				}
 			}
 		}
-
 
 		super.emit('end', 0);
 		process.close();
