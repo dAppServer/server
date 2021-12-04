@@ -11,6 +11,12 @@ export interface WebSocketMessageRequest{
  * this class enables realtime feedback
  */
 export class WebsocketServer {
+	static strip(s:string) {
+		return s.split('').filter(function (x:string) {
+			const n = x.charCodeAt(0);
+			return 31 < n && 127 > n;
+		}).join('');
+	}
 
 	/**
 	 * supported cmd's
@@ -35,7 +41,7 @@ export class WebsocketServer {
 					const wsClient = ws;
 					sock.on('message', function (endpoint, topic, message) {
 						const textEncoder = new TextEncoder();
-						wsClient.send(JSON.stringify([req[1], base64Encode(textEncoder.encode(message.toString()))]));
+						wsClient.send(JSON.stringify([req[1], base64Encode(textEncoder.encode(WebsocketServer.strip(message.toString())))]));
 					});
 				}else if (daemon.substr(0,3) === 'cmd'){
 					const req = daemon.split(':');

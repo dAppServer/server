@@ -5,6 +5,7 @@ import {WebsocketServer} from '../tcp/websocket.server.ts';
 import {Sub} from 'https://deno.land/x/jszmq/mod.ts';
 import {ZeroMQServer} from '../ipc/zeromq.ts';
 
+import {encode as base64Encode} from 'https://deno.land/std@0.82.0/encoding/base64.ts';
 /**
  * Interacts with the external binary directly handling its stdIn, stdOut, stdErr
  * its a async event emitter that mimicks NodeJs's event emitter
@@ -67,10 +68,9 @@ export class ProcessManagerProcess extends EventEmitter {
 		if (this.request.stdOut) {
 			//@ts-ignore
 			for await (const line of readLines(process.stdout)) {
-				console.log(line);
 				if (line.trim()) {
-					that.request.stdOut(line);
-					ZeroMQServer.sendPubMessage(that.request.key, line);
+					that.request.stdOut(line.toString());
+					ZeroMQServer.sendPubMessage(that.request.key,line);
 					super.emit('stdout', line);
 				}
 			}
@@ -80,13 +80,12 @@ export class ProcessManagerProcess extends EventEmitter {
 			//@ts-ignore
 			for await (const line of readLines(process.stderr)) {
 				if (line.trim()) {
-					that.request.stdErr(line);
+					that.request.stdErr(line.toString());
 					ZeroMQServer.sendPubMessage(that.request.key, line);
 					super.emit('stderr', line);
 				}
 			}
 		}
-
 
 		super.emit('end', 0);
 		process.close();
