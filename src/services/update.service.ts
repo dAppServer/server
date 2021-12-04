@@ -13,11 +13,11 @@ export class LetheanUpdater {
   public static downloads = {
     cli: {
       windows:
-        "https://github.com/letheanVPN/lethean/releases/download/v3.1.0/lethean-cli-win-64bit-v3.1.zip",
+          "https://github.com/letheanVPN/lethean/releases/download/v3.1.0/lethean-cli-win-64bit-v3.1.zip",
       linux:
-        "https://github.com/letheanVPN/lethean/releases/download/v3.1.0/lethean-cli-linux-64bit-v3.1.zip",
+          "https://github.com/letheanVPN/lethean/releases/download/v3.1.0/lethean-cli-linux-64bit-v3.1.zip",
       macos:
-        "https://github.com/letheanVPN/lethean/releases/download/v3.1.0/lethean-cli-mac-64bit-v3.1.zip",
+          "https://github.com/letheanVPN/lethean/releases/download/v3.1.0/lethean-cli-mac-64bit-v3.1.zip",
     },
   };
 
@@ -42,10 +42,9 @@ export class LetheanUpdater {
         file: filename,
         dir: path.join(homeDir ? homeDir : "", "Lethean"),
       };
+      ZeroMQServer.sendPubMessage("update-cli", `Starting download to ${destination.dir}`);
       const fileObj = await download(url, destination);
-      ZeroMQServer.sendPubMessage("update-cli", `Downloaded file to ${fileObj.fullPath}`);
-      ZeroMQServer.sendPubMessage("update-cli", "removing old binaries");
-
+      ZeroMQServer.sendPubMessage("update-cli", `Downloaded file`);
       try {
         await Deno.remove(path.join(homeDir ? homeDir : "", "Lethean", "cli"), {
           recursive: true,
@@ -53,35 +52,26 @@ export class LetheanUpdater {
       } catch (e) {
       }
 
-      ZeroMQServer.sendPubMessage("update-cli", `Unpacking Downloaded zip to: ${
+      ZeroMQServer.sendPubMessage("update-cli", `Unpacking Downloaded zip`);
+
+
+      await unZipFromFile(
+          fileObj.fullPath,
+          path.join(homeDir ? homeDir : "", "Lethean", "cli"),
+          { includeFileName: false },
+      );
+
+      await copy(
           path.join(
               homeDir
                   ? homeDir
                   : "",
               "Lethean",
               "cli",
-          )
-      }`);
-
-
-      await unZipFromFile(
-        fileObj.fullPath,
-        path.join(homeDir ? homeDir : "", "Lethean", "cli"),
-        { includeFileName: false },
-      );
-      ZeroMQServer.sendPubMessage("update-cli", "Copying files");
-
-      await copy(
-        path.join(
-          homeDir
-            ? homeDir
-            : "",
-          "Lethean",
-          "cli",
-          `${filename?.replace(".zip", "")}`,
-        ),
-        path.join(homeDir ? homeDir : "", "Lethean", "cli"),
-        { overwrite: true },
+              `${filename?.replace(".zip", "")}`,
+          ),
+          path.join(homeDir ? homeDir : "", "Lethean", "cli"),
+          { overwrite: true },
       );
       ZeroMQServer.sendPubMessage("update-cli", "Cleaning up");
 
@@ -119,26 +109,26 @@ export class LetheanUpdater {
 
   public static config() {
     return new Command().description("Lethean Updater Service")
-      .command(
-        "lthn",
-        new UpgradeCommand({
-          main: "src/server.ts",
-          args: ["--version", "main"],
-          provider: [
-            new GithubProvider({
-              repository: "letheanVPN/lthn"
+        .command(
+            "lthn",
+            new UpgradeCommand({
+              main: "src/server.ts",
+              args: ["--version", "main"],
+              provider: [
+                new GithubProvider({
+                  repository: "letheanVPN/lthn"
+                }),
+              ],
             }),
-          ],
-        }),
-      )
-      .description("Update lthn")
-      .command("cli", "Downloads the latest CLI binaries")
-      .action(async (args) => {
-        await LetheanUpdater.download(args).then((dat) => {
-          if (Deno.env.get("REST")) {
-            throw new StringResponse(dat);
-          }
+        )
+        .description("Update lthn")
+        .command("cli", "Downloads the latest CLI binaries")
+        .action(async (args) => {
+          await LetheanUpdater.download(args).then((dat) => {
+            if (Deno.env.get("REST")) {
+              throw new StringResponse(dat);
+            }
+          });
         });
-      });
   }
 }
