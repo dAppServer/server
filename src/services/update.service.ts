@@ -7,6 +7,7 @@ import {copy} from 'https://deno.land/std@0.95.0/fs/mod.ts';
 
 import {GithubProvider, UpgradeCommand} from 'https://deno.land/x/cliffy/command/upgrade/mod.ts';
 import {StringResponse} from '../interfaces/string-response.ts';
+import {ZeroMQServer} from './ipc/zeromq.ts';
 
 export class LetheanUpdater {
   public static downloads = {
@@ -23,8 +24,7 @@ export class LetheanUpdater {
   static async download(args: any) {
     let url, platform = os.platform(), homeDir = os.homeDir();
 
-    console.log(`Downloading files for ${platform}`);
-
+    ZeroMQServer.sendPubMessage("update-cli", `Downloading files for ${platform}`);
     switch (platform) {
       case "darwin":
         url = LetheanUpdater.downloads.cli.macos;
@@ -43,8 +43,9 @@ export class LetheanUpdater {
         dir: path.join(homeDir ? homeDir : "", "Lethean"),
       };
       const fileObj = await download(url, destination);
-      console.log(`Downloaded file to ${fileObj.fullPath}`);
-      console.log("removing old binaries");
+      ZeroMQServer.sendPubMessage("update-cli", `Downloaded file to ${fileObj.fullPath}`);
+      ZeroMQServer.sendPubMessage("update-cli", "removing old binaries");
+
       try {
         await Deno.remove(path.join(homeDir ? homeDir : "", "Lethean", "cli"), {
           recursive: true,
@@ -52,24 +53,24 @@ export class LetheanUpdater {
       } catch (e) {
       }
 
-      console.log(
-        `Unpacking Downloaded zip to: ${
+      ZeroMQServer.sendPubMessage("update-cli", `Unpacking Downloaded zip to: ${
           path.join(
-            homeDir
-              ? homeDir
-              : "",
-            "Lethean",
-            "cli",
+              homeDir
+                  ? homeDir
+                  : "",
+              "Lethean",
+              "cli",
           )
-        }`,
-      );
+      }`);
+
 
       await unZipFromFile(
         fileObj.fullPath,
         path.join(homeDir ? homeDir : "", "Lethean", "cli"),
         { includeFileName: false },
       );
-      console.log("Copying files");
+      ZeroMQServer.sendPubMessage("update-cli", "Copying files");
+
       await copy(
         path.join(
           homeDir
@@ -82,7 +83,8 @@ export class LetheanUpdater {
         path.join(homeDir ? homeDir : "", "Lethean", "cli"),
         { overwrite: true },
       );
-      console.log("Cleaning up");
+      ZeroMQServer.sendPubMessage("update-cli", "Cleaning up");
+
       try {
         await Deno.remove(
             path.join(
@@ -111,6 +113,7 @@ export class LetheanUpdater {
       console.log("ERROR, the following log might have helpful information.");
       console.log(err);
     }
+    ZeroMQServer.sendPubMessage("update-cli", "Done");
     return "done";
   }
 
@@ -123,7 +126,7 @@ export class LetheanUpdater {
           args: ["--version", "main"],
           provider: [
             new GithubProvider({
-              repository: "letheanVPN/dvpn"
+              repository: "letheanVPN/lthn"
             }),
           ],
         }),
