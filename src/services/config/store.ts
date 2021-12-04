@@ -3,6 +3,7 @@ import * as path from 'https://deno.land/std/path/mod.ts';
 import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
 import {StringResponse} from '../../interfaces/string-response.ts';
 import {ensureDirSync} from 'https://deno.land/std@0.114.0/fs/ensure_dir.ts';
+import {decode as base64Decode, encode as base64Encode} from 'https://deno.land/std@0.82.0/encoding/base64.ts';
 
 
 export class StoredObjectService {
@@ -16,7 +17,9 @@ export class StoredObjectService {
 			.option('-g,--group <string>', 'Object Group', {default:'lthn'})
 			.option('-o,--object <string>', 'Object key to fetch')
 			.action((args) => {
-				throw new StringResponse(Deno.readTextFileSync(path.join(home ? home : './', 'Lethean', 'data', 'objects', args.group, args.object)));
+				const req = Deno.readTextFileSync(path.join(home ? home : './', 'Lethean', 'data', 'objects', args.group, args.object))
+
+				throw new StringResponse(req);
 			})
 			.command('set', 'Returns a store json data object')
 			.option('-o,--object <string>', 'Object key to set')
@@ -25,7 +28,12 @@ export class StoredObjectService {
 			.action((args) => {
 				const objPath = path.join(home ? home : './', 'Lethean', 'data', 'objects', args.group, args.object + '.json');
 				ensureDirSync(path.join(home ? home : './', 'Lethean', 'data', 'objects', args.group));
-				Deno.writeTextFileSync(objPath, args.data);
+
+				const textDecoder = new TextDecoder('utf-8');
+				const decodedValue = textDecoder.decode(base64Decode(args.data));
+
+				Deno.writeTextFileSync(objPath, decodedValue);
+
 				throw new StringResponse("saved");
 			})
 			.command('remove', 'Remove an object from storage')

@@ -100,18 +100,22 @@ export class FilesystemService {
           const encodedValue = base64Encode(textEncoder.encode(req));
           throw new StringResponse(encodedValue);
         }
+        // throw to console
+        throw new StringResponse(req);
       })
       .command("write", "Write a file")
       .option("--path <string>", "File path to read")
       .option("--data <string>", "File data to save")
       .action((args) => {
-        const textDecoder = new TextDecoder('utf-8');
-
-        const decodedValue = textDecoder.decode(base64Decode(args.data));
-        const req = FilesystemService.write(args.path, decodedValue);
+        let data = args.data
         if (Deno.env.get("REST")) {
-          throw new StringResponse(req);
+          const textDecoder = new TextDecoder('utf-8');
+
+          data = textDecoder.decode(base64Decode(data));
         }
+         FilesystemService.write(args.path, data);
+
+        throw new StringResponse('1')
       });
   }
 }

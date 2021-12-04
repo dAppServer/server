@@ -1,6 +1,7 @@
 import {WebSocketClient, WebSocketServer} from 'https://deno.land/x/websocket@v0.1.3/mod.ts';
 import {Sub} from 'https://deno.land/x/jszmq/mod.ts';
 import {ZeroMQServer} from '../ipc/zeromq.ts';
+import {encode as base64Encode} from 'https://deno.land/std@0.82.0/encoding/base64.ts';
 
 export interface WebSocketMessageRequest{
 	daemon:string
@@ -22,7 +23,7 @@ export class WebsocketServer {
 		wss.on('connection', function (ws: WebSocketClient) {
 			ws.on('message', function (daemon: string) {
 				daemon = daemon.replace(/"/g, '');
-				console.log(daemon)
+				//console.log(daemon)
 				if(daemon.substr(0,6) === 'daemon'){
 					const req = daemon.split(':');
 					console.log(`Subscribing to ${req[1]}`);
@@ -33,7 +34,8 @@ export class WebsocketServer {
 					console.log('Subscriber connected to port 36910/pub');
 					const wsClient = ws;
 					sock.on('message', function (endpoint, topic, message) {
-						wsClient.send(JSON.stringify([req[1], message.toString()]));
+						const textEncoder = new TextEncoder();
+						wsClient.send(JSON.stringify([req[1], base64Encode(textEncoder.encode(message.toString()))]));
 					});
 				}else if (daemon.substr(0,3) === 'cmd'){
 					const req = daemon.split(':');
