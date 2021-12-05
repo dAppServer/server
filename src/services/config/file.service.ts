@@ -8,6 +8,16 @@ import {StringResponse} from '../../interfaces/string-response.ts';
 
 export class ConfigFileService {
 
+	public static async loadFile(args: {file: string, model:any}) {
+		const homeDir = os.homeDir();
+		const model = {
+			...args.model, // user data
+			dir: path.join(homeDir ? homeDir : './', 'Lethean', 'conf')
+		}
+		const file = await renderFile(path.join(homeDir ? homeDir : './', 'Lethean', 'conf', 'templates', args.file), model)
+		return file;
+	}
+
 	public static config() {
 		const home = os.homeDir();
 
@@ -16,14 +26,9 @@ export class ConfigFileService {
 			.command('get', 'Gets a file with fresh configuration')
 			.option('-f,--file <string>', 'Specify configuration file')
 			.action(async (args) => {
-				const homeDir = os.homeDir();
-				const model = {
-					dir: path.join(homeDir ? homeDir : './', 'Lethean', 'conf')
-				}
-				const file = await renderFile(path.join(homeDir ? homeDir : './', 'Lethean', 'conf', 'templates', args.file), model)
 
 				//if (Deno.env.get('REST')) {
-				throw new StringResponse(file);
+//				throw new StringResponse(ConfigFileService.loadFile(args));
 				//}
 			})
 	}

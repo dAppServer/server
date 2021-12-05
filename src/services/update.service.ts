@@ -1,12 +1,9 @@
-import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
 import os from 'https://deno.land/x/dos@v0.11.0/mod.ts';
 import {Destination, download} from 'https://deno.land/x/download/mod.ts';
 import {unZipFromFile} from 'https://deno.land/x/zip@v1.1.0/mod.ts';
 import * as path from 'https://deno.land/std/path/mod.ts';
 import {copy} from 'https://deno.land/std@0.95.0/fs/mod.ts';
 
-import {GithubProvider, UpgradeCommand} from 'https://deno.land/x/cliffy/command/upgrade/mod.ts';
-import {StringResponse} from '../interfaces/string-response.ts';
 import {ZeroMQServer} from './ipc/zeromq.ts';
 
 export class LetheanUpdater {
@@ -107,28 +104,4 @@ export class LetheanUpdater {
     return "done";
   }
 
-  public static config() {
-    return new Command().description("Lethean Updater Service")
-        .command(
-            "lthn",
-            new UpgradeCommand({
-              main: "src/server.ts",
-              args: ["--version", "main"],
-              provider: [
-                new GithubProvider({
-                  repository: "letheanVPN/lthn"
-                }),
-              ],
-            }),
-        )
-        .description("Update lthn")
-        .command("cli", "Downloads the latest CLI binaries")
-        .action(async (args) => {
-          await LetheanUpdater.download(args).then((dat) => {
-            if (Deno.env.get("REST")) {
-              throw new StringResponse(dat);
-            }
-          });
-        });
-  }
 }
