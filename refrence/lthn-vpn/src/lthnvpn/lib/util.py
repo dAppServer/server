@@ -1,19 +1,15 @@
 import time
 import json
-import config
 import logging
-import log
 import logging.config
-import services
 import sys
-from service_ha import ServiceHa
-from service_ovpn import ServiceOvpn
 import socket
 import ipaddress
 import hashlib
 import base64
 import re
 import dns.resolver
+from lthnvpn.lib import config, log, services
 
 def timefmt(tme):
     return(time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(tme)))
@@ -77,9 +73,11 @@ def helpmsg(p):
     if (config.Config.VERBOSE):
         print(p.format_values())
         print('Service options (can be set by [service-id] sections in ini file:')
-        ha = ServiceHa("00")
+        #ha = ServiceHa("00")
+        print("Help yourself for now")
         ha.helpOpts("==Haproxy==")
-        ovpn = ServiceOvpn("00")
+        #ovpn = ServiceOvpn("00")
+        print("Help yourself for now")
         ovpn.helpOpts("==OpenVPN==")
         print('Use log level DEBUG during startup to see values assigned to services from SDP.')
         print()
@@ -131,15 +129,12 @@ def parseCommonArgs(parser, cfg, name):
     if (cfg.lc):
         logging.config.fileConfig(cfg.lc)
         log.L = log.Log(level=cfg.d, name=name)
-        log.A = log.Audit(level=logging.WARNING)
     elif (cfg.syslog):
         h = logging.handlers.SysLogHandler(address="/dev/log")
         log.L = log.Log(level=cfg.d, name=name, handler=h)
-        log.A = log.Audit(handler=h)
     else:
         ah = logging.FileHandler(cfg.a)
         log.L = log.Log(level=cfg.d, name=name)
-        log.A = log.Audit(handler=ah)
     config.Config.VERBOSE = cfg.v
     config.Config.CONFIGFILE = cfg.config
     config.Config.SDPFILE = cfg.sdp
