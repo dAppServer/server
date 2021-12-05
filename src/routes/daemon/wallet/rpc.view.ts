@@ -1,21 +1,21 @@
 import os from 'https://deno.land/x/dos@v0.11.0/mod.ts';
 import * as path from 'https://deno.land/std/path/mod.ts';
 import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
-import {StringResponse} from '../../interfaces/string-response.ts';
-import {LetheanWalletVpnRpc} from './lethean-wallet-vpn-rpc.ts';
-import {LetheanWalletCli} from './lethean-wallet-cli.ts';
-import {ProcessManager} from '../../services/process/process.service.ts';
-import {ProcessManagerRequest} from '../../services/process/processManagerRequest.ts';
+import {StringResponse} from '../../../interfaces/string-response.ts';
+import {ProcessManager} from '../../../services/process/process.service.ts';
+import {ProcessManagerRequest} from '../../../services/process/processManagerRequest.ts';
+import {RouteDaemonWalletCli} from './cli.view.ts';
+import {DaemonChainWalletVpnRpcView} from './vpn-rpc.view.ts';
 
 
-export class LetheanWalletRpc {
+export class RouteDaemonWalletRpc {
 
   public static config() {
     const home = os.homeDir();
 
     return new Command()
-      .command('cli', LetheanWalletCli.config())
-      .command('vpn', LetheanWalletVpnRpc.config())
+      .command('cli', RouteDaemonWalletCli.config())
+      .command('vpn', DaemonChainWalletVpnRpcView.config())
       .command('rpc')
       .description('Wallet RPC')
       .option('--daemon-address <string>', 'Use daemon instance at <host>:<port>')
