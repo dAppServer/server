@@ -42,6 +42,11 @@ export class FilesystemService {
   /**
    * Read a file from the Lethean folder
    *
+   * @openapi
+   * /filesystem/write:
+   * post:
+   *    description: Reads a file from the filesystem
+   *
    * @param args {path:string} relative path
    * @returns {string}
    */

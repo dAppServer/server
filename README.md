@@ -70,6 +70,20 @@ You can access the input/output from ws://localhost:36909
 - `lthn filesystem list --path=~/Lethean/(path is relative from here)`
 - `lthn filesystem path --convert=(OS Aware path is returned)`
 
+### Install VPN
+
+Executables
+
+- lthnvpnc
+- lthnvpnd
+- lvmgmt
+```shell
+cd refrence/lthn-vpn
+pip install .
+```
+
+Uninstall:  `pip uninstall lethean-vpn`
+
 ### One line installer
 * Mac/Linux
 
