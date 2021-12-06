@@ -1,7 +1,17 @@
-import {LetheanCli} from './src/lethean-cli.ts';
-// @todo adds stdin/tcp detection for rest mapping
-await LetheanCli.init();
+const swaggerJsdoc = require('swagger-jsdoc');
+const fs = require("fs");
 
+const options = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Lethean Clientside API',
+            version: '1.0.0',
+        },
+    },
+    apis: ['./src/**/*.ts'], // files containing annotations as above
+};
 
+const openapiSpecification = swaggerJsdoc(options);
 
-console.log(LetheanCli.options.commands)
+fs.writeFileSync('openapi.json', JSON.stringify(openapiSpecification))

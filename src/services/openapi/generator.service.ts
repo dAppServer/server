@@ -1,64 +1,98 @@
-import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
-import * as path from 'https://deno.land/std/path/mod.ts';
-import {StringResponse} from '../interfaces/string-response.ts';
+import {LetheanCli} from '../../lethean-cli.ts';
+import {RestService} from '../../services/tcp/rest.service.ts';
 
-import {
-
-  decode as base64Decode,
-
-  encode as base64Encode,
-
-} from 'https://deno.land/std@0.82.0/encoding/base64.ts';
-
-
-
-export { base64Decode, base64Encode };
 export class OpenAPIGeneratorService {
 
-  public static config() {
-    return new Command().description("OpenAPI Tools")
-      .command("list", "List entities in path")
-      .option("--path <string>", "File path to view")
-      .action((args) => {
-        const req = FilesystemService.list(args);
-        if (Deno.env.get("REST")) {
-          throw new StringResponse(req);
-        }
-      })
-      .command("path", "Returns correct")
-      .option("--convert <string>", "File path to convert")
-      .action((args) => {
-        const req = FilesystemService.path(args.convert);
-        if (Deno.env.get("REST")) {
-          throw new StringResponse(req);
-        }
-      })
-      .command("read", "Returns file")
-      .option("--path <string>", "File path to read")
-      .action((args) => {
-        const req = FilesystemService.read(args);
-        if (Deno.env.get("REST")) {
-          const textEncoder = new TextEncoder();
+	public static openapi: any = {
+		openapi: '3.0.0',
+		info: {
+			title: 'Lethean Clientside API',
+			version: '1.0.0'
+		},
+		servers: [
+			{
+				url: "https://localhost:36911",
+				description: "Lethean Clientside Service"
+			}
+		],
 
-          const encodedValue = base64Encode(textEncoder.encode(req));
-          throw new StringResponse(encodedValue);
-        }
-        // throw to console
-        throw new StringResponse(req);
-      })
-      .command("write", "Write a file")
-      .option("--path <string>", "File path to read")
-      .option("--data <string>", "File data to save")
-      .action((args) => {
-        let data = args.data
-        if (Deno.env.get("REST")) {
-          const textDecoder = new TextDecoder('utf-8');
+		paths: {},
+	};
 
-          data = textDecoder.decode(base64Decode(data));
-        }
-         FilesystemService.write(args.path, data);
+	/**
+	 * servers:
+	 *   - url: http://api.example.com/v1
+	 *     description: Optional server description, e.g. Main (production) server
+	 *   - url: http://staging-api.example.com
+	 *     description: Optional server description, e.g. Internal staging server for testing
+	 * @param args
+	 * @returns {any}
+	 */
+	public static createOpenApiSpec(args: any) {
 
-        throw new StringResponse('1')
-      });
-  }
+
+		OpenAPIGeneratorService.discoverRoute('', LetheanCli.options.commands);
+
+		return OpenAPIGeneratorService.openapi;
+	}
+
+	static discoverRoute(base: string, routes: any) {
+		for (const dat of routes) {
+			const key = dat[0], value = dat[1];
+			if (
+				RestService.pathPerms[key] === undefined ||
+				RestService.pathPerms[key] !== false
+			) {
+				//console.log(`Adding route: ${[base, key].join('/')}`);
+				const pathKey = [base, key].join('/');
+//console.log(value.options)
+				const pathOptions:any ={};
+
+				for(const opt of value.options){
+					//console.log(opt)
+
+					const name = opt.name.replace(/(-[a-z])/g, (x: string) => '' + x.replace('-','').toUpperCase())
+					pathOptions[name] = {
+						//@ts-ignore
+						description: opt.description
+					}
+				}
+				console.log(pathOptions)
+				this.openapi.paths[pathKey] = {
+					get: {
+						description: "HTML Help Page",
+						responses: {
+							200: {
+								description: "HTML Help Page"
+							}
+						}
+					},
+					post: {
+						description: value.desc,
+						requestBody: {
+							required: true,
+							content: {
+								"application/json": {
+									schema: {
+										type: 'string'
+									}
+								}
+							}
+						},
+						responses: {
+							200: {
+								description: "OK"
+							}
+						}
+					}
+				}
+				//this.addRoute([base, key].join('/'), value);
+				if (value.commands) {
+					this.discoverRoute([base, key].join('/'), value.commands);
+				}
+
+			}
+		}
+	}
+
 }

@@ -2,7 +2,6 @@ import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
 import {CompletionsCommand} from 'https://deno.land/x/cliffy/command/completions/mod.ts';
 import {HelpCommand} from 'https://deno.land/x/cliffy/command/help/mod.ts';
 import {RestService} from './services/tcp/rest.service.ts';
-import {ConfigFileService} from './services/config/file.service.ts';
 import { RouteFilesystem} from './routes/filesystem.view.ts';
 import {RouteUpdate} from './routes/update.view.ts';
 import {RouteObject} from './routes/object.view.ts';
@@ -10,6 +9,7 @@ import {RouteDaemonChainStart} from './routes/daemon/chain/start.view.ts';
 import {RouteDaemonChainExport} from './routes/daemon/chain/export.view.ts';
 import {RouteDaemonChainImport} from './routes/daemon/chain/import.view.ts';
 import {RouteDaemonWalletRpc} from './routes/daemon/wallet/rpc.view.ts';
+import {RouteConfig} from './routes/config.view.ts';
 
 export class LetheanCli {
 
@@ -33,7 +33,7 @@ export class LetheanCli {
       .command("update", RouteUpdate.config())
       .command("backend", RestService.config())
       .command("filesystem", RouteFilesystem.config())
-      .command("config", ConfigFileService.config())
+      .command("config", RouteConfig.config())
       .command("object", RouteObject.config())
      // .command("account", LetheanAccount.config())
       //			.command("vpn",

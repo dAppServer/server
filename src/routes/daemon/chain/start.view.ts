@@ -13,7 +13,6 @@ export class RouteDaemonChainStart {
 
 		return new Command()
 			.description('Blockchain Functions')
-			.command('start', 'Start chain daemon')
 			.option('--config-file <string>', 'Specify configuration file')
 			.option('--detach', 'Run as daemon')
 			.option('--pidfile <string>', 'File path to write the daemon\'s PID to (optional, requires --detach)')
