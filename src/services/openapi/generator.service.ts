@@ -54,19 +54,12 @@ export class OpenAPIGeneratorService {
 					const name = opt.name.replace(/(-[a-z])/g, (x: string) => '' + x.replace('-','').toUpperCase())
 					pathOptions[name] = {
 						//@ts-ignore
-						description: opt.description
+						description: opt.description,
+						type: opt.args[0] ? opt.args[0].type : 'boolean'
 					}
 				}
-				console.log(pathOptions)
+				//console.log(pathOptions)
 				this.openapi.paths[pathKey] = {
-					get: {
-						description: "HTML Help Page",
-						responses: {
-							200: {
-								description: "HTML Help Page"
-							}
-						}
-					},
 					post: {
 						description: value.desc,
 						requestBody: {
@@ -74,7 +67,10 @@ export class OpenAPIGeneratorService {
 							content: {
 								"application/json": {
 									schema: {
-										type: 'string'
+										type: 'object',
+										properties: {
+											...pathOptions
+										}
 									}
 								}
 							}

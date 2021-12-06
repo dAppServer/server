@@ -35,7 +35,7 @@
     "ci:windows": "%HOME%\\\\.deno\\\\bin\\\\deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output ../build/cli/lthn --target x86_64-pc-windows-msvc src/server.ts",
     "lint": "eslint 'src/**/*.{ts,html,scss}' --cache",
     "test": "deno test --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/ ",
-    "sdk:angular": "openapi-generator generate -i openapi.json -g typescript-angular -o api"
+    "sdk:angular": "openapi-generator generate -i openapi.json -g typescript-angular -o build/api"
   },
   "dependencies": {
     "ansi_up": "^5.1.0",
