@@ -89,23 +89,6 @@ export class RouteDaemonChainStart {
 				if (Deno.env.get('REST')) {
 					throw new StringResponse('Started');
 				}
-			})
-			.command('json_rpc')
-			.description('Talk to the Daemon RPC via the json_rpc endpoint')
-			.option('-r,--request <string>', 'payload to send')
-			.action(async (args) => {
-				//console.log(args.request.slice(1, args.request.length-1))
-				const postReq = await fetch('http://localhost:48782/json_rpc', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: args.request.slice(1, args.request.length-1),
-				})
-				// console.log(await postReq.text())
-				if (Deno.env.get('REST')) {
-					throw new StringResponse(await postReq.text());
-				}
 			});
 	}
 }

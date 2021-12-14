@@ -79,8 +79,11 @@ export class RestService {
 			const cmdArgs = req.url.replace('/', '').split('/');
 
 			const payload = await req.json();
-			console.log(payload)
-			if(payload['jsonrpc']){
+
+			if(payload['jsonpath']){
+				cmdArgs.push(`--jsonpath="${payload['jsonpath']}"`)
+				cmdArgs.push(`--request="${JSON.stringify(payload['request'])}"`)
+			}else if(payload['jsonrpc']){
 				cmdArgs.push(`--request="${JSON.stringify(payload)}"`)
 			}else{
 				for (const key in payload) {
