@@ -1,0 +1,103 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# This workflow will install Deno then run Deno lint and test.
+# For more information see: https://github.com/denoland/setup-deno
+
+name: lthn Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-unknown-linux-gnu src/server.ts
+      - uses: actions/upload-artifact@v2
+        with:
+          name: linux
+          path: build/lthn
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest-linux-amd64"
+          prerelease: true
+          title: "Linux amd64"
+          files: |
+            LICENCE
+            build/lthn
+  windows:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-pc-windows-msvc src/server.ts
+      - uses: actions/upload-artifact@v2
+        with:
+          name: windows
+          path: build/lthn.exe
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest-windows-64"
+          prerelease: true
+          title: "Windows 64"
+          files: |
+            LICENCE
+            build/lthn.exe
+
+  macos-intel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-apple-darwin src/server.ts
+      - uses: actions/upload-artifact@v2
+        with:
+          name: macos-intel
+          path: build/lthn
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest-macos-intel"
+          prerelease: true
+          title: "MacOS Intel"
+          files: |
+            LICENCE
+            build/lthn
+
+  macos-arm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target aarch64-apple-darwin src/server.ts
+      - uses: actions/upload-artifact@v2
+        with:
+          name: macos-m1
+          path: build/lthn
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest-macos-arm"
+          prerelease: true
+          title: "MacOS ARM"
+          files: |
+            LICENCE
+            build/lthn

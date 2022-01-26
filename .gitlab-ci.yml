@@ -1,0 +1,60 @@
+build:
+  stage: build
+  script:
+    - echo "appy days"
+
+linux:
+  stage: build
+  image: node:16-bullseye-slim
+  before_script:
+    - apt update && apt install -y curl unzip
+    - curl -fsSL https://deno.land/x/install/install.sh | sh
+  script:
+    - npm run server:build:linux
+    - cp build/lthn lthn
+  artifacts:
+    name: linux
+    paths:
+      - lthn
+
+macos-arm64:
+  stage: build
+  image: node:16-bullseye-slim
+  before_script:
+    - apt update && apt install -y curl unzip
+    - curl -fsSL https://deno.land/x/install/install.sh | sh
+  script:
+    - npm run server:build:macos-arm
+    - cp build/lthn lthn
+  artifacts:
+    name: macos-arm
+    paths:
+      - lthn
+
+macos-intel:
+  stage: build
+  image: node:16-bullseye-slim
+  before_script:
+    - apt update && apt install -y curl unzip
+    - curl -fsSL https://deno.land/x/install/install.sh | sh
+  script:
+    - npm run server:build:macos-intel
+    - cp build/lthn lthn
+  artifacts:
+    name: macos-intel
+    paths:
+      - lthn
+
+windows:
+  stage: build
+  image: node:16-bullseye-slim
+  before_script:
+    - apt update && apt install -y curl unzip
+    - curl -fsSL https://deno.land/x/install/install.sh | sh
+  script:
+    - npm run release:windows
+    - cp build/lthn.exe lthn.exe
+  artifacts:
+    name: windows
+    paths:
+      - lthn.exe
