@@ -27,15 +27,15 @@ jobs:
         with:
           name: linux
           path: build/lthn
-      - uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest-linux-amd64"
-          prerelease: true
-          title: "Linux amd64"
-          files: |
-            LICENCE
-            build/lthn
+#      - uses: marvinpinto/action-automatic-releases@latest
+#        with:
+#          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+#          automatic_release_tag: "latest-linux-amd64"
+#          prerelease: true
+#          title: "Linux amd64"
+#          files: |
+#            LICENCE
+#            build/lthn
   windows:
     runs-on: ubuntu-latest
     steps:
@@ -48,15 +48,15 @@ jobs:
         with:
           name: windows
           path: build/lthn.exe
-      - uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest-windows-64"
-          prerelease: true
-          title: "Windows 64"
-          files: |
-            LICENCE
-            build/lthn.exe
+#      - uses: marvinpinto/action-automatic-releases@latest
+#        with:
+#          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+#          automatic_release_tag: "latest-windows-64"
+#          prerelease: true
+#          title: "Windows 64"
+#          files: |
+#            LICENCE
+#            build/lthn.exe
 
   macos-intel:
     runs-on: ubuntu-latest
@@ -70,15 +70,15 @@ jobs:
         with:
           name: macos-intel
           path: build/lthn
-      - uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest-macos-intel"
-          prerelease: true
-          title: "MacOS Intel"
-          files: |
-            LICENCE
-            build/lthn
+#      - uses: marvinpinto/action-automatic-releases@latest
+#        with:
+#          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+#          automatic_release_tag: "latest-macos-intel"
+#          prerelease: true
+#          title: "MacOS Intel"
+#          files: |
+#            LICENCE
+#            build/lthn
 
   macos-arm:
     runs-on: ubuntu-latest
@@ -92,12 +92,12 @@ jobs:
         with:
           name: macos-m1
           path: build/lthn
-      - uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest-macos-arm"
-          prerelease: true
-          title: "MacOS ARM"
-          files: |
-            LICENCE
-            build/lthn
+#      - uses: marvinpinto/action-automatic-releases@latest
+#        with:
+#          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+#          automatic_release_tag: "latest-macos-arm"
+#          prerelease: true
+#          title: "MacOS ARM"
+#          files: |
+#            LICENCE
+#            build/lthn
