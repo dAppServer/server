@@ -2,14 +2,8 @@
 
 https://hub.docker.com/r/lthn/server
 
-## Multi-arch image
-
-- linux/amd64
-- linux/arm64
-- linux/ppc64le
-- linux/s390x
-
 `docker pull lthn/server:latest`
+
 
 ## Config File DB
 
