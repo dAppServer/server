@@ -1,4 +1,19 @@
-# Lethean Unified Command Line & Rest API
+# Lethean Server
+
+https://hub.docker.com/r/lthn/server
+
+## Multi-arch image
+
+- linux/amd64
+- linux/arm64
+- linux/ppc64le
+- linux/s390x
+
+`docker pull lthn/server:latest`
+
+
+
+--- move below to documentation / remove not relavant parts ---
 
 Welcome to the magic part of the Lethean App, a client side restful TLS API, written in TypeScript and Rust.
 
