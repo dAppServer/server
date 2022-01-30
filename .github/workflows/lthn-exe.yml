@@ -6,13 +6,23 @@
 # This workflow will install Deno then run Deno lint and test.
 # For more information see: https://github.com/denoland/setup-deno
 
-name: lthn Build
+name: lthn.exe
 
 on:
   push:
-    branches: [main]
+    branches:
+      - 'main'
+      - 'v*'
+    tags:
+      - 'v*'
+    paths-ignore:
+      - '**.md'
   pull_request:
-    branches: [main]
+    branches:
+      - 'main'
+      - 'v*'
+    paths-ignore:
+      - '**.md'
 
 jobs:
   linux:
@@ -22,8 +32,10 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-unknown-linux-gnu src/server.ts
-      - uses: actions/upload-artifact@v2
+      - if: success() && github.event_name != 'pull_request' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/'))
+        run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-unknown-linux-gnu src/server.ts
+      - if: success() && github.event_name != 'pull_request' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/'))
+        uses: actions/upload-artifact@v2
         with:
           name: linux
           path: build/lthn
@@ -43,7 +55,8 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-pc-windows-msvc src/server.ts
+      - if: success() && github.event_name != 'pull_request' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/'))
+        run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-pc-windows-msvc src/server.ts
       - uses: actions/upload-artifact@v2
         with:
           name: windows
@@ -65,7 +78,8 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-apple-darwin src/server.ts
+      - if: success() && github.event_name != 'pull_request' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/'))
+        run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-apple-darwin src/server.ts
       - uses: actions/upload-artifact@v2
         with:
           name: macos-intel
@@ -87,7 +101,8 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target aarch64-apple-darwin src/server.ts
+      - if: success() && github.event_name != 'pull_request' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/'))
+        run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target aarch64-apple-darwin src/server.ts
       - uses: actions/upload-artifact@v2
         with:
           name: macos-m1
