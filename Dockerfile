@@ -1,6 +1,8 @@
 FROM debian:bullseye as base
+# Tell Debian we have no user to answer questions
+ENV DEBIAN_FRONTEND=noninteractive
 # Setup base image
-RUN apt-get update && apt-get upgrade
+RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get install -y make build-essential git curl wget joe less haproxy openvpn squid net-tools stunnel pwgen unzip
 
