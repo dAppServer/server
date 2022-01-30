@@ -11,7 +11,11 @@ https://hub.docker.com/r/lthn/server
 
 `docker pull lthn/server:latest`
 
+## Config File DB
 
+We maintain a configuration file repository that is processed via a templating engine so create dynamic configuration file; feel free to add ANY OS configurations
+
+https://github.com/letheanVPN/config-templates
 
 --- move below to documentation / remove not relavant parts ---
 
