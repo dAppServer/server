@@ -1,10 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Build" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+  <configuration default="false" name="Build VPN" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
     <deployment type="dockerfile">
       <settings>
+        <option name="imageTag" value="lthn/server" />
         <option name="buildKitEnabled" value="true" />
         <option name="containerName" value="lethean-server" />
-        <option name="sourceFilePath" value="Dockerfile" />
+        <option name="sourceFilePath" value="./src/Dockerfile" />
       </settings>
     </deployment>
     <method v="2" />
