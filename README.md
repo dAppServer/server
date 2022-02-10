@@ -21,7 +21,7 @@ To fire up a development server run the below and visit: https://localhost:36911
 
 ```shell
 npm install
-# Replace 'lthn' with 'npm run dev' for examples below
+# Replace 'lethean-server' with 'npm run dev' for examples below
 npm run dev backend start
 ```
 
@@ -71,17 +71,17 @@ You can access the input/output from ws://localhost:36909
 
 ### Commands (in dev mode)
 
-- `lthn update cli`
-- `lthn daemon chain start`
-- `lthn daemon chain import`
-- `lthn daemon chain export`
-- `lthn daemon wallet cli`
-- `lthn daemon wallet rpc`
-- `lthn daemon wallet vpn`
-- `lthn filesystem read --path=~/Lethean/(path is relative from here)`
-- `lthn filesystem write --path=~/Lethean/(path is relative from here)`
-- `lthn filesystem list --path=~/Lethean/(path is relative from here)`
-- `lthn filesystem path --convert=(OS Aware path is returned)`
+- `lethean-server update cli`
+- `lethean-server daemon chain start`
+- `lethean-server daemon chain import`
+- `lethean-server daemon chain export`
+- `lethean-server daemon wallet cli`
+- `lethean-server daemon wallet rpc`
+- `lethean-server daemon wallet vpn`
+- `lethean-server filesystem read --path=~/Lethean/(path is relative from here)`
+- `lethean-server filesystem write --path=~/Lethean/(path is relative from here)`
+- `lethean-server filesystem list --path=~/Lethean/(path is relative from here)`
+- `lethean-server filesystem path --convert=(OS Aware path is returned)`
 
 ### Install VPN
 
@@ -101,15 +101,15 @@ Uninstall:  `pip uninstall lethean-vpn`
 * Mac/Linux
 
 ```shell
-curl -fsSL https://raw.githubusercontent.com/letheanVPN/lthn/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/letheanVPN/lethean-server/main/install.sh | sh
 ```
 
 * Windows Powershell
 
 ```shell
-iwr https://raw.githubusercontent.com/letheanVPN/lthn/main/install.ps1 -useb | iex
+iwr https://raw.githubusercontent.com/letheanVPN/lethean-server/main/install.ps1 -useb | iex
 ```
 
 The CLI install will give you the $PATH variable to add
 
-- `lthn --help` or for windows `lthn.exe --help`
+- `lethean-server --help` or for windows `lethean-server.exe --help`
