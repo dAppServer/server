@@ -6,7 +6,7 @@
 # This workflow will install Deno then run Deno lint and test.
 # For more information see: https://github.com/denoland/setup-deno
 
-name: lthn.exe
+name: lethean-server
 
 on:
   push:
@@ -33,12 +33,12 @@ jobs:
         with:
           deno-version: v1.x
       - if: success() && github.event_name != 'pull_request' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/'))
-        run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-unknown-linux-gnu src/server.ts
+        run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lethean-server --target x86_64-unknown-linux-gnu src/server.ts
       - if: success() && github.event_name != 'pull_request' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/'))
         uses: actions/upload-artifact@v2
         with:
           name: linux
-          path: build/lthn
+          path: build/lethean-server
 #      - uses: marvinpinto/action-automatic-releases@latest
 #        with:
 #          repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -56,11 +56,11 @@ jobs:
         with:
           deno-version: v1.x
       - if: success() && github.event_name != 'pull_request' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/'))
-        run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-pc-windows-msvc src/server.ts
+        run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lethean-server --target x86_64-pc-windows-msvc src/server.ts
       - uses: actions/upload-artifact@v2
         with:
           name: windows
-          path: build/lthn.exe
+          path: build/lethean-server.exe
 #      - uses: marvinpinto/action-automatic-releases@latest
 #        with:
 #          repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -79,11 +79,11 @@ jobs:
         with:
           deno-version: v1.x
       - if: success() && github.event_name != 'pull_request' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/'))
-        run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target x86_64-apple-darwin src/server.ts
+        run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lethean-server --target x86_64-apple-darwin src/server.ts
       - uses: actions/upload-artifact@v2
         with:
           name: macos-intel
-          path: build/lthn
+          path: build/lethean-server
 #      - uses: marvinpinto/action-automatic-releases@latest
 #        with:
 #          repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -102,11 +102,11 @@ jobs:
         with:
           deno-version: v1.x
       - if: success() && github.event_name != 'pull_request' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/'))
-        run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lthn --target aarch64-apple-darwin src/server.ts
+        run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lethean-server --target aarch64-apple-darwin src/server.ts
       - uses: actions/upload-artifact@v2
         with:
           name: macos-m1
-          path: build/lthn
+          path: build/lethean-server
 #      - uses: marvinpinto/action-automatic-releases@latest
 #        with:
 #          repo_token: "${{ secrets.GITHUB_TOKEN }}"
