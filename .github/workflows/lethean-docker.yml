@@ -1,4 +1,4 @@
-name: VPN Images
+name: lthn/server
 on:
   push:
     branches:
