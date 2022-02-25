@@ -18,7 +18,7 @@
     "dev": "deno run --watch --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/server.ts",
     "dev:setup": "cd $HOME/Lethean/conf && git clone https://github.com/letheanVPN/config-templates.git templates",
     "start": "deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/server.ts backend start",
-    "server:compile": "deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output ../build/cli/lethean-server --target  ",
+    "server:compile": "deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lethean-server --target  ",
     "server:build:linux": "npm run server:compile -- x86_64-unknown-linux-gnu src/server.ts",
     "server:build:macos-intel": "npm run server:compile -- x86_64-apple-darwin src/server.ts",
     "server:build:macos-arm": "npm run server:compile -- aarch64-apple-darwin src/server.ts",
