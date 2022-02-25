@@ -165,12 +165,12 @@ export class RestService {
 // 'content-type': 'application/x-www-form-urlencoded, text/plain, application/json',
 //						'Access-Control-Allow-Origin': 'https://localhost'
 
-		if (existsSync(path.join(RestService.home, 'Lethean', 'conf', 'private.pem'))) {
-			console.log(`Localhost SSL Found: ${path.join(RestService.home, 'Lethean', 'conf', 'private.pem')}`);
-		} else {
-			console.log('No localhost ssl cert found, injecting a pre made one so we can start a tls server and fix this');
-			RestService.injectPem();
-		}
+		// if (existsSync(path.join(RestService.home, 'Lethean', 'conf', 'private.pem'))) {
+		// 	console.log(`Localhost SSL Found: ${path.join(RestService.home, 'Lethean', 'conf', 'private.pem')}`);
+		// } else {
+		// 	console.log('No localhost ssl cert found, injecting a pre made one so we can start a tls server and fix this');
+		// 	RestService.injectPem();
+		// }
 
 		this.app.listen({
 			'hostname': 'localhost',
