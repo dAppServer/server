@@ -9,18 +9,18 @@ import {ProcessManagerRequest} from '../../../services/process/processManagerReq
 export class RouteDaemonChainStart {
 
 	public static config() {
-		const home = os.homeDir();
+		const home = Deno.cwd();
 
 		return new Command()
 			.description('Blockchain Functions')
 			.option('--config-file <string>', 'Specify configuration file')
 			.option('--detach', 'Run as daemon')
 			.option('--pidfile <string>', 'File path to write the daemon\'s PID to (optional, requires --detach)')
-			.option('--non-interactive', 'Run non-interactive', {default: true})
-			.option('--log-file <string>', 'Specify log file')
-			.option('--log-level <number>', '1-4')
+			.option('--non-interactive', 'Run non-interactive')
+			.option('--log-file <string>', 'Specify log file', {default: path.join(home ? home : '/', 'data', 'logs')})
+			.option('--log-level <number>', '1-4', {default: 1})
 			.option('--max-concurrency <number>', 'Max number of threads to use for a parallel job')
-			.option('--data-dir <string>', 'Specify data directory', {default: path.join(home ? home : '/', 'Lethean', 'data')})
+			.option('--data-dir <string>', 'Specify data directory', {default: path.join(home ? home : '/','data')})
 			.option('--testnet-data-dir <string>', 'Specify testnet data directory')
 			.option('--test-drop-download', 'For net tests: in download, discard ALL blocks instead checking/saving them (very fast)')
 			.option('--test-drop-download-height <number>', 'Like test-drop-download but disards only after around certain height')
@@ -69,13 +69,13 @@ export class RouteDaemonChainStart {
 			.option('--rpc-login <string>', 'Specify username[:password] required for RPC server')
 			.option('--confirm-external-bind', 'Confirm rpc-bind-ip value is NOT a loopback (local) IP')
 			.action((args) => {
-				const homeDir = os.homeDir();
+				const homeDir = Deno.cwd();
 
 				const exeFile =
 					'letheand' + (os.platform() === 'windows' ? '.exe' : '');
 
 				ProcessManager.run(
-					path.join(homeDir ? homeDir : './', 'Lethean', 'cli', exeFile),
+					path.join(homeDir ? homeDir : './', 'cli', exeFile),
 					args,
 					{
 						key: exeFile,
