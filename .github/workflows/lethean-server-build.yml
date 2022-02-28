@@ -25,16 +25,16 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.18.x
-      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lethean-server --target x86_64-unknown-linux-gnu src/server.ts
+      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/linux-lethean-server --target x86_64-unknown-linux-gnu src/server.ts
       - uses: actions/upload-artifact@v2
         with:
           name: linux
-          path: build/lethean-server
+          path: build/linux-lethean-server
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: build/lethean-server
+          files: build/linux-lethean-server
   windows:
     runs-on: ubuntu-latest
     steps:
@@ -42,16 +42,16 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.18.x
-      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lethean-server --target x86_64-pc-windows-msvc src/server.ts
+      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/windows-lethean-server --target x86_64-pc-windows-msvc src/server.ts
       - uses: actions/upload-artifact@v2
         with:
           name: windows
-          path: build/lethean-server.exe
+          path: build/windows-lethean-server.exe
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: build/lethean-server.exe
+          files: build/windows-lethean-server.exe
 
   macos-intel:
     runs-on: ubuntu-latest
@@ -60,16 +60,16 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.18.x
-      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lethean-server --target x86_64-apple-darwin src/server.ts
+      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/macos-lethean-server --target x86_64-apple-darwin src/server.ts
       - uses: actions/upload-artifact@v2
         with:
           name: macos-intel
-          path: build/lethean-server
+          path: build/macos-lethean-server
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: build/lethean-server
+          files: build/macos-lethean-server
 
   macos-arm:
     runs-on: ubuntu-latest
@@ -78,13 +78,13 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.18.x
-      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/lethean-server --target aarch64-apple-darwin src/server.ts
+      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/macos-m1-lethean-server --target aarch64-apple-darwin src/server.ts
       - uses: actions/upload-artifact@v2
         with:
           name: macos-m1
-          path: build/lethean-server
+          path: build/macos-m1-lethean-server
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: build/lethean-server
+          files: build/macos-m1-lethean-server
