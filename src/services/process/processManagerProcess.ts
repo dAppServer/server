@@ -42,7 +42,7 @@ export class ProcessManagerProcess extends EventEmitter {
 		}
 		// check if we have a stdIn
 		if (this.request.stdErr) {
-			processArgs['stderr'] = 'piped';
+		//	processArgs['stderr'] = 'piped';
 		}
 		console.log(processArgs);
 
