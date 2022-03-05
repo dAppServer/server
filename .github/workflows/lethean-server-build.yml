@@ -18,102 +18,38 @@ on:
       - '**.md'
 
 jobs:
-  linux:
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        type: [ linux, macos-intel, macos-arm, windows ]
     steps:
       - uses: actions/checkout@v3
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.18.x
-      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/linux-lethean-server --target x86_64-unknown-linux-gnu src/server.ts
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - run: npm run server:build:${{ matrix.type }}
+      - uses: papeloto/action-zip@v1
+        with:
+          files: build/lethean-server
+          dest: ${{ matrix.type }}.zip
       - uses: actions/upload-artifact@v2
         with:
-          name: linux
-          path: build/linux-lethean-server
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: build/linux-lethean-server
-      - name: Release Branch
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/heads/main')
-        with:
-          tag_name: canary
-          prerelease: true
-          files: build/linux-lethean-server
+          name: ${{ matrix.type }}
+          path: ${{ matrix.type }}.zip
 
-  windows:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.18.x
-      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/windows-lethean-server --target x86_64-pc-windows-msvc src/server.ts
-      - uses: actions/upload-artifact@v2
-        with:
-          name: windows
-          path: build/windows-lethean-server.exe
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: build/windows-lethean-server.exe
+          files: ${{ matrix.type }}.zip
       - name: Release Branch
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/heads/main')
         with:
           tag_name: canary
           prerelease: true
-          files: build/windows-lethean-server.exe
-
-  macos-intel:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.18.x
-      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/macos-lethean-server --target x86_64-apple-darwin src/server.ts
-      - uses: actions/upload-artifact@v2
-        with:
-          name: macos-intel
-          path: build/macos-lethean-server
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: build/macos-lethean-server
-      - name: Release Branch
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/heads/main')
-        with:
-          tag_name: canary
-          prerelease: true
-          files: build/macos-lethean-server
-
-  macos-arm:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.18.x
-      - run: deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --output build/macos-m1-lethean-server --target aarch64-apple-darwin src/server.ts
-      - uses: actions/upload-artifact@v2
-        with:
-          name: macos-m1
-          path: build/macos-m1-lethean-server
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: build/macos-m1-lethean-server
-      - name: Release Branch
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/heads/main')
-        with:
-          tag_name: canary
-          prerelease: true
-          files: build/macos-m1-lethean-server
+          files: ${{ matrix.type }}.zip
