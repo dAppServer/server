@@ -9,7 +9,6 @@ import {ProcessManagerRequest} from '../../../services/process/processManagerReq
 export class RouteDaemonChainStart {
 
 	public static config() {
-		const home = Deno.cwd();
 		let home = ''
 
 		if (os.platform() === 'windows') {
