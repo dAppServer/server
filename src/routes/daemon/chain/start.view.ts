@@ -18,7 +18,7 @@ export class RouteDaemonChainStart {
 			.option('--pidfile <string>', 'File path to write the daemon\'s PID to (optional, requires --detach)')
 			.option('--non-interactive', 'Run non-interactive')
 			.option('--log-file <string>', 'Specify log file', {default: path.join(home ? home : '/', 'data', 'logs')})
-			.option('--log-level <string>', '1-4', {default: 1})
+			.option('--log-level <string>', '1-4', {default: "1"})
 			.option('--max-concurrency <string>', 'Max number of threads to use for a parallel job')
 			.option('--data-dir <string>', 'Specify data directory', {default: path.join(home ? home : '/','data')})
 			.option('--testnet-data-dir <string>', 'Specify testnet data directory')
