@@ -10,7 +10,13 @@ export class RouteDaemonChainStart {
 
 	public static config() {
 		const home = Deno.cwd();
+		let home = ''
 
+		if (os.platform() === 'windows') {
+			home = Deno.cwd();
+		}else{
+			home = path.join(os.homeDir(), 'Lethean');
+		}
 		return new Command()
 			.description('Blockchain Functions')
 			.option('--config-file <string>', 'Specify configuration file')
@@ -69,13 +75,18 @@ export class RouteDaemonChainStart {
 			.option('--rpc-login <string>', 'Specify username[:password] required for RPC server')
 			.option('--confirm-external-bind', 'Confirm rpc-bind-ip value is NOT a loopback (local) IP')
 			.action((args) => {
-				const homeDir = Deno.cwd();
-
-				const exeFile =
-					'letheand' + (os.platform() === 'windows' ? '.exe' : '');
+				let homeDir = ''
+				let exeFile = ''
+				if (os.platform() === 'windows') {
+					homeDir = Deno.cwd();
+					exeFile = path.join(homeDir, 'cli', 'letheand.exe');
+				}else{
+					homeDir = os.homeDir();
+					exeFile = path.join(homeDir, 'Lethean', 'cli', 'letheand');
+				}
 
 				ProcessManager.run(
-					path.join(homeDir ? homeDir : './', 'cli', exeFile),
+					exeFile,
 					args,
 					{
 						key: exeFile,
