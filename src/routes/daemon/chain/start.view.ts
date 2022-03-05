@@ -9,12 +9,12 @@ import {ProcessManagerRequest} from '../../../services/process/processManagerReq
 export class RouteDaemonChainStart {
 
 	public static config() {
-		let home = ''
+		let home = os.homeDir()
 
 		if (os.platform() === 'windows') {
 			home = Deno.cwd();
 		}else{
-			home = path.join(os.homeDir(), 'Lethean');
+			home = path.join(home ? home : './', 'Lethean');
 		}
 		return new Command()
 			.description('Blockchain Functions')
@@ -74,14 +74,14 @@ export class RouteDaemonChainStart {
 			.option('--rpc-login <string>', 'Specify username[:password] required for RPC server')
 			.option('--confirm-external-bind', 'Confirm rpc-bind-ip value is NOT a loopback (local) IP')
 			.action((args) => {
-				let homeDir = ''
+				let homeDir;
 				let exeFile = ''
 				if (os.platform() === 'windows') {
 					homeDir = Deno.cwd();
 					exeFile = path.join(homeDir, 'cli', 'letheand.exe');
 				}else{
 					homeDir = os.homeDir();
-					exeFile = path.join(homeDir, 'Lethean', 'cli', 'letheand');
+					exeFile = path.join(homeDir ? homeDir : './', 'Lethean', 'cli', 'letheand');
 				}
 
 				ProcessManager.run(
