@@ -39,7 +39,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/heads/main')
         with:
-          tag_name: main
+          tag_name: canary
           prerelease: true
           files: build/linux-lethean-server
 
@@ -64,7 +64,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/heads/main')
         with:
-          tag_name: main
+          tag_name: canary
           prerelease: true
           files: build/windows-lethean-server.exe
 
@@ -89,7 +89,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/heads/main')
         with:
-          tag_name: main
+          tag_name: canary
           prerelease: true
           files: build/macos-lethean-server
 
@@ -114,6 +114,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/heads/main')
         with:
-          tag_name: main
+          tag_name: canary
           prerelease: true
           files: build/macos-m1-lethean-server
