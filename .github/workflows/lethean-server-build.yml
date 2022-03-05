@@ -34,7 +34,7 @@ jobs:
       - run: npm run server:build:${{ matrix.type }}
       - uses: papeloto/action-zip@v1
         with:
-          files: build/lethean-server
+          files: build/lethean-serve*
           dest: ${{ matrix.type }}.zip
       - uses: actions/upload-artifact@v2
         with:
