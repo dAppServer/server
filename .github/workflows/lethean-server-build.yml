@@ -35,6 +35,13 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: build/linux-lethean-server
+      - name: Release Branch
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/heads/main')
+        with:
+          prerelease: true
+          files: build/linux-lethean-server
+
   windows:
     runs-on: ubuntu-latest
     steps:
@@ -51,6 +58,12 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          files: build/windows-lethean-server.exe
+      - name: Release Branch
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/heads/main')
+        with:
+          prerelease: true
           files: build/windows-lethean-server.exe
 
   macos-intel:
@@ -70,6 +83,12 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: build/macos-lethean-server
+      - name: Release Branch
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/heads/main')
+        with:
+          prerelease: true
+          files: build/macos-lethean-server
 
   macos-arm:
     runs-on: ubuntu-latest
@@ -87,4 +106,10 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          files: build/macos-m1-lethean-server
+      - name: Release Branch
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/heads/main')
+        with:
+          prerelease: true
           files: build/macos-m1-lethean-server
