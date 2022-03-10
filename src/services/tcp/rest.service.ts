@@ -1,5 +1,5 @@
-import { createApp } from "https://deno.land/x/servest@v1.3.1/mod.ts";
-import { cors } from "https://deno.land/x/servest@v1.3.1/middleware/cors.ts";
+import { createApp } from "https://deno.land/x/servest@v1.3.4/mod.ts";
+import { cors } from "https://deno.land/x/servest@v1.3.4/middleware/cors.ts";
 import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
 import * as path from "https://deno.land/std/path/mod.ts";
 import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
