@@ -13,9 +13,7 @@ export class StoredObjectService {
     const home = os.homeDir();
     return Deno.readTextFileSync(
       path.join(
-        home
-          ? home
-          : "./",
+        home ? home : "./",
         "Lethean",
         "data",
         "objects",

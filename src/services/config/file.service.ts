@@ -11,9 +11,7 @@ export class ConfigFileService {
     };
     return await renderFile(
       path.join(
-        homeDir
-          ? homeDir
-          : "./",
+        homeDir ? homeDir : "./",
         "Lethean",
         "conf",
         "templates",
