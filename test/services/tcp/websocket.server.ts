@@ -1,8 +1,8 @@
 import { assertEquals } from "https://deno.land/std@0.116.0/testing/asserts.ts";
-import {WebsocketServer} from './websocket.server.ts';
+import {WebsocketServer} from '../src/services/tcp/websocket.server.ts';
 import { Sub } from "https://deno.land/x/jszmq/mod.ts";
 import { delay } from "https://deno.land/std@0.116.0/async/delay.ts";
-import {ZeroMQServer} from '../ipc/zeromq.ts';
+import {ZeroMQServer} from '../src/services/ipc/zeromq.ts';
 
 console.log("ZeroMQ Websocket: ws://localhost:36910/pub")
 
