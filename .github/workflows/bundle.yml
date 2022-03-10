@@ -38,9 +38,9 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: deno lint
       - name: Run tests
-        run: deno test --coverage=cov
+        run: deno test --coverage=cov test/
       - name: Run tests unstable
-        run: deno test --unstable
+        run: deno test --unstable test/
       - name: Generate lcov
         if: |
           matrix.os == 'ubuntu-latest' &&
