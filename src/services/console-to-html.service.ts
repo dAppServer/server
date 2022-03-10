@@ -219,7 +219,8 @@ function range(low: number, high: number) {
  */
 function notCategory(category: string) {
   return function (e: any) {
-    return (category === null || e.category !== category) && category !== "all";
+    return (category === null || e.category !== category) &&
+      category !== "all";
   };
 }
 
@@ -548,7 +549,11 @@ export class Filter {
       }
 
       if (options.stream) {
-        this.stickyStack = updateStickyStack(this.stickyStack, token, data);
+        this.stickyStack = updateStickyStack(
+          this.stickyStack,
+          token,
+          data,
+        );
       }
     });
 

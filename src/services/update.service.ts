@@ -49,13 +49,19 @@ export class LetheanUpdater {
       const fileObj = await download(url, destination);
       ZeroMQServer.sendPubMessage("update-cli", `Downloaded file`);
       try {
-        await Deno.remove(path.join(homeDir ? homeDir : "", "Lethean", "cli"), {
-          recursive: true,
-        });
+        await Deno.remove(
+          path.join(homeDir ? homeDir : "", "Lethean", "cli"),
+          {
+            recursive: true,
+          },
+        );
       } catch (e) {
       }
 
-      ZeroMQServer.sendPubMessage("update-cli", `Unpacking Downloaded zip`);
+      ZeroMQServer.sendPubMessage(
+        "update-cli",
+        `Unpacking Downloaded zip`,
+      );
 
       await unZipFromFile(
         fileObj.fullPath,
@@ -94,7 +100,9 @@ export class LetheanUpdater {
       } catch (e) {
       }
     } catch (err) {
-      console.log("ERROR, the following log might have helpful information.");
+      console.log(
+        "ERROR, the following log might have helpful information.",
+      );
       console.log(err);
     }
     ZeroMQServer.sendPubMessage("update-cli", "Done");

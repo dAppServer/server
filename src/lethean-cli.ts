@@ -32,11 +32,17 @@ export class LetheanCli {
             new Command().description("Lethean Binary Control")
               .command("start", RouteDaemonChainStart.config())
               .command("json_rpc")
-              .description("Talk to the Daemon RPC via the json_rpc endpoint")
+              .description(
+                "Talk to the Daemon RPC via the json_rpc endpoint",
+              )
               .option("-r,--request <string>", "payload to send")
-              .option("--jsonpath <string>", "Endpoint page to use", {
-                default: "json_rpc",
-              })
+              .option(
+                "--jsonpath <string>",
+                "Endpoint page to use",
+                {
+                  default: "json_rpc",
+                },
+              )
               .action(async (args) => {
                 //console.log(args.request.slice(1, args.request.length-1))
                 const postReq = await fetch(
@@ -48,11 +54,16 @@ export class LetheanCli {
                     headers: {
                       "Content-Type": "application/json",
                     },
-                    body: args.request.slice(1, args.request.length - 1),
+                    body: args.request.slice(
+                      1,
+                      args.request.length - 1,
+                    ),
                   },
                 );
                 if (Deno.env.get("REST")) {
-                  throw new StringResponse(await postReq.text());
+                  throw new StringResponse(
+                    await postReq.text(),
+                  );
                 }
               })
               .command("export", RouteDaemonChainExport.config())

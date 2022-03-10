@@ -41,7 +41,13 @@ export class StoredObjectService {
       args.object + ".json",
     );
     ensureDirSync(
-      path.join(home ? home : "./", "Lethean", "data", "objects", args.group),
+      path.join(
+        home ? home : "./",
+        "Lethean",
+        "data",
+        "objects",
+        args.group,
+      ),
     );
 
     Deno.writeTextFileSync(objPath, args.data);

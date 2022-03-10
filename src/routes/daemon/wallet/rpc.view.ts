@@ -24,7 +24,10 @@ export class RouteDaemonWalletRpc {
         "--daemon-host <string>",
         "Use daemon instance at host <arg> instead of localhost",
       )
-      .option("--password <string>", "Wallet password (escape/quote as needed)")
+      .option(
+        "--password <string>",
+        "Wallet password (escape/quote as needed)",
+      )
       .option("--password-file <string>", "Wallet password file")
       .option(
         "--daemon-port <string>",
@@ -62,9 +65,13 @@ export class RouteDaemonWalletRpc {
         "--generate-from-json  <string>",
         "Generate wallet from JSON format file",
       )
-      .option("--wallet-dir  <string>", "Directory for newly created wallets", {
-        default: path.join(home ? home : "/", "Lethean", "wallets"),
-      })
+      .option(
+        "--wallet-dir  <string>",
+        "Directory for newly created wallets",
+        {
+          default: path.join(home ? home : "/", "Lethean", "wallets"),
+        },
+      )
       .option("--log-file  <string>", "Specify log file")
       .option("--log-level  <string>", "0-4 or categories")
       .option(
@@ -79,7 +86,12 @@ export class RouteDaemonWalletRpc {
           (os.platform() === "windows" ? ".exe" : "");
 
         ProcessManager.run(
-          path.join(homeDir ? homeDir : "./", "Lethean", "cli", exeFile),
+          path.join(
+            homeDir ? homeDir : "./",
+            "Lethean",
+            "cli",
+            exeFile,
+          ),
           args,
           {
             key: exeFile,

@@ -19,7 +19,9 @@ export class RouteObject {
       .option("-d,--data <string>", "Data object to save")
       .action((args) => {
         const textDecoder = new TextDecoder("utf-8");
-        const decodedValue = textDecoder.decode(base64Decode(args.data));
+        const decodedValue = textDecoder.decode(
+          base64Decode(args.data),
+        );
 
         StoredObjectService.setObject({
           group: args.group,

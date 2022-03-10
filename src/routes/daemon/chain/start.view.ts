@@ -34,7 +34,10 @@ export class RouteDaemonChainStart {
       .option("--data-dir <string>", "Specify data directory", {
         default: path.join(home ? home : "/", "data"),
       })
-      .option("--testnet-data-dir <string>", "Specify testnet data directory")
+      .option(
+        "--testnet-data-dir <string>",
+        "Specify testnet data directory",
+      )
       .option(
         "--test-drop-download",
         "For net tests: in download, discard ALL blocks instead checking/saving them (very fast)",
@@ -88,7 +91,10 @@ export class RouteDaemonChainStart {
         "--extra-messages-file <string>",
         "Specify file for extra messages to include into coinbase transactions",
       )
-      .option("--start-mining <string>", "Specify wallet address to mining for")
+      .option(
+        "--start-mining <string>",
+        "Specify wallet address to mining for",
+      )
       .option("--mining-threads <number>", "Specify mining threads count")
       .option("--bg-mining-enable", "enable/disable background mining")
       .option(
@@ -107,7 +113,10 @@ export class RouteDaemonChainStart {
         "--bg-mining-miner-target <string>",
         "Specify maximum percentage cpu use by miner(s)",
       )
-      .option("--db-type <string>", "Specify database type, available: lmdb")
+      .option(
+        "--db-type <string>",
+        "Specify database type, available: lmdb",
+      )
       .option(
         "--db-sync-mode <string>",
         "Specify sync option, using format [safe|fast|fastest]:[sync|async]:[nbloc ks_per_sync].",
@@ -116,7 +125,10 @@ export class RouteDaemonChainStart {
         "--db-salvage",
         "Try to salvage a blockchain database if it seems corrupted",
       )
-      .option("--p2p-bind-ip <string>", "Interface for p2p network protocol")
+      .option(
+        "--p2p-bind-ip <string>",
+        "Interface for p2p network protocol",
+      )
       .option(
         "--p2p-external-port <string>",
         "External port for p2p network protocol (if port forwarding used with NAT)",
@@ -125,7 +137,10 @@ export class RouteDaemonChainStart {
         "--allow-local-ip",
         "Allow local ip add to peer list, mostly in debug purposes",
       )
-      .option("--add-peer <string>", "Manually add peer to local peerlist")
+      .option(
+        "--add-peer <string>",
+        "Manually add peer to local peerlist",
+      )
       .option(
         "--add-priority-node <string>",
         "Specify list of peers to connect to and attempt to keep the connection open",
@@ -151,7 +166,10 @@ export class RouteDaemonChainStart {
       .option("--limit-rate <string>", "set limit-rate [kB/s]")
       .option("--save-graph", "Save data for dr functions")
       .option("--rpc-bind-port <string>", "Port for RPC server")
-      .option("--testnet-rpc-bind-port <string>", "Port for testnet RPC server")
+      .option(
+        "--testnet-rpc-bind-port <string>",
+        "Port for testnet RPC server",
+      )
       .option("--restricted-rpc", "Restrict RPC to view only commands")
       .option("--rpc-bind-ip <string>", "Specify ip to bind rpc server")
       .option(

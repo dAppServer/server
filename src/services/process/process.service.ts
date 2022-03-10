@@ -68,7 +68,10 @@ export class ProcessManager {
     }
 
     if (ProcessManager.debug) {
-      console.log("ProcessManager processed arguments to these:", cmdArgs);
+      console.log(
+        "ProcessManager processed arguments to these:",
+        cmdArgs,
+      );
     }
 
     return ProcessManager.addProcess({

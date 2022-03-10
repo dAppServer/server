@@ -44,7 +44,9 @@ export class FilesystemService {
   static list(args: any) {
     const ret = [];
     for (
-      const dirEntry of Deno.readDirSync(FilesystemService.path(args.path))
+      const dirEntry of Deno.readDirSync(
+        FilesystemService.path(args.path),
+      )
     ) {
       if (!dirEntry.name.startsWith(".")) {
         ret.push(dirEntry.name);

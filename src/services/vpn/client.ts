@@ -22,10 +22,17 @@ export class VPNClient {
         "--stunnel-port <string>",
         "Use this stunnel local port for connections over proxy.",
       )
-      .option("--outbound-proxy-host <string>", "Use this https proxy host.")
-      .option("--outbound-proxy-port <number>", "Use this https proxy port.", {
-        default: 3128,
-      })
+      .option(
+        "--outbound-proxy-host <string>",
+        "Use this https proxy host.",
+      )
+      .option(
+        "--outbound-proxy-port <number>",
+        "Use this https proxy port.",
+        {
+          default: 3128,
+        },
+      )
       .option(
         "--proxy-port <number>",
         "Use this port as local bind port for proxy.",
@@ -36,20 +43,35 @@ export class VPNClient {
         "Use this host as local bind for proxy.",
         { default: "127.0.0.1" },
       )
-      .option("--connect-timeout <number>", "Timeout for connect to service.", {
-        default: 30,
-      })
-      .option("--payment-timeout <number>", "Timeout for payment to service.", {
-        default: 1200,
-      })
-      .option("--exit-on-no-payment <boolean>", "Exit after payment is gone.")
+      .option(
+        "--connect-timeout <number>",
+        "Timeout for connect to service.",
+        {
+          default: 30,
+        },
+      )
+      .option(
+        "--payment-timeout <number>",
+        "Timeout for payment to service.",
+        {
+          default: 1200,
+        },
+      )
+      .option(
+        "--exit-on-no-payment <boolean>",
+        "Exit after payment is gone.",
+      )
       .option(
         "--fork-on-connect <boolean>",
         "Fork after successful paid connection. Client will fork into background.",
       )
-      .option("--vpnc-tun <string>", "Use specific tun device for client", {
-        default: "tun1",
-      })
+      .option(
+        "--vpnc-tun <string>",
+        "Use specific tun device for client",
+        {
+          default: "tun1",
+        },
+      )
       .option(
         "--vpnc-mgmt-port <number>",
         "Use specific port for local Openvpn mgmt",

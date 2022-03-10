@@ -82,7 +82,9 @@ export class RestService {
 
       if (payload["jsonpath"]) {
         cmdArgs.push(`--jsonpath="${payload["jsonpath"]}"`);
-        cmdArgs.push(`--request="${JSON.stringify(payload["request"])}"`);
+        cmdArgs.push(
+          `--request="${JSON.stringify(payload["request"])}"`,
+        );
       } else if (payload["jsonrpc"]) {
         cmdArgs.push(`--request="${JSON.stringify(payload)}"`);
       } else {

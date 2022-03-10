@@ -10,14 +10,18 @@ export class RouteConfig {
       .command("openapi", "Returns a openapi json data object")
       .action((args) => {
         throw new StringResponse(
-          JSON.stringify(OpenAPIGeneratorService.createOpenApiSpec(args)),
+          JSON.stringify(
+            OpenAPIGeneratorService.createOpenApiSpec(args),
+          ),
         );
       })
       .command("get", "Gets a file with fresh configuration")
       .option("-f,--file <string>", "Specify configuration file")
       .action(async (args) => {
         //if (Deno.env.get('REST')) {
-        throw new StringResponse(await ConfigFileService.loadFile(args));
+        throw new StringResponse(
+          await ConfigFileService.loadFile(args),
+        );
         //}
       });
   }

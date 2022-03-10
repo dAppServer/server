@@ -21,7 +21,14 @@ export class RouteDaemonChainExport {
       .option(
         "--testnet-data-dir  <string>",
         "Specify testnet data directory",
-        { default: path.join(home ? home : "/", "Lethean", "data", "testnet") },
+        {
+          default: path.join(
+            home ? home : "/",
+            "Lethean",
+            "data",
+            "testnet",
+          ),
+        },
       )
       .option("--output-file  <string>", "Specify output file")
       .option("--testnet", "Run on testnet.")
@@ -36,7 +43,12 @@ export class RouteDaemonChainExport {
           (os.platform() === "windows" ? ".exe" : "");
 
         ProcessManager.run(
-          path.join(homeDir ? homeDir : "./", "Lethean", "cli", exeFile),
+          path.join(
+            homeDir ? homeDir : "./",
+            "Lethean",
+            "cli",
+            exeFile,
+          ),
           args,
           {
             key: exeFile,

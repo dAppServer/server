@@ -14,9 +14,18 @@ export class RouteDaemonChainImport {
       .option("--data-dir <string>", "Specify data directory", {
         default: path.join(home ? home : "/", "Lethean", "data"),
       })
-      .option("--testnet-data-dir <string>", "Specify testnet data directory", {
-        default: path.join(home ? home : "/", "Lethean", "data", "testnet"),
-      })
+      .option(
+        "--testnet-data-dir <string>",
+        "Specify testnet data directory",
+        {
+          default: path.join(
+            home ? home : "/",
+            "Lethean",
+            "data",
+            "testnet",
+          ),
+        },
+      )
       .option(
         "--test-drop-download",
         "For net tests: in download, discard ALL blocks instead checking/saving them (very fast)",
@@ -73,7 +82,10 @@ export class RouteDaemonChainImport {
         "--extra-messages-file <string>",
         "Specify file for extra messages to include into coinbase transactions",
       )
-      .option("--db-type <string>", "Specify database type, available: lmdb")
+      .option(
+        "--db-type <string>",
+        "Specify database type, available: lmdb",
+      )
       .option(
         "--db-sync-mode <string>",
         "(=fast:async:1000) Specify sync option, using format [safe|fast|fastest]:[sync|async]:[nblocks_per_sync].",
@@ -86,7 +98,10 @@ export class RouteDaemonChainImport {
         "--count-blocks <string>",
         "Count blocks in bootstrap file and exit",
       )
-      .option("--pop-blocks <string>", "Remove blocks from end of blockchain")
+      .option(
+        "--pop-blocks <string>",
+        "Remove blocks from end of blockchain",
+      )
       .option("--drop-hard-fork <string>", "Drop hard fork subdbs")
       .option("--input-file <string>", "Specify input file")
       .option("--log-level <string>", "0-4 or categories")
@@ -109,7 +124,12 @@ export class RouteDaemonChainImport {
           (os.platform() === "windows" ? ".exe" : "");
 
         ProcessManager.run(
-          path.join(homeDir ? homeDir : "./", "Lethean", "cli", exeFile),
+          path.join(
+            homeDir ? homeDir : "./",
+            "Lethean",
+            "cli",
+            exeFile,
+          ),
           args,
           {
             key: exeFile,

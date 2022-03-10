@@ -17,7 +17,10 @@ export class RouteDaemonWalletCli {
         "--daemon-host <string>",
         "Use daemon instance at host <arg> instead of localhost",
       )
-      .option("--password <string>", "Wallet password (escape/quote as needed)")
+      .option(
+        "--password <string>",
+        "Wallet password (escape/quote as needed)",
+      )
       .option("--password-file <string>", "Wallet password file")
       .option(
         "--daemon-port <string>",
@@ -104,7 +107,12 @@ export class RouteDaemonWalletCli {
           (os.platform() === "windows" ? ".exe" : "");
 
         ProcessManager.run(
-          path.join(homeDir ? homeDir : "./", "Lethean", "cli", exeFile),
+          path.join(
+            homeDir ? homeDir : "./",
+            "Lethean",
+            "cli",
+            exeFile,
+          ),
           args,
           {
             key: exeFile,

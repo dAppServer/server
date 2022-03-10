@@ -47,14 +47,21 @@ export class WebsocketServer {
               JSON.stringify([
                 req[1],
                 base64Encode(
-                  textEncoder.encode(WebsocketServer.strip(message.toString())),
+                  textEncoder.encode(
+                    WebsocketServer.strip(
+                      message.toString(),
+                    ),
+                  ),
                 ),
               ]),
             );
           });
         } else if (daemon.substr(0, 3) === "cmd") {
           const req = daemon.split(":");
-          ZeroMQServer.sendPubMessage(req[1] + "-stdIn", `${req[2]}\n`);
+          ZeroMQServer.sendPubMessage(
+            req[1] + "-stdIn",
+            `${req[2]}\n`,
+          );
         }
       });
     });
