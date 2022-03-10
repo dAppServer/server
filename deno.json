@@ -9,6 +9,19 @@
       "include": ["src/"],
       "exclude": ["src/testdata/"]
     },
+    "fmt": {
+      "files": {
+        "include": ["src/"],
+        "exclude": ["src/testdata/"]
+      },
+      "options": {
+        "useTabs": true,
+        "lineWidth": 80,
+        "indentWidth": 4,
+        "singleQuote": true,
+        "proseWrap": "preserve"
+      }
+    },
     "rules": {
       "tags": ["recommended"],
       "include": ["ban-untagged-todo"],
