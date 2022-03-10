@@ -1,27 +1,30 @@
-import os from 'https://deno.land/x/dos@v0.11.0/mod.ts';
-import {Destination, download} from 'https://deno.land/x/download/mod.ts';
-import {unZipFromFile} from 'https://deno.land/x/zip@v1.1.0/mod.ts';
-import * as path from 'https://deno.land/std/path/mod.ts';
-import {copy} from 'https://deno.land/std@0.95.0/fs/mod.ts';
+import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
+import { Destination, download } from "https://deno.land/x/download/mod.ts";
+import { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/mod.ts";
+import * as path from "https://deno.land/std/path/mod.ts";
+import { copy } from "https://deno.land/std@0.95.0/fs/mod.ts";
 
-import {ZeroMQServer} from './ipc/zeromq.ts';
+import { ZeroMQServer } from "./ipc/zeromq.ts";
 
 export class LetheanUpdater {
   public static downloads = {
     cli: {
       windows:
-          "https://github.com/letheanVPN/lethean/releases/download/v3.1.0/lethean-cli-win-64bit-v3.1.zip",
+        "https://github.com/letheanVPN/lethean/releases/download/v3.1.0/lethean-cli-win-64bit-v3.1.zip",
       linux:
-          "https://github.com/letheanVPN/lethean/releases/download/v3.1.0/lethean-cli-linux-64bit-v3.1.zip",
+        "https://github.com/letheanVPN/lethean/releases/download/v3.1.0/lethean-cli-linux-64bit-v3.1.zip",
       macos:
-          "https://github.com/letheanVPN/lethean/releases/download/v3.1.0/lethean-cli-mac-64bit-v3.1.zip",
+        "https://github.com/letheanVPN/lethean/releases/download/v3.1.0/lethean-cli-mac-64bit-v3.1.zip",
     },
   };
 
   static async download(args: any) {
     let url, platform = os.platform(), homeDir = os.homeDir();
 
-    ZeroMQServer.sendPubMessage("update-cli", `Downloading files for ${platform}`);
+    ZeroMQServer.sendPubMessage(
+      "update-cli",
+      `Downloading files for ${platform}`,
+    );
     switch (platform) {
       case "darwin":
         url = LetheanUpdater.downloads.cli.macos;
@@ -39,7 +42,10 @@ export class LetheanUpdater {
         file: filename,
         dir: path.join(homeDir ? homeDir : "", "Lethean"),
       };
-      ZeroMQServer.sendPubMessage("update-cli", `Starting download to ${destination.dir}`);
+      ZeroMQServer.sendPubMessage(
+        "update-cli",
+        `Starting download to ${destination.dir}`,
+      );
       const fileObj = await download(url, destination);
       ZeroMQServer.sendPubMessage("update-cli", `Downloaded file`);
       try {
@@ -51,51 +57,42 @@ export class LetheanUpdater {
 
       ZeroMQServer.sendPubMessage("update-cli", `Unpacking Downloaded zip`);
 
-
       await unZipFromFile(
-          fileObj.fullPath,
-          path.join(homeDir ? homeDir : "", "Lethean", "cli"),
-          { includeFileName: false },
+        fileObj.fullPath,
+        path.join(homeDir ? homeDir : "", "Lethean", "cli"),
+        { includeFileName: false },
       );
 
       await copy(
-          path.join(
-              homeDir
-                  ? homeDir
-                  : "",
-              "Lethean",
-              "cli",
-              `${filename?.replace(".zip", "")}`,
-          ),
-          path.join(homeDir ? homeDir : "", "Lethean", "cli"),
-          { overwrite: true },
+        path.join(
+          homeDir ? homeDir : "",
+          "Lethean",
+          "cli",
+          `${filename?.replace(".zip", "")}`,
+        ),
+        path.join(homeDir ? homeDir : "", "Lethean", "cli"),
+        { overwrite: true },
       );
       ZeroMQServer.sendPubMessage("update-cli", "Cleaning up");
 
       try {
         await Deno.remove(
-            path.join(
-                homeDir
-                    ? homeDir
-                    : "",
-                "Lethean",
-                "cli",
-                `${filename?.replace(".zip", "")}`,
-            ),
-            { recursive: true },
+          path.join(
+            homeDir ? homeDir : "",
+            "Lethean",
+            "cli",
+            `${filename?.replace(".zip", "")}`,
+          ),
+          { recursive: true },
         );
         await Deno.remove(path.join(
-            homeDir
-                ? homeDir
-                : "",
-            "Lethean",
-            filename ? filename : '',
+          homeDir ? homeDir : "",
+          "Lethean",
+          filename ? filename : "",
         ));
         console.log("FIN");
-      }catch (e){
-
+      } catch (e) {
       }
-
     } catch (err) {
       console.log("ERROR, the following log might have helpful information.");
       console.log(err);
@@ -103,5 +100,4 @@ export class LetheanUpdater {
     ZeroMQServer.sendPubMessage("update-cli", "Done");
     return "done";
   }
-
 }

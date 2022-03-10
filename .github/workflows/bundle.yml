@@ -33,10 +33,10 @@ jobs:
           deno-version: ${{ matrix.deno }}
       - name: Check formatting
         if: matrix.os == 'ubuntu-latest'
-        run: deno fmt --check
+        run: deno fmt --check src/
       - name: Check linting
         if: matrix.os == 'ubuntu-latest'
-        run: deno lint
+        run: deno lint src/
       - name: Run tests
         run: deno test --coverage=cov test/
       - name: Run tests unstable

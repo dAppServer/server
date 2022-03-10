@@ -1,13 +1,12 @@
-import {Command} from 'https://deno.land/x/cliffy/command/mod.ts';
-import {StringResponse} from '../interfaces/string-response.ts';
+import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
+import { StringResponse } from "../interfaces/string-response.ts";
 import {
   decode as base64Decode,
   encode as base64Encode,
-} from 'https://deno.land/std@0.82.0/encoding/base64.ts';
-import {FilesystemService} from '../services/filesystem.service.ts';
+} from "https://deno.land/std@0.82.0/encoding/base64.ts";
+import { FilesystemService } from "../services/filesystem.service.ts";
 
 export class RouteFilesystem {
-
   public static config() {
     return new Command().description("File System")
       .command("list", "List entities in path")
@@ -43,15 +42,15 @@ export class RouteFilesystem {
       .option("--path <string>", "File path to read")
       .option("--data <string>", "File data to save")
       .action((args) => {
-        let data = args.data
+        let data = args.data;
         if (Deno.env.get("REST")) {
-          const textDecoder = new TextDecoder('utf-8');
+          const textDecoder = new TextDecoder("utf-8");
 
           data = textDecoder.decode(base64Decode(data));
         }
-         FilesystemService.write(args.path, data);
+        FilesystemService.write(args.path, data);
 
-        throw new StringResponse('1')
+        throw new StringResponse("1");
       });
   }
 }

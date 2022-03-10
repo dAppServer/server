@@ -1,5 +1,5 @@
-import * as path from 'https://deno.land/std/path/mod.ts';
-import {ensureDirSync} from 'https://deno.land/std@0.114.0/fs/mod.ts';
+import * as path from "https://deno.land/std/path/mod.ts";
+import { ensureDirSync } from "https://deno.land/std@0.114.0/fs/mod.ts";
 
 export class FilesystemService {
   /**
@@ -43,7 +43,9 @@ export class FilesystemService {
 
   static list(args: any) {
     const ret = [];
-    for (const dirEntry of Deno.readDirSync(FilesystemService.path(args.path))) {
+    for (
+      const dirEntry of Deno.readDirSync(FilesystemService.path(args.path))
+    ) {
       if (!dirEntry.name.startsWith(".")) {
         ret.push(dirEntry.name);
       }
