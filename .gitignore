@@ -3,3 +3,5 @@ build
 node_modules
 .eslintcache
 cov
+third_party
+lethean-server

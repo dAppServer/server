@@ -36,12 +36,12 @@ jobs:
       - uses: papeloto/action-zip@v1
         if: matrix.type != 'windows'
         with:
-          files: build/lethean-server
+          files: lethean-server
           dest: ${{ matrix.type }}.zip
       - uses: papeloto/action-zip@v1
         if: matrix.type == 'windows'
         with:
-          files: build/lethean-server.exe
+          files: lethean-server.exe
           dest: ${{ matrix.type }}.zip
       - uses: actions/upload-artifact@v2
         with:
