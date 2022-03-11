@@ -176,10 +176,14 @@ export class RestService {
     // }
 
     this.app.listenTls({
-      'hostname': 'localhost',
-      'port': 36911,
-      'certFile': `${path.join(RestService.home, 'Lethean', 'conf', 'public.pem')}`,
-      'keyFile': `${path.join(RestService.home, 'Lethean', 'conf', 'private.pem')}`
+      "hostname": "localhost",
+      "port": 36911,
+      "certFile": `${
+        path.join(RestService.home, "Lethean", "conf", "public.pem")
+      }`,
+      "keyFile": `${
+        path.join(RestService.home, "Lethean", "conf", "private.pem")
+      }`,
     });
 
     ZeroMQServer.startServer();
