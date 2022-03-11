@@ -1,13 +1,11 @@
-import { LetheanCli } from "./lethean-cli.ts";
-// @todo adds stdin/tcp detection for rest mapping
-await LetheanCli.init();
-try {
-  let args = ["--help"];
-  if (Deno.args.length) {
-    args = Deno.args;
-  }
-  await LetheanCli.run(args);
-} catch (error) {
-  console.log(error.message);
-  Deno.exit(0);
-}
+import { ServerService } from "./services/server.service.ts";
+
+console.log("Starting Lethean Server");
+const server = new ServerService();
+
+server.warmUpServer().then(() => {
+  server.processStartCommand()
+    .then((data) => console.log(data))
+    .catch((err) => console.error(err));
+})
+  .catch((err) => console.error(err));

@@ -16,6 +16,7 @@ export class LetheanCli {
   public static options: any;
 
   static async run(args: string[]) {
+    console.log(`Arguments passed ${args.join(", ")}`);
     return await LetheanCli.options.parse(args);
   }
 
