@@ -122,7 +122,7 @@ export class ProcessManager {
       throw new Error(`Can't find process ${key}`);
     }
     //@todo ad a feeder to centralised io handling, eg websocket srv
-    this.process[key].run();
+    this.process[key].run().catch(console.error);
   }
 
   /**

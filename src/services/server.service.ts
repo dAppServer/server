@@ -22,11 +22,9 @@ export class ServerService {
 
   async warmUpServer() {
     await LetheanCli.init();
-
   }
 
-  startServer(){
-
+  startServer() {
     ZeroMQServer.startServer();
     WebsocketServer.startServer();
 
@@ -42,16 +40,12 @@ export class ServerService {
     this.app.listenTls({
       "hostname": "localhost",
       "port": 36911,
-      "certFile": `${
-        path.join(this.home, "Lethean", "conf", "public.pem")
-      }`,
-      "keyFile": `${
-        path.join(this.home, "Lethean", "conf", "private.pem")
-      }`,
+      "certFile": `${path.join(this.home, "Lethean", "conf", "public.pem")}`,
+      "keyFile": `${path.join(this.home, "Lethean", "conf", "private.pem")}`,
     });
   }
 
-  async processCommand(args:any) {
+  async processCommand(args: any) {
     try {
       await LetheanCli.run(args);
     } catch (error) {
@@ -66,7 +60,7 @@ export class ServerService {
    * @param {string} base
    * @param routes
    */
-   discoverRoute(base: string, routes: any) {
+  discoverRoute(base: string, routes: any) {
     for (const dat of routes) {
       const key = dat[0], value = dat[1];
       if (
@@ -91,7 +85,7 @@ export class ServerService {
    * @param {string} path url path
    * @param handle
    */
-   addRoute(path: string, handle: any) {
+  addRoute(path: string, handle: any) {
     /**
      * setup the help documentation
      */
@@ -99,7 +93,7 @@ export class ServerService {
       await req.respond({
         status: 200,
         headers: new Headers({
-          "content-type": "text/html"
+          "content-type": "text/html",
         }),
         body: this.templateOutput(handle.getHelp()),
       });
@@ -126,7 +120,7 @@ export class ServerService {
           cmdArgs.push(
             "--" + key.replace(/([A-Z])/g, (x: string) =>
               "-" + x.toLowerCase()) +
-            value,
+              value,
           );
         }
       }
@@ -139,7 +133,7 @@ export class ServerService {
           status: 200,
           headers: new Headers({
             "content-type":
-              "application/x-www-form-urlencoded, text/plain, application/json"
+              "application/x-www-form-urlencoded, text/plain, application/json",
           }),
           body: error.message,
         });
@@ -152,7 +146,7 @@ export class ServerService {
         status: 204,
         headers: new Headers({
           "Content-Type":
-            "application/x-www-form-urlencoded, text/plain, application/json"
+            "application/x-www-form-urlencoded, text/plain, application/json",
         }),
       });
     });
@@ -168,16 +162,16 @@ export class ServerService {
       await req.respond({
         status: 200,
         headers: new Headers({
-          "content-type": "text/html"
+          "content-type": "text/html",
         }),
         body: this.templateOutput(LetheanCli.options.getHelp()),
       });
     });
 
-    console.log("HTTPS API Routes loaded")
+    console.log("HTTPS API Routes loaded");
   }
 
-   templateOutput(input: string) {
+  templateOutput(input: string) {
     return new Filter().toHtml(
       `<html><head></head><body  style="background: radial-gradient(circle,#08f2b5 0%,#158297 100%); "><pre style=" margin-left: 2vw; width: 96vw; background: rgb(33, 33, 33);">${input}</pre></body></html>`,
     );

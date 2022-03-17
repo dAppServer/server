@@ -38,7 +38,7 @@ export class ProcessManagerProcess extends EventEmitter {
     }
     // check if we have a stdIn
     if (this.request.stdErr) {
-      //	processArgs['stderr'] = 'piped';
+      processArgs["stderr"] = "piped";
     }
     console.log(processArgs);
 
@@ -75,7 +75,7 @@ export class ProcessManagerProcess extends EventEmitter {
         if (line.trim()) {
           that.request.stdErr(line.toString());
           ZeroMQServer.sendPubMessage(that.request.key, line);
-          super.emit("stderr", line);
+          //super.emit("stderr", line);
         }
       }
     }

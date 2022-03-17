@@ -66,7 +66,7 @@ export class RestService {
       await req.respond({
         status: 200,
         headers: new Headers({
-          "content-type": "text/html"
+          "content-type": "text/html",
         }),
         body: RestService.templateOutput(handle.getHelp()),
       });
@@ -106,7 +106,7 @@ export class RestService {
           status: 200,
           headers: new Headers({
             "content-type":
-              "application/x-www-form-urlencoded, text/plain, application/json"
+              "application/x-www-form-urlencoded, text/plain, application/json",
           }),
           body: error.message,
         });
@@ -119,7 +119,7 @@ export class RestService {
         status: 204,
         headers: new Headers({
           "Content-Type":
-            "application/x-www-form-urlencoded, text/plain, application/json"
+            "application/x-www-form-urlencoded, text/plain, application/json",
         }),
       });
     });
@@ -136,7 +136,7 @@ export class RestService {
       await req.respond({
         status: 200,
         headers: new Headers({
-          "content-type": "text/html"
+          "content-type": "text/html",
         }),
         body: RestService.templateOutput(LetheanCli.options.getHelp()),
       });
