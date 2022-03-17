@@ -10,6 +10,9 @@ import { ZeroMQServer } from "../ipc/zeromq.ts";
 
 import { ensureDirSync, existsSync } from "https://deno.land/std/fs/mod.ts";
 
+/**
+ * @deprecated
+ */
 export class RestService {
   static app = createApp();
 
