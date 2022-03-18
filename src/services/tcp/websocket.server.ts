@@ -37,7 +37,7 @@ export class WebsocketServer {
           console.log(`Subscribing to ${req[1]}`);
           const sock = new Sub();
 
-          sock.connect("ws://localhost:36910/pub");
+          sock.connect("ws://127.0.0.1:36910/pub");
           sock.subscribe(req[1]);
           console.log("Subscriber connected to port 36910/pub");
           const wsClient = ws;
@@ -68,7 +68,7 @@ export class WebsocketServer {
   }
 
   public static startServer() {
-    console.log("Starting stdOut WebSocket: ws://localhost:36909");
+    console.log("Starting stdOut WebSocket: ws://127.0.0.1:36909");
     WebsocketServer.init();
   }
 }

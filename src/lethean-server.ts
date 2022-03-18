@@ -15,5 +15,5 @@ letheanServer.warmUpServer().then(() => {
     console.log(e);
   }
 }).catch((err) => console.error(err)).finally(() =>
-  console.log("Lethean Server Loaded: https://localhost:36911")
+  console.log("Lethean Server Loaded: http://127.0.0.1:36911")
 );

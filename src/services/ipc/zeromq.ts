@@ -51,8 +51,8 @@ export class ZeroMQServer {
    * Then starts a WebSocket server: ws://localhost:36910
    */
   public static startServer(): void {
-    console.log("Starting ZeroMQ WebSocket: ws://localhost:36910");
-    ZeroMQServer.socketServer = new DenoHttpServer("ws://localhost:36910");
+    console.log("Starting ZeroMQ WebSocket: ws://127.0.0.1:36910");
+    ZeroMQServer.socketServer = new DenoHttpServer("ws://127.0.0.1:36910");
     ZeroMQServer.loadPub();
     ZeroMQServer.loadPush();
     ZeroMQServer.loadRep();
