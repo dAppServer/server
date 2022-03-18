@@ -9,11 +9,11 @@ export class RouteDaemonChainStart {
   public static config() {
     let home = os.homeDir();
 
-    if (os.platform() === "windows") {
-      home = Deno.cwd();
-    } else {
+//    if (os.platform() === "windows") {
+//      home = Deno.cwd();
+//    } else {
       home = path.join(home ? home : "./", "Lethean");
-    }
+//    }
     return new Command()
       .description("Blockchain Functions")
       .option("--config-file <string>", "Specify configuration file")
@@ -183,10 +183,7 @@ export class RouteDaemonChainStart {
       .action((args) => {
         let homeDir;
         let exeFile = "";
-        if (os.platform() === "windows") {
-          homeDir = Deno.cwd();
-          exeFile = path.join(homeDir, "cli", "letheand.exe");
-        } else {
+
           homeDir = os.homeDir();
           exeFile = path.join(
             homeDir ? homeDir : "./",
@@ -194,7 +191,7 @@ export class RouteDaemonChainStart {
             "cli",
             "letheand",
           );
-        }
+
 
         ProcessManager.run(
           exeFile,
