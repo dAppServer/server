@@ -1,5 +1,18 @@
 # Lethean Server
 
+## Requirements
+
+1. Deno https://deno.land
+2. Lethean data directory `$HOME/Lethean`
+## Development Server
+```shell
+deno run --reload --allow-all --unstable https://raw.githubusercontent.com/letheanVPN/lethean-server/main/mod.ts
+```
+
+
+
+# The content below is outdated, ish, left for moving to docs.lt.hn
+
 https://hub.docker.com/r/lthn/server
 
 `docker pull lthn/server:latest`

@@ -15,7 +15,7 @@
     "url": "https://github.com/letheanVPN/lethean-server.git"
   },
   "scripts": {
-    "dev": "deno run --watch --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/lethean-server.ts",
+    "dev": "deno run --watch --allow-net --allow-env --allow-run --allow-read --allow-write --unstable mod.ts",
     "dev:setup": "cd $HOME/Lethean/conf && git clone https://github.com/letheanVPN/config-templates.git templates",
     "start": "deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/lethean-server.ts",
     "server:compile": "deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --target  ",

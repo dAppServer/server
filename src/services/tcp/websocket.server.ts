@@ -68,7 +68,7 @@ export class WebsocketServer {
   }
 
   public static startServer() {
-    console.log("Starting stdOut WebSocket: ws://127.0.0.1:36909");
+    console.info("Starting stdOut WebSocket: ws://127.0.0.1:36909");
     WebsocketServer.init();
   }
 }
