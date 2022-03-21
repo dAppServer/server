@@ -46,7 +46,9 @@ export class LetheanCli {
               .action( (args) => {
 
                 if (Deno.env.get("REST")) {
-                  throw new RPCResponse(args['jsonpath'])
+                  throw new RPCResponse(`http://127.0.0.1:48782/${
+                    args['jsonpath'].replace(/['"]+/g, "")
+                  }`)
                 }
               })
               .command("export", RouteDaemonChainExport.config())

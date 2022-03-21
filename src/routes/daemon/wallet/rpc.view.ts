@@ -6,6 +6,7 @@ import { ProcessManager } from "../../../services/process/process.service.ts";
 import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
 import { RouteDaemonWalletCli } from "./cli.view.ts";
 import { DaemonChainWalletVpnRpcView } from "./vpn-rpc.view.ts";
+import { RPCResponse } from "../../../interfaces/rpc-response.ts";
 
 export class RouteDaemonWalletRpc {
   public static config() {
@@ -100,25 +101,16 @@ export class RouteDaemonWalletRpc {
             stdOut: (stdOut: unknown) => console.log(stdOut),
           } as ProcessManagerRequest,
         );
-        if (Deno.env.get("REST")) {
-          throw new StringResponse("Started");
-        }
+
       })
       .command("json_rpc")
       .description("Talk to the wallet RPC via the json_rpc endpoint")
       .option("-r,--request <string>", "payload to send")
-      .action(async (args) => {
-        //console.log(args.request.slice(1, args.request.length-1))
-        const postReq = await fetch("http://localhost:36963/json_rpc", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: args.request.slice(1, args.request.length - 1),
-        });
+      .action((args) => {
+
         // console.log(await postReq.text())
         if (Deno.env.get("REST")) {
-          throw new StringResponse(await postReq.text());
+          throw new RPCResponse("http://localhost:36963/json_rpc");
         }
       });
   }

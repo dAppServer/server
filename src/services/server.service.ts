@@ -151,10 +151,9 @@ export class ServerService {
       if (context.request.url.pathname.length > 0) {
         cmdArgs = context.request.url.pathname.replace("/", "").split("/");
       }
+      const payload = await context.request.body({ type: "json" }).value;
 
-      if (await context.request.body({ type: "json" }).value > 0) {
 //console.error(await context.request.body({ type: "json" }).value)
-        const payload = await context.request.body({ type: "json" }).value;
 
         if (payload["jsonpath"]) {
           cmdArgs.push(`--jsonpath="${payload["jsonpath"]}"`);
@@ -165,8 +164,10 @@ export class ServerService {
           }
 
         } else if (payload["jsonrpc"]) {
-          cmdArgs.push(`--request="${JSON.stringify(payload)}"`);
-        } else {
+          cmdArgs.push(`--request="${payload}"`);
+        }else {
+
+          console.info(payload)
           for (const key in payload) {
             const value = payload[key].length > 1 ? `=${payload[key]}` : "";
             cmdArgs.push(
@@ -176,7 +177,7 @@ export class ServerService {
             );
           }
         }
-      }
+
 
       try {
         await LetheanCli.run(cmdArgs);
@@ -188,12 +189,14 @@ export class ServerService {
             "application/x-www-form-urlencoded, text/plain, application/json",
           "Access-Control-Allow-Origin": "*"
         });
-        if (error instanceof RPCResponse) {
-          context.response.body = await this.performRequest(error.message, context);
-        } else {
 
-          context.response.body = error.message;
+        if((error.message as string).startsWith('http')){
+          context.response.body = await this.performRequest(error.message, context);
+        }else{
+          context.response.body = error.message
         }
+
+
       }
     });
 
@@ -232,12 +235,12 @@ export class ServerService {
     );
   }
 
-  async performRequest(args: any, context: any) {
+  async performRequest(path: string, context: any) {
     try {
+      console.warn(path)
+      console.warn(await context.request.body({ type: "text" }).value)
       const postReq = await fetch(
-        `http://localhost:48782/${
-          args.replace(/['"]+/g, "")
-        }`,
+        path,
         {
           method: "POST",
           headers: {

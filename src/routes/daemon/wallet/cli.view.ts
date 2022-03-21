@@ -121,9 +121,7 @@ export class RouteDaemonWalletCli {
             stdOut: (stdOut: unknown) => console.log(stdOut),
           } as ProcessManagerRequest,
         );
-        if (Deno.env.get("REST")) {
-          throw new StringResponse("Started");
-        }
+
       });
   }
 }
