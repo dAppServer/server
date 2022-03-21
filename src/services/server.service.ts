@@ -2,15 +2,20 @@ import { LetheanCli } from "../lethean-cli.ts";
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { WebsocketServer } from "./tcp/websocket.server.ts";
 import { Filter } from "./console-to-html.service.ts";
-import { createApp } from "https://deno.land/x/servest@v1.3.4/app.ts";
-import { cors } from "https://deno.land/x/servest@v1.3.4/middleware/cors.ts";
 import * as path from "https://deno.land/std/path/mod.ts";
 import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
 import { ensureDirSync, existsSync } from "https://deno.land/std/fs/mod.ts";
+import { Application, Router } from "https://deno.land/x/oak/mod.ts";
+import { oakCors } from "https://deno.land/x/cors@v1.2.0/mod.ts";
+import { RPCResponse } from "../interfaces/rpc-response.ts";
+import { RouterContext } from "https://deno.land/x/oak@v10.4.0/router.ts";
 
 export class ServerService {
-  constructor() {}
-  app = createApp();
+  constructor() {
+  }
+
+  app: Application = new Application();
+  router: Router = new Router();
   home: string = (os.homeDir() ? os.homeDir() : "") as string;
   static pathPerms: any = {
     backend: false,
@@ -18,35 +23,66 @@ export class ServerService {
     daemon: true,
     update: true,
     help: false,
-    completions: false,
+    completions: false
   };
 
   async warmUpServer() {
     await LetheanCli.init();
   }
 
-  startServer() {
+  async startServer() {
     ZeroMQServer.startServer();
     WebsocketServer.startServer();
 
-    this.loadRoutes();
 
-    this.app.use(cors({
+    this.app.use(oakCors({
       origin: "*",
       methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
       allowedHeaders: ["content-type"],
-      maxAge: 1,
+      maxAge: 1
     }));
 
 //     if (!existsSync(path.join(this.home, 'Lethean', 'conf', 'private.pem'))) {
 //     	console.log('No localhost ssl cert found, injecting a pre made one so we can start a tls server and fix this');
 //     	this.injectPem();
 //     }
+    // this.app.use(oakCors({ origin: /^.+(localhost|127.0.0.1):(36911|1234)$/ }));
+    this.loadRoutes();
+    this.app.use(this.router.routes());
+    this.app.use(this.router.allowedMethods());
 
 
-    this.app.listen({
+    // Logger
+    this.app.use(async (ctx, next) => {
+      await next();
+      const rt = ctx.response.headers.get("X-Response-Time");
+//      console.log(`${ctx.request.method} ${ctx.request.url} - ${rt}`);
+    });
+
+// Timing
+    this.app.use(async (ctx, next) => {
+      const start = Date.now();
+      await next();
+      const ms = Date.now() - start;
+      ctx.response.headers.set("X-Response-Time", `${ms}ms`);
+    });
+    this.app.addEventListener("error", (evt) => {
+      // Will log the thrown error to the console.
+      console.error(evt.error);
+    });
+
+    this.app.addEventListener("listen", ({ hostname, port, secure }) => {
+      console.info(
+        `Listening on: ${secure ? "https://" : "http://"}${
+          hostname ??
+          "localhost"
+        }:${port}`
+      );
+    });
+
+    await this.app.listen({
       "hostname": "127.0.0.1",
-      "port": 36911,
+      "port": 36911
 //      "certFile": `${path.join(this.home, "Lethean", "conf", "public.pem")}`,
 //      "keyFile": `${path.join(this.home, "Lethean", "conf", "private.pem")}`,
     });
@@ -56,7 +92,7 @@ export class ServerService {
     try {
       await LetheanCli.run(args);
     } catch (error) {
-      console.error(error.message);
+      console.log(error.message);
       Deno.exit(2);
     }
   }
@@ -96,39 +132,49 @@ export class ServerService {
     /**
      * setup the help documentation
      */
-    this.app.get(path, async (req) => {
-      await req.respond({
-        status: 200,
-        headers: new Headers({
-          "content-type": "text/html",
-        }),
-        body: this.templateOutput(handle.getHelp()),
+    this.router.get(path, (context) => {
+      context.response.status = 200;
+      context.response.headers = new Headers({
+        "content-type": "text/html",
+        "Access-Control-Allow-Origin": "*"
       });
+      context.response.body = this.templateOutput(handle.getHelp());
     });
 
     /**
      * Setup the action runner
      */
-    this.app.post(path, async (req) => {
-      const cmdArgs = req.url.replace("/", "").split("/");
+    this.router.post(path, async (context) => {
 
-      const payload = await req.json();
+      //console.error(context.request.url.pathname.replace("/", "").split("/"))
+      let cmdArgs: string[] = [];
+      if (context.request.url.pathname.length > 0) {
+        cmdArgs = context.request.url.pathname.replace("/", "").split("/");
+      }
 
-      if (payload["jsonpath"]) {
-        cmdArgs.push(`--jsonpath="${payload["jsonpath"]}"`);
-        cmdArgs.push(
-          `--request="${JSON.stringify(payload["request"])}"`,
-        );
-      } else if (payload["jsonrpc"]) {
-        cmdArgs.push(`--request="${JSON.stringify(payload)}"`);
-      } else {
-        for (const key in payload) {
-          const value = payload[key].length > 1 ? `=${payload[key]}` : "";
-          cmdArgs.push(
-            "--" + key.replace(/([A-Z])/g, (x: string) =>
-              "-" + x.toLowerCase()) +
-              value,
-          );
+      if (await context.request.body({ type: "json" }).value > 0) {
+//console.error(await context.request.body({ type: "json" }).value)
+        const payload = await context.request.body({ type: "json" }).value;
+
+        if (payload["jsonpath"]) {
+          cmdArgs.push(`--jsonpath="${payload["jsonpath"]}"`);
+          if (payload["request"]) {
+            cmdArgs.push(
+              `--request="${JSON.stringify(payload["request"])}"`
+            );
+          }
+
+        } else if (payload["jsonrpc"]) {
+          cmdArgs.push(`--request="${JSON.stringify(payload)}"`);
+        } else {
+          for (const key in payload) {
+            const value = payload[key].length > 1 ? `=${payload[key]}` : "";
+            cmdArgs.push(
+              "--" + key.replace(/([A-Z])/g, (x: string) =>
+                "-" + x.toLowerCase()) +
+              value
+            );
+          }
         }
       }
 
@@ -136,28 +182,31 @@ export class ServerService {
         await LetheanCli.run(cmdArgs);
         // to send a response throw new StringResponse()
       } catch (error) {
-        return await req.respond({
-          status: 200,
-          headers: new Headers({
-            "content-type":
-              "application/x-www-form-urlencoded, text/plain, application/json",
-          }),
-          body: error.message,
+        context.response.status = 200;
+        context.response.headers = new Headers({
+          "content-type":
+            "application/x-www-form-urlencoded, text/plain, application/json",
+          "Access-Control-Allow-Origin": "*"
         });
+        if (error instanceof RPCResponse) {
+          context.response.body = await this.performRequest(error.message, context);
+        } else {
+
+          context.response.body = error.message;
+        }
       }
     });
 
-    this.app.options(path, async (req) => {
-      console.log("OPTIONS");
-      return await req.respond({
-        status: 204,
-        headers: new Headers({
-          "Content-Type":
-            "application/x-www-form-urlencoded, text/plain, application/json",
-        }),
+    this.router.options(path, (context) => {
+      context.response.status = 204;
+      context.response.headers = new Headers({
+        "Content-Type":
+          "application/x-www-form-urlencoded, text/plain, application/json",
+        "Access-Control-Allow-Origin": "*"
       });
     });
   }
+
   /**
    * Bootstraps the REST Router
    */
@@ -165,23 +214,44 @@ export class ServerService {
     Deno.env.set("REST", "1");
     this.discoverRoute("", LetheanCli.options.commands);
 
-    this.app.handle("/", async (req) => {
-      await req.respond({
-        status: 200,
-        headers: new Headers({
-          "content-type": "text/html",
-        }),
-        body: this.templateOutput(LetheanCli.options.getHelp()),
+    this.router.get("/", (context) => {
+      context.response.status = 200;
+      context.response.headers = new Headers({
+        "content-type": "text/html",
+        "Access-Control-Allow-Origin": "*"
       });
+      context.response.body = this.templateOutput(LetheanCli.options.getHelp());
     });
 
-    console.log("HTTPS API Routes loaded");
+    console.info("HTTPS API Routes loaded");
   }
 
   templateOutput(input: string) {
     return new Filter().toHtml(
-      `<html><head></head><body  style="background: radial-gradient(circle,#08f2b5 0%,#158297 100%); "><pre style=" margin-left: 2vw; width: 96vw; background: rgb(33, 33, 33);">${input}</pre></body></html>`,
+      `<html><head></head><body  style="background: radial-gradient(circle,#08f2b5 0%,#158297 100%); "><pre style=" margin-left: 2vw; width: 96vw; background: rgb(33, 33, 33);">${input}</pre></body></html>`
     );
+  }
+
+  async performRequest(args: any, context: any) {
+    try {
+      const postReq = await fetch(
+        `http://localhost:48782/${
+          args.replace(/['"]+/g, "")
+        }`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: await context.request.body({ type: "text" }).value
+        }
+      );
+      return await postReq.text();
+    } catch (error) {
+      console.warn(error);
+    }
+
+
   }
 
   private injectPem() {
@@ -219,7 +289,7 @@ POXQI8VdCYSaeVldzcQrIoqrUSWcNBn1sot2yn0CgYA+x7ttCDuuUS14GKVPzj4x
 P+wm0SYZlfhIXPlq8hDOPkWrri8SfvPm4HZnhBnQ+XCCV6siD39FsBV+/o7Oscmr
 Hzdy9maORT5Ls/9auaJR4pYFiZdEJ92+7uuaysJxUIR09RIgSvZzjBXKbMMk1Hh4
 AhLxWdfgyjUnMmu+CyXsOg==
------END PRIVATE KEY-----`,
+-----END PRIVATE KEY-----`
     );
     Deno.writeTextFileSync(
       path.join(home ? home : "~", "Lethean", "conf", "public.pem"),
@@ -241,7 +311,7 @@ VERPcvbK6/7PXLloINs1COsRGeqO146/xLzouVp9l/LHBt1NUvilWkLi8+TXrmJK
 bCVkXbjWl3QwzAi6NU6RB6JUfGPXzdEcVdObRIbrAuWQ6qgq4KBhv8ov4L6kg/0+
 nRWqQNOMN9b+ADixaJZezekV5TUbs2swsu8OzW+fVNUZDmtrPvLbtNL6cgzKMLXl
 IQIy+HTxSq+H0oTafriFZQ+OjQ==
------END CERTIFICATE-----`,
+-----END CERTIFICATE-----`
     );
   }
 }

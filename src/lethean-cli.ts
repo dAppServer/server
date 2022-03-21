@@ -1,7 +1,6 @@
 import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
 import { CompletionsCommand } from "https://deno.land/x/cliffy/command/completions/mod.ts";
 import { HelpCommand } from "https://deno.land/x/cliffy/command/help/mod.ts";
-import { RestService } from "./services/tcp/rest.service.ts";
 import { RouteFilesystem } from "./routes/filesystem.view.ts";
 import { RouteUpdate } from "./routes/update.view.ts";
 import { RouteObject } from "./routes/object.view.ts";
@@ -10,13 +9,13 @@ import { RouteDaemonChainExport } from "./routes/daemon/chain/export.view.ts";
 import { RouteDaemonChainImport } from "./routes/daemon/chain/import.view.ts";
 import { RouteDaemonWalletRpc } from "./routes/daemon/wallet/rpc.view.ts";
 import { RouteConfig } from "./routes/config.view.ts";
-import { StringResponse } from "./interfaces/string-response.ts";
+import { RPCResponse } from "./interfaces/rpc-response.ts";
 
 export class LetheanCli {
   public static options: any;
 
   static async run(args: string[]) {
-    console.log(`Arguments passed ${args.join(", ")}`);
+    //console.log(`Arguments passed ${args.join(", ")}`);
     return await LetheanCli.options.parse(args);
   }
 
@@ -44,27 +43,10 @@ export class LetheanCli {
                   default: "json_rpc",
                 },
               )
-              .action(async (args) => {
-                //console.log(args.request.slice(1, args.request.length-1))
-                const postReq = await fetch(
-                  `http://localhost:48782/${
-                    args.jsonpath.replace(/['"]+/g, "")
-                  }`,
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: args.request.slice(
-                      1,
-                      args.request.length - 1,
-                    ),
-                  },
-                );
+              .action( (args) => {
+
                 if (Deno.env.get("REST")) {
-                  throw new StringResponse(
-                    await postReq.text(),
-                  );
+                  throw new RPCResponse(args['jsonpath'])
                 }
               })
               .command("export", RouteDaemonChainExport.config())
@@ -73,7 +55,6 @@ export class LetheanCli {
           .command("wallet", RouteDaemonWalletRpc.config()),
       )
       .command("update", RouteUpdate.config())
-      .command("backend", RestService.config())
       .command("filesystem", RouteFilesystem.config())
       .command("config", RouteConfig.config())
       .command("object", RouteObject.config())

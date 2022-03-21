@@ -1,5 +1,5 @@
 import { LetheanCli } from "../../lethean-cli.ts";
-import { RestService } from "../../services/tcp/rest.service.ts";
+import { ServerService } from "../../services/server.service.ts";
 
 export class OpenAPIGeneratorService {
   public static openapi: any = {
@@ -37,8 +37,8 @@ export class OpenAPIGeneratorService {
     for (const dat of routes) {
       const key = dat[0], value = dat[1];
       if (
-        RestService.pathPerms[key] === undefined ||
-        RestService.pathPerms[key] !== false
+        ServerService.pathPerms[key] === undefined ||
+        ServerService.pathPerms[key] !== false
       ) {
         //console.log(`Adding route: ${[base, key].join('/')}`);
         const pathKey = [base, key].join("/");

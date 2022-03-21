@@ -66,9 +66,9 @@ export class ZeroMQServer {
    * @param {string} message
    */
   public static sendPubMessage(channel: string, message: string) {
-    console.log(
-      `ZeroMQ PubSub ${channel} message length: ${message.length}`,
-    );
+//    console.info(
+//      `ZeroMQ PubSub ${channel} message length: ${message.length}`,
+//    );
     ZeroMQServer.sockets.pubsub.send([channel, message]);
   }
 
@@ -81,16 +81,16 @@ export class ZeroMQServer {
   }
 
   public static sendRepMessage(channel: string, message: string) {
-    console.log(
-      `ZeroMQ ReqRep ${channel} message length: ${message.length}`,
-    );
+//    console.log(
+//      `ZeroMQ ReqRep ${channel} message length: ${message.length}`,
+//    );
     ZeroMQServer.sockets.reqrep.send([channel, message]);
   }
 
   public static sendPushMessage(channel: string, message: string) {
-    console.log(
-      `ZeroMQ PushPull ${channel} message length: ${message.length}`,
-    );
+//    console.log(
+//      `ZeroMQ PushPull ${channel} message length: ${message.length}`,
+//    );
     ZeroMQServer.sockets.pushpull.send(message);
   }
 
