@@ -24,10 +24,8 @@ export class RouteUpdate {
       .description("Update lthn")
       .command("cli", "Downloads the latest CLI binaries")
       .action(async (args) => {
-        await LetheanUpdater.download(args).then((dat) => {
-          if (Deno.env.get("REST")) {
-            throw new StringResponse(dat);
-          }
+        await new LetheanUpdater().download(args).then((dat) => {
+          console.info("Updated Lethean Binaries")
         });
       });
   }
