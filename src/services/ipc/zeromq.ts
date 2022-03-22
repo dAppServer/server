@@ -14,7 +14,7 @@ export class ZeroMQServer {
    * @type {string}
    * @private
    */
-  private static pubEndpoint = "ws://localhost:36910/pub";
+  private static pubEndpoint = "ws://127.0.0.1:36910/pub";
 
   /**
    * Request/Response Endpoint
@@ -22,7 +22,7 @@ export class ZeroMQServer {
    * @type {string}
    * @private
    */
-  private static repEndpoint = "ws://localhost:36910/rep";
+  private static repEndpoint = "ws://127.0.0.1:36910/rep";
 
   /**
    * Push/Pull Endpoint
@@ -30,7 +30,7 @@ export class ZeroMQServer {
    * @type {string}
    * @private
    */
-  private static pushEndpoint = "ws://localhost:36910/push";
+  private static pushEndpoint = "ws://127.0.0.1:36910/push";
 
   /**
    * ZeroMQ Websocket Server
@@ -66,55 +66,82 @@ export class ZeroMQServer {
    * @param {string} message
    */
   public static sendPubMessage(channel: string, message: string) {
-//    console.info(
-//      `ZeroMQ PubSub ${channel} message length: ${message.length}`,
-//    );
-    ZeroMQServer.sockets.pubsub.send([channel, message]);
+    if (ZeroMQServer.sockets["pubsub"]) {
+      ZeroMQServer.sockets.pubsub.send([channel, message]);
+    }
   }
 
+
+  /**
+   * Subscribes to the Pub/Sub Publish endpoint
+   *
+   * @param {string} channel
+   * @param cb
+   */
   public static subscribeSubMessage(channel: string, cb: any) {
     const sock = new Sub();
     sock.connect(ZeroMQServer.pubEndpoint);
     sock.subscribe(channel);
-    console.log("Subscriber connected to port 36910");
+    console.info("Subscriber connected to port 36910");
     sock.on("message", console.log);
   }
 
+  /**
+   * Sends message to reqrep channel
+   *
+   * @param {string} channel
+   * @param {string} message
+   */
   public static sendRepMessage(channel: string, message: string) {
-//    console.log(
-//      `ZeroMQ ReqRep ${channel} message length: ${message.length}`,
-//    );
-    ZeroMQServer.sockets.reqrep.send([channel, message]);
+    if (ZeroMQServer.sockets["reqrep"]) {
+      ZeroMQServer.sockets.reqrep.send([channel, message]);
+    }
   }
 
+  /**
+   *Sends message to pushpull channel
+   *
+   * @param {string} channel
+   * @param {string} message
+   */
   public static sendPushMessage(channel: string, message: string) {
-//    console.log(
-//      `ZeroMQ PushPull ${channel} message length: ${message.length}`,
-//    );
-    ZeroMQServer.sockets.pushpull.send(message);
+    if (ZeroMQServer.sockets["pushpull"]) {
+      ZeroMQServer.sockets.pushpull.send(message);
+    }
   }
 
+  /**
+   * @private
+   */
   private static loadRep() {
     ZeroMQServer.sockets.reqrep = new zmq.Rep();
     ZeroMQServer.sockets.reqrep.bind(
       ZeroMQServer.socketServer,
-      ZeroMQServer.repEndpoint,
+      ZeroMQServer.repEndpoint
     );
   }
 
+  /**
+   *
+   * @private
+   */
   private static loadPub() {
     ZeroMQServer.sockets.pubsub = new zmq.Pub();
     ZeroMQServer.sockets.pubsub.bind(
       ZeroMQServer.socketServer,
-      ZeroMQServer.pubEndpoint,
+      ZeroMQServer.pubEndpoint
     );
   }
 
+  /**
+   *
+   * @private
+   */
   private static loadPush() {
     ZeroMQServer.sockets.pushpull = new zmq.Push();
     ZeroMQServer.sockets.pushpull.bind(
       ZeroMQServer.socketServer,
-      ZeroMQServer.pushEndpoint,
+      ZeroMQServer.pushEndpoint
     );
   }
 }
