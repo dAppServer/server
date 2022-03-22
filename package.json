@@ -9,13 +9,14 @@
     "email": "hello@lt.hn"
   },
   "author": "Snider <snider@lt.hn> (Snider.lthn)",
-  "main": "src/server.ts",
+  "main": "mod.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/letheanVPN/lethean-server.git"
   },
   "scripts": {
-    "dev": "deno run --watch --allow-net --allow-env --allow-run --allow-read --allow-write --unstable mod.ts",
+    "dev": "deno run --watch --allow-all --unstable mod.ts",
+    "dev:gui": "deno run --watch --allow-all --unstable mod.ts gui",
     "dev:setup": "cd $HOME/Lethean/conf && git clone https://github.com/letheanVPN/config-templates.git templates",
     "start": "deno run --allow-net --allow-env --allow-run --allow-read --allow-write --unstable src/lethean-server.ts",
     "server:compile": "deno compile --unstable --allow-env --allow-run --allow-net --allow-read --allow-write --target  ",
