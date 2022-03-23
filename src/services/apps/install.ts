@@ -24,7 +24,7 @@ export class LetheanAppInstall {
    * @returns {boolean}
    */
   installed(){
-    return FilesystemService.exists({path: path.join('apps', ...this.plugin.code.split('-'),'lthn.json')})
+    return FilesystemService.exists({path: path.join('apps', ...this.plugin.code.split('-'))})
   }
 
   /**

@@ -17,7 +17,7 @@ try {
     }else{
       await letheanServer.startServer().catch((error) => {
         console.error(error)
-      }).then(() =>  console.warn('dd'));
+      });
     }
 
 

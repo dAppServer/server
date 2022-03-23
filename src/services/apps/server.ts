@@ -14,11 +14,9 @@ export class LetheanAppServer {
    * @returns {Promise<void>}
    */
   static async loadPlugins() {
-    if (FilesystemService.exists({ path: 'apps/apps.json' })) {
 
-    } else {
-      console.info("Could not find server apps configuration, starting setup")
       const setup = new LetheanAppInstall()
+      const desktop = new LetheanAppInstall({code: "lthn-app-desktop", config: 'https://raw.githubusercontent.com/letheanVPN/lthn-app-desktop/main/lthn.json'})
 
       if (!setup.installed()) {
         console.info(`Installing: lthn-app-setup`)
@@ -28,6 +26,14 @@ export class LetheanAppServer {
         console.info(`Plugin Found: ${LetheanAppServer.plugins[0].name}`)
       }
 
-    }
+      if(!desktop.installed()){
+        console.info(`Installing: lthn-app-desktop`)
+        await desktop.install();
+      }else {
+        LetheanAppServer.plugins.push({ name: 'lthn-app-desktop' })
+        console.info(`Plugin Found: ${LetheanAppServer.plugins[1].name}`)
+      }
+
+
   }
 }

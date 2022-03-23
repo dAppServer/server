@@ -53,7 +53,7 @@ export class FilesystemService {
   static exists(args: { path: string }){
 
     try {
-      return !!Deno.readFileSync(FilesystemService.path(args.path));
+      return !!Deno.readDirSync(FilesystemService.path(args.path));
     }catch (e){
       return false
     }
