@@ -3,16 +3,16 @@
   "version": "0.1.2",
   "license": "EUPL-1.2",
   "description": "Lethean VPN Node",
-  "homepage": "https://github.com/letheanVPN/dappserver.io/wiki",
+  "homepage": "https://github.com/letheanVPN/lethean-server/wiki",
   "bugs": {
-    "url": "https://github.com/letheanVPN/dappserver.io/issues",
+    "url": "https://github.com/letheanVPN/lethean-server/issues",
     "email": "hello@lt.hn"
   },
   "author": "Snider <snider@lt.hn> (Snider.lthn)",
   "main": "mod.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/letheanVPN/dappserver.io.git"
+    "url": "https://github.com/letheanVPN/lethean-server.git"
   },
   "scripts": {
     "dev": "deno run --watch -A --unstable --import-map vendor/import_map.json mod.ts",
