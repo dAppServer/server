@@ -10,6 +10,9 @@ import { RouteDaemonChainImport } from "./routes/daemon/chain/import.view.ts";
 import { RouteDaemonWalletRpc } from "./routes/daemon/wallet/rpc.view.ts";
 import { RouteConfig } from "./routes/config.view.ts";
 import { RPCResponse } from "./interfaces/rpc-response.ts";
+import { FilesystemService } from "./services/filesystem.service.ts";
+import { LetheanUpdater } from "./services/update.service.ts";
+import * as path from "https://deno.land/std/path/mod.ts";
 
 export class LetheanCli {
   public static options: any;
@@ -20,6 +23,13 @@ export class LetheanCli {
   }
 
   static async init() {
+    try {
+      Deno.readDirSync( path.join(Deno.cwd(), 'cli'))
+    }catch (e) {
+      console.info('Downloading Lethean Blockchain Executables')
+      await new LetheanUpdater().download({})
+    }
+
     LetheanCli.options = await new Command()
       .name("lethean-server")
       .version("0.1.2")

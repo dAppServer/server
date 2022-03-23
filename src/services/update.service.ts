@@ -5,6 +5,7 @@ import * as path from "https://deno.land/std/path/mod.ts";
 import { copy } from "https://deno.land/std@0.95.0/fs/mod.ts";
 
 import { ZeroMQServer } from "./ipc/zeromq.ts";
+import { FilesystemService } from "./filesystem.service.ts";
 
 export class LetheanUpdater {
 
@@ -22,8 +23,10 @@ export class LetheanUpdater {
     try {
       const destination: Destination = {
         file: filename,
-        dir: path.join(Deno.cwd())
+        dir: path.join(Deno.cwd(), 'cli')
       };
+
+      FilesystemService.ensureDir(path.join(Deno.cwd(), 'cli'))
       ZeroMQServer.sendPubMessage(
         "update-cli",
         `Starting download to ${destination.dir}`
@@ -32,7 +35,7 @@ export class LetheanUpdater {
       const fileObj = await download(url, destination);
       console.info(`Downloaded to: ${destination.dir}`)
       ZeroMQServer.sendPubMessage("update-cli", `Downloaded file`);
-      await Deno.remove(path.join(Deno.cwd(),'cli'), { recursive: true})
+      //await Deno.remove(path.join(Deno.cwd(),'cli'), { recursive: true})
       ZeroMQServer.sendPubMessage(
         "update-cli",
         `Unpacking Downloaded zip`
@@ -64,11 +67,19 @@ export class LetheanUpdater {
           ),
           { recursive: true }
         );
+        await Deno.remove(
+          path.join(
+            Deno.cwd(),
+            "cli",
+            '__MACOSX'
+          ),
+          { recursive: true }
+        );
         await Deno.remove(path.join(
           Deno.cwd(),
+          'cli',
           filename ? filename : ""
         ));
-        console.log("FIN");
       } catch (e) {
         console.error(e);
       }
