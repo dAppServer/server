@@ -1,12 +1,16 @@
 import { FilesystemService } from "../filesystem.service.ts";
 import * as path from "https://deno.land/std/path/mod.ts";
-import { Destination, download } from "https://deno.land/x/download/mod.ts";
 import { LetheanDownloadService } from "../download.service.ts";
 
 export class LetheanAppInstall {
 
   plugin: {code: string, config: string} = {code: 'lthn-app-setup', config: "https://raw.githubusercontent.com/letheanVPN/lthn-app-setup/main/lthn.json"}
 
+  /**
+   * Init a plugin on the system
+   *
+   * @param {{code: string, config: string}} plugin
+   */
   constructor(plugin?: {code: string, config: string} ) {
     if (plugin){
       this.plugin = plugin
@@ -14,10 +18,20 @@ export class LetheanAppInstall {
 
   }
 
+  /**
+   * Checks if the package is installed
+   *
+   * @returns {boolean}
+   */
   installed(){
     return FilesystemService.exists({path: path.join('apps', ...this.plugin.code.split('-'),'lthn.json')})
   }
 
+  /**
+   * Attempts to install the package locally
+   *
+   * @returns {Promise<boolean>}
+   */
   async install() {
 
     const jsonResponse = await fetch( this.plugin.config, {cache: "no-cache"});

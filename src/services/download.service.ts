@@ -4,6 +4,13 @@ import { FilesystemService } from "./filesystem.service.ts";
 
 export class LetheanDownloadService {
 
+  /**
+   * Downloads and extracts a zip file's contents to the dest directory
+   *
+   * @param {string} url
+   * @param {string} dest
+   * @returns {Promise<void>}
+   */
   static async downloadZipContents(url: string, dest: string) {
 
     const filename =  url.split('/').pop() ?? ''

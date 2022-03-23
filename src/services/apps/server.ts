@@ -8,6 +8,11 @@ export class LetheanAppServer {
   constructor() {
   }
 
+  /**
+   * Load plugins or install the setup app if empty
+   *
+   * @returns {Promise<void>}
+   */
   static async loadPlugins() {
     if (FilesystemService.exists({ path: 'apps/apps.json' })) {
 
