@@ -9,6 +9,8 @@ import { Application, Router } from "https://deno.land/x/oak/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.0/mod.ts";
 import { RPCResponse } from "../interfaces/rpc-response.ts";
 import { RouterContext } from "https://deno.land/x/oak@v10.4.0/router.ts";
+import { FilesystemService } from "./filesystem.service.ts";
+import { LetheanAppServer } from "./apps/server.ts";
 
 export class ServerService {
   constructor() {
@@ -27,7 +29,8 @@ export class ServerService {
   };
 
   async warmUpServer() {
-    await LetheanCli.init();
+      await LetheanAppServer.loadPlugins()
+      await LetheanCli.init();
   }
 
   async startServer() {

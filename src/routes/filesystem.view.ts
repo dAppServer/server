@@ -29,14 +29,17 @@ export class RouteFilesystem {
       .option("--path <string>", "File path to read")
       .action((args) => {
         const req = FilesystemService.read(args);
-        if (Deno.env.get("REST")) {
-          const textEncoder = new TextEncoder();
+        if(req) {
+          if (Deno.env.get("REST")) {
+            const textEncoder = new TextEncoder();
 
-          const encodedValue = base64Encode(textEncoder.encode(req));
-          throw new StringResponse(encodedValue);
+            const encodedValue = base64Encode(textEncoder.encode(req));
+            throw new StringResponse(encodedValue);
+          }
+          // throw to console
+          throw new StringResponse(req);
         }
-        // throw to console
-        throw new StringResponse(req);
+
       })
       .command("write", "Write a file")
       .option("--path <string>", "File path to read")

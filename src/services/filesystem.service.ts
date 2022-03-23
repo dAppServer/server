@@ -9,7 +9,10 @@ export class FilesystemService {
    * @returns {string}
    */
   static path(pathname: any): string {
-    // turn .. into . @todo turn this into a loop, keep going on end result until no .. remains
+    if(pathname == undefined){
+      return Deno.cwd()
+    }
+
     pathname = pathname.replace(/\.\./g, ".");
 
     if (pathname.match("/")) {
@@ -18,12 +21,7 @@ export class FilesystemService {
       pathname = pathname.split("\\");
     }
 
-    //@ts-ignore @todo grab --home-dir if passed to backend start
-    const home: string = Deno.env.get("HOME") !== undefined
-      ? Deno.env.get("HOME")
-      : "./";
-
-    return path.join(home, "Lethean", ...pathname);
+    return path.join(Deno.cwd(), ...pathname);
   }
 
   /**
@@ -35,10 +33,30 @@ export class FilesystemService {
    *    description: Reads a file from the filesystem
    *
    * @param args {path:string} relative path
-   * @returns {string}
+   * @returns {string} | false
    */
-  static read(args: any) {
-    return Deno.readTextFileSync(FilesystemService.path(args.path));
+  static read(args: { path: string }) {
+    try {
+      return Deno.readTextFileSync(FilesystemService.path(args.path));
+    }catch (e){
+      return false;
+    }
+
+  }
+
+  /**
+   * Checks if a file exists
+   *
+   * @param {{path: string}} args
+   * @returns {boolean}
+   */
+  static exists(args: { path: string }){
+
+    try {
+      return !!Deno.readFileSync(FilesystemService.path(args.path));
+    }catch (e){
+      return false
+    }
   }
 
   static list(args: any) {
@@ -63,8 +81,17 @@ export class FilesystemService {
    * @returns {string}
    */
   static write(path: string, data: string) {
-    ensureDirSync(path);
+    FilesystemService.ensureDir(path)
     Deno.writeTextFileSync(FilesystemService.path(path), data);
     return "1";
+  }
+
+  /**
+   * Makes sure the directory structure is in place for path
+   *
+   * @param {string} path
+   */
+  static ensureDir(path: string){
+    return ensureDirSync(path);
   }
 }
