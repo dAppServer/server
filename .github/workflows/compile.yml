@@ -28,11 +28,13 @@ jobs:
       - uses: actions/checkout@v3
       - uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.18.x
+          deno-version: v1.20.x
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
       - run: npm run server:build:${{ matrix.type }}
+      - if: matrix.type !== 'windows'
+        run: chmod +x lethean-server
       - uses: papeloto/action-zip@v1
         if: matrix.type != 'windows'
         with:
