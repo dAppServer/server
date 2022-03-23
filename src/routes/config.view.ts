@@ -15,8 +15,9 @@ export class RouteConfig {
           ),
         );
       })
-      .command("get", "Gets a file with fresh configuration")
+      .command("get", "Templated configuration files, adhoc")
       .option("-f,--file <string>", "Specify configuration file")
+      .option("-m,--modal <string>", "JSON data to pass to the template engine")
       .action(async (args) => {
         //if (Deno.env.get('REST')) {
         throw new StringResponse(
