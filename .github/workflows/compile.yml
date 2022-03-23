@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: 16.x
       - run: npm run server:build:${{ matrix.type }}
-      - if: matrix.type !== 'windows'
+      - if: matrix.type != 'windows'
         run: chmod +x lethean-server
       - uses: papeloto/action-zip@v1
         if: matrix.type != 'windows'
