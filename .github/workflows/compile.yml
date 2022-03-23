@@ -34,11 +34,11 @@ jobs:
           node-version: 16.x
       - run: npm run server:build:${{ matrix.type }}
       - if: matrix.type != 'windows'
-        run: chmod +x lethean-server && tar -cvf ${{ matrix.type }}.tar lethean-server
+        run: chmod +x lethean-server && tar -cvf ${{ matrix.type }}.tar lethean-server start.sh
       - uses: papeloto/action-zip@v1
         if: matrix.type == 'windows'
         with:
-          files: lethean-server.exe
+          files: lethean-server.exe start.cmd
           dest: ${{ matrix.type }}.zip
       - uses: actions/upload-artifact@v2
         if: matrix.type == 'windows'
