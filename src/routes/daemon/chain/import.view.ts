@@ -7,20 +7,19 @@ import { ProcessManagerRequest } from "../../../services/process/processManagerR
 
 export class RouteDaemonChainImport {
   public static config() {
-    const home = os.homeDir();
+
 
     return new Command()
       .description("Blockchain Import")
       .option("--data-dir <string>", "Specify data directory", {
-        default: path.join(home ? home : "/", "Lethean", "data"),
+        default: path.join(Deno.cwd(), "data"),
       })
       .option(
         "--testnet-data-dir <string>",
         "Specify testnet data directory",
         {
           default: path.join(
-            home ? home : "/",
-            "Lethean",
+            Deno.cwd(),
             "data",
             "testnet",
           ),
@@ -118,15 +117,13 @@ export class RouteDaemonChainImport {
         "Resume from current height if output database already exists",
       )
       .action((args) => {
-        const homeDir = os.homeDir();
 
         const exeFile = "lethean-blockchain-import" +
           (os.platform() === "windows" ? ".exe" : "");
 
         ProcessManager.run(
           path.join(
-            homeDir ? homeDir : "./",
-            "Lethean",
+            Deno.cwd(),
             "cli",
             exeFile,
           ),

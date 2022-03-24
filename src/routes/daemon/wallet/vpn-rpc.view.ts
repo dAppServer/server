@@ -7,7 +7,6 @@ import { ProcessManagerRequest } from "../../../services/process/processManagerR
 
 export class DaemonChainWalletVpnRpcView {
   public static config() {
-    const home = os.homeDir();
 
     return new Command()
       .description("Wallet VPN RPC")
@@ -67,15 +66,13 @@ export class DaemonChainWalletVpnRpcView {
       )
       .option("--config-file <string>", "Config file")
       .action((args) => {
-        const homeDir = os.homeDir();
 
         const exeFile = "lethean-wallet-vpn-rpc" +
           (os.platform() === "windows" ? ".exe" : "");
 
         ProcessManager.run(
           path.join(
-            homeDir ? homeDir : "./",
-            "Lethean",
+            Deno.cwd(),
             "cli",
             exeFile,
           ),

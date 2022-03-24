@@ -7,12 +7,12 @@ import { ProcessManagerRequest } from "../../../services/process/processManagerR
 
 export class RouteDaemonChainStart {
   public static config() {
-    let home = os.homeDir();
+    let home = Deno.cwd();
 
 //    if (os.platform() === "windows") {
 //      home = Deno.cwd();
 //    } else {
-      home = path.join(home ? home : "./", "Lethean");
+     // home = path.join(home ? home : "./", "Lethean");
 //    }
     return new Command()
       .description("Blockchain Functions")
@@ -181,13 +181,9 @@ export class RouteDaemonChainStart {
         "Confirm rpc-bind-ip value is NOT a loopback (local) IP",
       )
       .action((args) => {
-        let homeDir;
         let exeFile = "";
-
-          homeDir = os.homeDir();
           exeFile = path.join(
-            homeDir ? homeDir : "./",
-            "Lethean",
+            Deno.cwd() ,
             "cli",
             "letheand",
           );

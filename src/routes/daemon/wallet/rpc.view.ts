@@ -10,7 +10,6 @@ import { RPCResponse } from "../../../interfaces/rpc-response.ts";
 
 export class RouteDaemonWalletRpc {
   public static config() {
-    const home = os.homeDir();
 
     return new Command()
       .command("cli", RouteDaemonWalletCli.config())
@@ -70,7 +69,7 @@ export class RouteDaemonWalletRpc {
         "--wallet-dir  <string>",
         "Directory for newly created wallets",
         {
-          default: path.join(home ? home : "/", "Lethean", "wallets"),
+          default: path.join(Deno.cwd(), "wallets"),
         },
       )
       .option("--log-file  <string>", "Specify log file")
@@ -81,15 +80,13 @@ export class RouteDaemonWalletRpc {
       )
       .option("--config-file  <string>", "Config file")
       .action((args) => {
-        const homeDir = os.homeDir();
 
         const exeFile = "lethean-wallet-rpc" +
           (os.platform() === "windows" ? ".exe" : "");
 
         ProcessManager.run(
           path.join(
-            homeDir ? homeDir : "./",
-            "Lethean",
+            Deno.cwd(),
             "cli",
             exeFile,
           ),

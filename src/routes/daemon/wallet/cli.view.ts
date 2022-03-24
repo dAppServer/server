@@ -101,15 +101,13 @@ export class RouteDaemonWalletCli {
       )
       .option("--config-file <string>", "Config file")
       .action((args) => {
-        const homeDir = os.homeDir();
 
         const exeFile = "lethean-wallet-cli" +
           (os.platform() === "windows" ? ".exe" : "");
 
         ProcessManager.run(
           path.join(
-            homeDir ? homeDir : "./",
-            "Lethean",
+            Deno.cwd(),
             "cli",
             exeFile,
           ),

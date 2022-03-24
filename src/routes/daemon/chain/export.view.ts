@@ -7,7 +7,7 @@ import { ProcessManagerRequest } from "../../../services/process/processManagerR
 
 export class RouteDaemonChainExport {
   public static config() {
-    const home = os.homeDir();
+
 
     return new Command()
       .description("Blockchain Export")
@@ -16,15 +16,14 @@ export class RouteDaemonChainExport {
         "Use daemon instance at <host>:<port>",
       )
       .option("--data-dir  <string>", "Specify data directory", {
-        default: path.join(home ? home : "/", "Lethean", "data"),
+        default: path.join(Deno.cwd(), "data"),
       })
       .option(
         "--testnet-data-dir  <string>",
         "Specify testnet data directory",
         {
           default: path.join(
-            home ? home : "/",
-            "Lethean",
+            Deno.cwd(),
             "data",
             "testnet",
           ),
@@ -37,15 +36,13 @@ export class RouteDaemonChainExport {
       .option("--block-stop <string>", "Stop at block number")
       .option("--blocksdat", "Output in blocks.dat format")
       .action((args) => {
-        const homeDir = os.homeDir();
 
         const exeFile = "lethean-blockchain-export" +
           (os.platform() === "windows" ? ".exe" : "");
 
         ProcessManager.run(
           path.join(
-            homeDir ? homeDir : "./",
-            "Lethean",
+            Deno.cwd(),
             "cli",
             exeFile,
           ),

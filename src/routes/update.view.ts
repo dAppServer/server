@@ -12,11 +12,11 @@ export class RouteUpdate {
       .command(
         "lthn",
         new UpgradeCommand({
-          main: "src/server.ts",
+          main: "mod.ts",
           args: ["--version", "main"],
           provider: [
             new GithubProvider({
-              repository: "letheanVPN/lthn",
+              repository: "letheanVPN/lethean-server",
             }),
           ],
         }),
