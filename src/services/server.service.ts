@@ -222,7 +222,7 @@ export class ServerService {
     Deno.env.set("REST", "1");
     this.discoverRoute("", LetheanCli.options.commands);
 
-    this.router.get("/app/desktop/(.*)", async (context: RouterContext<any>) => {
+    this.router.get("/app/desktop/(.*)", async (context) => {
       context.response.headers = new Headers({
         "Access-Control-Allow-Origin": "*"
       });
