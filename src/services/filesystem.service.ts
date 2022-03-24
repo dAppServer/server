@@ -45,15 +45,29 @@ export class FilesystemService {
   }
 
   /**
+   * Checks if a directory exists
+   *
+   * @param {{path: string}} args
+   * @returns {boolean}
+   */
+  static existsDir(args: { path: string }){
+
+    try {
+      return !!Deno.readDirSync(FilesystemService.path(args.path));
+    }catch (e){
+      return false
+    }
+  }
+  /**
    * Checks if a file exists
    *
    * @param {{path: string}} args
    * @returns {boolean}
    */
-  static exists(args: { path: string }){
+  static existsFile(args: { path: string }){
 
     try {
-      return !!Deno.readDirSync(FilesystemService.path(args.path));
+      return !!Deno.readFileSync(FilesystemService.path(args.path));
     }catch (e){
       return false
     }

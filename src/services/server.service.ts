@@ -6,6 +6,7 @@ import * as path from "https://deno.land/std/path/mod.ts";
 import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
 import { ensureDirSync, existsSync } from "https://deno.land/std/fs/mod.ts";
 import { Application, Router } from "https://deno.land/x/oak/mod.ts";
+import staticFiles from "https://deno.land/x/static_files/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.0/mod.ts";
 import { RPCResponse } from "../interfaces/rpc-response.ts";
 import { RouterContext } from "https://deno.land/x/oak@v10.4.0/router.ts";
@@ -29,14 +30,15 @@ export class ServerService {
   };
 
   async warmUpServer() {
-      await LetheanAppServer.loadPlugins()
-      await LetheanCli.init();
+    await LetheanAppServer.loadPlugins();
+    await LetheanCli.init();
   }
 
   async startServer() {
     ZeroMQServer.startServer();
     WebsocketServer.startServer();
 
+    //this.app.use(staticFiles("apps/lthn/app/desktop", {prefix: 'app/desktop'}));
 
     this.app.use(oakCors({
       origin: "*",
@@ -158,28 +160,28 @@ export class ServerService {
 
 //console.error(await context.request.body({ type: "json" }).value)
 
-        if (payload["jsonpath"]) {
-          cmdArgs.push(`--jsonpath="${payload["jsonpath"]}"`);
-          if (payload["request"]) {
-            cmdArgs.push(
-              `--request="${JSON.stringify(payload["request"])}"`
-            );
-          }
-
-        } else if (payload["jsonrpc"]) {
-          cmdArgs.push(`--request="${payload}"`);
-        }else {
-
-          console.info(payload)
-          for (const key in payload) {
-            const value = payload[key].length > 1 ? `=${payload[key]}` : "";
-            cmdArgs.push(
-              "--" + key.replace(/([A-Z])/g, (x: string) =>
-                "-" + x.toLowerCase()) +
-              value
-            );
-          }
+      if (payload["jsonpath"]) {
+        cmdArgs.push(`--jsonpath="${payload["jsonpath"]}"`);
+        if (payload["request"]) {
+          cmdArgs.push(
+            `--request="${JSON.stringify(payload["request"])}"`
+          );
         }
+
+      } else if (payload["jsonrpc"]) {
+        cmdArgs.push(`--request="${payload}"`);
+      } else {
+
+        console.info(payload);
+        for (const key in payload) {
+          const value = payload[key].length > 1 ? `=${payload[key]}` : "";
+          cmdArgs.push(
+            "--" + key.replace(/([A-Z])/g, (x: string) =>
+              "-" + x.toLowerCase()) +
+            value
+          );
+        }
+      }
 
 
       try {
@@ -193,10 +195,10 @@ export class ServerService {
           "Access-Control-Allow-Origin": "*"
         });
 
-        if((error.message as string).startsWith('http')){
+        if ((error.message as string).startsWith("http")) {
           context.response.body = await this.performRequest(error.message, context);
-        }else{
-          context.response.body = error.message
+        } else {
+          context.response.body = error.message;
         }
 
 
@@ -220,13 +222,32 @@ export class ServerService {
     Deno.env.set("REST", "1");
     this.discoverRoute("", LetheanCli.options.commands);
 
-    this.router.get("/", (context) => {
-      context.response.status = 200;
+    this.router.get("/app/desktop/(.*)", async (context: RouterContext<any>) => {
+      try {
+        await context.send({
+          root: path.join(Deno.cwd(), "apps", "lthn"),
+          index: "index.html"
+        });
+      } catch (e) {
+        console.error(e);
+      }
+
+
+    });
+
+    this.router.get("/", async (context) => {
+      // context.response.status = 200;
       context.response.headers = new Headers({
-        "content-type": "text/html",
         "Access-Control-Allow-Origin": "*"
       });
-      context.response.body = this.templateOutput(LetheanCli.options.getHelp());
+      try {
+        await context.send({
+          root: path.join(Deno.cwd(), "apps", "lthn", "app", "setup"),
+          index: "lthn.json"
+        });
+      } catch (e) {
+        console.error(e);
+      }
     });
 
     console.info("HTTPS API Routes loaded");
@@ -240,8 +261,8 @@ export class ServerService {
 
   async performRequest(path: string, context: any) {
     try {
-      console.warn(path)
-      console.warn(await context.request.body({ type: "text" }).value)
+      console.warn(path);
+      console.warn(await context.request.body({ type: "text" }).value);
       const postReq = await fetch(
         path,
         {

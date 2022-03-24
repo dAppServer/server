@@ -34,6 +34,5 @@ export class LetheanAppServer {
         console.info(`Plugin Found: ${LetheanAppServer.plugins[1].name}`)
       }
 
-
   }
 }
