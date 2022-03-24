@@ -223,6 +223,9 @@ export class ServerService {
     this.discoverRoute("", LetheanCli.options.commands);
 
     this.router.get("/app/desktop/(.*)", async (context: RouterContext<any>) => {
+      context.response.headers = new Headers({
+        "Access-Control-Allow-Origin": "*"
+      });
       try {
         await context.send({
           root: path.join(Deno.cwd(), "apps", "lthn"),
