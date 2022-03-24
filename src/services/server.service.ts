@@ -4,13 +4,9 @@ import { WebsocketServer } from "./tcp/websocket.server.ts";
 import { Filter } from "./console-to-html.service.ts";
 import * as path from "https://deno.land/std/path/mod.ts";
 import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
-import { ensureDirSync, existsSync } from "https://deno.land/std/fs/mod.ts";
+import { ensureDirSync } from "https://deno.land/std/fs/mod.ts";
 import { Application, Router } from "https://deno.land/x/oak/mod.ts";
-import staticFiles from "https://deno.land/x/static_files/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.0/mod.ts";
-import { RPCResponse } from "../interfaces/rpc-response.ts";
-import { RouterContext } from "https://deno.land/x/oak@v10.4.0/router.ts";
-import { FilesystemService } from "./filesystem.service.ts";
 import { LetheanAppServer } from "./apps/server.ts";
 
 export class ServerService {
@@ -47,11 +43,7 @@ export class ServerService {
       maxAge: 1
     }));
 
-//     if (!existsSync(path.join(this.home, 'Lethean', 'conf', 'private.pem'))) {
-//     	console.log('No localhost ssl cert found, injecting a pre made one so we can start a tls server and fix this');
-//     	this.injectPem();
-//     }
-    // this.app.use(oakCors({ origin: /^.+(localhost|127.0.0.1):(36911|1234)$/ }));
+
     this.loadRoutes();
     this.app.use(this.router.routes());
     this.app.use(this.router.allowedMethods());
@@ -61,7 +53,6 @@ export class ServerService {
     this.app.use(async (ctx, next) => {
       await next();
       const rt = ctx.response.headers.get("X-Response-Time");
-//      console.log(`${ctx.request.method} ${ctx.request.url} - ${rt}`);
     });
 
 // Timing
