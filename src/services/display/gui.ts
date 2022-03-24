@@ -7,8 +7,14 @@ export class LetheanGUI {
   constructor() {
     this.webview = new Webview();
   }
-  startGUI(){
-    this.webview.navigate(`http://127.0.0.1:36911`);
+
+  /**
+   * Open an App window
+   *
+   * @param {string} app
+   */
+  startGUI(app = 'desktop'){
+    this.webview.navigate(`http://127.0.0.1:36911/app/${app}/`);
     this.webview.run();
   }
 }
