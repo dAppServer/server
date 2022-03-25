@@ -67,6 +67,11 @@ export class WebsocketServer {
     });
   }
 
+  /**
+   *
+   * @param daemon
+   * @param message
+   */
   public static startServer() {
     console.info("Starting stdOut WebSocket: ws://127.0.0.1:36909");
     WebsocketServer.init();

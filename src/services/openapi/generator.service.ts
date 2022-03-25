@@ -1,6 +1,9 @@
 import { LetheanCli } from "../../lethean-cli.ts";
 import { ServerService } from "../../services/server.service.ts";
 
+/**
+ * OpenAPI generator service
+ */
 export class OpenAPIGeneratorService {
   public static openapi: any = {
     openapi: "3.0.0",

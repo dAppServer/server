@@ -14,6 +14,7 @@ import { FilesystemService } from "./services/filesystem.service.ts";
 import { LetheanUpdater } from "./services/update.service.ts";
 import * as path from "https://deno.land/std/path/mod.ts";
 
+
 export class LetheanCli {
   public static options: any;
 

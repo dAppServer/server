@@ -2,6 +2,12 @@ import { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/unzip.ts";
 import { Destination, download } from "https://deno.land/x/download/mod.ts";
 import { FilesystemService } from "./filesystem.service.ts";
 
+/**
+ * DownloadService
+ *
+ * @export
+ * @class DownloadService
+ */
 export class LetheanDownloadService {
 
   /**

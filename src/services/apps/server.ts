@@ -1,6 +1,12 @@
 import { FilesystemService } from "../filesystem.service.ts";
 import { LetheanAppInstall } from "./install.ts";
 
+/**
+ * LetheanAppServer
+ *
+ * @export
+ * @class LetheanAppServer
+ */
 export class LetheanAppServer {
 
   static plugins: {name: string, path?: string, config?: any}[] = []

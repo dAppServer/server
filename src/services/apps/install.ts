@@ -2,6 +2,12 @@ import { FilesystemService } from "../filesystem.service.ts";
 import * as path from "https://deno.land/std/path/mod.ts";
 import { LetheanDownloadService } from "../download.service.ts";
 
+/**
+ * Install an app from the Lethean repository
+ * @param appName The name of the app to install
+ * @param version The version of the app to install
+ * @param destination The destination folder to install the app to
+ */
 export class LetheanAppInstall {
 
   plugin: {code: string, config: string} = {code: 'lthn-app-setup', config: "https://raw.githubusercontent.com/letheanVPN/lthn-app-setup/main/lthn.json"}

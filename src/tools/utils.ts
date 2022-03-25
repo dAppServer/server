@@ -2,16 +2,16 @@ import * as Colors from "https://deno.land/std@0.130.0/fmt/colors.ts";
 
 /**
  * Console Information style
- * @param text
+ * @param {string} message
  */
-console.info = (text) => console.log(Colors.blue('[INFO] ') , text)
+console.info = (message) => console.log(Colors.blue('[INFO] ') , message)
 /**
  * Console warning style
- * @param text
+ * @param {string} message
  */
-console.warn = (text) => console.log(Colors.yellow('[WARNING] ') , text)
+console.warn = (message) => console.log(Colors.yellow('[WARNING] ') , message)
 /**
  * Console error styling
- * @param text
+ * @param {string} message
  */
-console.error = (text) => console.log(Colors.red('[ERROR] ') , text)
+console.error = (message) => console.log(Colors.red('[ERROR] ') , message)

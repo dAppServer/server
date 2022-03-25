@@ -1,14 +1,18 @@
 import { LetheanCli } from "../lethean-cli.ts";
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { WebsocketServer } from "./tcp/websocket.server.ts";
-import { Filter } from "./console-to-html.service.ts";
 import * as path from "https://deno.land/std/path/mod.ts";
 import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
-import { ensureDirSync } from "https://deno.land/std/fs/mod.ts";
 import { Application, Router } from "https://deno.land/x/oak/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.0/mod.ts";
 import { LetheanAppServer } from "./apps/server.ts";
 
+/**
+ * Server Service
+ *
+ * @export
+ * @class ServerService
+ */
 export class ServerService {
   constructor() {
   }
@@ -25,12 +29,19 @@ export class ServerService {
     completions: false
   };
 
+  /**
+   * Initialize the server
+   */
   async warmUpServer() {
     await LetheanAppServer.loadPlugins();
     await LetheanCli.init();
   }
 
-  async startServer() {
+  /**
+   * @description Initialize the server
+   * @returns {any}
+   */
+   startServer() {
     ZeroMQServer.startServer();
     WebsocketServer.startServer();
 
@@ -76,7 +87,7 @@ export class ServerService {
       );
     });
 
-    await this.app.listen({
+    return this.app.listen({
       "hostname": "127.0.0.1",
       "port": 36911
 //      "certFile": `${path.join(this.home, "Lethean", "conf", "public.pem")}`,
@@ -84,6 +95,9 @@ export class ServerService {
     });
   }
 
+  /**
+   * @description Load the routes
+   */
   async processCommand(args: any) {
     try {
       await LetheanCli.run(args);
@@ -247,7 +261,12 @@ export class ServerService {
     console.info("HTTPS API Routes loaded");
   }
 
-
+  /**
+   * Discovers the routes for the given command
+   *
+   * @param {string} path
+   * @param {Command} command
+   */
   async performRequest(path: string, context: any) {
     try {
       console.warn(path);

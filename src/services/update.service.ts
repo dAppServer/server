@@ -7,6 +7,9 @@ import { copy } from "https://deno.land/std@0.95.0/fs/mod.ts";
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { FilesystemService } from "./filesystem.service.ts";
 
+/**
+ * Service for updating the application
+ */
 export class LetheanUpdater {
 
   async download(args: any) {
@@ -90,6 +93,10 @@ export class LetheanUpdater {
 
   }
 
+  /**
+   * Get the url for the update
+   * @param version The version to get the url for
+   */
   getUrl(version: string) {
     const platform = os.platform();
     const base = `https://github.com/letheanVPN/blockchain/releases/download/v${version}/lethean-${version}`;

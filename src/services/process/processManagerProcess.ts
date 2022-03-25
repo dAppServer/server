@@ -23,6 +23,9 @@ export class ProcessManagerProcess extends EventEmitter {
     this.request = request;
   }
 
+  /**
+   * Starts the process
+   */
   public async run() {
     const processArgs: any = {
       cmd: this.request.command,

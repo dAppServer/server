@@ -5,6 +5,8 @@ import { LetheanGUI } from "./src/services/display/gui.ts";
 console.info("Starting Lethean Server");
 const letheanServer = new ServerService();
 
+let letheanGUI = new LetheanGUI();
+
 await letheanServer.warmUpServer();
 try {
 
@@ -13,7 +15,7 @@ try {
     await letheanServer.processCommand(Deno.args).catch((err) => console.log(err));
   } else {
     if(Deno.args[0] == 'gui'){
-      new LetheanGUI().startGUI()
+      letheanGUI.startGUI()
     }else{
       await letheanServer.startServer().catch((error) => {
         console.error(error)

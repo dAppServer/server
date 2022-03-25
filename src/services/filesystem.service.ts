@@ -1,6 +1,11 @@
 import * as path from "https://deno.land/std/path/mod.ts";
 import { ensureDirSync } from "https://deno.land/std@0.114.0/fs/mod.ts";
 
+/**
+ * @class
+ * @classdesc This class is responsible for handling the filesystem.
+ *
+ */
 export class FilesystemService {
   /**
    * Return a system path to the Lethean data folder
@@ -9,8 +14,8 @@ export class FilesystemService {
    * @returns {string}
    */
   static path(pathname: any): string {
-    if(pathname == undefined){
-      return Deno.cwd()
+    if (pathname == undefined) {
+      return Deno.cwd();
     }
 
     pathname = pathname.replace(/\.\./g, ".");
@@ -38,7 +43,7 @@ export class FilesystemService {
   static read(args: { path: string }) {
     try {
       return Deno.readTextFileSync(FilesystemService.path(args.path));
-    }catch (e){
+    } catch (e) {
       return false;
     }
 
@@ -50,36 +55,45 @@ export class FilesystemService {
    * @param {{path: string}} args
    * @returns {boolean}
    */
-  static existsDir(args: { path: string }){
+  static existsDir(args: { path: string }) {
 
     try {
       return !!Deno.readDirSync(FilesystemService.path(args.path));
-    }catch (e){
-      return false
+    } catch (e) {
+      return false;
     }
   }
+
   /**
    * Checks if a file exists
    *
    * @param {{path: string}} args
    * @returns {boolean}
    */
-  static existsFile(args: { path: string }){
+  static existsFile(args: { path: string }) {
 
     try {
       return !!Deno.readFileSync(FilesystemService.path(args.path));
-    }catch (e){
-      return false
+    } catch (e) {
+      return false;
     }
   }
 
+  /**
+   *  List all files in a directory  (recursive)
+   *
+   *  @param {{path: string}} args
+   *  @returns {string[]}
+   *  @example
+   *   FilesystemService.list({path: "./"})
+   */
   static list(args: any) {
     const ret = [];
     for (
       const dirEntry of Deno.readDirSync(
-        FilesystemService.path(args.path),
-      )
-    ) {
+      FilesystemService.path(args.path)
+    )
+      ) {
       if (!dirEntry.name.startsWith(".")) {
         ret.push(dirEntry.name);
       }
@@ -95,7 +109,7 @@ export class FilesystemService {
    * @returns {string}
    */
   static write(path: string, data: string) {
-    FilesystemService.ensureDir(path)
+    FilesystemService.ensureDir(path);
     Deno.writeTextFileSync(FilesystemService.path(path), data);
     return "1";
   }
@@ -103,9 +117,10 @@ export class FilesystemService {
   /**
    * Makes sure the directory structure is in place for path
    *
+   * @param {string} path relative path
    * @param {string} path
    */
-  static ensureDir(path: string){
+  static ensureDir(path: string) {
     return ensureDirSync(path);
   }
 }

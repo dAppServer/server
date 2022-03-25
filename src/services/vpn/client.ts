@@ -3,6 +3,9 @@ import * as path from "https://deno.land/std/path/mod.ts";
 import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
 import { StringResponse } from "../../interfaces/string-response.ts";
 
+/**
+ * VPN Client
+ */
 export class VPNClient {
   public static config() {
     const home = os.homeDir();
