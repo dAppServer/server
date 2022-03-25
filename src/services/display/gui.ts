@@ -19,7 +19,7 @@ export class LetheanGUI {
    *
    * @param {string} app
    */
-   startGUI(app = 'desktop') {
+   start(app = 'desktop') {
     console.info(`Loading App GUI: ${app}`)
     this.webview.title = `Lethean ${app}`
     this.webview.navigate(`http://127.0.0.1:36911/app/${app}/`);
