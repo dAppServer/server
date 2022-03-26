@@ -1,11 +1,11 @@
 import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
-import { Destination, download } from "https://deno.land/x/download/mod.ts";
 import { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/mod.ts";
 import * as path from "https://deno.land/std/path/mod.ts";
 import { copy } from "https://deno.land/std@0.95.0/fs/mod.ts";
 
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { FilesystemService } from "./filesystem.service.ts";
+import { LetheanDownloadService, Destination } from "./download.service.ts";
 
 /**
  * Service for updating the application
@@ -35,7 +35,7 @@ export class LetheanUpdater {
         `Starting download to ${destination.dir}`
       );
       console.info(`Attempting to download ${url}`)
-      const fileObj = await download(url, destination);
+      const fileObj = await LetheanDownloadService.download(url, destination);
       console.info(`Downloaded to: ${destination.dir}`)
       ZeroMQServer.sendPubMessage("update-cli", `Downloaded file`);
       //await Deno.remove(path.join(Deno.cwd(),'cli'), { recursive: true})

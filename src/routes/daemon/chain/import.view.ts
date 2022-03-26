@@ -118,8 +118,7 @@ export class RouteDaemonChainImport {
       )
       .action((args) => {
 
-        const exeFile = "lethean-blockchain-import" +
-          (os.platform() === "windows" ? ".exe" : "");
+        const exeFile = `lethean-blockchain-import${os.platform() === "windows" ? ".exe" : ""}`;
 
         ProcessManager.run(
           path.join(
