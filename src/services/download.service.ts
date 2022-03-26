@@ -19,7 +19,7 @@ export interface Destination {
 }
 
 
-export interface DownlodedFile {
+export interface DownloadedFile {
   /**
    * The name of the file
    */
@@ -74,11 +74,18 @@ export class LetheanDownloadService {
     await Deno.remove(fileObj.fullPath)
   }
 
+  /**
+   * Downloads a file to the destination
+   *
+   * @param {URL} url
+   * @param {Destination} destination
+   * @returns {Promise<DownloadedFile>}
+   */
   static async download(
     url:URL,
     destination?:Destination,
     options?:RequestInit
-  ): Promise<DownlodedFile>{
+  ): Promise<DownloadedFile>{
     let file:string;
     let fullPath:string;
     let dir:string = '';
