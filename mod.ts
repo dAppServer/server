@@ -17,13 +17,12 @@ try {
       });
       break;
     case "gui":
-    case undefined:
       let letheanGUI = new LetheanGUI();
       console.info("Starting GUI");
       // create subprocess
-      const p = Deno.run({
-        cmd: [path.join(Deno.cwd(), "lethean-server"), "server"]
-      });
+//      const p = Deno.run({
+//        cmd: [path.join(Deno.cwd(), "lethean-server"), "server"]
+//      });
 
       letheanGUI.start();
       break;
