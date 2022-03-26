@@ -1,8 +1,7 @@
 import { ServerService } from "./src/services/server.service.ts";
-import "./deps.ts";
+import { path } from "./deps.ts";
 import { LetheanGUI } from "./src/services/display/gui.ts";
 
-import * as path from "https://deno.land/std/path/mod.ts";
 
 console.info("Starting Lethean Server");
 const letheanServer = new ServerService();

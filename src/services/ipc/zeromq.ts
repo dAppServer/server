@@ -1,5 +1,5 @@
-import * as zmq from "https://deno.land/x/jszmq/mod.ts";
-import { DenoHttpServer, Sub } from "https://deno.land/x/jszmq/mod.ts";
+
+import { zmq } from "../../../deps.ts";
 
 /**
  * ZeroMQ Websocket server
@@ -37,7 +37,7 @@ export class ZeroMQServer {
    *
    * @type {DenoHttpServer<any>}
    */
-  public static socketServer: DenoHttpServer<any>;
+  public static socketServer: zmq.DenoHttpServer<any>;
 
   /**
    * Keeps a reference of all the sock's we can use
@@ -52,7 +52,7 @@ export class ZeroMQServer {
    */
   public static startServer(): void {
     console.info("Starting ZeroMQ WebSocket: ws://127.0.0.1:36910");
-    ZeroMQServer.socketServer = new DenoHttpServer("ws://127.0.0.1:36910");
+    ZeroMQServer.socketServer = new zmq.DenoHttpServer("ws://127.0.0.1:36910");
     ZeroMQServer.loadPub();
     ZeroMQServer.loadPush();
     ZeroMQServer.loadRep();
@@ -79,7 +79,7 @@ export class ZeroMQServer {
    * @param cb
    */
   public static subscribeSubMessage(channel: string, cb: any) {
-    const sock = new Sub();
+    const sock = new zmq.Sub();
     sock.connect(ZeroMQServer.pubEndpoint);
     sock.subscribe(channel);
     console.info("Subscriber connected to port 36910");

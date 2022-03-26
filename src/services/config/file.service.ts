@@ -1,5 +1,4 @@
-import { renderFile } from "https://deno.land/x/mustache/mod.ts";
-import * as path from "https://deno.land/std/path/mod.ts";
+import { renderFile, path} from "../../../deps.ts";
 
 /**
  * File Service

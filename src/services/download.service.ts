@@ -1,6 +1,6 @@
-import { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/unzip.ts";
+import { ensureDirSync, unZipFromFile } from "../../deps.ts";
 import { FilesystemService } from "./filesystem.service.ts";
-import { ensureDirSync } from "https://deno.land/std/fs/mod.ts";
+
 
 
 export interface Destination {
@@ -79,6 +79,7 @@ export class LetheanDownloadService {
    *
    * @param {URL} url
    * @param {Destination} destination
+   * @param options
    * @returns {Promise<DownloadedFile>}
    */
   static async download(
@@ -86,15 +87,10 @@ export class LetheanDownloadService {
     destination?:Destination,
     options?:RequestInit
   ): Promise<DownloadedFile>{
-    let file:string;
-    let fullPath:string;
-    let dir:string = '';
-    let mode:object = {};
-    let finalUrl:string;
-    let size:number;
+    let file: string, dir = '', mode = {};
 
     const response = await fetch(url, options);
-    finalUrl = response.url.replace(/\/$/, "");
+    const finalUrl = response.url.replace(/\/$/, "");
     if(response.status != 200){
       return Promise.reject(
         new Deno.errors.Http(`status ${response.status}-'${response.statusText}' received instead of 200`)
@@ -102,7 +98,7 @@ export class LetheanDownloadService {
     }
     const blob = await response.blob();
     /** size in bytes */
-    size = blob.size;
+    const size = blob.size;
     const buffer = await blob.arrayBuffer();
     const unit8arr = new Deno.Buffer(buffer).bytes();
     if( typeof destination === 'undefined' || typeof destination.dir === 'undefined' ){
@@ -122,7 +118,7 @@ export class LetheanDownloadService {
     dir = dir.replace(/\/$/, "");
     ensureDirSync(dir)
 
-    fullPath = `${dir}/${file}`;
+    const fullPath = `${dir}/${file}`;
     Deno.writeFileSync(fullPath, unit8arr, mode);
     return Promise.resolve({file, dir, fullPath, size});
   }

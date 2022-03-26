@@ -1,5 +1,5 @@
-import * as path from "https://deno.land/std/path/mod.ts";
-import { ensureDirSync } from "https://deno.land/std@0.114.0/fs/mod.ts";
+
+import { ensureDirSync, path } from "../../deps.ts";
 
 /**
  * @class

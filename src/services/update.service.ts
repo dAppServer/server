@@ -1,7 +1,5 @@
-import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
-import { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/mod.ts";
-import * as path from "https://deno.land/std/path/mod.ts";
-import { copy } from "https://deno.land/std@0.95.0/fs/mod.ts";
+
+import { unZipFromFile, path, os, copy } from "../../deps.ts";
 
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { FilesystemService } from "./filesystem.service.ts";

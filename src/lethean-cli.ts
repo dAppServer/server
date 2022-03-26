@@ -1,6 +1,6 @@
-import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
-import { CompletionsCommand } from "https://deno.land/x/cliffy/command/completions/mod.ts";
-import { HelpCommand } from "https://deno.land/x/cliffy/command/help/mod.ts";
+
+import { path, Command, HelpCommand, CompletionsCommand } from "../deps.ts";
+
 import { RouteFilesystem } from "./routes/filesystem.view.ts";
 import { RouteUpdate } from "./routes/update.view.ts";
 import { RouteObject } from "./routes/object.view.ts";
@@ -10,9 +10,7 @@ import { RouteDaemonChainImport } from "./routes/daemon/chain/import.view.ts";
 import { RouteDaemonWalletRpc } from "./routes/daemon/wallet/rpc.view.ts";
 import { RouteConfig } from "./routes/config.view.ts";
 import { RPCResponse } from "./interfaces/rpc-response.ts";
-import { FilesystemService } from "./services/filesystem.service.ts";
 import { LetheanUpdater } from "./services/update.service.ts";
-import * as path from "https://deno.land/std/path/mod.ts";
 
 
 export class LetheanCli {

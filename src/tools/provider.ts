@@ -1,4 +1,4 @@
-import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
+import { Command } from '../../deps.ts';
 
 export class LetheanToolsProvider {
   public static config() {

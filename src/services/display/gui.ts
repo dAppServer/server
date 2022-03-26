@@ -1,4 +1,4 @@
-import { Webview } from "https://raw.githubusercontent.com/Snider/webview_deno/main/mod.ts";
+import { Webview } from "../../../deps.ts";
 
 /**
  * GUI Service

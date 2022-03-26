@@ -1,6 +1,4 @@
-import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
-import * as path from "https://deno.land/std/path/mod.ts";
-import { ensureDirSync } from "https://deno.land/std@0.114.0/fs/ensure_dir.ts";
+import { ensureDirSync, path, os } from "../../../deps.ts";
 
 /**
  * Store

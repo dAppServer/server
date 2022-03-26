@@ -1,11 +1,6 @@
-import {
-  WebSocketClient,
-  WebSocketServer,
-} from "https://deno.land/x/websocket@v0.1.3/mod.ts";
-import { Sub } from "https://deno.land/x/jszmq/mod.ts";
-import { ZeroMQServer } from "../ipc/zeromq.ts";
-import { encode as base64Encode } from "https://deno.land/std@0.82.0/encoding/base64.ts";
 
+import { ZeroMQServer } from "../ipc/zeromq.ts";
+import { WebSocketServer, WebSocketClient, zmq } from "../../../deps.ts";
 export interface WebSocketMessageRequest {
   daemon: string;
 }
@@ -35,7 +30,7 @@ export class WebsocketServer {
         if (daemon.substr(0, 6) === "daemon") {
           const req = daemon.split(":");
           console.log(`Subscribing to ${req[1]}`);
-          const sock = new Sub();
+          const sock = new zmq.Sub();
 
           sock.connect("ws://127.0.0.1:36910/pub");
           sock.subscribe(req[1]);
@@ -46,12 +41,10 @@ export class WebsocketServer {
             wsClient.send(
               JSON.stringify([
                 req[1],
-                base64Encode(
-                  textEncoder.encode(
+                atob(
                     WebsocketServer.strip(
                       message.toString(),
                     ),
-                  ),
                 ),
               ]),
             );

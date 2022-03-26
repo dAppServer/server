@@ -1,5 +1,5 @@
 import { FilesystemService } from "../filesystem.service.ts";
-import * as path from "https://deno.land/std/path/mod.ts";
+import { path } from "../../../deps.ts";
 import { LetheanDownloadService } from "../download.service.ts";
 
 /**

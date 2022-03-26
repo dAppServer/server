@@ -1,12 +1,8 @@
 import { LetheanCli } from "../lethean-cli.ts";
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { WebsocketServer } from "./tcp/websocket.server.ts";
-import * as path from "https://deno.land/std/path/mod.ts";
-import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
-import { Application, Router } from "https://deno.land/x/oak/mod.ts";
-import { oakCors } from "https://deno.land/x/cors@v1.2.0/mod.ts";
 import { LetheanAppServer } from "./apps/server.ts";
-
+import { Router, Application, os, oakCors, path} from '../../deps.ts'
 /**
  * Server Service
  *
