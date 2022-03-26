@@ -181,11 +181,13 @@ export class RouteDaemonChainStart {
         "Confirm rpc-bind-ip value is NOT a loopback (local) IP",
       )
       .action((args) => {
-        let exeFile = "";
-          exeFile = path.join(
+        let exeFile = "letheand" +
+          (os.platform() === "windows" ?? ".exe");
+
+        exeFile = path.join(
             Deno.cwd() ,
             "cli",
-            "letheand",
+            exeFile,
           );
 
 
