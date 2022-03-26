@@ -19,9 +19,9 @@ export class LetheanUpdater {
       `Downloading files for ${os.platform()}`
     );
 
-    const url = this.getUrl("4.0.4");
+    const url: URL = new URL(this.getUrl("4.0.4"));
     console.info(`Download url: ${url}`)
-    const filename = url.split("/").pop();
+    const filename = url.pathname.split("/").pop();
 
     try {
       const destination: Destination = {
