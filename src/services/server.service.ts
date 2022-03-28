@@ -116,7 +116,7 @@ export class ServerService {
         ServerService.pathPerms[key] === undefined ||
         ServerService.pathPerms[key] !== false
       ) {
-        //console.log(`Adding route: ${[base, key].join("/")}`);
+        //console.debug(`Adding route: ${[base, key].join("/")}`);
         this.addRoute([base, key].join("/"), value);
         if (value.commands) {
           this.discoverRoute([base, key].join("/"), value.commands);
@@ -239,15 +239,15 @@ export class ServerService {
 
     });
 
-    this.router.get("/", async (context) => {
+    this.router.get("(.*)", async (context) => {
       // context.response.status = 200;
       context.response.headers = new Headers({
         "Access-Control-Allow-Origin": "*"
       });
       try {
         await context.send({
-          root: path.join(Deno.cwd(), "apps", "lthn", "app", "setup"),
-          index: "lthn.json"
+          root: path.join(Deno.cwd(), "apps", "lthn", "app", "desktop"),
+          index: "index.html"
         });
       } catch (e) {
         console.error(e);
