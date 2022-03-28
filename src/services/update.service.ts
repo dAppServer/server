@@ -1,5 +1,5 @@
 
-import { unZipFromFile, path, os, copy } from "../../deps.ts";
+import {ensureDir, ensureFile, path, os, Untar, copy } from "../../deps.ts";
 
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { FilesystemService } from "./filesystem.service.ts";
@@ -12,14 +12,9 @@ export class LetheanUpdater {
 
   async download(args: any) {
 
-    ZeroMQServer.sendPubMessage(
-      "update-cli",
-      `Downloading files for ${os.platform()}`
-    );
+    const url: URL = new URL(this.getUrl("4.0.6"));
 
-    const url: URL = new URL(this.getUrl("4.0.4"));
-    console.info(`Download url: ${url}`)
-    const filename = url.pathname.split("/").pop();
+    const filename:string = url.pathname.split("/").pop()??'';
 
     try {
       const destination: Destination = {
@@ -28,59 +23,40 @@ export class LetheanUpdater {
       };
 
       FilesystemService.ensureDir(path.join(Deno.cwd(), 'cli'))
-      ZeroMQServer.sendPubMessage(
-        "update-cli",
-        `Starting download to ${destination.dir}`
-      );
+
       console.info(`Attempting to download ${url}`)
       const fileObj = await LetheanDownloadService.download(url, destination);
       console.info(`Downloaded to: ${destination.dir}`)
-      ZeroMQServer.sendPubMessage("update-cli", `Downloaded file`);
-      //await Deno.remove(path.join(Deno.cwd(),'cli'), { recursive: true})
-      ZeroMQServer.sendPubMessage(
-        "update-cli",
-        `Unpacking Downloaded zip`
-      );
-      console.info(`Unpacking zip file: ${fileObj.fullPath}`)
-      await unZipFromFile(
-        fileObj.fullPath,
-        path.join(Deno.cwd(), "cli"),
-        { includeFileName: false }
-      );
-      console.info(`Copying files to: ${path.join(Deno.cwd(), "cli")}`)
-      await copy(
-        path.join(
-          Deno.cwd(),
-          "cli",
-          `${filename?.replace(".zip", "")}`
-        ),
-        path.join(Deno.cwd(), "cli"),
-        { overwrite: true }
-      );
-      ZeroMQServer.sendPubMessage("update-cli", "Cleaning up");
+
+      console.info(`Unpacking file: ${fileObj.fullPath}`)
+
+      const reader = await Deno.open(fileObj.fullPath, { read: true });
+      const untar = new Untar(reader);
+
+      for await (const entry of untar) {
+
+        if (entry.type === "directory") {
+          await ensureDir(path.join(Deno.cwd(), "cli", entry.fileName));
+          continue;
+        }
+
+        await Deno.writeFile(path.join(Deno.cwd(), "cli", entry.fileName), new Uint8Array(), {mode: 0o777});
+        const file = await Deno.open(path.join(Deno.cwd(), "cli", entry.fileName), { write: true });
+        await copy(entry, file);
+      }
+      reader.close();
+
       console.info("Cleaning up file system")
       try {
         await Deno.remove(
           path.join(
             Deno.cwd(),
             "cli",
-            `${filename?.replace(".zip", "")}`
+            filename
           ),
           { recursive: true }
         );
-        await Deno.remove(
-          path.join(
-            Deno.cwd(),
-            "cli",
-            '__MACOSX'
-          ),
-          { recursive: true }
-        );
-        await Deno.remove(path.join(
-          Deno.cwd(),
-          'cli',
-          filename ? filename : ""
-        ));
+
       } catch (e) {
         console.error(e);
       }
@@ -97,17 +73,17 @@ export class LetheanUpdater {
    */
   getUrl(version: string) {
     const platform = os.platform();
-    const base = `https://github.com/letheanVPN/blockchain/releases/download/v${version}/lethean-${version}`;
+    const base = `https://github.com/letheanVPN/blockchain/releases/download/v${version}/`;
     let url;
     switch (platform) {
       case "darwin":
-        url = base + "-macOS.zip";
+        url = base + "macOS.tar";
         break;
       case "linux":
-        url = base + "-linux.zip";
+        url = base + "linux.tar";
         break;
       case "windows":
-        url = base + "-windows.zip";
+        url = base + "windows.tar";
         break;
     }
 
