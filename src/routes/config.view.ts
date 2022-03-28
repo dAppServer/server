@@ -19,11 +19,12 @@ export class RouteConfig {
       .option("-f,--file <string>", "Specify configuration file")
       .option("-m,--modal <string>", "JSON data to pass to the template engine")
       .action(async (args) => {
-        //if (Deno.env.get('REST')) {
-        throw new StringResponse(
-          await ConfigFileService.loadFile(args),
-        );
-        //}
+        const data = await ConfigFileService.loadFile(args);
+
+        if (data) {
+          throw new StringResponse(data);
+        }
+
       });
   }
 }

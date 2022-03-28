@@ -11,11 +11,10 @@ export class StoredObjectService {
    * @returns {string}
    */
   public static getObject(args: { group: string; object: string }) {
-    const home = os.homeDir();
+
     return Deno.readTextFileSync(
       path.join(
-        home ? home : "./",
-        "Lethean",
+        Deno.cwd(),
         "data",
         "objects",
         args.group,
@@ -32,10 +31,8 @@ export class StoredObjectService {
   public static setObject(
     args: { group: string; object: string; data: string },
   ) {
-    const home = os.homeDir();
     const objPath = path.join(
-      home ? home : "./",
-      "Lethean",
+      Deno.cwd(),
       "data",
       "objects",
       args.group,
@@ -43,8 +40,7 @@ export class StoredObjectService {
     );
     ensureDirSync(
       path.join(
-        home ? home : "./",
-        "Lethean",
+        Deno.cwd(),
         "data",
         "objects",
         args.group,
@@ -60,10 +56,9 @@ export class StoredObjectService {
    * @param {{group: string, object: string}} args
    */
   public static removeObject(args: { group: string; object: string }) {
-    const home = os.homeDir();
+
     const objPath = path.join(
-      home ? home : "./",
-      "Lethean",
+      Deno.cwd(),
       "data",
       "objects",
       args.group,
@@ -78,10 +73,9 @@ export class StoredObjectService {
    * @param {{group: string}} args
    */
   public static clearObjects(args: { group: string }) {
-    const home = os.homeDir();
+
     const objPath = path.join(
-      home ? home : "./",
-      "Lethean",
+      Deno.cwd(),
       "data",
       "objects",
       args.group,
@@ -96,10 +90,9 @@ export class StoredObjectService {
    * @returns {any[]}
    */
   public static countObjects(args: { group: string }) {
-    const home = os.homeDir();
+
     const objPath = path.join(
-      home ? home : "./",
-      "Lethean",
+      Deno.cwd(),
       "data",
       "objects",
       args.group,

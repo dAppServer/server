@@ -4,6 +4,9 @@ import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
 import { StringResponse } from "../../../interfaces/string-response.ts";
 import { ProcessManager } from "../../../services/process/process.service.ts";
 import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
+import { ConfigFileService } from "../../../services/config/file.service.ts";
+import { FilesystemService } from "../../../services/filesystem.service.ts";
+import { IniService } from "../../../services/config/ini.service.ts";
 
 export class RouteDaemonChainStart {
   public static config() {
@@ -180,14 +183,26 @@ export class RouteDaemonChainStart {
         "--confirm-external-bind",
         "Confirm rpc-bind-ip value is NOT a loopback (local) IP",
       )
-      .action((args) => {
+      .action( (args) => {
         let exeFile = `letheand${os.platform() === "windows" ? ".exe" : ""}`;
 
+        if(args['configFile'] !== undefined) {
+          args['configFile'] = path.join(Deno.cwd(), 'conf', args['configFile']);
+
+          if(! FilesystemService.existsFile({path: args['configFile']})) {
+            console.error(`Config file ${args['configFile']} not found`);
+            FilesystemService.write(args['configFile'], new IniService().stringify({
+              "config-file": args['configFile'],
+              "data-dir": args['dataDir'],
+            }));
+          }
+        }
+
         exeFile = path.join(
-            Deno.cwd() ,
-            "cli",
-            exeFile,
-          );
+          Deno.cwd(),
+          "cli",
+          exeFile,
+        );
 
 
         ProcessManager.run(

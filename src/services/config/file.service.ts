@@ -1,4 +1,4 @@
-import { renderFile, path} from "../../../deps.ts";
+import { renderFile, path, ini} from "../../../deps.ts";
 
 /**
  * File Service
@@ -7,7 +7,15 @@ import { renderFile, path} from "../../../deps.ts";
  * @class FileService
  */
 export class ConfigFileService {
-  public static async loadFile(args: { file: string; model: any }) {
+
+  /**
+   * Render file template
+   *
+   * @param {any} args{file: string, model: any}
+   * @returns {Promise<string>}
+   * @memberof FileService
+   */
+  public static async loadTemplateFile(args: { file: string; model: any }) {
 
     const model = {
       ...args.model, // user data
@@ -23,4 +31,31 @@ export class ConfigFileService {
       model,
     );
   }
+
+  /**
+   * Loads a file from the config directory
+   *
+   * @static
+   * @param {string} filename
+   * @returns {Promise<string>}
+   * @memberof FileService
+   */
+  public static async loadFile(filename: string) {
+    try {
+      const file = await Deno.readFile(
+        path.join(
+          Deno.cwd(),
+          "conf",
+          filename,
+        ),
+      );
+      return file.length > 0 ? file.toString() : "";
+    } catch (error) {
+      return null;
+    }
+
+  }
+
+
+
 }

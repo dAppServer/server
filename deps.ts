@@ -9,6 +9,7 @@ export * from "https://deno.land/x/websocket@v0.1.3/mod.ts";
 export * as zmq from "https://deno.land/x/jszmq@v1.3.1/mod.ts";
 export { Untar } from "https://deno.land/std@0.125.0/archive/tar.ts";
 
+export * as ini from "https://deno.land/x/gini@1.1.0/mod.ts"
 export { copy } from "https://deno.land/std@0.125.0/streams/conversion.ts";
 
 export { Application, Router } from "https://deno.land/x/oak@v10.5.1/mod.ts";

@@ -73,7 +73,7 @@ export class FilesystemService {
   static existsFile(args: { path: string }) {
 
     try {
-      return !!Deno.readFileSync(FilesystemService.path(args.path));
+      return !!Deno.readFileSync(args.path);
     } catch (e) {
       return false;
     }
@@ -109,8 +109,9 @@ export class FilesystemService {
    * @returns {string}
    */
   static write(path: string, data: string) {
-    FilesystemService.ensureDir(path);
-    Deno.writeTextFileSync(FilesystemService.path(path), data);
+    //FilesystemService.ensureDir(path);
+    console.log(path)
+    Deno.writeTextFileSync(path, data);
     return "1";
   }
 
