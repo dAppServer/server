@@ -104,13 +104,14 @@ export class FilesystemService {
   /**
    * Write to the Lethean data folder
    *
-   * @param {string} path relative path
+   * @param {string} filepath relative path
    * @param {string} data string data to save
    * @returns {string}
    */
-  static write(path: string, data: string) {
-    //FilesystemService.ensureDir(path);
-    Deno.writeTextFileSync(path, data);
+  static write(filepath: string, data: string) {
+    FilesystemService.ensureDir(path.dirname(filepath));
+
+    Deno.writeTextFileSync(filepath, data);
     return "1";
   }
 
