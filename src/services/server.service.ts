@@ -193,7 +193,8 @@ export class ServerService {
         context.response.headers = new Headers({
           "content-type":
             "application/x-www-form-urlencoded, text/plain, application/json",
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "*"
         });
 
         if ((error.message as string).startsWith("http")) {
@@ -211,7 +212,8 @@ export class ServerService {
       context.response.headers = new Headers({
         "Content-Type":
           "application/x-www-form-urlencoded, text/plain, application/json",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*"
       });
     });
   }
@@ -225,7 +227,8 @@ export class ServerService {
 
     this.router.get("/app/desktop/(.*)", async (context) => {
       context.response.headers = new Headers({
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*"
       });
       try {
         await context.send({
@@ -242,7 +245,8 @@ export class ServerService {
     this.router.get("(.*)", async (context) => {
       // context.response.status = 200;
       context.response.headers = new Headers({
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*"
       });
       try {
         await context.send({

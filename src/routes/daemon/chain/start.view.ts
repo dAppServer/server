@@ -4,7 +4,6 @@ import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
 import { StringResponse } from "../../../interfaces/string-response.ts";
 import { ProcessManager } from "../../../services/process/process.service.ts";
 import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
-import { ConfigFileService } from "../../../services/config/file.service.ts";
 import { FilesystemService } from "../../../services/filesystem.service.ts";
 import { IniService } from "../../../services/config/ini.service.ts";
 
@@ -193,7 +192,7 @@ export class RouteDaemonChainStart {
             //console.error(`Config file ${args['configFile']} not found`);
             FilesystemService.ensureDir(path.join(Deno.cwd(), 'conf'))
             FilesystemService.write(args['configFile'], new IniService().stringify({
-              "config-file": args['configFile'],
+              "log-file": args['logFile'],
               "data-dir": args['dataDir'],
             }));
           }
