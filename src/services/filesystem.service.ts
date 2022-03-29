@@ -109,8 +109,7 @@ export class FilesystemService {
    * @returns {string}
    */
   static write(path: string, data: string) {
-    FilesystemService.ensureDir(path);
-    console.log(path)
+    //FilesystemService.ensureDir(path);
     Deno.writeTextFileSync(path, data);
     return "1";
   }
