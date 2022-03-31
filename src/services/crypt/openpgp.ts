@@ -7,7 +7,7 @@ import { FilesystemService } from "../filesystem.service.ts";
  * @export
  * @class OpenPGPService
  */
-export class CryptOpenpgp {
+export class CryptOpenPGP {
 
   /**
    *
@@ -16,7 +16,7 @@ export class CryptOpenpgp {
    * @param {string} passphrase
    * @returns {Promise<string>}
    */
-  async encryptPGP(id: string, data: string, passphrase?: string): Promise<string> {
+  static async encryptPGP(id: string, data: string, passphrase?: string): Promise<string> {
     const key = await this.getPublicKey(id)
     let signingKey = undefined
     if(passphrase){
@@ -38,7 +38,7 @@ export class CryptOpenpgp {
    * @param {string} passphrase
    * @returns {Promise<string>}
    */
-  async decryptPGP(id: string, message: string, passphrase?: string): Promise<string> {
+  static async decryptPGP(id: string, message: string, passphrase?: string): Promise<string> {
     const privateKey = passphrase ? await this.getPrivateKey(id, passphrase) : undefined
     const publicKey = await this.getPublicKey(id)
     const data: any = await openpgp.decrypt({
@@ -61,7 +61,7 @@ export class CryptOpenpgp {
    * @param {string} passphrase
    * @returns {Promise<string>}
    */
-  async getPrivateKey(id: string, passphrase: string) {
+  static async getPrivateKey(id: string, passphrase: string) {
 
     if (!id) {
       throw new Error('No id provided');
@@ -72,7 +72,7 @@ export class CryptOpenpgp {
     }
 
     const privateKey = FilesystemService.read({
-      path: `users/${id}.lthn.private.asc`
+      path: `users/${id}.lthn.key`
     });
 
     if (!privateKey || privateKey.length === 0) {
@@ -90,12 +90,12 @@ export class CryptOpenpgp {
    * @param {string} id
    * @returns {Promise<openpgp.PublicKey>}
    */
-  async getPublicKey(id: string) {
+  static async getPublicKey(id: string) {
     if (!id) {
       throw new Error('No id provided');
     }
     const publicKey = FilesystemService.read({
-      path: `users/${id}.lthn.public.asc`
+      path: `users/${id}.lthn.pub`
     });
 
     if (!publicKey || publicKey.length === 0) {
@@ -110,10 +110,27 @@ export class CryptOpenpgp {
    * @param {string} data
    * @returns {Promise<any>}
    */
-  async readMessage(data: string) {
+  static async readMessage(data: string) {
     return await openpgp.readMessage({
       armoredMessage: data
     }) as openpgp.Message;
+  }
+
+  /**
+   * Creates an Armoured OpenPGP key for the username protected with the password supplied
+   *
+   * @param username
+   * @param password
+   * @returns {Promise<any>}
+   */
+  public static async createKeyPair(username: string, password: string) {
+    return await openpgp.generateKey({
+      type: 'rsa', // Type of the key, defaults to ECC
+      rsaBits: 4096,
+      userIDs: [{name: username}], // you can pass multiple user IDs
+      passphrase: password, // protects the private key
+      format: 'armored' // output key format, defaults to 'armored' (other options: 'binary' or 'object')
+    });
   }
 
 
