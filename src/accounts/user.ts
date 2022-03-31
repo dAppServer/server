@@ -16,11 +16,11 @@ export class LetheanAccount {
 
       const { privateKey, publicKey, revocationCertificate }: any = await CryptOpenPGP.createKeyPair(usernameHash, password)
 
-      FilesystemService.write(`users/${usernameHash}.lthn.pub`, publicKey)
+      FilesystemService.write(`users/${usernameHash}.lthn.lthn.pub`, publicKey)
 
-      FilesystemService.write(`users/${usernameHash}.lthn.rev`, revocationCertificate)
+      FilesystemService.write(`users/${usernameHash}.lthn.lthn.rev`, revocationCertificate)
 
-      FilesystemService.write(`users/${usernameHash}.lthn.key`, privateKey)
+      FilesystemService.write(`users/${usernameHash}.lthn.lthn.key`, privateKey)
 
       FilesystemService.write(
         `users/${usernameHash}.lthn`,
@@ -44,6 +44,13 @@ export class LetheanAccount {
    */
   static async delete(username: string) {
     try {
+      // because someone will do this, we all know it, and it will suck for them
+      // if you delete the server .key, all joining data will be lost forever.
+      // user data is stored with their key, so if this happens, you will have to
+      // re-create the server from scratch and re-join the network, you'll have a bad day.
+      if(username == "server"){
+        return false
+      }
       const usernameHash: string = QuasiSalt.hash(username);
 
       FilesystemService.delete(`users/${usernameHash}.lthn.pub`)

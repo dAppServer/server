@@ -3,6 +3,9 @@ import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { WebsocketServer } from "./tcp/websocket.server.ts";
 import { LetheanAppServer } from "./apps/server.ts";
 import { Router, Application, os, oakCors, path} from '../../deps.ts'
+import { FilesystemService } from "./filesystem.service.ts";
+import { CryptOpenPGP } from "./crypt/openpgp.ts";
+import { QuasiSalt } from "./crypt/quasi-salt.ts";
 /**
  * Server Service
  *
@@ -29,8 +32,69 @@ export class ServerService {
    * Initialize the server
    */
   async warmUpServer() {
+    console.info("[SERVER] Checking Security of Environment");
+    await this.securityCheck();
+
+    console.info("[SERVER] Checks pass, Initializing server...");
     await LetheanAppServer.loadPlugins();
     await LetheanCli.init();
+  }
+
+  /**
+   * Password is a sha256 of the server.pub path
+   * e.g: QuasiSalt.hash(path.join(Deno.cwd(), 'users', 'server.lthn.pub'))
+   */
+  async securityCheck() {
+    try {
+
+      if(Deno.env.get('LETHEAN_SECURITY_CHECK') === 'false') {
+        console.info("[SERVER] Security check disabled");
+        return;
+      }
+
+      if (!FilesystemService.existsFile({ path: 'users/server.lthn.pub' })) {
+        console.info('[SECURITY] Missing Server keypair, Generating...');
+        const { privateKey, publicKey, revocationCertificate }: any = await CryptOpenPGP.createKeyPair("server", QuasiSalt.hash(path.join(Deno.cwd(), 'users', 'server.lthn.pub')));
+
+        FilesystemService.write(`users/server.lthn.pub`, publicKey)
+
+        FilesystemService.write(`users/server.lthn.rev`, revocationCertificate)
+
+        FilesystemService.write(`users/server.lthn.key`, privateKey)
+      }
+
+
+      if(!FilesystemService.existsFile({ path: 'users/server.lthn.key' })) {
+        throw new Error('Missing Server private key, Exiting...');
+      }
+
+      if(!FilesystemService.existsFile({ path: 'users/server.lthn.pub' })) {
+        throw new Error('Missing Server public key, Exiting...');
+      }
+
+
+      if(Deno.statSync(path.join(Deno.cwd(), 'users', 'server.lthn.pub')).isFile) {
+        console.info("[SERVER] Server.pub found, checking password");
+        const password = QuasiSalt.hash(path.join(Deno.cwd(), 'users', 'server.lthn.pub'));
+        if(await CryptOpenPGP.getPrivateKey('server', password)) {
+          console.info("[SERVER] Keypair unlocked OK");
+        } else {
+          throw new Error("[SERVER] Keypair failed, exiting");
+        }
+      } else {
+        throw new Error("[SERVER] Server.pub not found");
+      }
+
+
+    } catch (error) {
+      console.error("[SECURITY] Failed to ensure safe environment, shutting down...");
+
+      console.error(error);
+      Deno.exit(1);
+    }
+
+
+
   }
 
   /**
