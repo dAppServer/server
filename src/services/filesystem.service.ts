@@ -124,4 +124,8 @@ export class FilesystemService {
   static ensureDir(path: string) {
     return ensureDirSync(path);
   }
+
+  static delete(filepath: string) {
+    return Deno.removeSync(path.join(Deno.cwd(),filepath));
+  }
 }
