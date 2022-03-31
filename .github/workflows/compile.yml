@@ -32,6 +32,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
+      - run: npm install
       - run: npm run server:build:${{ matrix.type }}
       - if: matrix.type != 'windows'
         run: chmod +x lethean-server && tar -cvf ${{ matrix.type }}.tar lethean-server start.sh
