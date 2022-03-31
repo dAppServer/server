@@ -13,7 +13,7 @@ export { createHash } from "https://deno.land/std@0.77.0/hash/mod.ts";
 export * as ini from "https://deno.land/x/gini@1.1.0/mod.ts"
 export { copy } from "https://deno.land/std@0.125.0/streams/conversion.ts";
 
-export { Application, Router, Context,  isHttpError, Status } from "https://deno.land/x/oak@v10.5.1/mod.ts";
+export { Application, Router, Context,  isHttpError, Status, httpErrors } from "https://deno.land/x/oak@v10.5.1/mod.ts";
 
 export { oakCors } from "https://deno.land/x/cors@v1.2.0/mod.ts";
 export { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/unzip.ts";
@@ -36,3 +36,13 @@ export { HelpCommand } from "https://deno.land/x/cliffy@v0.22.2/command/help/mod
 export  { renderFile } from "https://deno.land/x/mustache@v0.3.0/mod.ts";
 import "./src/tools/utils.ts";
 export * as openpgp from './node_modules/openpgp/dist/openpgp.mjs';
+
+
+export {
+  required,
+  isEmail,
+  lengthBetween,
+} from "https://deno.land/x/validasaur@v0.7.0/src/rules.ts";
+
+
+export { v4 as uuid } from "https://deno.land/std@0.62.0/uuid/mod.ts";

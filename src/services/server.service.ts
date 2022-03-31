@@ -214,7 +214,12 @@ export class ServerService {
     /**
      * Setup the action runner
      */
-    this.router.post(path, async (context) => {
+    this.router.post(path, oakCors({
+      origin: "*",
+      methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
+      allowedHeaders: ["content-type"],
+      maxAge: 1
+    }), async (context) => {
 
       //console.error(context.request.url.pathname.replace("/", "").split("/"))
       let cmdArgs: string[] = [];
@@ -271,7 +276,12 @@ export class ServerService {
       }
     });
 
-    this.router.options(path, (context) => {
+    this.router.options(path, oakCors({
+      origin: "*",
+      methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
+      allowedHeaders: ["content-type"],
+      maxAge: 1
+    }), (context) => {
       context.response.status = 204;
       context.response.headers = new Headers({
         "Content-Type":
@@ -289,7 +299,12 @@ export class ServerService {
     Deno.env.set("REST", "1");
     this.discoverRoute("", LetheanCli.options.commands);
 
-    this.router.get("/app/desktop/(.*)", async (context) => {
+    this.router.get("/app/desktop/(.*)",oakCors({
+      origin: "*",
+      methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
+      allowedHeaders: ["content-type"],
+      maxAge: 1
+    }), async (context) => {
       context.response.headers = new Headers({
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*"
@@ -306,7 +321,12 @@ export class ServerService {
 
     });
 
-    this.router.get("(.*)", async (context) => {
+    this.router.get("(.*)", oakCors({
+      origin: "*",
+      methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
+      allowedHeaders: ["content-type"],
+      maxAge: 1
+    }), async (context) => {
       // context.response.status = 200;
       context.response.headers = new Headers({
         "Access-Control-Allow-Origin": "*",
