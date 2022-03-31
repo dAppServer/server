@@ -12,7 +12,6 @@ export class LetheanAccount {
    */
   static async create(username: string, password: string) {
     try {
-
       const usernameHash: string = QuasiSalt.hash(username);
 
       const { privateKey, publicKey, revocationCertificate }: any = await CryptOpenPGP.createKeyPair(usernameHash, password)
@@ -38,7 +37,26 @@ export class LetheanAccount {
       return false
     }
     return true;
+  }
 
+  /**
+   * deletes a Lethean user account
+   */
+  static async delete(username: string) {
+    try {
+      const usernameHash: string = QuasiSalt.hash(username);
+
+      FilesystemService.delete(`users/${usernameHash}.lthn.pub`)
+
+      FilesystemService.delete(`users/${usernameHash}.lthn.rev`)
+
+      FilesystemService.delete(`users/${usernameHash}.lthn.key`)
+
+      FilesystemService.delete(`users/${usernameHash}.lthn`)
+    } catch (error) {
+      return false
+    }
+    return true;
   }
 
   public static config() {
