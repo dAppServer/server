@@ -173,7 +173,7 @@ export class ServerService {
         cmdArgs.push(`--request="${payload}"`);
       } else {
 
-        console.info(payload);
+        //console.info(payload);
         for (const key in payload) {
           const value = payload[key].length > 1 ? `=${payload[key]}` : "";
           cmdArgs.push(
@@ -249,6 +249,7 @@ export class ServerService {
         "Access-Control-Allow-Headers": "*"
       });
       try {
+        console.info(context.request.url.pathname);
         await context.send({
           root: path.join(Deno.cwd(), "apps", "lthn", "app", "desktop"),
           index: "index.html"
@@ -265,7 +266,7 @@ export class ServerService {
    * Discovers the routes for the given command
    *
    * @param {string} path
-   * @param {Command} command
+   * @param context
    */
   async performRequest(path: string, context: any) {
     try {

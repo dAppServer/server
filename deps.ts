@@ -8,11 +8,12 @@ export * as Colors from "https://deno.land/std@0.130.0/fmt/colors.ts";
 export * from "https://deno.land/x/websocket@v0.1.3/mod.ts";
 export * as zmq from "https://deno.land/x/jszmq@v1.3.1/mod.ts";
 export { Untar } from "https://deno.land/std@0.125.0/archive/tar.ts";
+export { encode as he } from "https://deno.land/std@0.132.0/encoding/hex.ts";
 
 export * as ini from "https://deno.land/x/gini@1.1.0/mod.ts"
 export { copy } from "https://deno.land/std@0.125.0/streams/conversion.ts";
 
-export { Application, Router } from "https://deno.land/x/oak@v10.5.1/mod.ts";
+export { Application, Router, Context,  isHttpError, Status } from "https://deno.land/x/oak@v10.5.1/mod.ts";
 
 export { oakCors } from "https://deno.land/x/cors@v1.2.0/mod.ts";
 export { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/unzip.ts";
@@ -31,5 +32,7 @@ export { CompletionsCommand } from "https://deno.land/x/cliffy@v0.22.2/command/c
 export { HelpCommand } from "https://deno.land/x/cliffy@v0.22.2/command/help/mod.ts";
 
 
+
 export  { renderFile } from "https://deno.land/x/mustache@v0.3.0/mod.ts";
 import "./src/tools/utils.ts";
+export * as openpgp from './node_modules/openpgp/dist/openpgp.mjs';

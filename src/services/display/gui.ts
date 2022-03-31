@@ -26,7 +26,8 @@ export class LetheanGUI {
     if(Deno.env.get('DEV') == 'true') {
       this.webview.navigate(`http://127.0.0.1:4200/`);
     } else {
-      this.webview.navigate(`http://127.0.0.1:36911/app/${app}/`);
+//      this.webview.navigate(`http://127.0.0.1:36911/app/${app}/`);
+      this.webview.navigate(`http://127.0.0.1:36911/`);
     }
 
     this.webview.run();

@@ -1,5 +1,6 @@
 # Lethean Server
 
+This repository is a mess, but it's a mess I made working the problem, when I write tests, it'll be sensible.
 ## Requirements
 
 1. Deno https://deno.land

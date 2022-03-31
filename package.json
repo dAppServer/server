@@ -29,12 +29,11 @@
     "sdk:angular": "openapi-generator generate -i openapi.json -g typescript-angular -o build/api"
   },
   "dependencies": {
-    "axios": "^0.26.0",
-    "openpgp": "^5.0.0",
+    "openpgp": "^5.2.1",
     "pem-ts": "^3.0.0"
   },
   "devDependencies": {
-    "typescript": "^4.6.2",
+    "typescript": "^4.6.3",
     "typescript-deno-plugin": "^1.31.0"
   }
 }
