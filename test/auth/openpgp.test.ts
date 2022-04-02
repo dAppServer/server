@@ -18,3 +18,4 @@ Deno.test('getPublicKeyById', async () => {
 
   assertEquals( await publicKey.getPrimaryUser().then(data => data.user.userID.userID), '09f3b17c6fab2d948fb29a5ab9aaf9755fd24c3c146ed19795a85c446241ad89', "OpenPGP Key is not for the test user")
 });
+

@@ -54,13 +54,7 @@ export class ServerService {
 
       if (!FilesystemService.existsFile({ path: 'users/server.lthn.pub' })) {
         console.info('[SECURITY] Missing Server keypair, Generating...');
-        const { privateKey, publicKey, revocationCertificate }: any = await CryptOpenPGP.createKeyPair("server", QuasiSalt.hash(path.join(Deno.cwd(), 'users', 'server.lthn.pub')));
-
-        FilesystemService.write(`users/server.lthn.pub`, publicKey)
-
-        FilesystemService.write(`users/server.lthn.rev`, revocationCertificate)
-
-        FilesystemService.write(`users/server.lthn.key`, privateKey)
+        await CryptOpenPGP.createServerKeyPair()
       }
 
 

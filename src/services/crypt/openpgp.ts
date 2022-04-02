@@ -1,5 +1,6 @@
-import { openpgp } from "../../../deps.ts";
+import { openpgp, path } from "../../../deps.ts";
 import { FilesystemService } from "../filesystem.service.ts";
+import { QuasiSalt } from "../crypt/quasi-salt.ts";
 
 /**
  * OpenPGP Service
@@ -150,6 +151,22 @@ export class CryptOpenPGP {
       passphrase: password, // protects the private key
       format: "armored" // output key format, defaults to 'armored' (other options: 'binary' or 'object')
     });
+  }
+
+  /**
+   *
+   * @param {string} id
+   * @param {string} passphrase
+   * @returns {Promise<string>}
+   */
+  public static async createServerKeyPair(){
+    const { privateKey, publicKey, revocationCertificate }: any = await CryptOpenPGP.createKeyPair("server", QuasiSalt.hash(path.join(Deno.cwd(), 'users', 'server.lthn.pub')));
+
+    FilesystemService.write(`users/server.lthn.pub`, publicKey)
+
+    FilesystemService.write(`users/server.lthn.rev`, revocationCertificate)
+
+    FilesystemService.write(`users/server.lthn.key`, privateKey)
   }
 
 
