@@ -314,7 +314,24 @@ export class ServerService {
 
 
     });
+    this.router.get('/cert', async (context) => {
+      context.response.headers = new Headers({
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*"
+      });
+      try {
+        const cert = FilesystemService.read({ path : path.join(Deno.cwd(), "users", 'server.lthn.pub')});
 
+        if (cert){
+          context.response.status = 200;
+          context.response.body = cert;
+        } else {
+          context.response.status = 404;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    });
     this.router.get("(.*)", oakCors({
       origin: "*",
       methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
@@ -336,6 +353,8 @@ export class ServerService {
         console.error(e);
       }
     });
+
+
 
     console.info("HTTPS API Routes loaded");
   }
