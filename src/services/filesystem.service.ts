@@ -42,7 +42,7 @@ export class FilesystemService {
    */
   static read(args: { path: string }) {
     try {
-      return Deno.readTextFileSync(FilesystemService.path(args.path));
+      return Deno.readTextFileSync(args.path);
     } catch (e) {
       return false;
     }
