@@ -36,6 +36,9 @@ jobs:
       - run: sudo apt-get update && sudo apt-get -y install libwebkit2gtk-4.0-37
       - name: Testing
         run: npm run test
+      - name: Generate coverage report
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: deno coverage --lcov cov > cov.lcov
       - run: npm run server:build:${{ matrix.type }}
       - if: matrix.type != 'windows'
         run: chmod +x lethean-server && tar -cvf ${{ matrix.type }}.tar lethean-server start.sh
