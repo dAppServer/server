@@ -15,7 +15,7 @@ Deno.test('Create a Lethean Account, check user files created, check user files 
 
 });
 
-Deno.test('Perform login, check user files created, check user files deleted', async () => {
+Deno.test('Perform login with OpenPGP Message', async () => {
 
   const encryptedTest = await CryptOpenPGP.encryptPGP('server', '{"id":"test"}')
 
