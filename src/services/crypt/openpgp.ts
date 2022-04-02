@@ -1,4 +1,4 @@
-import { openpgp } from '../../../deps.ts'
+import { openpgp } from "../../../deps.ts";
 import { FilesystemService } from "../filesystem.service.ts";
 
 /**
@@ -17,10 +17,10 @@ export class CryptOpenPGP {
    * @returns {Promise<string>}
    */
   static async encryptPGP(id: string, data: string, passphrase?: string): Promise<string> {
-    const key = await this.getPublicKey(id)
-    let signingKey = undefined
-    if(passphrase){
-      signingKey = await this.getPrivateKey(id, passphrase)
+    const key = await this.getPublicKey(id);
+    let signingKey = undefined;
+    if (passphrase) {
+      signingKey = await this.getPrivateKey(id, passphrase);
     }
     return await openpgp.encrypt({
       message: await openpgp.createMessage({
@@ -36,27 +36,42 @@ export class CryptOpenPGP {
    * @param {string} id
    * @param {string} message
    * @param {string} passphrase
+   * @param signedBy
    * @returns {Promise<string>}
    */
-  static async decryptPGP(id: string, message: string, passphrase?: string): Promise<string> {
+  static async decryptPGP(id: string, message: string, passphrase: string, signedBy?: string): Promise<string> {
 
-    const privateKey = passphrase ? await this.getPrivateKey(id, passphrase) : undefined
-    const publicKey = await this.getPublicKey(id)
-    const data: any = await openpgp.decrypt({
-      message: await this.readMessage(message),
-      verificationKeys: publicKey,
-      decryptionKeys: privateKey
-    })
-    if(data['signatures'].length > 0) {
-      try {
-        await data['signatures'][0].verified; // throws on invalid signature
-        console.log('Signature is valid');
-      } catch (e) {
-        throw new Error('Signature could not be verified: ' + e.message);
-      }
+    if (!id) {
+      throw new Error("No id provided");
+    }
+    if (!message) {
+      throw new Error("No message to decrypt");
     }
 
-    return data['data']
+    if (!passphrase) {
+      throw new Error("No passphrase provided");
+    }
+    const privateKey = await this.getPrivateKey(id, passphrase);
+
+    let options: any = {
+      message: await this.readMessage(message),
+      decryptionKeys: privateKey
+    };
+    if (signedBy) {
+      options["verificationKeys"] = await this.getPublicKey(id);
+    }
+
+    const data: any = await openpgp.decrypt(options);
+
+    try {
+      if (signedBy && data["signatures"].length > 0 && data["signatures"][0].verified) {
+        await data["signatures"][0].verified;
+      }
+    } catch (e) {
+      throw new Error("Signature could not be verified: " + e.message);
+    }
+
+    return data["data"];
   }
 
   /**
@@ -68,11 +83,11 @@ export class CryptOpenPGP {
   static async getPrivateKey(id: string, passphrase: string) {
 
     if (!id) {
-      throw new Error('No id provided');
+      throw new Error("No id provided");
     }
 
     if (!passphrase) {
-      throw new Error('No passphrase provided');
+      throw new Error("No passphrase provided");
     }
 
     const privateKey = FilesystemService.read({
@@ -96,7 +111,7 @@ export class CryptOpenPGP {
    */
   static async getPublicKey(id: string) {
     if (!id) {
-      throw new Error('No id provided');
+      throw new Error("No id provided");
     }
     const publicKey = FilesystemService.read({
       path: `users/${id}.lthn.pub`
@@ -129,11 +144,11 @@ export class CryptOpenPGP {
    */
   public static async createKeyPair(username: string, password: string) {
     return await openpgp.generateKey({
-      type: 'rsa', // Type of the key, defaults to ECC
+      type: "rsa", // Type of the key, defaults to ECC
       rsaBits: 4096,
-      userIDs: [{name: username}], // you can pass multiple user IDs
+      userIDs: [{ name: username }], // you can pass multiple user IDs
       passphrase: password, // protects the private key
-      format: 'armored' // output key format, defaults to 'armored' (other options: 'binary' or 'object')
+      format: "armored" // output key format, defaults to 'armored' (other options: 'binary' or 'object')
     });
   }
 
