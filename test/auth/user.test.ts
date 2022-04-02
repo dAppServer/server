@@ -4,6 +4,7 @@ import { LetheanAccount } from "../../src/accounts/user.ts";
 import { FilesystemService } from "../../src/services/filesystem.service.ts";
 import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
 import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
+import {path} from "../../deps.ts";
 
 Deno.test('Create a Lethean Account, check user files created, check user files deleted', async () => {
 
@@ -16,6 +17,10 @@ Deno.test('Create a Lethean Account, check user files created, check user files 
 });
 
 Deno.test('Perform login with OpenPGP Message', async () => {
+
+  if(!FilesystemService.existsFile({path: 'users/server.lthn.pub'})) {
+    const key: any = await CryptOpenPGP.createKeyPair("server", QuasiSalt.hash(path.join(Deno.cwd(), 'users', 'server.lthn.pub')))
+  }
 
   const encryptedTest = await CryptOpenPGP.encryptPGP('server', '{"id":"test"}')
 
@@ -36,3 +41,5 @@ Deno.test('Delete user files', async () => {
   assertEquals(FilesystemService.existsFile({ path: `users/${QuasiSalt.hash('test')}.lthn.rev` }), false)
 
 })
+
+
