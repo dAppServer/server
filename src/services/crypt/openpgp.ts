@@ -26,7 +26,7 @@ export class CryptOpenPGP {
       message: await openpgp.createMessage({
         text: data
       }),
-      encryptionKeys: key, signingKeys: signingKey
+      encryptionKeys: key
     });
 
   }
@@ -39,6 +39,7 @@ export class CryptOpenPGP {
    * @returns {Promise<string>}
    */
   static async decryptPGP(id: string, message: string, passphrase?: string): Promise<string> {
+
     const privateKey = passphrase ? await this.getPrivateKey(id, passphrase) : undefined
     const publicKey = await this.getPublicKey(id)
     const data: any = await openpgp.decrypt({
@@ -46,13 +47,16 @@ export class CryptOpenPGP {
       verificationKeys: publicKey,
       decryptionKeys: privateKey
     })
-    try {
-      await data['signatures'][0].verified; // throws on invalid signature
-      console.log('Signature is valid');
-    } catch (e) {
-      throw new Error('Signature could not be verified: ' + e.message);
+    if(data['signatures'].length > 0) {
+      try {
+        await data['signatures'][0].verified; // throws on invalid signature
+        console.log('Signature is valid');
+      } catch (e) {
+        throw new Error('Signature could not be verified: ' + e.message);
+      }
     }
-    return data['decrypted']
+
+    return data['data']
   }
 
   /**

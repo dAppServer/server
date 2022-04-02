@@ -1,4 +1,4 @@
-import { he, Command } from '../../deps.ts'
+import { he, Command, path } from "../../deps.ts";
 import { QuasiSalt } from "../services/crypt/quasi-salt.ts";
 import { CryptOpenPGP } from "../services/crypt/openpgp.ts";
 import { FilesystemService } from "../services/filesystem.service.ts";
@@ -6,6 +6,11 @@ const td = (d: Uint8Array) => new TextDecoder().decode(d);
 
 export class LetheanAccount {
 
+  static async login(payload: string) {
+    const decrypted = await CryptOpenPGP.decryptPGP('server', payload, QuasiSalt.hash(path.join(Deno.cwd(), 'users', 'server.lthn.pub')));
+   // console.log(decrypted);
+    return JSON.parse(decrypted);
+  }
 
   /**
    * creates a Lethean user account
@@ -42,7 +47,7 @@ export class LetheanAccount {
   /**
    * deletes a Lethean user account
    */
-  static async delete(username: string) {
+  static delete(username: string) {
     try {
       // because someone will do this, we all know it, and it will suck for them
       // if you delete the server .key, all joining data will be lost forever.
