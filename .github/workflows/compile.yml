@@ -33,9 +33,17 @@ jobs:
         with:
           node-version: 16.x
       - run: npm install
+      - name: Testing
+        run: npm run test
       - run: npm run server:build:${{ matrix.type }}
       - if: matrix.type != 'windows'
         run: chmod +x lethean-server && tar -cvf ${{ matrix.type }}.tar lethean-server start.sh
+      - name: Upload coverage report
+        if: ${{ matrix.type == 'linux' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: cov.lcov
       - uses: papeloto/action-zip@v1
         if: matrix.type == 'windows'
         with:

@@ -24,7 +24,7 @@
     "server:build:macos-intel": "npm run server:compile -- x86_64-apple-darwin mod.ts",
     "server:build:macos-arm": "npm run server:compile -- aarch64-apple-darwin mod.ts",
     "server:build:windows": "npm run server:compile -- x86_64-pc-windows-msvc mod.ts",
-    "test": "deno test --coverage=cov -A --unstable test/ ",
+    "test": "deno test --coverage=cov -A --unstable --doc test/ ",
     "fmt": "deno fmt -c deno.json",
     "sdk:angular": "openapi-generator generate -i openapi.json -g typescript-angular -o build/api"
   },
