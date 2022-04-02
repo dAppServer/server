@@ -10,6 +10,11 @@ Deno.test("GET /", async () => {
   await request.get("/").expect(200);
 });
 
+Deno.test("Error: Path not found", async () => {
+  const request = await superoak(letheanServer.app);
+  await request.get("/somethingw4aedaRandom").expect(404);
+});
+
 
 Deno.test("GET /cert", async () => {
   const request = await superoak(letheanServer.app);

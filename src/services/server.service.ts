@@ -344,13 +344,14 @@ export class ServerService {
         "Access-Control-Allow-Headers": "*"
       });
       try {
-        console.info(context.request.url.pathname);
+        //console.info(context.request.url.pathname);
         await context.send({
           root: path.join(Deno.cwd(), "apps", "lthn", "app", "desktop"),
           index: "index.html"
         });
       } catch (e) {
-        console.error(e);
+        context.response.status = 404;
+        //console.error(e);
       }
     });
 
