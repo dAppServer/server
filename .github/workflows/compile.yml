@@ -37,7 +37,7 @@ jobs:
       - name: Testing
         run: npm run test
       - name: Generate coverage report
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.type == 'linux' }}
         run: deno coverage --lcov cov > cov.lcov
       - run: npm run server:build:${{ matrix.type }}
       - if: matrix.type != 'windows'
