@@ -354,8 +354,8 @@ export class ServerService {
    */
   async performRequest(path: string, context: any) {
     try {
-      console.warn(path);
-      console.warn(await context.request.body({ type: "text" }).value);
+      //console.warn(path);
+      //console.warn(await context.request.body({ type: "text" }).value);
       const postReq = await fetch(
         path,
         {
