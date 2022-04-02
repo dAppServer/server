@@ -6,7 +6,7 @@ import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
 import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
 import { path } from "../../deps.ts";
 
-Deno.test("Create a Lethean Account, check user files created, check user files deleted", async () => {
+Deno.test("LetheanAccount.create", async () => {
 
   const key: any = await LetheanAccount.create("test", "test");
 
@@ -16,7 +16,7 @@ Deno.test("Create a Lethean Account, check user files created, check user files 
 
 });
 
-Deno.test("Perform login with OpenPGP Message", async () => {
+Deno.test("LetheanAccount.login", async () => {
 
   if (!FilesystemService.existsFile({ path: "users/server.lthn.pub" })) {
     await CryptOpenPGP.createServerKeyPair();
@@ -32,7 +32,7 @@ Deno.test("Perform login with OpenPGP Message", async () => {
 });
 
 
-Deno.test("Delete user files", async () => {
+Deno.test("LetheanAccount.delete", async () => {
 
   await LetheanAccount.delete("test");
 
