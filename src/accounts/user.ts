@@ -16,11 +16,11 @@ export class LetheanAccount {
 
       const { privateKey, publicKey, revocationCertificate }: any = await CryptOpenPGP.createKeyPair(usernameHash, password)
 
-      FilesystemService.write(`users/${usernameHash}.lthn.lthn.pub`, publicKey)
+      FilesystemService.write(`users/${usernameHash}.lthn.pub`, publicKey)
 
-      FilesystemService.write(`users/${usernameHash}.lthn.lthn.rev`, revocationCertificate)
+      FilesystemService.write(`users/${usernameHash}.lthn.rev`, revocationCertificate)
 
-      FilesystemService.write(`users/${usernameHash}.lthn.lthn.key`, privateKey)
+      FilesystemService.write(`users/${usernameHash}.lthn.key`, privateKey)
 
       FilesystemService.write(
         `users/${usernameHash}.lthn`,
