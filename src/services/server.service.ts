@@ -38,6 +38,29 @@ export class ServerService {
     console.info("[SERVER] Checks pass, Initializing server...");
     await LetheanAppServer.loadPlugins();
     await LetheanCli.init();
+
+    this.loadRoutes();
+    this.app.use(this.router.routes());
+    this.app.use(this.router.allowedMethods());
+
+
+    // Logger
+    this.app.use(async (ctx, next) => {
+      await next();
+      const rt = ctx.response.headers.get("X-Response-Time");
+    });
+
+// Timing
+    this.app.use(async (ctx, next) => {
+      const start = Date.now();
+      await next();
+      const ms = Date.now() - start;
+      ctx.response.headers.set("X-Response-Time", `${ms}ms`);
+    });
+    this.app.addEventListener("error", (evt) => {
+      // Will log the thrown error to the console.
+      console.error(evt.error);
+    });
   }
 
   /**
@@ -108,29 +131,6 @@ export class ServerService {
       maxAge: 1
     }));
 
-
-    this.loadRoutes();
-    this.app.use(this.router.routes());
-    this.app.use(this.router.allowedMethods());
-
-
-    // Logger
-    this.app.use(async (ctx, next) => {
-      await next();
-      const rt = ctx.response.headers.get("X-Response-Time");
-    });
-
-// Timing
-    this.app.use(async (ctx, next) => {
-      const start = Date.now();
-      await next();
-      const ms = Date.now() - start;
-      ctx.response.headers.set("X-Response-Time", `${ms}ms`);
-    });
-    this.app.addEventListener("error", (evt) => {
-      // Will log the thrown error to the console.
-      console.error(evt.error);
-    });
 
     this.app.addEventListener("listen", ({ hostname, port, secure }) => {
       console.info(
