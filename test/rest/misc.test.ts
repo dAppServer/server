@@ -1,6 +1,20 @@
 import { superoak } from "https://deno.land/x/superoak/mod.ts";
 import { ServerService } from "../../src/services/server.service.ts";
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
+import { assertExists } from "../../vendor/deno.land/std@0.108.0/testing/asserts.ts";
+
+Deno.test('console.error', async () => {
+    assertExists(console.error, 'console.error');
+});
+
+Deno.test('console.info', async () => {
+    assertExists(console.info, 'console.info');
+});
+
+Deno.test('console.warn', async () => {
+    assertExists(console.warn, 'console.warn');
+});
+
 const letheanServer = new ServerService();
 await letheanServer.warmUpServer();
 
