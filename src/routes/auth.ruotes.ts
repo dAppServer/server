@@ -1,14 +1,7 @@
-import {
-  CreateUser,
-  LoginCredential,
-  UserRole,
-  UserInfo,
-} from "./../types.ts";
-
+import { CreateUser, LoginCredential, UserInfo, UserRole } from "./../types.ts";
 
 import * as jwt from "../helpers/jwt.ts";
-import { httpErrors} from "../../deps.ts";
-
+import { httpErrors } from "../../deps.ts";
 
 /**
  * register user

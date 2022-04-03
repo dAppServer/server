@@ -1,8 +1,6 @@
-
 import { Context, UserRole } from "./../types.ts";
 import { hasUserRole } from "../helpers/roles.ts";
 import { httpErrors } from "../../deps.ts";
-
 
 /**
  * has user role middleware

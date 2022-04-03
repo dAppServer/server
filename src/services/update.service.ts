@@ -1,62 +1,64 @@
-
-import {ensureDir, ensureFile, path, os, Untar, copy } from "../../deps.ts";
+import { copy, ensureDir, ensureFile, os, path, Untar } from "../../deps.ts";
 
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { FilesystemService } from "./filesystem.service.ts";
-import { LetheanDownloadService, Destination } from "./download.service.ts";
+import { Destination, LetheanDownloadService } from "./download.service.ts";
 
 /**
  * Service for updating the application
  */
 export class LetheanUpdater {
-
   async download(args: any) {
-
     const url: URL = new URL(this.getUrl("4.0.6"));
 
-    const filename:string = url.pathname.split("/").pop()??'';
+    const filename: string = url.pathname.split("/").pop() ?? "";
 
     try {
       const destination: Destination = {
         file: filename,
-        dir: path.join(Deno.cwd(), 'cli')
+        dir: path.join(Deno.cwd(), "cli"),
       };
 
-      FilesystemService.ensureDir(path.join(Deno.cwd(), 'cli'))
+      FilesystemService.ensureDir(path.join(Deno.cwd(), "cli"));
 
-      console.info(`Attempting to download ${url}`)
+      console.info(`Attempting to download ${url}`);
       const fileObj = await LetheanDownloadService.download(url, destination);
-      console.info(`Downloaded to: ${destination.dir}`)
+      console.info(`Downloaded to: ${destination.dir}`);
 
-      console.info(`Unpacking file: ${fileObj.fullPath}`)
+      console.info(`Unpacking file: ${fileObj.fullPath}`);
 
       const reader = await Deno.open(fileObj.fullPath, { read: true });
       const untar = new Untar(reader);
 
       for await (const entry of untar) {
-
         if (entry.type === "directory") {
           await ensureDir(path.join(Deno.cwd(), "cli", entry.fileName));
           continue;
         }
 
-        await Deno.writeFile(path.join(Deno.cwd(), "cli", entry.fileName), new Uint8Array(), {mode: 0o777});
-        const file = await Deno.open(path.join(Deno.cwd(), "cli", entry.fileName), { write: true });
+        await Deno.writeFile(
+          path.join(Deno.cwd(), "cli", entry.fileName),
+          new Uint8Array(),
+          { mode: 0o777 },
+        );
+        const file = await Deno.open(
+          path.join(Deno.cwd(), "cli", entry.fileName),
+          { write: true },
+        );
         await copy(entry, file);
       }
       reader.close();
 
-      console.info("Cleaning up file system")
+      console.info("Cleaning up file system");
       try {
         await Deno.remove(
           path.join(
             Deno.cwd(),
             "cli",
-            filename
+            filename,
           ),
-          { recursive: true }
+          { recursive: true },
         );
-
       } catch (e) {
         console.error(e);
       }
@@ -64,7 +66,6 @@ export class LetheanUpdater {
       console.error(err);
     }
     ZeroMQServer.sendPubMessage("update-cli", "Done");
-
   }
 
   /**
@@ -73,7 +74,8 @@ export class LetheanUpdater {
    */
   getUrl(version: string) {
     const platform = os.platform();
-    const base = `https://github.com/letheanVPN/blockchain/releases/download/v${version}/`;
+    const base =
+      `https://github.com/letheanVPN/blockchain/releases/download/v${version}/`;
     let url;
     switch (platform) {
       case "darwin":
@@ -87,6 +89,6 @@ export class LetheanUpdater {
         break;
     }
 
-    return url
+    return url;
   }
 }

@@ -1,41 +1,38 @@
 import { ensureDirSync, unZipFromFile } from "../../deps.ts";
 import { FilesystemService } from "./filesystem.service.ts";
 
-
-
 export interface Destination {
   /**
    * The destination directory
    */
-  dir?: string,
+  dir?: string;
   /**
    * The destination file
    */
-  file?: string,
+  file?: string;
   /**
    * The destination file name
    */
-  mode?: number
+  mode?: number;
 }
-
 
 export interface DownloadedFile {
   /**
    * The name of the file
    */
-  file: string,
+  file: string;
   /**
    * The path to the file
    */
-  dir:string,
+  dir: string;
   /**
    * The mode of the file
    */
-  fullPath: string,
+  fullPath: string;
   /**
    * The mode of the file
    */
-  size: number
+  size: number;
 }
 
 /**
@@ -44,7 +41,6 @@ export interface DownloadedFile {
  * Service to download files from the internet
  */
 export class LetheanDownloadService {
-
   /**
    * Downloads and extracts a zip file's contents to the dest directory
    *
@@ -53,25 +49,25 @@ export class LetheanDownloadService {
    * @returns {Promise<void>}
    */
   static async downloadZipContents(url: string, dest: string) {
-
-    const filename =  url.split('/').pop() ?? ''
+    const filename = url.split("/").pop() ?? "";
     const destination: Destination = {
       file: filename,
-      dir: './apps'
-    }
-    FilesystemService.ensureDir(dest)
-    console.info(`Attempting to download ${url}`)
-    const fileObj = await LetheanDownloadService.download(new URL(url), destination);
-
-
+      dir: "./apps",
+    };
+    FilesystemService.ensureDir(dest);
+    console.info(`Attempting to download ${url}`);
+    const fileObj = await LetheanDownloadService.download(
+      new URL(url),
+      destination,
+    );
 
     await unZipFromFile(
       fileObj.fullPath,
       dest,
-      { includeFileName: false }
+      { includeFileName: false },
     );
 
-    await Deno.remove(fileObj.fullPath)
+    await Deno.remove(fileObj.fullPath);
   }
 
   /**
@@ -83,17 +79,19 @@ export class LetheanDownloadService {
    * @returns {Promise<DownloadedFile>}
    */
   static async download(
-    url:URL,
-    destination?:Destination,
-    options?:RequestInit
-  ): Promise<DownloadedFile>{
-    let file: string, dir = '', mode = {};
+    url: URL,
+    destination?: Destination,
+    options?: RequestInit,
+  ): Promise<DownloadedFile> {
+    let file: string, dir = "", mode = {};
 
     const response = await fetch(url, options);
     const finalUrl = response.url.replace(/\/$/, "");
-    if(response.status != 200){
+    if (response.status != 200) {
       return Promise.reject(
-        new Deno.errors.Http(`status ${response.status}-'${response.statusText}' received instead of 200`)
+        new Deno.errors.Http(
+          `status ${response.status}-'${response.statusText}' received instead of 200`,
+        ),
       );
     }
     const blob = await response.blob();
@@ -101,26 +99,34 @@ export class LetheanDownloadService {
     const size = blob.size;
     const buffer = await blob.arrayBuffer();
     const unit8arr = new Deno.Buffer(buffer).bytes();
-    if( typeof destination === 'undefined' || typeof destination.dir === 'undefined' ){
-      dir = Deno.makeTempDirSync({ prefix: 'deno_dwld' });
+    if (
+      typeof destination === "undefined" ||
+      typeof destination.dir === "undefined"
+    ) {
+      dir = Deno.makeTempDirSync({ prefix: "deno_dwld" });
     } else {
       dir = destination.dir;
     }
-    if(typeof destination === 'undefined' || typeof destination.file === 'undefined' ){
-      file = finalUrl.substring(finalUrl.lastIndexOf('/')+1);
+    if (
+      typeof destination === "undefined" ||
+      typeof destination.file === "undefined"
+    ) {
+      file = finalUrl.substring(finalUrl.lastIndexOf("/") + 1);
     } else {
       file = destination.file;
     }
-    if(typeof destination != 'undefined' && typeof destination.mode != 'undefined' ){
-      mode = { mode: destination.mode }
+    if (
+      typeof destination != "undefined" &&
+      typeof destination.mode != "undefined"
+    ) {
+      mode = { mode: destination.mode };
     }
 
     dir = dir.replace(/\/$/, "");
-    ensureDirSync(dir)
+    ensureDirSync(dir);
 
     const fullPath = `${dir}/${file}`;
     Deno.writeFileSync(fullPath, unit8arr, mode);
-    return Promise.resolve({file, dir, fullPath, size});
+    return Promise.resolve({ file, dir, fullPath, size });
   }
-
 }

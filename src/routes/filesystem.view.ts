@@ -29,7 +29,7 @@ export class RouteFilesystem {
       .option("--path <string>", "File path to read")
       .action((args) => {
         const req = FilesystemService.read(args);
-        if(req) {
+        if (req) {
           if (Deno.env.get("REST")) {
             const textEncoder = new TextEncoder();
 
@@ -39,7 +39,6 @@ export class RouteFilesystem {
           // throw to console
           throw new StringResponse(req);
         }
-
       })
       .command("write", "Write a file")
       .option("--path <string>", "File path to read")

@@ -9,19 +9,21 @@ import { LetheanDownloadService } from "../download.service.ts";
  * @param destination The destination folder to install the app to
  */
 export class LetheanAppInstall {
-
-  plugin: {code: string, config: string} = {code: 'lthn-app-setup', config: "https://raw.githubusercontent.com/letheanVPN/lthn-app-setup/main/lthn.json"}
+  plugin: { code: string; config: string } = {
+    code: "lthn-app-setup",
+    config:
+      "https://raw.githubusercontent.com/letheanVPN/lthn-app-setup/main/lthn.json",
+  };
 
   /**
    * Init a plugin on the system
    *
    * @param {{code: string, config: string}} plugin
    */
-  constructor(plugin?: {code: string, config: string} ) {
-    if (plugin){
-      this.plugin = plugin
+  constructor(plugin?: { code: string; config: string }) {
+    if (plugin) {
+      this.plugin = plugin;
     }
-
   }
 
   /**
@@ -29,8 +31,10 @@ export class LetheanAppInstall {
    *
    * @returns {boolean}
    */
-  installed(){
-    return FilesystemService.existsDir({path: path.join('apps', ...this.plugin.code.split('-'))})
+  installed() {
+    return FilesystemService.existsDir({
+      path: path.join("apps", ...this.plugin.code.split("-")),
+    });
   }
 
   /**
@@ -39,18 +43,18 @@ export class LetheanAppInstall {
    * @returns {Promise<boolean>}
    */
   async install() {
-
-    const jsonResponse = await fetch( this.plugin.config, {cache: "no-cache"});
+    const jsonResponse = await fetch(this.plugin.config, { cache: "no-cache" });
     const pluginConfig = await jsonResponse.json();
 
-    if(pluginConfig['code'] == this.plugin.code){
-
-      await LetheanDownloadService.downloadZipContents(pluginConfig['app']['url'], path.join(Deno.cwd(),'apps', ...this.plugin.code.split('-')))
-
-    }else {
-      console.error("Package code miss match.")
+    if (pluginConfig["code"] == this.plugin.code) {
+      await LetheanDownloadService.downloadZipContents(
+        pluginConfig["app"]["url"],
+        path.join(Deno.cwd(), "apps", ...this.plugin.code.split("-")),
+      );
+    } else {
+      console.error("Package code miss match.");
     }
 
-    return true
+    return true;
   }
 }

@@ -1,4 +1,9 @@
-import { Jose, Payload, makeJwt, setExpiration, } from "https://deno.land/x/djwt@v0.9.0/create.ts";
+import {
+  Jose,
+  makeJwt,
+  Payload,
+  setExpiration,
+} from "https://deno.land/x/djwt@v0.9.0/create.ts";
 
 import { config } from "./../config/config.ts";
 import { validateJwt } from "https://deno.land/x/djwt@v0.9.0/validate.ts";
@@ -16,7 +21,7 @@ const header: Jose = {
 
 const getAuthToken = (user: any) => {
   const payload: Payload = {
-    iss: "deno-api",
+    iss: "lthn-api",
     id: user.id,
     name: user.name,
     email: user.email,
@@ -29,7 +34,7 @@ const getAuthToken = (user: any) => {
 
 const getRefreshToken = (user: any) => {
   const payload: Payload = {
-    iss: "deno-api",
+    iss: "lthn-api",
     id: user.id,
     exp: setExpiration(new Date().getTime() + parseInt(JWT_REFRESH_TOKEN_EXP)),
   };
@@ -47,4 +52,4 @@ const getJwtPayload = async (token: string): Promise<any | null> => {
   return null;
 };
 
-export { getAuthToken, getRefreshToken, getJwtPayload };
+export { getAuthToken, getJwtPayload, getRefreshToken };

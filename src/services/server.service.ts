@@ -2,7 +2,7 @@ import { LetheanCli } from "../lethean-cli.ts";
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { LetheanWebsocketServer } from "./tcp/websocket.server.ts";
 import { LetheanAppServer } from "./apps/server.ts";
-import { Router, Application, os, oakCors, path} from '../../deps.ts'
+import { Application, oakCors, os, path, Router } from "../../deps.ts";
 import { FilesystemService } from "./filesystem.service.ts";
 import { CryptOpenPGP } from "./crypt/openpgp.ts";
 import { QuasiSalt } from "./crypt/quasi-salt.ts";
@@ -25,7 +25,7 @@ export class ServerService {
     daemon: true,
     update: true,
     help: false,
-    completions: false
+    completions: false,
   };
 
   /**
@@ -43,14 +43,13 @@ export class ServerService {
     this.app.use(this.router.routes());
     this.app.use(this.router.allowedMethods());
 
-
     // Logger
     this.app.use(async (ctx, next) => {
       await next();
       const rt = ctx.response.headers.get("X-Response-Time");
     });
 
-// Timing
+    // Timing
     this.app.use(async (ctx, next) => {
       const start = Date.now();
       await next();
@@ -69,31 +68,32 @@ export class ServerService {
    */
   async securityCheck() {
     try {
-
-      if(Deno.env.get('LETHEAN_SECURITY_CHECK') === 'false') {
+      if (Deno.env.get("LETHEAN_SECURITY_CHECK") === "false") {
         console.info("[SERVER] Security check disabled");
         return;
       }
 
-      if (!FilesystemService.existsFile({ path: 'users/server.lthn.pub' })) {
-        console.info('[SECURITY] Missing Server keypair, Generating...');
-        await CryptOpenPGP.createServerKeyPair()
+      if (!FilesystemService.existsFile({ path: "users/server.lthn.pub" })) {
+        console.info("[SECURITY] Missing Server keypair, Generating...");
+        await CryptOpenPGP.createServerKeyPair();
       }
 
-
-      if(!FilesystemService.existsFile({ path: 'users/server.lthn.key' })) {
-        throw new Error('Missing Server private key, Exiting...');
+      if (!FilesystemService.existsFile({ path: "users/server.lthn.key" })) {
+        throw new Error("Missing Server private key, Exiting...");
       }
 
-      if(!FilesystemService.existsFile({ path: 'users/server.lthn.pub' })) {
-        throw new Error('Missing Server public key, Exiting...');
+      if (!FilesystemService.existsFile({ path: "users/server.lthn.pub" })) {
+        throw new Error("Missing Server public key, Exiting...");
       }
 
-
-      if(Deno.statSync(path.join(Deno.cwd(), 'users', 'server.lthn.pub')).isFile) {
+      if (
+        Deno.statSync(path.join(Deno.cwd(), "users", "server.lthn.pub")).isFile
+      ) {
         console.info("[SERVER] Server.pub found, checking password");
-        const password = QuasiSalt.hash(path.join(Deno.cwd(), 'users', 'server.lthn.pub'));
-        if(await CryptOpenPGP.getPrivateKey('server', password)) {
+        const password = QuasiSalt.hash(
+          path.join(Deno.cwd(), "users", "server.lthn.pub"),
+        );
+        if (await CryptOpenPGP.getPrivateKey("server", password)) {
           console.info("[SERVER] Keypair unlocked OK");
         } else {
           throw new Error("[SERVER] Keypair failed, exiting");
@@ -101,17 +101,14 @@ export class ServerService {
       } else {
         throw new Error("[SERVER] Server.pub not found");
       }
-
-
     } catch (error) {
-      console.error("[SECURITY] Failed to ensure safe environment, shutting down...");
+      console.error(
+        "[SECURITY] Failed to ensure safe environment, shutting down...",
+      );
 
       console.error(error);
       Deno.exit(1);
     }
-
-
-
   }
 
   async stopServer() {
@@ -121,7 +118,7 @@ export class ServerService {
    * @description Initialize the server
    * @returns {any}
    */
-   startServer() {
+  startServer() {
     ZeroMQServer.startServer();
     LetheanWebsocketServer.startServer();
 
@@ -131,24 +128,23 @@ export class ServerService {
       origin: "*",
       methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
       allowedHeaders: ["content-type"],
-      maxAge: 1
+      maxAge: 1,
     }));
-
 
     this.app.addEventListener("listen", ({ hostname, port, secure }) => {
       console.info(
         `Listening on: ${secure ? "https://" : "http://"}${
           hostname ??
-          "localhost"
-        }:${port}`
+            "localhost"
+        }:${port}`,
       );
     });
 
     return this.app.listen({
       "hostname": "127.0.0.1",
-      "port": 36911
-//      "certFile": `${path.join(this.home, "Lethean", "conf", "public.pem")}`,
-//      "keyFile": `${path.join(this.home, "Lethean", "conf", "private.pem")}`,
+      "port": 36911,
+      //      "certFile": `${path.join(this.home, "Lethean", "conf", "public.pem")}`,
+      //      "keyFile": `${path.join(this.home, "Lethean", "conf", "private.pem")}`,
     });
   }
 
@@ -199,94 +195,99 @@ export class ServerService {
     /**
      * setup the help documentation
      */
-//    this.router.get(path, (context) => {
-//      context.response.status = 200;
-//      context.response.headers = new Headers({
-//        "content-type": "text/html",
-//        "Access-Control-Allow-Origin": "*"
-//      });
-//      context.response.body = this.templateOutput(handle.getHelp());
-//    });
+    //    this.router.get(path, (context) => {
+    //      context.response.status = 200;
+    //      context.response.headers = new Headers({
+    //        "content-type": "text/html",
+    //        "Access-Control-Allow-Origin": "*"
+    //      });
+    //      context.response.body = this.templateOutput(handle.getHelp());
+    //    });
 
     /**
      * Setup the action runner
      */
-    this.router.post(path, oakCors({
-      origin: "*",
-      methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
-      allowedHeaders: ["content-type"],
-      maxAge: 1
-    }), async (context) => {
+    this.router.post(
+      path,
+      oakCors({
+        origin: "*",
+        methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
+        allowedHeaders: ["content-type"],
+        maxAge: 1,
+      }),
+      async (context) => {
+        //console.error(context.request.url.pathname.replace("/", "").split("/"))
+        let cmdArgs: string[] = [];
+        if (context.request.url.pathname.length > 0) {
+          cmdArgs = context.request.url.pathname.replace("/", "").split("/");
+        }
+        const payload = await context.request.body({ type: "json" }).value;
 
-      //console.error(context.request.url.pathname.replace("/", "").split("/"))
-      let cmdArgs: string[] = [];
-      if (context.request.url.pathname.length > 0) {
-        cmdArgs = context.request.url.pathname.replace("/", "").split("/");
-      }
-      const payload = await context.request.body({ type: "json" }).value;
+        //console.error(await context.request.body({ type: "json" }).value)
 
-//console.error(await context.request.body({ type: "json" }).value)
-
-      if (payload["jsonpath"]) {
-        cmdArgs.push(`--jsonpath="${payload["jsonpath"]}"`);
-        if (payload["request"]) {
-          cmdArgs.push(
-            `--request="${JSON.stringify(payload["request"])}"`
-          );
+        if (payload["jsonpath"]) {
+          cmdArgs.push(`--jsonpath="${payload["jsonpath"]}"`);
+          if (payload["request"]) {
+            cmdArgs.push(
+              `--request="${JSON.stringify(payload["request"])}"`,
+            );
+          }
+        } else if (payload["jsonrpc"]) {
+          cmdArgs.push(`--request="${payload}"`);
+        } else {
+          //console.info(payload);
+          for (const key in payload) {
+            const value = payload[key].length > 1 ? `=${payload[key]}` : "";
+            cmdArgs.push(
+              "--" +
+                key.replace(/([A-Z])/g, (x: string) => "-" + x.toLowerCase()) +
+                value,
+            );
+          }
         }
 
-      } else if (payload["jsonrpc"]) {
-        cmdArgs.push(`--request="${payload}"`);
-      } else {
+        try {
+          await LetheanCli.run(cmdArgs);
+          // to send a response throw new StringResponse()
+        } catch (error) {
+          context.response.status = 200;
+          context.response.headers = new Headers({
+            "content-type":
+              "application/x-www-form-urlencoded, text/plain, application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*",
+          });
 
-        //console.info(payload);
-        for (const key in payload) {
-          const value = payload[key].length > 1 ? `=${payload[key]}` : "";
-          cmdArgs.push(
-            "--" + key.replace(/([A-Z])/g, (x: string) =>
-              "-" + x.toLowerCase()) +
-            value
-          );
+          if ((error.message as string).startsWith("http")) {
+            context.response.body = await this.performRequest(
+              error.message,
+              context,
+            );
+          } else {
+            context.response.body = error.message;
+          }
         }
-      }
+      },
+    );
 
-
-      try {
-        await LetheanCli.run(cmdArgs);
-        // to send a response throw new StringResponse()
-      } catch (error) {
-        context.response.status = 200;
+    this.router.options(
+      path,
+      oakCors({
+        origin: "*",
+        methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
+        allowedHeaders: ["content-type"],
+        maxAge: 1,
+      }),
+      (context) => {
+        context.response.status = 204;
         context.response.headers = new Headers({
-          "content-type":
+          "Content-Type":
             "application/x-www-form-urlencoded, text/plain, application/json",
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "*"
+          "Access-Control-Allow-Headers": "*",
         });
-
-        if ((error.message as string).startsWith("http")) {
-          context.response.body = await this.performRequest(error.message, context);
-        } else {
-          context.response.body = error.message;
-        }
-
-
-      }
-    });
-
-    this.router.options(path, oakCors({
-      origin: "*",
-      methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
-      allowedHeaders: ["content-type"],
-      maxAge: 1
-    }), (context) => {
-      context.response.status = 204;
-      context.response.headers = new Headers({
-        "Content-Type":
-          "application/x-www-form-urlencoded, text/plain, application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "*"
-      });
-    });
+      },
+    );
   }
 
   /**
@@ -296,36 +297,40 @@ export class ServerService {
     Deno.env.set("REST", "1");
     this.discoverRoute("", LetheanCli.options.commands);
 
-    this.router.get("/app/desktop/(.*)",oakCors({
-      origin: "*",
-      methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
-      allowedHeaders: ["content-type"],
-      maxAge: 1
-    }), async (context) => {
-      context.response.headers = new Headers({
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "*"
-      });
-      try {
-        await context.send({
-          root: path.join(Deno.cwd(), "apps", "lthn"),
-          index: "index.html"
+    this.router.get(
+      "/app/desktop/(.*)",
+      oakCors({
+        origin: "*",
+        methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
+        allowedHeaders: ["content-type"],
+        maxAge: 1,
+      }),
+      async (context) => {
+        context.response.headers = new Headers({
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "*",
         });
-      } catch (e) {
-        console.error(e);
-      }
-
-
-    });
-    this.router.get('/cert', async (context) => {
+        try {
+          await context.send({
+            root: path.join(Deno.cwd(), "apps", "lthn"),
+            index: "index.html",
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      },
+    );
+    this.router.get("/cert", async (context) => {
       context.response.headers = new Headers({
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "*"
+        "Access-Control-Allow-Headers": "*",
       });
       try {
-        const cert = FilesystemService.read({ path : path.join(Deno.cwd(), "users", 'server.lthn.pub')});
+        const cert = FilesystemService.read({
+          path: path.join(Deno.cwd(), "users", "server.lthn.pub"),
+        });
 
-        if (cert){
+        if (cert) {
           context.response.status = 200;
           context.response.body = cert;
         } else {
@@ -335,30 +340,32 @@ export class ServerService {
         console.error(e);
       }
     });
-    this.router.get("(.*)", oakCors({
-      origin: "*",
-      methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
-      allowedHeaders: ["content-type"],
-      maxAge: 1
-    }), async (context) => {
-      // context.response.status = 200;
-      context.response.headers = new Headers({
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "*"
-      });
-      try {
-        //console.info(context.request.url.pathname);
-        await context.send({
-          root: path.join(Deno.cwd(), "apps", "lthn", "app", "desktop"),
-          index: "index.html"
+    this.router.get(
+      "(.*)",
+      oakCors({
+        origin: "*",
+        methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
+        allowedHeaders: ["content-type"],
+        maxAge: 1,
+      }),
+      async (context) => {
+        // context.response.status = 200;
+        context.response.headers = new Headers({
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "*",
         });
-      } catch (e) {
-        context.response.status = 404;
-        //console.error(e);
-      }
-    });
-
-
+        try {
+          //console.info(context.request.url.pathname);
+          await context.send({
+            root: path.join(Deno.cwd(), "apps", "lthn", "app", "desktop"),
+            index: "index.html",
+          });
+        } catch (e) {
+          context.response.status = 404;
+          //console.error(e);
+        }
+      },
+    );
 
     console.info("HTTPS API Routes loaded");
   }
@@ -378,17 +385,14 @@ export class ServerService {
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          body: await context.request.body({ type: "text" }).value
-        }
+          body: await context.request.body({ type: "text" }).value,
+        },
       );
       return await postReq.text();
     } catch (error) {
       console.warn(error);
     }
-
-
   }
-
 }

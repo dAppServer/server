@@ -1,4 +1,3 @@
-
 import { zmq } from "../../../deps.ts";
 
 /**
@@ -71,7 +70,6 @@ export class ZeroMQServer {
     }
   }
 
-
   /**
    * Subscribes to the Pub/Sub Publish endpoint
    *
@@ -99,7 +97,7 @@ export class ZeroMQServer {
   }
 
   /**
-   *Sends message to pushpull channel
+   * Sends message to pushpull channel
    *
    * @param {string} channel
    * @param {string} message
@@ -117,31 +115,29 @@ export class ZeroMQServer {
     ZeroMQServer.sockets.reqrep = new zmq.Rep();
     ZeroMQServer.sockets.reqrep.bind(
       ZeroMQServer.socketServer,
-      ZeroMQServer.repEndpoint
+      ZeroMQServer.repEndpoint,
     );
   }
 
   /**
-   *
    * @private
    */
   private static loadPub() {
     ZeroMQServer.sockets.pubsub = new zmq.Pub();
     ZeroMQServer.sockets.pubsub.bind(
       ZeroMQServer.socketServer,
-      ZeroMQServer.pubEndpoint
+      ZeroMQServer.pubEndpoint,
     );
   }
 
   /**
-   *
    * @private
    */
   private static loadPush() {
     ZeroMQServer.sockets.pushpull = new zmq.Push();
     ZeroMQServer.sockets.pushpull.bind(
       ZeroMQServer.socketServer,
-      ZeroMQServer.pushEndpoint
+      ZeroMQServer.pushEndpoint,
     );
   }
 }

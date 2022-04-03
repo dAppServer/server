@@ -25,7 +25,7 @@ export class RouteUpdate {
       .command("cli", "Downloads the latest CLI binaries")
       .action(async (args) => {
         await new LetheanUpdater().download(args).then((dat) => {
-          console.info("Updated Lethean Binaries")
+          console.info("Updated Lethean Binaries");
         });
       });
   }

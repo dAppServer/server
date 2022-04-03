@@ -7,8 +7,6 @@ import { ProcessManagerRequest } from "../../../services/process/processManagerR
 
 export class RouteDaemonChainExport {
   public static config() {
-
-
     return new Command()
       .description("Blockchain Export")
       .option(
@@ -36,7 +34,6 @@ export class RouteDaemonChainExport {
       .option("--block-stop <string>", "Stop at block number")
       .option("--blocksdat", "Output in blocks.dat format")
       .action((args) => {
-
         const exeFile = "lethean-blockchain-export" +
           (os.platform() === "windows" ? ".exe" : "");
 

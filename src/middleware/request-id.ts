@@ -1,7 +1,6 @@
 import { Context } from "./../types.ts";
 import { uuid } from "../../deps.ts";
 
-
 /**
  * requestId middleware
  * attach requestId in request & response header

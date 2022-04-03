@@ -1,5 +1,4 @@
-
-import { path, Command, HelpCommand, CompletionsCommand } from "../deps.ts";
+import { Command, CompletionsCommand, HelpCommand, path } from "../deps.ts";
 
 import { RouteFilesystem } from "./routes/filesystem.view.ts";
 import { RouteUpdate } from "./routes/update.view.ts";
@@ -12,7 +11,6 @@ import { RouteConfig } from "./routes/config.view.ts";
 import { RPCResponse } from "./interfaces/rpc-response.ts";
 import { LetheanUpdater } from "./services/update.service.ts";
 
-
 export class LetheanCli {
   public static options: any;
 
@@ -23,10 +21,10 @@ export class LetheanCli {
 
   static async init() {
     try {
-      Deno.readDirSync( path.join(Deno.cwd(), 'cli'))
-    }catch (e) {
-      console.info('Downloading Lethean Blockchain Executables')
-      await new LetheanUpdater().download({})
+      Deno.readDirSync(path.join(Deno.cwd(), "cli"));
+    } catch (e) {
+      console.info("Downloading Lethean Blockchain Executables");
+      await new LetheanUpdater().download({});
     }
 
     LetheanCli.options = await new Command()
@@ -52,12 +50,13 @@ export class LetheanCli {
                   default: "json_rpc",
                 },
               )
-              .action( (args) => {
-
+              .action((args) => {
                 if (Deno.env.get("REST")) {
-                  throw new RPCResponse(`http://127.0.0.1:48782/${
-                    args['jsonpath'].replace(/['"]+/g, "")
-                  }`)
+                  throw new RPCResponse(
+                    `http://127.0.0.1:48782/${
+                      args["jsonpath"].replace(/['"]+/g, "")
+                    }`,
+                  );
                 }
               })
               .command("export", RouteDaemonChainExport.config())

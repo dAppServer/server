@@ -1,8 +1,7 @@
-import { he } from '../../../deps.ts'
+import { he } from "../../../deps.ts";
 const td = (d: Uint8Array) => new TextDecoder().decode(d);
 
 export class CryptPkcs8 {
-
   public static async create() {
     const keyPair = await crypto.subtle.generateKey(
       {
@@ -28,7 +27,6 @@ export class CryptPkcs8 {
     return { "public": pubKey, "private": privateKey };
   }
 
-
   public static async sign(privateKey: string, message: string) {
     const key = await crypto.subtle.importKey(
       "pkcs8",
@@ -45,7 +43,11 @@ export class CryptPkcs8 {
     return td(he(new Uint8Array(signature)));
   }
 
-  public static async verify(publicKey: string, message: string, signature: string) {
+  public static async verify(
+    publicKey: string,
+    message: string,
+    signature: string,
+  ) {
     const key = await crypto.subtle.importKey(
       "spki",
       new TextEncoder().encode(publicKey),
@@ -93,5 +95,4 @@ export class CryptPkcs8 {
     );
     return td(he(new Uint8Array(decrypted)));
   }
-
 }

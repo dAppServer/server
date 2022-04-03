@@ -11,11 +11,11 @@ export class RouteDaemonChainStart {
   public static config() {
     let home = Deno.cwd();
 
-//    if (os.platform() === "windows") {
-//      home = Deno.cwd();
-//    } else {
-     // home = path.join(home ? home : "./", "Lethean");
-//    }
+    //    if (os.platform() === "windows") {
+    //      home = Deno.cwd();
+    //    } else {
+    // home = path.join(home ? home : "./", "Lethean");
+    //    }
     return new Command()
       .description("Blockchain Functions")
       .option("--config-file <string>", "Specify configuration file")
@@ -182,19 +182,26 @@ export class RouteDaemonChainStart {
         "--confirm-external-bind",
         "Confirm rpc-bind-ip value is NOT a loopback (local) IP",
       )
-      .action( (args) => {
+      .action((args) => {
         let exeFile = `letheand${os.platform() === "windows" ? ".exe" : ""}`;
 
-        if(args['configFile'] !== undefined) {
-          args['configFile'] = path.join(Deno.cwd(), 'conf', args['configFile']);
+        if (args["configFile"] !== undefined) {
+          args["configFile"] = path.join(
+            Deno.cwd(),
+            "conf",
+            args["configFile"],
+          );
 
-          if(!FilesystemService.existsFile({path: args['configFile']})) {
+          if (!FilesystemService.existsFile({ path: args["configFile"] })) {
             //console.error(`Config file ${args['configFile']} not found`);
-            FilesystemService.ensureDir(path.join(Deno.cwd(), 'conf'))
-            FilesystemService.write(args['configFile'], new IniService().stringify({
-              "log-file": args['logFile'],
-              "data-dir": args['dataDir'],
-            }));
+            FilesystemService.ensureDir(path.join(Deno.cwd(), "conf"));
+            FilesystemService.write(
+              args["configFile"],
+              new IniService().stringify({
+                "log-file": args["logFile"],
+                "data-dir": args["dataDir"],
+              }),
+            );
           }
         }
 
@@ -203,7 +210,6 @@ export class RouteDaemonChainStart {
           "cli",
           exeFile,
         );
-
 
         ProcessManager.run(
           exeFile,

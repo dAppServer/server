@@ -9,15 +9,17 @@ import { QuasiSalt } from "../crypt/quasi-salt.ts";
  * @class OpenPGPService
  */
 export class CryptOpenPGP {
-
   /**
-   *
    * @param {string} id
    * @param {string} data
    * @param {string} passphrase
    * @returns {Promise<string>}
    */
-  static async encryptPGP(id: string, data: string, passphrase?: string): Promise<string> {
+  static async encryptPGP(
+    id: string,
+    data: string,
+    passphrase?: string,
+  ): Promise<string> {
     const key = await this.getPublicKey(id);
     let signingKey = undefined;
     if (passphrase) {
@@ -25,23 +27,25 @@ export class CryptOpenPGP {
     }
     return await openpgp.encrypt({
       message: await openpgp.createMessage({
-        text: data
+        text: data,
       }),
-      encryptionKeys: key
+      encryptionKeys: key,
     });
-
   }
 
   /**
-   *
    * @param {string} id
    * @param {string} message
    * @param {string} passphrase
    * @param signedBy
    * @returns {Promise<string>}
    */
-  static async decryptPGP(id: string, message: string, passphrase: string, signedBy?: string): Promise<string> {
-
+  static async decryptPGP(
+    id: string,
+    message: string,
+    passphrase: string,
+    signedBy?: string,
+  ): Promise<string> {
     if (!id) {
       throw new Error("No id provided");
     }
@@ -56,7 +60,7 @@ export class CryptOpenPGP {
 
     let options: any = {
       message: await this.readMessage(message),
-      decryptionKeys: privateKey
+      decryptionKeys: privateKey,
     };
     if (signedBy) {
       options["verificationKeys"] = await this.getPublicKey(id);
@@ -65,7 +69,10 @@ export class CryptOpenPGP {
     const data: any = await openpgp.decrypt(options);
 
     try {
-      if (signedBy && data["signatures"].length > 0 && data["signatures"][0].verified) {
+      if (
+        signedBy && data["signatures"].length > 0 &&
+        data["signatures"][0].verified
+      ) {
         await data["signatures"][0].verified;
       }
     } catch (e) {
@@ -76,13 +83,11 @@ export class CryptOpenPGP {
   }
 
   /**
-   *
    * @param {string} id
    * @param {string} passphrase
    * @returns {Promise<string>}
    */
   static async getPrivateKey(id: string, passphrase: string) {
-
     if (!id) {
       throw new Error("No id provided");
     }
@@ -92,7 +97,7 @@ export class CryptOpenPGP {
     }
 
     const privateKey = FilesystemService.read({
-      path: `users/${id}.lthn.key`
+      path: `users/${id}.lthn.key`,
     });
 
     if (!privateKey || privateKey.length === 0) {
@@ -101,12 +106,11 @@ export class CryptOpenPGP {
 
     return await openpgp.decryptKey({
       privateKey: await openpgp.readPrivateKey({ armoredKey: privateKey }),
-      passphrase
+      passphrase,
     }) as openpgp.PrivateKey;
   }
 
   /**
-   *
    * @param {string} id
    * @returns {Promise<openpgp.PublicKey>}
    */
@@ -115,24 +119,25 @@ export class CryptOpenPGP {
       throw new Error("No id provided");
     }
     const publicKey = FilesystemService.read({
-      path: `users/${id}.lthn.pub`
+      path: `users/${id}.lthn.pub`,
     });
 
     if (!publicKey || publicKey.length === 0) {
       throw new Error(`Failed to load public key id: ${id}`);
     }
 
-    return await openpgp.readKey({ armoredKey: publicKey }) as openpgp.PublicKey;
+    return await openpgp.readKey({
+      armoredKey: publicKey,
+    }) as openpgp.PublicKey;
   }
 
   /**
-   *
    * @param {string} data
    * @returns {Promise<any>}
    */
   static async readMessage(data: string) {
     return await openpgp.readMessage({
-      armoredMessage: data
+      armoredMessage: data,
     }) as openpgp.Message;
   }
 
@@ -149,25 +154,26 @@ export class CryptOpenPGP {
       rsaBits: 4096,
       userIDs: [{ name: username }], // you can pass multiple user IDs
       passphrase: password, // protects the private key
-      format: "armored" // output key format, defaults to 'armored' (other options: 'binary' or 'object')
+      format: "armored", // output key format, defaults to 'armored' (other options: 'binary' or 'object')
     });
   }
 
   /**
-   *
    * @param {string} id
    * @param {string} passphrase
    * @returns {Promise<string>}
    */
-  public static async createServerKeyPair(){
-    const { privateKey, publicKey, revocationCertificate }: any = await CryptOpenPGP.createKeyPair("server", QuasiSalt.hash(path.join(Deno.cwd(), 'users', 'server.lthn.pub')));
+  public static async createServerKeyPair() {
+    const { privateKey, publicKey, revocationCertificate }: any =
+      await CryptOpenPGP.createKeyPair(
+        "server",
+        QuasiSalt.hash(path.join(Deno.cwd(), "users", "server.lthn.pub")),
+      );
 
-    FilesystemService.write(`users/server.lthn.pub`, publicKey)
+    FilesystemService.write(`users/server.lthn.pub`, publicKey);
 
-    FilesystemService.write(`users/server.lthn.rev`, revocationCertificate)
+    FilesystemService.write(`users/server.lthn.rev`, revocationCertificate);
 
-    FilesystemService.write(`users/server.lthn.key`, privateKey)
+    FilesystemService.write(`users/server.lthn.key`, privateKey);
   }
-
-
 }

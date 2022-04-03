@@ -18,7 +18,14 @@
   "fmt": {
     "files": {
       "include": ["src/"],
-      "exclude": ["src/testdata/"]
+      "exclude": [
+        "src/testdata/",
+        "third_party/",
+        "node_modules/",
+        "cov/",
+        "apps/",
+        "vendor/"
+      ]
     }
   }
 }

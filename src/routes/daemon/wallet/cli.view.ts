@@ -101,7 +101,6 @@ export class RouteDaemonWalletCli {
       )
       .option("--config-file <string>", "Config file")
       .action((args) => {
-
         const exeFile = "lethean-wallet-cli" +
           (os.platform() === "windows" ? ".exe" : "");
 
@@ -119,7 +118,6 @@ export class RouteDaemonWalletCli {
             stdOut: (stdOut: unknown) => console.log(stdOut),
           } as ProcessManagerRequest,
         );
-
       });
   }
 }

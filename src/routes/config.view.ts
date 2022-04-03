@@ -24,7 +24,6 @@ export class RouteConfig {
         if (data) {
           throw new StringResponse(data);
         }
-
       });
   }
 }

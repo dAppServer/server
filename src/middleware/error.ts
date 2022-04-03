@@ -1,7 +1,4 @@
-import {
-  isHttpError,
-  Status,
-} from "../../deps.ts";
+import { isHttpError, Status } from "../../deps.ts";
 //import { config } from "./../config/config.ts";
 import { Context } from "../types.ts";
 

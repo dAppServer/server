@@ -7,7 +7,6 @@ import { ProcessManagerRequest } from "../../../services/process/processManagerR
 
 export class DaemonChainWalletVpnRpcView {
   public static config() {
-
     return new Command()
       .description("Wallet VPN RPC")
       .option(
@@ -66,7 +65,6 @@ export class DaemonChainWalletVpnRpcView {
       )
       .option("--config-file <string>", "Config file")
       .action((args) => {
-
         const exeFile = "lethean-wallet-vpn-rpc" +
           (os.platform() === "windows" ? ".exe" : "");
 

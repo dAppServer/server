@@ -1,10 +1,8 @@
-
 import { ensureDirSync, path } from "../../deps.ts";
 
 /**
  * @class
  * @classdesc This class is responsible for handling the filesystem.
- *
  */
 export class FilesystemService {
   /**
@@ -46,7 +44,6 @@ export class FilesystemService {
     } catch (e) {
       return false;
     }
-
   }
 
   /**
@@ -56,7 +53,6 @@ export class FilesystemService {
    * @returns {boolean}
    */
   static existsDir(args: { path: string }) {
-
     try {
       return !!Deno.readDirSync(FilesystemService.path(args.path));
     } catch (e) {
@@ -71,7 +67,6 @@ export class FilesystemService {
    * @returns {boolean}
    */
   static existsFile(args: { path: string }) {
-
     try {
       return !!Deno.readFileSync(args.path);
     } catch (e) {
@@ -91,9 +86,9 @@ export class FilesystemService {
     const ret = [];
     for (
       const dirEntry of Deno.readDirSync(
-      FilesystemService.path(args.path)
-    )
-      ) {
+        FilesystemService.path(args.path),
+      )
+    ) {
       if (!dirEntry.name.startsWith(".")) {
         ret.push(dirEntry.name);
       }
@@ -126,6 +121,6 @@ export class FilesystemService {
   }
 
   static delete(filepath: string) {
-    return Deno.removeSync(path.join(Deno.cwd(),filepath));
+    return Deno.removeSync(path.join(Deno.cwd(), filepath));
   }
 }

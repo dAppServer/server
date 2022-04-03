@@ -1,20 +1,23 @@
 # Lethean Server
 
-This repository is a mess, but it's a mess I made working the problem, when I write tests, it'll be sensible.
+This repository is a mess, but it's a mess I made working the problem, when I
+write tests, it'll be sensible.
 
-- Build Status: [![lethean-server](https://github.com/letheanVPN/lethean-server/actions/workflows/compile.yml/badge.svg)](https://github.com/letheanVPN/lethean-server/actions/workflows/compile.yml)
-- Test Coverage: [![Coverage Status](https://coveralls.io/repos/github/letheanVPN/lethean-server/badge.svg?branch=main)](https://coveralls.io/github/letheanVPN/lethean-server?branch=main)
+- Build Status:
+  [![lethean-server](https://github.com/letheanVPN/lethean-server/actions/workflows/compile.yml/badge.svg)](https://github.com/letheanVPN/lethean-server/actions/workflows/compile.yml)
+- Test Coverage:
+  [![Coverage Status](https://coveralls.io/repos/github/letheanVPN/lethean-server/badge.svg?branch=main)](https://coveralls.io/github/letheanVPN/lethean-server?branch=main)
 
 ## Requirements
 
 1. Deno https://deno.land
 2. Lethean data directory `$HOME/Lethean`
+
 ## Development Server
+
 ```shell
 deno run --reload --allow-all --unstable https://raw.githubusercontent.com/letheanVPN/lethean-server/main/mod.ts
 ```
-
-
 
 # The content below is outdated, ish, left for moving to docs.lt.hn
 
@@ -22,18 +25,21 @@ https://hub.docker.com/r/lthn/server
 
 `docker pull lthn/server:latest`
 
-
 ## Config File DB
 
-We maintain a configuration file repository that is processed via a templating engine so create dynamic configuration file; feel free to add ANY OS configurations
+We maintain a configuration file repository that is processed via a templating
+engine so create dynamic configuration file; feel free to add ANY OS
+configurations
 
 https://github.com/letheanVPN/config-templates
 
 --- move below to documentation / remove not relavant parts ---
 
-Welcome to the magic part of the Lethean App, a client side restful TLS API, written in TypeScript and Rust.
+Welcome to the magic part of the Lethean App, a client side restful TLS API,
+written in TypeScript and Rust.
 
-This suite of features enables PWA's to become first class citizen's within the installed operating system.
+This suite of features enables PWA's to become first class citizen's within the
+installed operating system.
 
 To fire up a development server run the below and visit: https://localhost:36911
 
@@ -45,9 +51,10 @@ npm run dev backend start
 
 The whole process will get better over time, for now.
 
-To navigate the HTML help documentation visit https://localhost:36911 and convert the commands to the path 
+To navigate the HTML help documentation visit https://localhost:36911 and
+convert the commands to the path
 
-For example, the chain start command: 
+For example, the chain start command:
 
 `daemon chain start`
 
@@ -55,19 +62,22 @@ becomes: https://localhost:36911/daemon/chain/start
 
 The arguments documented can be sent as a POST request with a json body.
 
-Conversion rule: `--confirm-external-bind` 
+Conversion rule: `--confirm-external-bind`
 
 Becomes: `{"confirmExternalBind": true}`
 
 You will get confirmation that the process has been created instantly.
 
-To gather the stdOut from the process please subscribe to the executables WebSocket channel.
+To gather the stdOut from the process please subscribe to the executables
+WebSocket channel.
 
-Currently, you can read and write files, download the cli, interact with all Lethean daemons via CMD or REST
+Currently, you can read and write files, download the cli, interact with all
+Lethean daemons via CMD or REST
 
 ## IPC
 
-A ZeroMQ websocket is loaded to:  ws://localhost:36910 to start a development service run
+A ZeroMQ websocket is loaded to: ws://localhost:36910 to start a development
+service run
 
 The following endpoints can be used
 
@@ -108,21 +118,23 @@ Executables
 - lthnvpnc
 - lthnvpnd
 - lvmgmt
+
 ```shell
 cd refrence/lthn-vpn
 pip install .
 ```
 
-Uninstall:  `pip uninstall lethean-vpn`
+Uninstall: `pip uninstall lethean-vpn`
 
 ### One line installer
-* Mac/Linux
+
+- Mac/Linux
 
 ```shell
 curl -fsSL https://raw.githubusercontent.com/letheanVPN/lethean-server/main/install.sh | sh
 ```
 
-* Windows Powershell
+- Windows Powershell
 
 ```shell
 iwr https://raw.githubusercontent.com/letheanVPN/lethean-server/main/install.ps1 -useb | iex

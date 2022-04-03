@@ -10,7 +10,6 @@ import { RPCResponse } from "../../../interfaces/rpc-response.ts";
 
 export class RouteDaemonWalletRpc {
   public static config() {
-
     return new Command()
       .command("cli", RouteDaemonWalletCli.config())
       .command("vpn", DaemonChainWalletVpnRpcView.config())
@@ -80,7 +79,6 @@ export class RouteDaemonWalletRpc {
       )
       .option("--config-file  <string>", "Config file")
       .action((args) => {
-
         const exeFile = "lethean-wallet-rpc" +
           (os.platform() === "windows" ? ".exe" : "");
 
@@ -98,13 +96,11 @@ export class RouteDaemonWalletRpc {
             stdOut: (stdOut: unknown) => console.log(stdOut),
           } as ProcessManagerRequest,
         );
-
       })
       .command("json_rpc")
       .description("Talk to the wallet RPC via the json_rpc endpoint")
       .option("-r,--request <string>", "payload to send")
       .action((args) => {
-
         // console.log(await postReq.text())
         if (Deno.env.get("REST")) {
           throw new RPCResponse("http://localhost:36963/json_rpc");

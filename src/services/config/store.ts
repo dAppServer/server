@@ -1,4 +1,4 @@
-import { ensureDirSync, path, os } from "../../../deps.ts";
+import { ensureDirSync, os, path } from "../../../deps.ts";
 
 /**
  * Store
@@ -11,7 +11,6 @@ export class StoredObjectService {
    * @returns {string}
    */
   public static getObject(args: { group: string; object: string }) {
-
     return Deno.readTextFileSync(
       path.join(
         Deno.cwd(),
@@ -56,7 +55,6 @@ export class StoredObjectService {
    * @param {{group: string, object: string}} args
    */
   public static removeObject(args: { group: string; object: string }) {
-
     const objPath = path.join(
       Deno.cwd(),
       "data",
@@ -73,7 +71,6 @@ export class StoredObjectService {
    * @param {{group: string}} args
    */
   public static clearObjects(args: { group: string }) {
-
     const objPath = path.join(
       Deno.cwd(),
       "data",
@@ -90,7 +87,6 @@ export class StoredObjectService {
    * @returns {any[]}
    */
   public static countObjects(args: { group: string }) {
-
     const objPath = path.join(
       Deno.cwd(),
       "data",

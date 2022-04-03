@@ -7,8 +7,6 @@ import { ProcessManagerRequest } from "../../../services/process/processManagerR
 
 export class RouteDaemonChainImport {
   public static config() {
-
-
     return new Command()
       .description("Blockchain Import")
       .option("--data-dir <string>", "Specify data directory", {
@@ -117,8 +115,9 @@ export class RouteDaemonChainImport {
         "Resume from current height if output database already exists",
       )
       .action((args) => {
-
-        const exeFile = `lethean-blockchain-import${os.platform() === "windows" ? ".exe" : ""}`;
+        const exeFile = `lethean-blockchain-import${
+          os.platform() === "windows" ? ".exe" : ""
+        }`;
 
         ProcessManager.run(
           path.join(

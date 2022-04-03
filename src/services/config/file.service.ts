@@ -1,4 +1,4 @@
-import { renderFile, path, ini} from "../../../deps.ts";
+import { ini, path, renderFile } from "../../../deps.ts";
 
 /**
  * File Service
@@ -7,7 +7,6 @@ import { renderFile, path, ini} from "../../../deps.ts";
  * @class FileService
  */
 export class ConfigFileService {
-
   /**
    * Render file template
    *
@@ -16,7 +15,6 @@ export class ConfigFileService {
    * @memberof FileService
    */
   public static async loadTemplateFile(args: { file: string; model: any }) {
-
     const model = {
       ...args.model, // user data
       dir: path.join(Deno.cwd(), "conf"),
@@ -53,9 +51,5 @@ export class ConfigFileService {
     } catch (error) {
       return null;
     }
-
   }
-
-
-
 }
