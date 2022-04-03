@@ -60,7 +60,7 @@ export class LetheanDownloadService {
       new URL(url),
       destination,
     );
-
+    console.info(`Extracting to: ${FileSystemService.path(dest)}`);
     await unZipFromFile(
       fileObj.fullPath,
       FileSystemService.path(dest),
