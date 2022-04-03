@@ -41,7 +41,7 @@ export { CompletionsCommand } from "https://deno.land/x/cliffy@v0.22.2/command/c
 export { HelpCommand } from "https://deno.land/x/cliffy@v0.22.2/command/help/mod.ts";
 
 export { renderFile } from "https://deno.land/x/mustache@v0.3.0/mod.ts";
-import "./src/tools/utils.ts";
+import "./src/helpers/utils.ts";
 export * as openpgp from "./node_modules/openpgp/dist/openpgp.mjs";
 
 export {
