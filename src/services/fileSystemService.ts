@@ -4,9 +4,9 @@ import { ensureDirSync, path } from "../../deps.ts";
  * @class
  * @classdesc This class is responsible for handling the filesystem.
  */
-export class FilesystemService {
+export class FileSystemService {
   /**
-   * Return a system path to the Lethean data folder
+   * Return a system path to the Lethean folder
    *
    * @param pathname
    * @returns {string}
@@ -20,10 +20,11 @@ export class FilesystemService {
 
     if (pathname.match("/")) {
       pathname = pathname.split("/");
-    } else if (pathname.match("\\")) {
-      pathname = pathname.split("\\");
+    } else if (pathname.match("\\\\")) {
+      pathname = pathname.split("\\\\");
+    }else{
+      pathname = [pathname];
     }
-
     return path.join(Deno.cwd(), ...pathname);
   }
 
@@ -35,12 +36,12 @@ export class FilesystemService {
    * post:
    *    description: Reads a file from the filesystem
    *
-   * @param args {path:string} relative path
    * @returns {string} | false
+   * @param path
    */
-  static read(args: { path: string }) {
+  static read(path: string) {
     try {
-      return Deno.readTextFileSync(args.path);
+      return Deno.readTextFileSync(FileSystemService.path(path)) as string;
     } catch (e) {
       return false;
     }
@@ -49,12 +50,14 @@ export class FilesystemService {
   /**
    * Checks if a directory exists
    *
-   * @param {{path: string}} args
    * @returns {boolean}
+   * @param path
    */
-  static existsDir(args: { path: string }) {
+  static isDir(path: string) {
+    if (path.length == 0) return false;
+
     try {
-      return !!Deno.readDirSync(FilesystemService.path(args.path));
+      return Deno.statSync(FileSystemService.path(path)).isDirectory;
     } catch (e) {
       return false;
     }
@@ -63,12 +66,14 @@ export class FilesystemService {
   /**
    * Checks if a file exists
    *
-   * @param {{path: string}} args
    * @returns {boolean}
+   * @param path
    */
-  static existsFile(args: { path: string }) {
+  static isFile(path: string) {
+    if (path.length == 0) return false;
+
     try {
-      return !!Deno.readFileSync(args.path);
+      return Deno.statSync(FileSystemService.path(path)).isFile;
     } catch (e) {
       return false;
     }
@@ -77,50 +82,69 @@ export class FilesystemService {
   /**
    *  List all files in a directory  (recursive)
    *
-   *  @param {{path: string}} args
    *  @returns {string[]}
    *  @example
-   *   FilesystemService.list({path: "./"})
+   *   FileSystemService.list( "./")
+   * @param path
    */
-  static list(args: any) {
+  static list(path: string): string[] {
     const ret = [];
     for (
       const dirEntry of Deno.readDirSync(
-        FilesystemService.path(args.path),
+        FileSystemService.path(path),
       )
     ) {
       if (!dirEntry.name.startsWith(".")) {
         ret.push(dirEntry.name);
       }
     }
-    return JSON.stringify(ret);
+    return ret;
   }
 
   /**
    * Write to the Lethean data folder
    *
-   * @param {string} filepath relative path
-   * @param {string} data string data to save
-   * @returns {string}
+   * @returns boolean
+   * @param filepath string
+   * @param data string
    */
   static write(filepath: string, data: string) {
-    FilesystemService.ensureDir(path.dirname(filepath));
+    try {
+      FileSystemService.ensureDir(path.dirname(filepath));
 
-    Deno.writeTextFileSync(filepath, data);
-    return "1";
+      Deno.writeTextFileSync(filepath, data);
+    }catch (e) {
+      return false
+    }
+
+   return true;
   }
 
   /**
    * Makes sure the directory structure is in place for path
    *
-   * @param {string} path relative path
-   * @param {string} path
+   * @param {string} path relative path to the Lethean folder
    */
   static ensureDir(path: string) {
-    return ensureDirSync(path);
+    try{
+      ensureDirSync(FileSystemService.path(path));
+    }catch (e) {
+      return false;
+    }
+    return true;
   }
 
+  /**
+   * Delete a file
+   *
+   * @param filepath string
+   */
   static delete(filepath: string) {
-    return Deno.removeSync(path.join(Deno.cwd(), filepath));
+    try {
+      Deno.removeSync(FileSystemService.path(filepath));
+    }catch (e) {
+      return false
+    }
+    return true;
   }
 }
