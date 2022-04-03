@@ -1,11 +1,9 @@
 import { ProcessManagerRequest } from "./processManagerRequest.ts";
 import EventEmitter from "https://deno.land/std@0.79.0/node/events.ts";
 import { readLines } from "https://deno.land/std@0.79.0/io/bufio.ts";
-import { WebsocketServer } from "../tcp/websocket.server.ts";
 import { Sub } from "https://deno.land/x/jszmq/mod.ts";
 import { ZeroMQServer } from "../ipc/zeromq.ts";
 
-import { encode as base64Encode } from "https://deno.land/std@0.82.0/encoding/base64.ts";
 /**
  * Interacts with the external binary directly handling its stdIn, stdOut, stdErr
  * its a async event emitter that mimicks NodeJs's event emitter

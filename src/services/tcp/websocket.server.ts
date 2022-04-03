@@ -8,7 +8,10 @@ export interface WebSocketMessageRequest {
 /**
  * this class enables realtime feedback
  */
-export class WebsocketServer {
+export class LetheanWebsocketServer {
+
+  private static server: WebSocketServer;
+
   static strip(s: string) {
     return s.split("").filter(function (x: string) {
       const n = x.charCodeAt(0);
@@ -22,8 +25,8 @@ export class WebsocketServer {
    * cmd:${daemon}:${command string}
    */
   static init() {
-    const wss = new WebSocketServer(36909);
-    wss.on("connection", function (ws: WebSocketClient) {
+    LetheanWebsocketServer.server = new WebSocketServer(36909);
+    LetheanWebsocketServer.server.on("connection", function (ws: WebSocketClient) {
       ws.on("message", function (daemon: string) {
         daemon = daemon.replace(/"/g, "");
         //console.log(daemon)
@@ -42,7 +45,7 @@ export class WebsocketServer {
               JSON.stringify([
                 req[1],
                 atob(
-                    WebsocketServer.strip(
+                  LetheanWebsocketServer.strip(
                       message.toString(),
                     ),
                 ),
@@ -67,6 +70,10 @@ export class WebsocketServer {
    */
   public static startServer() {
     console.info("Starting stdOut WebSocket: ws://127.0.0.1:36909");
-    WebsocketServer.init();
+    LetheanWebsocketServer.init();
+  }
+
+  static async stopServer() {
+    await LetheanWebsocketServer.server?.close();
   }
 }

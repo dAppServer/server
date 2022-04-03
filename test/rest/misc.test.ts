@@ -24,3 +24,4 @@ Deno.test("GET /cert", async () => {
     .expect(FilesystemService.read({path: "users/server.lthn.pub"}));
 });
 
+await letheanServer.stopServer()

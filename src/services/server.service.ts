@@ -1,6 +1,6 @@
 import { LetheanCli } from "../lethean-cli.ts";
 import { ZeroMQServer } from "./ipc/zeromq.ts";
-import { WebsocketServer } from "./tcp/websocket.server.ts";
+import { LetheanWebsocketServer } from "./tcp/websocket.server.ts";
 import { LetheanAppServer } from "./apps/server.ts";
 import { Router, Application, os, oakCors, path} from '../../deps.ts'
 import { FilesystemService } from "./filesystem.service.ts";
@@ -114,13 +114,16 @@ export class ServerService {
 
   }
 
+  async stopServer() {
+    await LetheanWebsocketServer.stopServer();
+  }
   /**
    * @description Initialize the server
    * @returns {any}
    */
    startServer() {
     ZeroMQServer.startServer();
-    WebsocketServer.startServer();
+    LetheanWebsocketServer.startServer();
 
     //this.app.use(staticFiles("apps/lthn/app/desktop", {prefix: 'app/desktop'}));
 
