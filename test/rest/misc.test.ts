@@ -32,4 +32,13 @@ Deno.test("GET /cert", async () => {
     .expect(FileSystemService.read("users/server.lthn.pub" ));
 });
 
+Deno.test('GET /filesystem/read', async () => {
+  const request = await superoak(letheanServer.app);
+  await request.post("/filesystem/read")
+    .set('Content-Type', 'application/json')
+    .send(`{"path": "users/server.lthn.pub"}`)
+    .expect(200)
+    .expect(btoa(`${FileSystemService.read("users/server.lthn.pub")}`));
+});
+
 await letheanServer.stopServer();

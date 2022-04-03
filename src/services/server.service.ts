@@ -253,7 +253,7 @@ export class ServerService {
           context.response.status = 200;
           context.response.headers = new Headers({
             "content-type":
-              "application/x-www-form-urlencoded, text/plain, application/json",
+              "text/plain",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers": "*",
           });
@@ -264,6 +264,7 @@ export class ServerService {
               context,
             );
           } else {
+
             context.response.body = error.message;
           }
         }
