@@ -52,7 +52,7 @@ export class LetheanDownloadService {
     const filename = url.split("/").pop() ?? "";
     const destination: Destination = {
       file: filename,
-      dir: "./apps",
+      dir: FileSystemService.path(dest),
     };
     FileSystemService.ensureDir(dest);
     console.info(`Attempting to download ${url}`);
@@ -63,7 +63,7 @@ export class LetheanDownloadService {
 
     await unZipFromFile(
       fileObj.fullPath,
-      dest,
+      FileSystemService.path(dest),
       { includeFileName: false },
     );
 

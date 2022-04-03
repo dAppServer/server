@@ -32,7 +32,7 @@ export class LetheanAppInstall {
    * @returns {boolean}
    */
   installed() {
-    return FileSystemService.isDir( `apps/${this.plugin.code.split("-")}`);
+    return FileSystemService.isDir( `apps/${this.plugin.code.split("-").join('/')}`);
   }
 
   /**
@@ -47,7 +47,7 @@ export class LetheanAppInstall {
     if (pluginConfig["code"] == this.plugin.code) {
       await LetheanDownloadService.downloadZipContents(
         pluginConfig["app"]["url"],
-        FileSystemService.path( `apps/${this.plugin.code.split("-")}`),
+        `apps/${this.plugin.code.split("-").join('/')}`,
       );
     } else {
       console.error("Package code miss match.");
