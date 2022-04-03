@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Deno: Run" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/mod.ts" programParameters="run -A --unstable --import-map vendor/import_map.json">
+  <configuration default="false" name="Deno:RunSrv" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/mod.ts" programParameters="run -A --unstable --import-map vendor/import_map.json">
     <option name="applicationArguments" value=" server" />
     <method v="2" />
   </configuration>

@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Deno:RunGUI" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/mod.ts" programParameters="run -A --unstable --import-map vendor/import_map.json">
+    <option name="applicationArguments" value=" gui" />
+    <method v="2" />
+  </configuration>
+</component>
