@@ -6,7 +6,7 @@ await letheanServer.warmUpServer();
 
 Deno.test("GET /", async () => {
   const request = await superoak(letheanServer.app);
-  await request.get("/").expect(200);
+  await request.get("").expect(200);
 });
 
 Deno.test("Error: Path not found", async () => {
