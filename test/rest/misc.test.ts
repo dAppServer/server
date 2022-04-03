@@ -4,6 +4,16 @@ import { FileSystemService } from "../../src/services/fileSystemService.ts";
 const letheanServer = new ServerService();
 await letheanServer.warmUpServer();
 
+Deno.test("GET /", async () => {
+  const request = await superoak(letheanServer.app);
+  await request.get("/").expect(200);
+});
+
+Deno.test("GET ", async () => {
+  const request = await superoak(letheanServer.app);
+  await request.get("").expect(200);
+});
+
 Deno.test("GET /app/desktop/", async () => {
   const request = await superoak(letheanServer.app);
   await request.get("/app/desktop/").expect(200);
