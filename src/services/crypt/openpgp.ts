@@ -1,5 +1,5 @@
 import { openpgp, path } from "../../../deps.ts";
-import { FilesystemService } from "../filesystem.service.ts";
+import { FileSystemService } from "../fileSystemService.ts";
 import { QuasiSalt } from "../crypt/quasi-salt.ts";
 
 /**
@@ -96,9 +96,7 @@ export class CryptOpenPGP {
       throw new Error("No passphrase provided");
     }
 
-    const privateKey = FilesystemService.read({
-      path: `users/${id}.lthn.key`,
-    });
+    const privateKey = FileSystemService.read(`users/${id}.lthn.key`);
 
     if (!privateKey || privateKey.length === 0) {
       throw new Error(`Failed to load private key id: ${id}`);
@@ -118,9 +116,7 @@ export class CryptOpenPGP {
     if (!id) {
       throw new Error("No id provided");
     }
-    const publicKey = FilesystemService.read({
-      path: `users/${id}.lthn.pub`,
-    });
+    const publicKey = FileSystemService.read( `users/${id}.lthn.pub`);
 
     if (!publicKey || publicKey.length === 0) {
       throw new Error(`Failed to load public key id: ${id}`);
@@ -170,10 +166,10 @@ export class CryptOpenPGP {
         QuasiSalt.hash(path.join(Deno.cwd(), "users", "server.lthn.pub")),
       );
 
-    FilesystemService.write(`users/server.lthn.pub`, publicKey);
+    FileSystemService.write(`users/server.lthn.pub`, publicKey);
 
-    FilesystemService.write(`users/server.lthn.rev`, revocationCertificate);
+    FileSystemService.write(`users/server.lthn.rev`, revocationCertificate);
 
-    FilesystemService.write(`users/server.lthn.key`, privateKey);
+    FileSystemService.write(`users/server.lthn.key`, privateKey);
   }
 }

@@ -4,7 +4,7 @@ import {
 } from "https://deno.land/std@0.129.0/testing/asserts.ts";
 
 import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
-import { FilesystemService } from "../../src/services/filesystem.service.ts";
+import { FileSystemService } from "../../src/services/fileSystemService.ts";
 
 Deno.test("CryptOpenPGP.createKeyPair", async () => {
   const key: any = await CryptOpenPGP.createKeyPair(
@@ -28,15 +28,15 @@ Deno.test("CryptOpenPGP.createKeyPair", async () => {
     "Revocation certificate is not valid",
   );
 
-  FilesystemService.write(
+  FileSystemService.write(
     "users/09f3b17c6fab2d948fb29a5ab9aaf9755fd24c3c146ed19795a85c446241ad89.lthn.key",
     key.privateKey,
   );
-  FilesystemService.write(
+  FileSystemService.write(
     "users/09f3b17c6fab2d948fb29a5ab9aaf9755fd24c3c146ed19795a85c446241ad89.lthn.pub",
     key.publicKey,
   );
-  FilesystemService.write(
+  FileSystemService.write(
     "users/09f3b17c6fab2d948fb29a5ab9aaf9755fd24c3c146ed19795a85c446241ad89.lthn.rev",
     key.revocationCertificate,
   );
@@ -70,15 +70,15 @@ Deno.test("CryptOpenPGP.getPrivateKey", async () => {
 Deno.test("CryptOpenPGP.createServerKeyPair", async () => {
   const key: any = await CryptOpenPGP.createServerKeyPair();
   assertEquals(
-    FilesystemService.existsFile({ path: `users/server.lthn.pub` }),
+    FileSystemService.isFile("users/server.lthn.pub"),
     true,
   );
   assertEquals(
-    FilesystemService.existsFile({ path: `users/server.lthn.key` }),
+    FileSystemService.isFile("users/server.lthn.key"),
     true,
   );
   assertEquals(
-    FilesystemService.existsFile({ path: `users/server.lthn.rev` }),
+    FileSystemService.isFile("users/server.lthn.rev"),
     true,
   );
 });

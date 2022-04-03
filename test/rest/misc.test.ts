@@ -1,6 +1,6 @@
 import { superoak } from "https://deno.land/x/superoak/mod.ts";
 import { ServerService } from "../../src/services/server.service.ts";
-import { FilesystemService } from "../../src/services/filesystem.service.ts";
+import { FileSystemService } from "../../src/services/fileSystemService.ts";
 const letheanServer = new ServerService();
 await letheanServer.warmUpServer();
 
@@ -19,7 +19,7 @@ Deno.test("GET /cert", async () => {
   await request.get("/cert")
     .expect(200)
     .expect("Content-Type", "text/plain; charset=utf-8")
-    .expect(FilesystemService.read({ path: "users/server.lthn.pub" }));
+    .expect(FileSystemService.read("users/server.lthn.pub" ));
 });
 
 await letheanServer.stopServer();

@@ -1,4 +1,4 @@
-import { FilesystemService } from "../filesystem.service.ts";
+import { FileSystemService } from "../../services/fileSystemService.ts";
 import { LetheanAppInstall } from "./install.ts";
 
 /**

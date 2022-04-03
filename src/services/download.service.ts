@@ -1,5 +1,5 @@
 import { ensureDirSync, unZipFromFile } from "../../deps.ts";
-import { FilesystemService } from "./filesystem.service.ts";
+import { FileSystemService } from "../../src/services/fileSystemService.ts";
 
 export interface Destination {
   /**
@@ -54,7 +54,7 @@ export class LetheanDownloadService {
       file: filename,
       dir: "./apps",
     };
-    FilesystemService.ensureDir(dest);
+    FileSystemService.ensureDir(dest);
     console.info(`Attempting to download ${url}`);
     const fileObj = await LetheanDownloadService.download(
       new URL(url),

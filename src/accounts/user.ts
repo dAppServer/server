@@ -1,7 +1,7 @@
 import { Command, he, path } from "../../deps.ts";
 import { QuasiSalt } from "../services/crypt/quasi-salt.ts";
 import { CryptOpenPGP } from "../services/crypt/openpgp.ts";
-import { FilesystemService } from "../services/filesystem.service.ts";
+import { FileSystemService } from "../services/fileSystemService.ts";
 const td = (d: Uint8Array) => new TextDecoder().decode(d);
 
 export class LetheanAccount {
@@ -25,16 +25,16 @@ export class LetheanAccount {
       const { privateKey, publicKey, revocationCertificate }: any =
         await CryptOpenPGP.createKeyPair(usernameHash, password);
 
-      FilesystemService.write(`users/${usernameHash}.lthn.pub`, publicKey);
+      FileSystemService.write(`users/${usernameHash}.lthn.pub`, publicKey);
 
-      FilesystemService.write(
+      FileSystemService.write(
         `users/${usernameHash}.lthn.rev`,
         revocationCertificate,
       );
 
-      FilesystemService.write(`users/${usernameHash}.lthn.key`, privateKey);
+      FileSystemService.write(`users/${usernameHash}.lthn.key`, privateKey);
 
-      FilesystemService.write(
+      FileSystemService.write(
         `users/${usernameHash}.lthn`,
         await CryptOpenPGP.encryptPGP(
           usernameHash,
@@ -65,13 +65,13 @@ export class LetheanAccount {
       }
       const usernameHash: string = QuasiSalt.hash(username);
 
-      FilesystemService.delete(`users/${usernameHash}.lthn.pub`);
+      FileSystemService.delete(`users/${usernameHash}.lthn.pub`);
 
-      FilesystemService.delete(`users/${usernameHash}.lthn.rev`);
+      FileSystemService.delete(`users/${usernameHash}.lthn.rev`);
 
-      FilesystemService.delete(`users/${usernameHash}.lthn.key`);
+      FileSystemService.delete(`users/${usernameHash}.lthn.key`);
 
-      FilesystemService.delete(`users/${usernameHash}.lthn`);
+      FileSystemService.delete(`users/${usernameHash}.lthn`);
     } catch (error) {
       return false;
     }

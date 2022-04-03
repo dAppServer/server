@@ -4,7 +4,7 @@ import {
   decode as base64Decode,
   encode as base64Encode,
 } from "https://deno.land/std@0.82.0/encoding/base64.ts";
-import { FilesystemService } from "../services/filesystem.service.ts";
+import { FileSystemService } from "../services/fileSystemService.ts";
 
 export class RouteFilesystem {
   public static config() {
@@ -12,15 +12,15 @@ export class RouteFilesystem {
       .command("list", "List entities in path")
       .option("--path <string>", "File path to view")
       .action((args) => {
-        const req = FilesystemService.list(args);
+        const req = FileSystemService.list(args.path);
         if (Deno.env.get("REST")) {
-          throw new StringResponse(req);
+          throw new StringResponse(JSON.stringify(req));
         }
       })
       .command("path", "Returns correct")
       .option("--convert <string>", "File path to convert")
       .action((args) => {
-        const req = FilesystemService.path(args.convert);
+        const req = FileSystemService.path(args.convert);
         if (Deno.env.get("REST")) {
           throw new StringResponse(req);
         }
@@ -28,7 +28,7 @@ export class RouteFilesystem {
       .command("read", "Returns file")
       .option("--path <string>", "File path to read")
       .action((args) => {
-        const req = FilesystemService.read(args);
+        const req = FileSystemService.read(args.path);
         if (req) {
           if (Deno.env.get("REST")) {
             const textEncoder = new TextEncoder();
@@ -50,7 +50,7 @@ export class RouteFilesystem {
 
           data = textDecoder.decode(base64Decode(data));
         }
-        FilesystemService.write(args.path, data);
+        FileSystemService.write(args.path, data);
 
         throw new StringResponse("1");
       });

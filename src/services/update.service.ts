@@ -1,7 +1,7 @@
 import { copy, ensureDir, ensureFile, os, path, Untar } from "../../deps.ts";
 
 import { ZeroMQServer } from "./ipc/zeromq.ts";
-import { FilesystemService } from "./filesystem.service.ts";
+import { FileSystemService } from "./fileSystemService.ts";
 import { Destination, LetheanDownloadService } from "./download.service.ts";
 
 /**
@@ -19,7 +19,7 @@ export class LetheanUpdater {
         dir: path.join(Deno.cwd(), "cli"),
       };
 
-      FilesystemService.ensureDir(path.join(Deno.cwd(), "cli"));
+      FileSystemService.ensureDir(path.join(Deno.cwd(), "cli"));
 
       console.info(`Attempting to download ${url}`);
       const fileObj = await LetheanDownloadService.download(url, destination);

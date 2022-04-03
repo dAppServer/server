@@ -1,4 +1,4 @@
-import { FilesystemService } from "../filesystem.service.ts";
+import { FileSystemService } from "../fileSystemService.ts";
 import { path } from "../../../deps.ts";
 import { LetheanDownloadService } from "../download.service.ts";
 
@@ -32,9 +32,8 @@ export class LetheanAppInstall {
    * @returns {boolean}
    */
   installed() {
-    return FilesystemService.existsDir({
-      path: path.join("apps", ...this.plugin.code.split("-")),
-    });
+    return FileSystemService.isDir( path.join("apps", ...this.plugin.code.split("-")),
+    );
   }
 
   /**

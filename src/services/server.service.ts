@@ -3,7 +3,7 @@ import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { LetheanWebsocketServer } from "./tcp/websocket.server.ts";
 import { LetheanAppServer } from "./apps/server.ts";
 import { Application, oakCors, os, path, Router } from "../../deps.ts";
-import { FilesystemService } from "./filesystem.service.ts";
+import { FileSystemService } from "./fileSystemService.ts";
 import { CryptOpenPGP } from "./crypt/openpgp.ts";
 import { QuasiSalt } from "./crypt/quasi-salt.ts";
 /**
@@ -73,21 +73,21 @@ export class ServerService {
         return;
       }
 
-      if (!FilesystemService.existsFile({ path: "users/server.lthn.pub" })) {
+      if (!FileSystemService.isFile( "users/server.lthn.pub" )) {
         console.info("[SECURITY] Missing Server keypair, Generating...");
         await CryptOpenPGP.createServerKeyPair();
       }
 
-      if (!FilesystemService.existsFile({ path: "users/server.lthn.key" })) {
+      if (!FileSystemService.isFile( "users/server.lthn.key" )) {
         throw new Error("Missing Server private key, Exiting...");
       }
 
-      if (!FilesystemService.existsFile({ path: "users/server.lthn.pub" })) {
+      if (!FileSystemService.isFile("users/server.lthn.pub" )) {
         throw new Error("Missing Server public key, Exiting...");
       }
 
       if (
-        Deno.statSync(path.join(Deno.cwd(), "users", "server.lthn.pub")).isFile
+        FileSystemService.isFile( "users/server.lthn.pub")
       ) {
         console.info("[SERVER] Server.pub found, checking password");
         const password = QuasiSalt.hash(
@@ -326,9 +326,7 @@ export class ServerService {
         "Access-Control-Allow-Headers": "*",
       });
       try {
-        const cert = FilesystemService.read({
-          path: path.join(Deno.cwd(), "users", "server.lthn.pub"),
-        });
+        const cert = FileSystemService.read(  "users/server.lthn.pub");
 
         if (cert) {
           context.response.status = 200;
