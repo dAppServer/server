@@ -312,7 +312,7 @@ export class ServerService {
         });
         try {
           await context.send({
-            root: path.join(Deno.cwd(), "apps", "lthn"),
+            root: FileSystemService.path( "apps/lthn"),
             index: "index.html",
           });
         } catch (e) {
@@ -347,7 +347,7 @@ export class ServerService {
         maxAge: 1,
       }),
       async (context) => {
-        // context.response.status = 200;
+        context.response.status = 200;
         context.response.headers = new Headers({
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Headers": "*",
@@ -355,7 +355,7 @@ export class ServerService {
         try {
           //console.info(context.request.url.pathname);
           await context.send({
-            root: path.join(Deno.cwd(), "apps", "lthn", "app", "desktop"),
+            root: FileSystemService.path( "apps/lthn/app/desktop"),
             index: "index.html",
           });
         } catch (e) {
