@@ -116,7 +116,7 @@ export class CryptOpenPGP {
     if (!id) {
       throw new Error("No id provided");
     }
-    const publicKey = FileSystemService.read( `users/${id}.lthn.pub`);
+    const publicKey = FileSystemService.read(`users/${id}.lthn.pub`);
 
     if (!publicKey || publicKey.length === 0) {
       throw new Error(`Failed to load public key id: ${id}`);
@@ -138,7 +138,9 @@ export class CryptOpenPGP {
   }
 
   static async readSignedMessage(data: string) {
-    return await openpgp.readCleartextMessage({cleartextMessage: data}) as openpgp.CleartextMessage;
+    return await openpgp.readCleartextMessage({
+      cleartextMessage: data,
+    }) as openpgp.CleartextMessage;
   }
 
   /**
@@ -189,14 +191,17 @@ export class CryptOpenPGP {
 
     FileSystemService.write(`users/${usernameHash}.lthn.pub`, publicKey);
 
-    FileSystemService.write(`users/${usernameHash}.lthn.rev`, revocationCertificate);
+    FileSystemService.write(
+      `users/${usernameHash}.lthn.rev`,
+      revocationCertificate,
+    );
 
     FileSystemService.write(`users/${usernameHash}.lthn.key`, privateKey);
   }
 
   static async sign(data: string, privateKey: string, passphrase: string) {
     const options: any = {
-      message: await openpgp.createCleartextMessage({ text: data  }),
+      message: await openpgp.createCleartextMessage({ text: data }),
       signingKeys: await this.getPrivateKey(privateKey, passphrase),
     };
 
@@ -209,15 +214,15 @@ export class CryptOpenPGP {
       verificationKeys: await this.getPublicKey(publicKey),
     };
 
-    const verificationResult:any = await openpgp.verify(options)
+    const verificationResult: any = await openpgp.verify(options);
 
     const { verified, keyID } = verificationResult.signatures[0];
     try {
       await verified; // throws on invalid signature
       //console.log('Signed by key id ' + keyID.toHex());
-      return true
+      return keyID.toHex();
     } catch (e) {
-      return false
+      return false;
     }
   }
 }

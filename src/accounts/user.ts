@@ -2,6 +2,7 @@ import { Command, he, path } from "../../deps.ts";
 import { QuasiSalt } from "../services/crypt/quasi-salt.ts";
 import { CryptOpenPGP } from "../services/crypt/openpgp.ts";
 import { FileSystemService } from "../services/fileSystemService.ts";
+import { StringResponse } from "../interfaces/string-response.ts";
 const td = (d: Uint8Array) => new TextDecoder().decode(d);
 
 export class LetheanAccount {
@@ -13,19 +14,21 @@ export class LetheanAccount {
         QuasiSalt.hash(path.join(Deno.cwd(), "users", "server.lthn.pub")),
       );
 
-      return await CryptOpenPGP.readSignedMessage(decrypted).then(async (data) => {
-        const userAuth = JSON.parse(data.text)
-        const user = await CryptOpenPGP.verify(data, userAuth['id'])
+      return await CryptOpenPGP.readSignedMessage(decrypted).then(
+        async (data) => {
+          const userAuth = JSON.parse(data.text);
+          const user = await CryptOpenPGP.verify(data, userAuth["id"]);
 
-        if (user && FileSystemService.isFile(`users/${userAuth['id']}.lthn.key`) ) {
-          return userAuth['id']
-        }
-        return false;
-      });
-
+          if (
+            user && user == await data.getSigningKeyIDs()[0].toHex() &&
+            FileSystemService.isFile(`users/${userAuth["id"]}.lthn.key`)
+          ) {
+            return userAuth["id"];
+          }
+          return false;
+        },
+      );
     } catch (error) {
-      //console.log(error);
-
       return false;
     }
   }
@@ -95,11 +98,18 @@ export class LetheanAccount {
 
   public static config() {
     return new Command().description("Lethean Account Management")
-      .command("create", "Create an keypair")
+      .command("login", "login to your Lethean account")
+      .option("-p, --payload <string>", "the encrypted payload")
       .action((args) =>
-        console.log(
-          JSON.stringify(LetheanAccount.create(args.username, args.password)),
-        )
+        LetheanAccount.login(args.payload).then((user) => {
+          if (user) {
+            console.log(`Logged in as ${user}`);
+          } else {
+            console.log("Invalid credentials");
+          }
+
+          throw new StringResponse(JSON.stringify({ "result": "ok" }));
+        })
       );
   }
 }

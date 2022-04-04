@@ -22,7 +22,7 @@ export class FileSystemService {
       pathname = pathname.split("/");
     } else if (pathname.match("\\\\")) {
       pathname = pathname.split("\\\\");
-    }else{
+    } else {
       pathname = [pathname];
     }
     return path.join(Deno.cwd(), ...pathname);
@@ -113,11 +113,11 @@ export class FileSystemService {
       FileSystemService.ensureDir(path.dirname(filepath));
 
       Deno.writeTextFileSync(filepath, data);
-    }catch (e) {
-      return false
+    } catch (e) {
+      return false;
     }
 
-   return true;
+    return true;
   }
 
   /**
@@ -126,9 +126,9 @@ export class FileSystemService {
    * @param {string} path relative path to the Lethean folder
    */
   static ensureDir(path: string) {
-    try{
+    try {
       ensureDirSync(FileSystemService.path(path));
-    }catch (e) {
+    } catch (e) {
       return false;
     }
     return true;
@@ -142,8 +142,8 @@ export class FileSystemService {
   static delete(filepath: string) {
     try {
       Deno.removeSync(FileSystemService.path(filepath));
-    }catch (e) {
-      return false
+    } catch (e) {
+      return false;
     }
     return true;
   }

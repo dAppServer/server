@@ -73,21 +73,21 @@ export class ServerService {
         return;
       }
 
-      if (!FileSystemService.isFile( "users/server.lthn.pub" )) {
+      if (!FileSystemService.isFile("users/server.lthn.pub")) {
         console.info("[SECURITY] Missing Server keypair, Generating...");
         await CryptOpenPGP.createServerKeyPair();
       }
 
-      if (!FileSystemService.isFile( "users/server.lthn.key" )) {
+      if (!FileSystemService.isFile("users/server.lthn.key")) {
         throw new Error("Missing Server private key, Exiting...");
       }
 
-      if (!FileSystemService.isFile("users/server.lthn.pub" )) {
+      if (!FileSystemService.isFile("users/server.lthn.pub")) {
         throw new Error("Missing Server public key, Exiting...");
       }
 
       if (
-        FileSystemService.isFile( "users/server.lthn.pub")
+        FileSystemService.isFile("users/server.lthn.pub")
       ) {
         console.info("[SERVER] Server.pub found, checking password");
         const password = QuasiSalt.hash(
@@ -252,8 +252,7 @@ export class ServerService {
         } catch (error) {
           context.response.status = 200;
           context.response.headers = new Headers({
-            "content-type":
-              "text/plain",
+            "content-type": "text/plain",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers": "*",
           });
@@ -264,7 +263,6 @@ export class ServerService {
               context,
             );
           } else {
-
             context.response.body = error.message;
           }
         }
@@ -313,7 +311,7 @@ export class ServerService {
         });
         try {
           await context.send({
-            root: FileSystemService.path( "apps/lthn"),
+            root: FileSystemService.path("apps/lthn"),
             index: "index.html",
           });
         } catch (e) {
@@ -327,7 +325,7 @@ export class ServerService {
         "Access-Control-Allow-Headers": "*",
       });
       try {
-        const cert = FileSystemService.read(  "users/server.lthn.pub");
+        const cert = FileSystemService.read("users/server.lthn.pub");
 
         if (cert) {
           context.response.status = 200;
@@ -356,7 +354,7 @@ export class ServerService {
         try {
           //console.info(context.request.url.pathname);
           await context.send({
-            root: FileSystemService.path( "apps/lthn/app/desktop"),
+            root: FileSystemService.path("apps/lthn/app/desktop"),
             index: "index.html",
           });
         } catch (e) {
