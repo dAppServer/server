@@ -137,6 +137,10 @@ export class CryptOpenPGP {
     }) as openpgp.Message;
   }
 
+  static async readSignedMessage(data: string) {
+    return await openpgp.readCleartextMessage({cleartextMessage: data}) as openpgp.CleartextMessage;
+  }
+
   /**
    * Creates an Armoured OpenPGP key for the username protected with the password supplied
    *
@@ -171,5 +175,49 @@ export class CryptOpenPGP {
     FileSystemService.write(`users/server.lthn.rev`, revocationCertificate);
 
     FileSystemService.write(`users/server.lthn.key`, privateKey);
+  }
+
+  /**
+   * @param {string} id
+   * @param {string} passphrase
+   * @returns {Promise<string>}
+   */
+  static async createUserKeyPair(username: string, password: string) {
+    const usernameHash = QuasiSalt.hash(username);
+    const { privateKey, publicKey, revocationCertificate }: any =
+      await CryptOpenPGP.createKeyPair(usernameHash, password);
+
+    FileSystemService.write(`users/${usernameHash}.lthn.pub`, publicKey);
+
+    FileSystemService.write(`users/${usernameHash}.lthn.rev`, revocationCertificate);
+
+    FileSystemService.write(`users/${usernameHash}.lthn.key`, privateKey);
+  }
+
+  static async sign(data: string, privateKey: string, passphrase: string) {
+    const options: any = {
+      message: await openpgp.createCleartextMessage({ text: data  }),
+      signingKeys: await this.getPrivateKey(privateKey, passphrase),
+    };
+
+    return await openpgp.sign(options);
+  }
+
+  static async verify(data: any, publicKey: string) {
+    const options: any = {
+      message: data,
+      verificationKeys: await this.getPublicKey(publicKey),
+    };
+
+    const verificationResult:any = await openpgp.verify(options)
+
+    const { verified, keyID } = verificationResult.signatures[0];
+    try {
+      await verified; // throws on invalid signature
+      //console.log('Signed by key id ' + keyID.toHex());
+      return true
+    } catch (e) {
+      return false
+    }
   }
 }

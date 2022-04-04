@@ -6,13 +6,28 @@ const td = (d: Uint8Array) => new TextDecoder().decode(d);
 
 export class LetheanAccount {
   static async login(payload: string) {
-    const decrypted = await CryptOpenPGP.decryptPGP(
-      "server",
-      payload,
-      QuasiSalt.hash(path.join(Deno.cwd(), "users", "server.lthn.pub")),
-    );
-    // console.log(decrypted);
-    return JSON.parse(decrypted);
+    try {
+      const decrypted = await CryptOpenPGP.decryptPGP(
+        "server",
+        payload,
+        QuasiSalt.hash(path.join(Deno.cwd(), "users", "server.lthn.pub")),
+      );
+
+      return await CryptOpenPGP.readSignedMessage(decrypted).then(async (data) => {
+        const userAuth = JSON.parse(data.text)
+        const user = await CryptOpenPGP.verify(data, userAuth['id'])
+
+        if (user && FileSystemService.isFile(`users/${userAuth['id']}.lthn.key`) ) {
+          return userAuth['id']
+        }
+        return false;
+      });
+
+    } catch (error) {
+      //console.log(error);
+
+      return false;
+    }
   }
 
   /**
