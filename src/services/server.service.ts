@@ -19,6 +19,7 @@ export class ServerService {
   app: Application = new Application();
   router: Router = new Router();
   home: string = (os.homeDir() ? os.homeDir() : "") as string;
+  static JWT: CryptoKey
   static pathPerms: any = {
     backend: false,
     filesystem: true,
@@ -35,6 +36,11 @@ export class ServerService {
   async warmUpServer() {
     console.info("[SERVER] Checking Security of Environment");
     await this.securityCheck();
+    ServerService.JWT = await crypto.subtle.generateKey(
+      { name: "HMAC", hash: "SHA-512" },
+      true,
+      ["sign", "verify"],
+    );
 
     console.info("[SERVER] Checks pass, Initializing server...");
     await LetheanAppServer.loadPlugins();

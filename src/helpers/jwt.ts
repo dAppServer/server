@@ -3,12 +3,8 @@ import {
   Header, Payload,
   create, validate, verify, decode, getNumericDate
 } from "https://deno.land/x/djwt@v2.4/mod.ts";
-
-const JWT_TOKEN_SECRET = await crypto.subtle.generateKey(
-  { name: "HMAC", hash: "SHA-512" },
-  true,
-  ["sign", "verify"],
-);
+import { ServerService } from "../services/server.service.ts";
+;
 const  JWT_ACCESS_TOKEN_EXP = '600'
   const  JWT_REFRESH_TOKEN_EXP = '600'
 
@@ -26,7 +22,7 @@ const getAuthToken = async (user: any) => {
     exp: getNumericDate(parseInt(JWT_ACCESS_TOKEN_EXP)),
   };
 
-  return await create(header, payload, JWT_TOKEN_SECRET);
+  return await create(header, payload, ServerService.JWT);
 };
 
 const getRefreshToken = async (user: any) => {
@@ -36,12 +32,12 @@ const getRefreshToken = async (user: any) => {
     exp: getNumericDate(parseInt(JWT_REFRESH_TOKEN_EXP)),
   };
 
-  return await create(header, payload, JWT_TOKEN_SECRET);
+  return await create(header, payload, ServerService.JWT);
 };
 
 const getJwtPayload = async (token: string): Promise<any | null> => {
   try {
-    const jwtObject =  await verify(token, JWT_TOKEN_SECRET);
+    const jwtObject =  await verify(token, ServerService.JWT);
     if (jwtObject && jwtObject.payload) {
       return jwtObject.payload;
     }
