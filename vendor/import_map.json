@@ -3,14 +3,11 @@
     "https://cdn.skypack.dev/": "./cdn.skypack.dev/",
     "https://cdn.skypack.dev/lodash": "./cdn.skypack.dev/lodash.js",
     "https://deno.land/": "./deno.land/",
-    "https://deno.land/std/encoding/hex.ts": "./deno.land/std@0.132.0/encoding/hex.ts",
     "https://deno.land/std/fs/exists.ts": "./deno.land/std@0.133.0/fs/exists.ts",
     "https://deno.land/std/path/mod.ts": "./deno.land/std@0.133.0/path/mod.ts",
     "https://deno.land/x/cliffy/command/mod.ts": "./deno.land/x/cliffy@v0.22.2/command/mod.ts",
     "https://deno.land/x/cliffy/command/upgrade/mod.ts": "./deno.land/x/cliffy@v0.22.2/command/upgrade/mod.ts",
     "https://deno.land/x/jszmq/mod.ts": "./deno.land/x/jszmq@v1.3.1/mod.ts",
-    "https://denopkg.com/": "./denopkg.com/",
-    "https://denopkg.com/chiefbiiko/hmac/mod.ts": "./denopkg.com/chiefbiiko/hmac@master/mod.ts",
     "https://raw.githubusercontent.com/": "./raw.githubusercontent.com/"
   },
   "scopes": {
