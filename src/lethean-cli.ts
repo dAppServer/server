@@ -10,6 +10,7 @@ import { RouteDaemonWalletRpc } from "./routes/daemon/wallet/rpc.view.ts";
 import { RouteConfig } from "./routes/config.view.ts";
 import { RPCResponse } from "./interfaces/rpc-response.ts";
 import { LetheanUpdater } from "./services/update.service.ts";
+import { AuthRoutes } from "./routes/auth.view.ts";
 
 export class LetheanCli {
   public static options: any;
@@ -68,6 +69,7 @@ export class LetheanCli {
       .command("filesystem", RouteFilesystem.config())
       .command("config", RouteConfig.config())
       .command("object", RouteObject.config())
+      .command("auth", AuthRoutes.config())
       // .command("account", LetheanAccount.config())
       //			.command("vpn",
       //				new Command().description('VPN Functions')
