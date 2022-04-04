@@ -4,6 +4,7 @@ import { LetheanAccount } from "../accounts/user.ts";
 import * as jwt from "../helpers/jwt.ts";
 import { UserRole } from "../types/user/user-role.ts";
 import { CryptOpenPGP } from "../services/crypt/openpgp.ts";
+import { httpErrors } from "https://deno.land/x/oak@v10.5.1/httpError.ts";
 
 export class AuthRoutes {
   public static config() {
@@ -27,7 +28,7 @@ export class AuthRoutes {
               }),
             );
           } else {
-            throw new StringResponse(JSON.stringify({ "result": false }));
+            throw new httpErrors.Unauthorized(JSON.stringify({ "result": false }));
           }
         })
       );
