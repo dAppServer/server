@@ -4,10 +4,4 @@ export enum UserRole {
   ADMIN = "Admin",
 }
 
-/**
- * list of user roles
- */
-export const UserRoles: UserRole[] = [
-  UserRole.ADMIN,
-  UserRole.USER,
-];
+

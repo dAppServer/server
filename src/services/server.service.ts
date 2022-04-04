@@ -6,6 +6,9 @@ import { Application, oakCors, os, path, Router } from "../../deps.ts";
 import { FileSystemService } from "./fileSystemService.ts";
 import { CryptOpenPGP } from "./crypt/openpgp.ts";
 import { QuasiSalt } from "./crypt/quasi-salt.ts";
+import { userGuard } from "../middleware/user-guard.ts";
+import { UserRole } from "../types/user/user-role.ts";
+
 /**
  * Server Service
  *
@@ -65,7 +68,7 @@ export class ServerService {
     });
     this.app.addEventListener("error", (evt) => {
       // Will log the thrown error to the console.
-      console.error(evt.error);
+      //console.error(evt.error);
     });
   }
 
@@ -202,26 +205,29 @@ export class ServerService {
     /**
      * setup the help documentation
      */
-    //    this.router.get(path, (context) => {
-    //      context.response.status = 200;
-    //      context.response.headers = new Headers({
-    //        "content-type": "text/html",
-    //        "Access-Control-Allow-Origin": "*"
-    //      });
-    //      context.response.body = this.templateOutput(handle.getHelp());
-    //    });
+        this.router.get(path, userGuard(UserRole.USER),(context) => {
+          context.response.status = 200;
+          context.response.headers = new Headers({
+            "content-type": "text/html",
+            "Access-Control-Allow-Origin": "*"
+          });
+          context.response.body = ''//handle.getHelp();
+        });
 
     /**
      * Setup the action runner
      */
+
     this.router.post(
       path,
+
       oakCors({
         origin: "*",
         methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
         allowedHeaders: ["content-type"],
         maxAge: 1,
       }),
+      userGuard(UserRole.USER),
       async (context) => {
         //console.error(context.request.url.pathname.replace("/", "").split("/"))
         let cmdArgs: string[] = [];
@@ -276,6 +282,7 @@ export class ServerService {
       },
     );
 
+
     this.router.options(
       path,
       oakCors({
@@ -284,6 +291,7 @@ export class ServerService {
         allowedHeaders: ["content-type"],
         maxAge: 1,
       }),
+      userGuard(UserRole.USER),
       (context) => {
         context.response.status = 204;
         context.response.headers = new Headers({
@@ -311,6 +319,7 @@ export class ServerService {
         allowedHeaders: ["content-type"],
         maxAge: 1,
       }),
+      userGuard(UserRole.USER),
       async (context) => {
         context.response.headers = new Headers({
           "Access-Control-Allow-Origin": "*",
@@ -352,6 +361,7 @@ export class ServerService {
         allowedHeaders: ["content-type"],
         maxAge: 1,
       }),
+      userGuard(UserRole.USER),
       async (context) => {
         context.response.status = 200;
         context.response.headers = new Headers({
