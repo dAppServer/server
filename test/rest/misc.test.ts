@@ -1,7 +1,7 @@
-import { superoak } from "https://deno.land/x/superoak/mod.ts";
 import { ServerService } from "../../src/services/server.service.ts";
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
-import { assertExists } from "../../vendor/deno.land/std@0.108.0/testing/asserts.ts";
+import { superoak } from "https://deno.land/x/superoak@4.7.0/mod.ts";
+import { assertExists } from "https://deno.land/std@0.129.0/testing/asserts.ts";
 
 Deno.test("console.error", async () => {
   assertExists(console.error, "console.error");
@@ -44,6 +44,15 @@ Deno.test("GET /cert", async () => {
     .expect(200)
     .expect("Content-Type", "text/plain; charset=utf-8")
     .expect(FileSystemService.read("users/server.lthn.pub"));
+});
+
+Deno.test("POST /filesystem/read", async () => {
+  const request = await superoak(letheanServer.app);
+  await request.post("/filesystem/read")
+    .set("Content-Type", "application/json")
+    .send(`{"path": "users/server.lthn.pub"}`)
+    .expect(200)
+    .expect(btoa(`${FileSystemService.read("users/server.lthn.pub")}`));
 });
 
 Deno.test("GET /filesystem/read", async () => {

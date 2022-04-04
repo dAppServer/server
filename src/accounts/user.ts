@@ -3,7 +3,6 @@ import { QuasiSalt } from "../services/crypt/quasi-salt.ts";
 import { CryptOpenPGP } from "../services/crypt/openpgp.ts";
 import { FileSystemService } from "../services/fileSystemService.ts";
 import { StringResponse } from "../interfaces/string-response.ts";
-const td = (d: Uint8Array) => new TextDecoder().decode(d);
 
 export class LetheanAccount {
   static async login(payload: string) {
@@ -94,22 +93,5 @@ export class LetheanAccount {
       return false;
     }
     return true;
-  }
-
-  public static config() {
-    return new Command().description("Lethean Account Management")
-      .command("login", "login to your Lethean account")
-      .option("-p, --payload <string>", "the encrypted payload")
-      .action((args) =>
-        LetheanAccount.login(args.payload).then((user) => {
-          if (user) {
-            console.log(`Logged in as ${user}`);
-          } else {
-            console.log("Invalid credentials");
-          }
-
-          throw new StringResponse(JSON.stringify({ "result": "ok" }));
-        })
-      );
   }
 }

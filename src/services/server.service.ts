@@ -26,6 +26,7 @@ export class ServerService {
     update: true,
     help: false,
     completions: false,
+    auth: true,
   };
 
   /**
