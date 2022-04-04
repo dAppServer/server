@@ -7,7 +7,7 @@ export enum UserRole {
 /**
  * list of user roles
  */
-export const UserRole = [
+export const UserRoles: UserRole[] = [
   UserRole.ADMIN,
   UserRole.USER,
 ];

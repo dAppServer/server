@@ -7,6 +7,7 @@ import { assertEquals } from "https://deno.land/std@0.129.0/testing/asserts.ts";
 import { LetheanAccount } from "../../src/accounts/user.ts";
 const letheanServer = new ServerService();
 await letheanServer.warmUpServer();
+import { expect } from "https://deno.land/x/expect@v0.2.9/mod.ts";
 
 Deno.test("POST /auth/login -- good", async () => {
   const request = await superoak(letheanServer.app);
@@ -31,7 +32,14 @@ Deno.test("POST /auth/login -- good", async () => {
     .send(`{"payload": "${btoa(encryptedTest)}"}`)
     .expect(200)
     .set("Accept", "application/json")
-    .expect(`{"result":1}`);
+    .then(async (response1) => {
+      const reply = atob(JSON.parse(response1.text)['result'])
+
+      const token = JSON.parse(await CryptOpenPGP.decryptPGP(QuasiSalt.hash("test"), reply, 'test'))
+
+      expect(token).toHaveProperty("access_token");
+      expect(token).toHaveProperty("refresh_token");
+    })
 });
 Deno.test("POST /auth/login -- bad", async () => {
   const request = await superoak(letheanServer.app);
@@ -56,7 +64,7 @@ Deno.test("POST /auth/login -- bad", async () => {
     .send(`{"payload": "${btoa(encryptedTest)}"}`)
     .expect(200)
     .set("Accept", "application/json")
-    .expect(`{"result":0}`);
+    .expect(`{"result":false}`);
 });
 
 await letheanServer.stopServer();
