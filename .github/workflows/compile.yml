@@ -41,7 +41,7 @@ jobs:
         run: deno coverage --lcov cov > cov.lcov
       - run: npm run server:build:${{ matrix.type }}
       - if: matrix.type != 'windows'
-        run: chmod +x lethean-server && tar -cvf ${{ matrix.type }}.tar lethean-server start.sh
+        run: chmod +x lthn && tar -cvf ${{ matrix.type }}.tar lthn start.sh
       - name: Upload coverage report
         if: ${{ matrix.type == 'linux' }}
         uses: coverallsapp/github-action@master
@@ -51,7 +51,7 @@ jobs:
       - uses: papeloto/action-zip@v1
         if: matrix.type == 'windows'
         with:
-          files: lethean-server.exe start.cmd
+          files: lthn.exe start.cmd
           dest: ${{ matrix.type }}.zip
       - uses: actions/upload-artifact@v2
         if: matrix.type == 'windows'
