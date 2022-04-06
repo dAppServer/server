@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-./lethean-server
+./lthn server
