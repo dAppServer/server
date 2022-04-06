@@ -1,40 +1,21 @@
 import { AuthUser, Context } from "./../types.ts";
-import { validateJwt } from "../../deps.ts";
-
-/**
- * Decode token and returns payload
- * if given token is not expired
- * and valid with respect to given `secret`
- */
-const getJwtPayload = async (
-  token: string,
-  secret: string,
-): Promise<any | null> => {
-  try {
-    const jwtObject = await validateJwt(token, secret);
-    if (jwtObject && jwtObject.payload) {
-      return jwtObject.payload;
-    }
-  } catch (err) {}
-  return null;
-};
+import { getJwtPayload } from "../helpers/jwt.ts";
 
 /** *
  * JWTAuth middleware
  * Decode authorization bearer token
  * and attach as an user in application context
  */
-const JWTAuthMiddleware = (JWTSecret: string) => {
+const JWTAuthMiddleware = () => {
   return async (
     ctx: Context,
-    next: () => Promise<void>,
+    next: any,
   ) => {
     try {
       const authHeader = ctx.request.headers.get("Authorization");
       if (authHeader) {
         const token = authHeader.replace(/^bearer/i, "").trim();
-        const user = await getJwtPayload(token, JWTSecret);
-
+        const user = await getJwtPayload(token);
         if (user) {
           ctx.user = user as AuthUser;
         }

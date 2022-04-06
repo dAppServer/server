@@ -1,5 +1,5 @@
 import { Context } from "./../types.ts";
-const timingMiddleware = async (ctx: Context, next: () => Promise<void>) => {
+const timingMiddleware = async (ctx: Context, next: any) => {
   const start = Date.now();
   await next();
   const ms = Date.now() - start;

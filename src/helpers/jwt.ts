@@ -38,8 +38,9 @@ const getRefreshToken = async (user: any) => {
 const getJwtPayload = async (token: string): Promise<any | null> => {
   try {
     const jwtObject =  await verify(token, ServerService.JWT);
-    if (jwtObject && jwtObject.payload) {
-      return jwtObject.payload;
+    //console.log(jwtObject);
+    if (jwtObject && jwtObject.id) {
+      return jwtObject;
     }
   } catch (err) {}
   return null;

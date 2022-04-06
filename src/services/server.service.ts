@@ -8,6 +8,11 @@ import { CryptOpenPGP } from "./crypt/openpgp.ts";
 import { QuasiSalt } from "./crypt/quasi-salt.ts";
 import { userGuard } from "../middleware/user-guard.ts";
 import { UserRole } from "../types/user/user-role.ts";
+import { JWTAuthMiddleware } from "../middleware/jwt-auth.ts";
+import { errorMiddleware } from "../middleware/error.ts";
+import { loggerMiddleware } from "../middleware/logger.ts";
+import { timingMiddleware } from "../middleware/timing.ts";
+import { requestIdMiddleware } from "../middleware/request-id.ts";
 
 /**
  * Server Service
@@ -50,6 +55,12 @@ export class ServerService {
     await LetheanCli.init();
 
     this.loadRoutes();
+
+    this.app.use(timingMiddleware);
+    this.app.use(requestIdMiddleware);
+    this.app.use(JWTAuthMiddleware());
+    this.app.use(errorMiddleware);
+    this.app.use(loggerMiddleware);
     this.app.use(this.router.routes());
     this.app.use(this.router.allowedMethods());
 
@@ -353,8 +364,7 @@ export class ServerService {
         console.error(e);
       }
     });
-    this.router.get(
-      "(.*)",
+    this.router.get('(.*)',
       oakCors({
         origin: "*",
         methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],

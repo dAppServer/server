@@ -1,8 +1,7 @@
 import { isHttpError, Status } from "../../deps.ts";
-//import { config } from "./../config/config.ts";
 import { Context } from "../types.ts";
 
-const errorMiddleware = async (ctx: Context, next: () => Promise<void>) => {
+const errorMiddleware = async (ctx: Context, next: any) => {
   try {
     await next();
   } catch (err) {
@@ -15,12 +14,10 @@ const errorMiddleware = async (ctx: Context, next: () => Promise<void>) => {
      * end user in non "development" mode
      */
     if (!isHttpError(err)) {
-      message = config.ENV === "dev" || config.ENV === "development"
-        ? message
-        : "Internal Server Error";
+      message = Deno.env.get('DEV') ? message : "Internal Server Error";
     }
 
-    if (config.ENV === "dev" || config.ENV === "development") {
+    if (Deno.env.get('DEV')) {
       console.log(err);
     }
 

@@ -2,8 +2,8 @@ import { AuthUser } from "../types.ts";
 import { UserRole } from "../types/user/user-role.ts";
 
 const hasUserRole = (user: AuthUser, roles: UserRole | UserRole[]) => {
-  const userRoles = user.roles.split(",")
-    .map((role) => role.trim());
+
+  const userRoles = user.roles
 
   if (typeof (roles) == "string") {
     roles = [roles];
