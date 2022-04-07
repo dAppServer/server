@@ -254,10 +254,6 @@ export class ServerService {
           // to send a response throw new StringResponse()
         } catch (error) {
           context.response.status = 200;
-          context.response.headers = new Headers({
-            "content-type": "text/plain"
-          });
-
           if ((error.message as string).startsWith("http")) {
             context.response.body = await this.performRequest(
               error.message,
@@ -267,19 +263,16 @@ export class ServerService {
             context.response.body = error.message;
           }
         }
+
       },
     );
 
 
     this.router.options(
       path,
-      userGuard(UserRole.USER),
       (context) => {
         context.response.status = 204;
-        context.response.headers = new Headers({
-          "Content-Type":
-            "application/x-www-form-urlencoded, text/plain, application/json"
-        });
+        context.response.headers.set("Access-Control-Allow-Origin", "*");
       },
     );
   }
