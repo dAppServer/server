@@ -129,29 +129,34 @@ export class ServerService {
    * @description Initialize the server
    * @returns {any}
    */
-  startServer() {
+  async startServer() {
     ZeroMQServer.startServer();
     LetheanWebsocketServer.startServer();
 
     //this.app.use(staticFiles("apps/lthn/app/desktop", {prefix: 'app/desktop'}));
 
 
-
     this.app.addEventListener("listen", ({ hostname, port, secure }) => {
       console.info(
         `Listening on: ${secure ? "https://" : "http://"}${
           hostname ??
-            "localhost"
+          "localhost"
         }:${port}`,
       );
     });
 
-    return this.app.listen({
-      "hostname": "127.0.0.1",
-      "port": 36911,
-      //      "certFile": `${path.join(this.home, "Lethean", "conf", "public.pem")}`,
-      //      "keyFile": `${path.join(this.home, "Lethean", "conf", "private.pem")}`,
-    });
+    try {
+      await this.app.listen({
+        "hostname": "127.0.0.1",
+        "port": 36911,
+        //      "certFile": `${path.join(this.home, "Lethean", "conf", "public.pem")}`,
+        //      "keyFile": `${path.join(this.home, "Lethean", "conf", "private.pem")}`,
+      });
+    } catch (error) {
+      console.error('[SERVER] Failed to start server, shutting down...');
+      Deno.exit(1)
+    }
+
   }
 
   /**
