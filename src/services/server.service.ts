@@ -2,7 +2,7 @@ import { LetheanCli } from "../lethean-cli.ts";
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { LetheanWebsocketServer } from "./tcp/websocket.server.ts";
 import { LetheanAppServer } from "./apps/server.ts";
-import { Application, oakCors, os, path, Router } from "../../deps.ts";
+import { Application, os, path, Router } from "../../deps.ts";
 import { FileSystemService } from "./fileSystemService.ts";
 import { CryptOpenPGP } from "./crypt/openpgp.ts";
 import { QuasiSalt } from "./crypt/quasi-salt.ts";
@@ -13,6 +13,7 @@ import { errorMiddleware } from "../middleware/error.ts";
 import { loggerMiddleware } from "../middleware/logger.ts";
 import { timingMiddleware } from "../middleware/timing.ts";
 import { requestIdMiddleware } from "../middleware/request-id.ts";
+import { corsMiddleware } from "../middleware/cors.ts";
 
 /**
  * Server Service
@@ -61,22 +62,11 @@ export class ServerService {
     this.app.use(JWTAuthMiddleware());
     this.app.use(errorMiddleware);
     this.app.use(loggerMiddleware);
+    this.app.use(corsMiddleware);
     this.app.use(this.router.routes());
     this.app.use(this.router.allowedMethods());
 
-    // Logger
-    this.app.use(async (ctx, next) => {
-      await next();
-      const rt = ctx.response.headers.get("X-Response-Time");
-    });
 
-    // Timing
-    this.app.use(async (ctx, next) => {
-      const start = Date.now();
-      await next();
-      const ms = Date.now() - start;
-      ctx.response.headers.set("X-Response-Time", `${ms}ms`);
-    });
     this.app.addEventListener("error", (evt) => {
       // Will log the thrown error to the console.
       //console.error(evt.error);
@@ -145,12 +135,7 @@ export class ServerService {
 
     //this.app.use(staticFiles("apps/lthn/app/desktop", {prefix: 'app/desktop'}));
 
-    this.app.use(oakCors({
-      origin: "*",
-      methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
-      allowedHeaders: ["content-type"],
-      maxAge: 1,
-    }));
+
 
     this.app.addEventListener("listen", ({ hostname, port, secure }) => {
       console.info(
@@ -218,10 +203,6 @@ export class ServerService {
      */
         this.router.get(path, userGuard(UserRole.USER),(context) => {
           context.response.status = 200;
-          context.response.headers = new Headers({
-            "content-type": "text/html",
-            "Access-Control-Allow-Origin": "*"
-          });
           context.response.body = ''//handle.getHelp();
         });
 
@@ -231,13 +212,6 @@ export class ServerService {
 
     this.router.post(
       path,
-
-      oakCors({
-        origin: "*",
-        methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
-        allowedHeaders: ["content-type"],
-        maxAge: 1,
-      }),
       userGuard(UserRole.USER),
       async (context) => {
         //console.error(context.request.url.pathname.replace("/", "").split("/"))
@@ -276,9 +250,7 @@ export class ServerService {
         } catch (error) {
           context.response.status = 200;
           context.response.headers = new Headers({
-            "content-type": "text/plain",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "*",
+            "content-type": "text/plain"
           });
 
           if ((error.message as string).startsWith("http")) {
@@ -296,20 +268,12 @@ export class ServerService {
 
     this.router.options(
       path,
-      oakCors({
-        origin: "*",
-        methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
-        allowedHeaders: ["content-type"],
-        maxAge: 1,
-      }),
       userGuard(UserRole.USER),
       (context) => {
         context.response.status = 204;
         context.response.headers = new Headers({
           "Content-Type":
-            "application/x-www-form-urlencoded, text/plain, application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "*",
+            "application/x-www-form-urlencoded, text/plain, application/json"
         });
       },
     );
@@ -324,18 +288,9 @@ export class ServerService {
 
     this.router.get(
       "/app/desktop/(.*)",
-      oakCors({
-        origin: "*",
-        methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
-        allowedHeaders: ["content-type"],
-        maxAge: 1,
-      }),
       userGuard(UserRole.USER),
       async (context) => {
-        context.response.headers = new Headers({
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "*",
-        });
+
         try {
           await context.send({
             root: FileSystemService.path("apps/lthn"),
@@ -347,10 +302,7 @@ export class ServerService {
       },
     );
     this.router.get("/cert", async (context) => {
-      context.response.headers = new Headers({
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "*",
-      });
+
       try {
         const cert = FileSystemService.read("users/server.lthn.pub");
 
@@ -365,19 +317,9 @@ export class ServerService {
       }
     });
     this.router.get('(.*)',
-      oakCors({
-        origin: "*",
-        methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
-        allowedHeaders: ["content-type"],
-        maxAge: 1,
-      }),
       userGuard(UserRole.USER),
       async (context) => {
         context.response.status = 200;
-        context.response.headers = new Headers({
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "*",
-        });
         try {
           //console.info(context.request.url.pathname);
           await context.send({
