@@ -43,7 +43,7 @@ export { HelpCommand } from "https://deno.land/x/cliffy@v0.22.2/command/help/mod
 
 export { renderFile } from "https://deno.land/x/mustache@v0.3.0/mod.ts";
 import "./src/helpers/utils.ts";
-export * as openpgp from "./node_modules/openpgp/dist/openpgp.mjs";
+export * as openpgp from "./lib/openpgp.mjs";
 
 export {
   isEmail,
