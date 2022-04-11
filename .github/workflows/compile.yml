@@ -53,12 +53,12 @@ jobs:
         with:
           files: lthn.exe start.cmd
           dest: ${{ matrix.type }}.zip
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: matrix.type == 'windows'
         with:
           name: ${{ matrix.type }}
           path: ${{ matrix.type }}.zip
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: matrix.type != 'windows'
         with:
           name: ${{ matrix.type }}
