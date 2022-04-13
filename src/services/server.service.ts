@@ -1,7 +1,6 @@
 import { LetheanCli } from "../lethean-cli.ts";
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { LetheanWebsocketServer } from "./tcp/websocket.server.ts";
-import { LetheanAppServer } from "./apps/server.ts";
 import { Application, os, path, Router } from "../../deps.ts";
 import { FileSystemService } from "./fileSystemService.ts";
 import { CryptOpenPGP } from "./crypt/openpgp.ts";
@@ -52,7 +51,7 @@ export class ServerService {
     );
 
     console.info("[SERVER] Checks pass, Initializing server...");
-    await LetheanAppServer.loadPlugins();
+   // await LetheanAppServer.loadPlugins();
     await LetheanCli.init();
 
     this.loadRoutes();
