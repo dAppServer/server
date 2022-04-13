@@ -3,6 +3,7 @@ import { hasUserRole } from "../helpers/roles.ts";
 import { httpErrors } from "../../deps.ts";
 import { getJwtPayload } from "../helpers/jwt.ts";
 import { ServerService } from "../services/server.service.ts";
+import { FileSystemService } from "../services/fileSystemService.ts";
 
 /**
  * has user role middleware
@@ -10,7 +11,8 @@ import { ServerService } from "../services/server.service.ts";
  */
 export const userGuard = (roles?: UserRole | [] ) => {
   return async (context: Context, next: any) => {
-    if (!context.request.url.pathname.startsWith('/auth')) {
+
+    if (!context.request.url.pathname.startsWith('/auth') && FileSystemService.list('users').map((file:string) => file.endsWith('.lthn'))) {
 
       try {
 
