@@ -61,35 +61,35 @@ await letheanServer.warmUpServer();
 
 
 
-Deno.test("GET /", async () => {
-  const request = await superoak(letheanServer.app);
-  await request.get("/").set("Authorization", authToken['access_token']).expect(200);
-});
+//Deno.test("GET /", async () => {
+//  const request = await superoak(letheanServer.app);
+//  await request.get("/").set("Authorization", authToken['access_token']).expect(200);
+//});
+//
+//Deno.test("GET / - no auth", async () => {
+//  const request = await superoak(letheanServer.app);
+//  await request.get("/").expect(401);
+//});
+//
+//Deno.test("GET ", async () => {
+//  const request = await superoak(letheanServer.app);
+//  await request.get("").set("Authorization", authToken['access_token']).expect(200);
+//});
 
-Deno.test("GET / - no auth", async () => {
-  const request = await superoak(letheanServer.app);
-  await request.get("/").expect(401);
-});
+//Deno.test("GET - no auth", async () => {
+//  const request = await superoak(letheanServer.app);
+//  await request.get("").expect(401);
+//});
 
-Deno.test("GET ", async () => {
-  const request = await superoak(letheanServer.app);
-  await request.get("").set("Authorization", authToken['access_token']).expect(200);
-});
-
-Deno.test("GET - no auth", async () => {
-  const request = await superoak(letheanServer.app);
-  await request.get("").expect(401);
-});
-
-Deno.test("GET /app/desktop/", async () => {
-  const request = await superoak(letheanServer.app);
-  await request.get("/app/desktop/").set("Authorization", authToken['access_token']).expect(200);
-});
-
-Deno.test("GET /app/desktop/ - no auth", async () => {
-  const request = await superoak(letheanServer.app);
-  await request.get("/app/desktop/").expect(401);
-});
+//Deno.test("GET /app/desktop/", async () => {
+//  const request = await superoak(letheanServer.app);
+//  await request.get("/app/desktop/").set("Authorization", authToken['access_token']).expect(200);
+//});
+//
+//Deno.test("GET /app/desktop/ - no auth", async () => {
+//  const request = await superoak(letheanServer.app);
+//  await request.get("/app/desktop/").expect(401);
+//});
 
 Deno.test("Error: Path not found", async () => {
   const request = await superoak(letheanServer.app);

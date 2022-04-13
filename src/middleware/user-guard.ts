@@ -12,7 +12,7 @@ import { FileSystemService } from "../services/fileSystemService.ts";
 export const userGuard = (roles?: UserRole | [] ) => {
   return async (context: Context, next: any) => {
 
-    if (!context.request.url.pathname.startsWith('/auth') && FileSystemService.list('users').map((file:string) => file.endsWith('.lthn'))) {
+    if (!context.request.url.pathname.startsWith('/auth') && FileSystemService.list('users').map((file:string) => file.endsWith('.lthn')).includes(true)) {
 
       try {
 
