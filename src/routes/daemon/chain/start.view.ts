@@ -8,6 +8,9 @@ import { IniService } from "../../../services/config/ini.service.ts";
 
 export class RouteDaemonChainStart {
   public static config() {
+    let home = Deno.cwd();
+
+
     return new Command()
       .description("Blockchain Functions")
       .option("--config-file <string>", "Specify configuration file")
@@ -18,7 +21,7 @@ export class RouteDaemonChainStart {
       )
       .option("--non-interactive", "Run non-interactive")
       .option("--log-file <string>", "Specify log file", {
-        default: path.join( "data", "logs"),
+        default: path.join(home ? home : "/", "data", "logs"),
       })
       .option("--log-level <string>", "1-4")
       .option(
@@ -26,7 +29,7 @@ export class RouteDaemonChainStart {
         "Max number of threads to use for a parallel job",
       )
       .option("--data-dir <string>", "Specify data directory", {
-        default: path.join("data"),
+        default: path.join(home ? home : "/", "data"),
       })
       .option(
         "--testnet-data-dir <string>",
