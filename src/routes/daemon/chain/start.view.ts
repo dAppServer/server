@@ -188,8 +188,10 @@ export class RouteDaemonChainStart {
           );
 
           if (!FileSystemService.isFile(args["configFile"])) {
-            //console.error(`Config file ${args['configFile']} not found`);
-            FileSystemService.ensureDir(path.join(Deno.cwd(), "conf"));
+            console.info(`Config file ${args['configFile']} not found`);
+            if (!FileSystemService.isDir(path.join(Deno.cwd(), "conf"))) {
+              FileSystemService.ensureDir(path.join(Deno.cwd(), "conf"));
+            }
             FileSystemService.write(
               args["configFile"],
               new IniService().stringify({
