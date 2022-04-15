@@ -1,7 +1,7 @@
-import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
 import { StringResponse } from "../interfaces/string-response.ts";
 import { OpenAPIGeneratorService } from "../services/openapi/generator.service.ts";
 import { ConfigFileService } from "../services/config/file.service.ts";
+import { Command } from "../../deps.ts";
 
 export class RouteConfig {
   public static config() {
