@@ -1,8 +1,5 @@
-import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
-import {
-  GithubProvider,
-  UpgradeCommand,
-} from "https://deno.land/x/cliffy/command/upgrade/mod.ts";
+import { Command, UpgradeCommand, GithubProvider } from "../../deps.ts";
+
 import { StringResponse } from "../interfaces/string-response.ts";
 import { LetheanUpdater } from "../services/update.service.ts";
 

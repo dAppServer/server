@@ -40,7 +40,10 @@ export {
 export { Command } from "https://deno.land/x/cliffy@v0.22.2/command/mod.ts";
 export { CompletionsCommand } from "https://deno.land/x/cliffy@v0.22.2/command/completions/mod.ts";
 export { HelpCommand } from "https://deno.land/x/cliffy@v0.22.2/command/help/mod.ts";
-
+export {
+  GithubProvider,
+  UpgradeCommand,
+} from "https://deno.land/x/cliffy@v0.22.2/command/upgrade/mod.ts";
 export { renderFile } from "https://deno.land/x/mustache@v0.3.0/mod.ts";
 import "./src/helpers/utils.ts";
 export * as openpgp from "./lib/openpgp.mjs";

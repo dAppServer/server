@@ -1,6 +1,5 @@
-import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
-import * as path from "https://deno.land/std/path/mod.ts";
-import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
+
+import { Command, path, os } from "../../../../deps.ts";
 import { StringResponse } from "../../../interfaces/string-response.ts";
 import { ProcessManager } from "../../../services/process/process.service.ts";
 import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
@@ -11,11 +10,7 @@ export class RouteDaemonChainStart {
   public static config() {
     let home = Deno.cwd();
 
-    //    if (os.platform() === "windows") {
-    //      home = Deno.cwd();
-    //    } else {
-    // home = path.join(home ? home : "./", "Lethean");
-    //    }
+
     return new Command()
       .description("Blockchain Functions")
       .option("--config-file <string>", "Specify configuration file")

@@ -1,7 +1,7 @@
-import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
+
 import { StringResponse } from "../interfaces/string-response.ts";
-import { decode as base64Decode } from "https://deno.land/std@0.82.0/encoding/base64.ts";
 import { StoredObjectService } from "../services/config/store.ts";
+import { Command } from "../../deps.ts";
 
 export class RouteObject {
   public static config() {
@@ -19,9 +19,7 @@ export class RouteObject {
       .option("-d,--data <string>", "Data object to save")
       .action((args) => {
         const textDecoder = new TextDecoder("utf-8");
-        const decodedValue = textDecoder.decode(
-          base64Decode(args.data),
-        );
+        const decodedValue = atob(args.data)
 
         StoredObjectService.setObject({
           group: args.group,

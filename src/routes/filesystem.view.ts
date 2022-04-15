@@ -1,10 +1,8 @@
-import { Command } from "https://deno.land/x/cliffy/command/mod.ts";
+
 import { StringResponse } from "../interfaces/string-response.ts";
-import {
-  decode as base64Decode,
-  encode as base64Encode,
-} from "https://deno.land/std@0.82.0/encoding/base64.ts";
+
 import { FileSystemService } from "../services/fileSystemService.ts";
+import { Command } from "../../deps.ts";
 
 export class RouteFilesystem {
   public static config() {
@@ -31,10 +29,7 @@ export class RouteFilesystem {
         const req = FileSystemService.read(args.path);
         if (req) {
           if (Deno.env.get("REST")) {
-            const textEncoder = new TextEncoder();
-
-            const encodedValue = base64Encode(textEncoder.encode(req));
-            throw new StringResponse(encodedValue);
+            throw new StringResponse(btoa(req));
           }
           // throw to console
           throw new StringResponse(req);
@@ -46,9 +41,7 @@ export class RouteFilesystem {
       .action((args) => {
         let data = args.data;
         if (Deno.env.get("REST")) {
-          const textDecoder = new TextDecoder("utf-8");
-
-          data = textDecoder.decode(base64Decode(data));
+          data = atob(data)
         }
         FileSystemService.write(args.path, data);
 
