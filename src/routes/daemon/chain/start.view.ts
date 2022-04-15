@@ -199,6 +199,8 @@ export class RouteDaemonChainStart {
               }),
             );
           }
+          delete args['logFile']
+          delete args['dataDir']
         }
 
         exeFile = path.join(
