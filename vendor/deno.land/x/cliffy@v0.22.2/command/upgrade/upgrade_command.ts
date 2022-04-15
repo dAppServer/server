@@ -1,6 +1,6 @@
 import { Command } from "../command.ts";
 import { ValidationError } from "../../flags/_errors.ts";
-import type { Provider, Versions } from "./provider.ts";
+import type { Provider } from "./provider.ts";
 import { EnumType } from "../types/enum.ts";
 
 export interface UpgradeCommandOptions<
@@ -13,7 +13,7 @@ export interface UpgradeCommandOptions<
   args?: Array<string>;
 }
 
-export class UpgradeCommand extends Command {
+export class UpgradeCommand extends Command<void> {
   private readonly providers: ReadonlyArray<Provider>;
 
   constructor(
@@ -29,7 +29,7 @@ export class UpgradeCommand extends Command {
         `Upgrade ${this.getMainCommand().getName()} executable to latest or given version.`
       )
       .type("provider", new EnumType(this.getProviderNames()))
-      .option(
+      .option<{ registry: Provider }>(
         "-r, --registry <name:provider>",
         `The registry name from which to upgrade.`,
         {
@@ -38,7 +38,7 @@ export class UpgradeCommand extends Command {
           value: (registry) => this.getProvider(registry),
         },
       )
-      .option(
+      .option<{ listVersions?: boolean }>(
         "-l, --list-versions",
         "Show available versions.",
         {
@@ -51,16 +51,16 @@ export class UpgradeCommand extends Command {
           },
         },
       )
-      .option(
+      .option<{ version: string }>(
         "--version <version:string:version>",
         "The version to upgrade to.",
         { default: "latest" },
       )
-      .option(
+      .option<{ force?: boolean }>(
         "-f, --force",
         "Replace current installation even if not out-of-date.",
       )
-      .complete("version", () => this.getAllVersions())
+      .complete("version", () => this.getVersions())
       .action(async ({ registry, version: targetVersion, force }) => {
         const name: string = this.getMainCommand().getName();
         const currentVersion: string | undefined = this.getVersion();
@@ -81,20 +81,11 @@ export class UpgradeCommand extends Command {
       });
   }
 
-  public async getAllVersions(): Promise<Array<string>> {
-    const { versions } = await this.getVersions();
-    return versions;
-  }
-
-  public async getLatestVersion(): Promise<string> {
-    const { latest } = await this.getVersions();
-    return latest;
-  }
-
-  public getVersions(): Promise<Versions> {
-    return this.getProvider().getVersions(
+  private async getVersions(): Promise<Array<string>> {
+    const { versions } = await this.getProvider().getVersions(
       this.getMainCommand().getName(),
     );
+    return versions;
   }
 
   private getProvider(name?: string): Provider {
