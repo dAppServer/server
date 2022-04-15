@@ -8,9 +8,6 @@ import { IniService } from "../../../services/config/ini.service.ts";
 
 export class RouteDaemonChainStart {
   public static config() {
-    let home = Deno.cwd();
-
-
     return new Command()
       .description("Blockchain Functions")
       .option("--config-file <string>", "Specify configuration file")
@@ -20,13 +17,17 @@ export class RouteDaemonChainStart {
         "File path to write the daemon's PID to (optional, requires --detach)",
       )
       .option("--non-interactive", "Run non-interactive")
-      .option("--log-file <string>", "Specify log file")
+      .option("--log-file <string>", "Specify log file", {
+        default: path.join( "data", "logs"),
+      })
       .option("--log-level <string>", "1-4")
       .option(
         "--max-concurrency <string>",
         "Max number of threads to use for a parallel job",
       )
-      .option("--data-dir <string>", "Specify data directory")
+      .option("--data-dir <string>", "Specify data directory", {
+        default: path.join("data"),
+      })
       .option(
         "--testnet-data-dir <string>",
         "Specify testnet data directory",
@@ -177,11 +178,10 @@ export class RouteDaemonChainStart {
         let exeFile = `letheand${os.platform() === "windows" ? ".exe" : ""}`;
 
         if (args["configFile"] !== undefined) {
-          args["configFile"] = path.join(
-            Deno.cwd(),
+          args["configFile"] = [
             "conf",
             args["configFile"],
-          );
+          ].join("/");
 
           if (!FileSystemService.isFile(args["configFile"])) {
             console.info(`Config file ${args['configFile']} not found`);
