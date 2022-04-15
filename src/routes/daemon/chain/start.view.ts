@@ -179,7 +179,7 @@ export class RouteDaemonChainStart {
       )
       .action((args) => {
         let exeFile = `letheand${os.platform() === "windows" ? ".exe" : ""}`;
-
+        let cmd: any = {}
         if (args["configFile"] !== undefined) {
           args["configFile"] = [
             "conf",
@@ -199,8 +199,11 @@ export class RouteDaemonChainStart {
               }),
             );
           }
-          delete args['logFile']
-          delete args['dataDir']
+
+          cmd['configFile'] = args["configFile"];
+
+        }else {
+          cmd = args
         }
 
         exeFile = path.join(
@@ -211,7 +214,7 @@ export class RouteDaemonChainStart {
 
         ProcessManager.run(
           exeFile,
-          args,
+          cmd,
           {
             key: exeFile,
             stdErr: (stdErr: unknown) => console.log(stdErr),
