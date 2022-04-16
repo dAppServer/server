@@ -19,11 +19,86 @@ on:
 
 jobs:
 
-  build:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.20.1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - run: npm install
+      - name: Testing
+        run: npm run test
+      - run: npm run server:build:windows
+      - uses: papeloto/action-zip@v1
+        with:
+          files: lthn.exe start.cmd
+          dest: ${{ matrix.type }}.zip
+      - uses: actions/upload-artifact@v3
+        with:
+          name: windows
+          path: windows.zip
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            windows.zip
+  macos-arm:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.20.1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - run: npm install
+      - name: Testing
+        run: npm run test
+      - run: npm run server:build:macos-arm
+      - run: chmod +x lthn && tar -cvf macos-arm.tar lthn start.sh
+      - uses: actions/upload-artifact@v3
+        with:
+          name: macos-arm
+          path: macos-arm.tar
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            macos-arm.tar
+  macos-intel:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.20.1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - run: npm install
+      - name: Testing
+        run: npm run test
+      - run: npm run server:build:macos-intel
+      - run: chmod +x lthn && tar -cvf macos-intel.tar lthn start.sh
+      - uses: actions/upload-artifact@v3
+        with:
+          name: macos-intel
+          path: macos-intel.tar
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            macos-intel.tar
+  linux:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        type: [ linux, macos-intel, macos-arm, windows ]
     steps:
       - uses: actions/checkout@v3
       - uses: denoland/setup-deno@v1
@@ -37,29 +112,15 @@ jobs:
       - name: Testing
         run: npm run test
       - name: Generate coverage report
-        if: ${{ matrix.type == 'linux' }}
         run: deno coverage --lcov cov > cov.lcov
-      - run: npm run server:build:${{ matrix.type }}
-      - if: matrix.type != 'windows'
-        run: chmod +x lthn && tar -cvf ${{ matrix.type }}.tar lthn start.sh
+      - run: npm run server:build:linux
+      - run: chmod +x lthn && tar -cvf linux.tar lthn start.sh
       - name: Upload coverage report
-        if: ${{ matrix.type == 'linux' }}
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: cov.lcov
-      - uses: papeloto/action-zip@v1
-        if: matrix.type == 'windows'
-        with:
-          files: lthn.exe start.cmd
-          dest: ${{ matrix.type }}.zip
       - uses: actions/upload-artifact@v3
-        if: matrix.type == 'windows'
-        with:
-          name: ${{ matrix.type }}
-          path: ${{ matrix.type }}.zip
-      - uses: actions/upload-artifact@v3
-        if: matrix.type != 'windows'
         with:
           name: ${{ matrix.type }}
           path: ${{ matrix.type }}.tar
@@ -69,12 +130,14 @@ jobs:
         with:
           files: |
             ${{ matrix.type }}.tar
-            ${{ matrix.type }}.zip
   lauchers:
     name: "Trigger: letheanVPN/launchers"
     runs-on: ubuntu-latest
     needs:
-      - build
+      - windows
+      - linux
+      - macos-arm
+      - macos-intel
     steps:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v2
