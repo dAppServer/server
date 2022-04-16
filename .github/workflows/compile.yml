@@ -140,6 +140,7 @@ jobs:
       - macos-intel
     steps:
       - name: Repository Dispatch
+        if: startsWith(github.ref, 'refs/tags/')
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
