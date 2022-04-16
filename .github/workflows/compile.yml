@@ -36,7 +36,7 @@ jobs:
       - uses: papeloto/action-zip@v1
         with:
           files: lthn.exe start.cmd
-          dest: ${{ matrix.type }}.zip
+          dest: windows.zip
       - uses: actions/upload-artifact@v3
         with:
           name: windows
@@ -122,14 +122,14 @@ jobs:
           path-to-lcov: cov.lcov
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.type }}
-          path: ${{ matrix.type }}.tar
+          name: linux
+          path: linux.tar
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ${{ matrix.type }}.tar
+            linux.tar
   lauchers:
     name: "Trigger: letheanVPN/launchers"
     runs-on: ubuntu-latest
