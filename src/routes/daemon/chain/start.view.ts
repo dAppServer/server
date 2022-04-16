@@ -21,7 +21,7 @@ export class RouteDaemonChainStart {
       )
       .option("--non-interactive", "Run non-interactive")
       .option("--log-file <string>", "Specify log file", {
-        default: path.join(home ? home : "/", "data", "logs"),
+        default: path.join(home ? home : "/", "data", "logs", "letheand.log"),
       })
       .option("--log-level <string>", "1-4")
       .option(
