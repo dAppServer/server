@@ -29,7 +29,7 @@ export {
 
 export { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/unzip.ts";
 
-export { Webview } from "https://raw.githubusercontent.com/Snider/webview_deno/main/mod.ts";
+//export { Webview } from "https://raw.githubusercontent.com/Snider/webview_deno/main/mod.ts";
 
 export {
   CachePolicy,
