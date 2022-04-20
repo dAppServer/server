@@ -74,7 +74,7 @@ export class DaemonChainWalletVpnRpcView {
           ),
           args,
           {
-            key: exeFile,
+            key: exeFile.split("/").pop(),
             stdErr: (stdErr: unknown) => console.log(stdErr),
             stdIn: (stdIn: unknown) => console.log(stdIn),
             stdOut: (stdOut: unknown) => console.log(stdOut),

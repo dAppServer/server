@@ -29,8 +29,13 @@ export class LetheanWebsocketServer {
       function (ws: WebSocketClient) {
         ws.on("message", function (daemon: string) {
           daemon = daemon.replace(/"/g, "");
-          //console.log(daemon)
-          if (daemon.substr(0, 6) === "daemon") {
+          if (daemon.substr(0, 3) === "cmd") {
+            const req = daemon.split(":");
+            ZeroMQServer.sendPubMessage(
+              req[1] + "-stdIn",
+              `${req[2]}\n`,
+            );
+          } else if (daemon.substr(0, 6) === "daemon") {
             const req = daemon.split(":");
             console.log(`Subscribing to ${req[1]}`);
             const sock = new zmq.Sub();
@@ -40,24 +45,15 @@ export class LetheanWebsocketServer {
             console.log("Subscriber connected to port 36910/pub");
             const wsClient = ws;
             sock.on("message", function (endpoint, topic, message) {
-              const textEncoder = new TextEncoder();
+
               wsClient.send(
                 JSON.stringify([
                   req[1],
-                  atob(
-                    LetheanWebsocketServer.strip(
-                      message.toString(),
-                    ),
+                  btoa(message.toString()
                   ),
                 ]),
               );
             });
-          } else if (daemon.substr(0, 3) === "cmd") {
-            const req = daemon.split(":");
-            ZeroMQServer.sendPubMessage(
-              req[1] + "-stdIn",
-              `${req[2]}\n`,
-            );
           }
         });
       },
