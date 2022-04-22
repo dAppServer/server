@@ -51,6 +51,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
+      - name: "Select Xcode 12.0.0"
+        uses: devbotsxyz/xcode-select@master
+        with:
+          version: "12.0.0"
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.20.1
@@ -65,9 +69,7 @@ jobs:
       - name: Import Code-Signing Certificates for macOS
         uses: Apple-Actions/import-codesign-certs@v1
         with:
-          # The certificates in a PKCS12 file encoded as a base64 string
           p12-file-base64: ${{ secrets.MAC_DEVELOPER_CERT }}
-          # The password used to import the PKCS12 file.
           p12-password: ${{ secrets.MAC_DEVELOPER_PASS }}
       - run: codesign --no-strict --verify -f -s 'A7CD2243011C55DF683237BDA4989BFF0D081502' lthn
       - run: tar -cvf macos-arm.tar lthn start.sh
@@ -85,6 +87,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
+      - name: "Select Xcode 12.0.0"
+        uses: devbotsxyz/xcode-select@master
+        with:
+          version: "12.0.0"
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.20.1
