@@ -61,7 +61,16 @@ jobs:
       - name: Testing
         run: npm run test
       - run: npm run server:build:macos-arm
-      - run: chmod +x lthn && tar -cvf macos-arm.tar lthn start.sh
+      - run: chmod +x lthn
+      - name: Import Code-Signing Certificates for macOS
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          # The certificates in a PKCS12 file encoded as a base64 string
+          p12-file-base64: ${{ secrets.MAC_DEVELOPER_CERT }}
+          # The password used to import the PKCS12 file.
+          p12-password: ${{ secrets.MAC_DEVELOPER_PASS }}
+      - run: codesign --no-strict --verify -f -s 'A7CD2243011C55DF683237BDA4989BFF0D081502' lthn
+      - run: tar -cvf macos-arm.tar lthn start.sh
       - uses: actions/upload-artifact@v3
         with:
           name: macos-arm
@@ -86,7 +95,16 @@ jobs:
       - name: Testing
         run: npm run test
       - run: npm run server:build:macos-intel
-      - run: chmod +x lthn && tar -cvf macos-intel.tar lthn start.sh
+      - run: chmod +x lthn
+      - name: Import Code-Signing Certificates for macOS
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          # The certificates in a PKCS12 file encoded as a base64 string
+          p12-file-base64: ${{ secrets.MAC_DEVELOPER_CERT }}
+          # The password used to import the PKCS12 file.
+          p12-password: ${{ secrets.MAC_DEVELOPER_PASS }}
+      - run: codesign --no-strict --verify -f -s 'A7CD2243011C55DF683237BDA4989BFF0D081502' lthn
+      - run: tar -cvf macos-intel.tar lthn start.sh
       - uses: actions/upload-artifact@v3
         with:
           name: macos-intel
@@ -130,7 +148,7 @@ jobs:
         with:
           files: |
             linux.tar
-  lauchers:
+  launchers:
     name: "Trigger: letheanVPN/launchers"
     runs-on: ubuntu-latest
     needs:
