@@ -19,7 +19,7 @@
     "dev:gui": "deno run --watch -A --unstable --import-map vendor/import_map.json mod.ts gui",
     "dev:setup": "cd $HOME/Lethean/conf && git clone https://github.com/letheanVPN/config-templates.git templates",
     "start": "deno run -A --unstable --import-map vendor/import_map.json mod.ts",
-    "server:compile": "deno compile --unstable -A --output lthn --import-map vendor/import_map.json --target  ",
+    "server:compile": "deno compile --unstable -A --output build/lthn --import-map vendor/import_map.json --target  ",
     "server:build:linux": "npm run server:compile -- x86_64-unknown-linux-gnu mod.ts",
     "server:build:macos-intel": "npm run server:compile -- x86_64-apple-darwin mod.ts",
     "server:build:macos-arm": "npm run server:compile -- aarch64-apple-darwin mod.ts",
