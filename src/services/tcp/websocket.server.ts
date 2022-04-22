@@ -49,8 +49,7 @@ export class LetheanWebsocketServer {
               wsClient.send(
                 JSON.stringify([
                   req[1],
-                  btoa(message.toString()
-                  ),
+                  btoa(message.toString()),
                 ]),
               );
             });
