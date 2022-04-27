@@ -46,6 +46,24 @@ export class RouteFilesystem {
         FileSystemService.write(args.path, data);
 
         throw new StringResponse("1");
+      }).command("file-check", "Check a file")
+      .option("--path <string>", "File path to check")
+      .action((args) => {
+        if (Deno.env.get("REST")) {
+          throw new StringResponse(JSON.stringify({"result": FileSystemService.isFile(args.path)}));
+        }else{
+          return FileSystemService.isFile(args.path);
+        }
+
+      }).command("dir-check", "Check a directory")
+      .option("--path <string>", "File path to check")
+      .action((args) => {
+        if (Deno.env.get("REST")) {
+          throw new StringResponse(JSON.stringify({"result": FileSystemService.isDir(args.path)}));
+        }else{
+          return FileSystemService.isFile(args.path);
+        }
+
       });
   }
 }

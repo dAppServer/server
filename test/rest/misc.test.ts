@@ -127,6 +127,69 @@ Deno.test("POST /filesystem/read -- no auth", async () => {
     .expect(401);
 });
 
+Deno.test("POST /filesystem/file-check", async () => {
+  const request = await superoak(letheanServer.app);
+  await request.post("/filesystem/file-check")
+    .set("Authorization", authToken['access_token'])
+    .set("Content-Type", "application/json")
+    .send(`{"path": "users/server.lthn.pub"}`)
+    .expect(200)
+    .expect('{"result":true}');
+});
+
+Deno.test("POST /filesystem/file-check - fail", async () => {
+  const request = await superoak(letheanServer.app);
+  await request.post("/filesystem/file-check")
+    .set("Authorization", authToken['access_token'])
+    .set("Content-Type", "application/json")
+    .send(`{"path": "users"}`)
+    .expect(200)
+    .expect('{"result":false}');
+});
+
+Deno.test("POST /filesystem/file-check - no auth", async () => {
+  const request = await superoak(letheanServer.app);
+  await request.post("/filesystem/file-check")
+    .set("Content-Type", "application/json")
+    .send(`{"path": "users/server.lthn.pub"}`)
+    .expect(401);
+});
+
+Deno.test("POST /filesystem/dir-check -- fail", async () => {
+  const request = await superoak(letheanServer.app);
+  await request.post("/filesystem/dir-check")
+    .set("Authorization", authToken['access_token'])
+    .set("Content-Type", "application/json")
+    .send(`{"path": "users/server.lthn.pub"}`)
+    .expect(200)
+    .expect('{"result":false}');
+});
+Deno.test("POST /filesystem/dir-check", async () => {
+  const request = await superoak(letheanServer.app);
+  await request.post("/filesystem/dir-check")
+    .set("Authorization", authToken['access_token'])
+    .set("Content-Type", "application/json")
+    .send(`{"path": "users"}`)
+    .expect(200)
+    .expect('{"result":true}');
+});
+
+Deno.test("POST /filesystem/dir-check - no auth", async () => {
+  const request = await superoak(letheanServer.app);
+  await request.post("/filesystem/dir-check")
+    .set("Content-Type", "application/json")
+    .send(`{"path": "users/server.lthn.pub"}`)
+    .expect(401);
+});
+
+Deno.test("POST /filesystem/read -- no auth", async () => {
+  const request = await superoak(letheanServer.app);
+  await request.post("/filesystem/read")
+    .set("Content-Type", "application/json")
+    .send(`{"path": "users/server.lthn.pub"}`)
+    .expect(401);
+});
+
 Deno.test("GET /filesystem/read", async () => {
   const request = await superoak(letheanServer.app);
   await request.post("/filesystem/read")
