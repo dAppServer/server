@@ -8,7 +8,7 @@ import { Destination, LetheanDownloadService } from "./download.service.ts";
  * Service for updating the application
  */
 export class LetheanUpdater {
-  async download(args: any) {
+  async download() {
     const url: URL = new URL(this.getUrl("4.0.6"));
 
     const filename: string = url.pathname.split("/").pop() ?? "";
