@@ -55,3 +55,7 @@ export {
 } from "https://deno.land/x/validasaur@v0.7.0/src/rules.ts";
 
 export { v4 as uuid } from "https://deno.land/std@0.62.0/uuid/mod.ts";
+export {
+  compress,
+  decompress
+} from "https://deno.land/x/zip@v1.2.3/mod.ts";

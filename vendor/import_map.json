@@ -3,7 +3,7 @@
     "https://cdn.skypack.dev/": "./cdn.skypack.dev/",
     "https://cdn.skypack.dev/lodash": "./cdn.skypack.dev/lodash.js",
     "https://deno.land/": "./deno.land/",
-    "https://deno.land/std/fs/exists.ts": "./deno.land/std@0.135.0/fs/exists.ts",
+    "https://deno.land/std/fs/exists.ts": "./deno.land/std@0.136.0/fs/exists.ts",
     "https://deno.land/x/jszmq/mod.ts": "./deno.land/x/jszmq@v1.3.1/mod.ts",
     "https://raw.githubusercontent.com/": "./raw.githubusercontent.com/"
   },

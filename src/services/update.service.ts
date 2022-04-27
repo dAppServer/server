@@ -1,4 +1,4 @@
-import { copy, ensureDir, ensureFile, os, path, Untar } from "../../deps.ts";
+import { copy, ensureDir, ensureFile, os, path, Untar, decompress } from "../../deps.ts";
 
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { FileSystemService } from "./fileSystemService.ts";
@@ -27,28 +27,32 @@ export class LetheanUpdater {
 
       console.info(`Unpacking file: ${fileObj.fullPath}`);
 
-      const reader = await Deno.open(fileObj.fullPath, { read: true });
-      const untar = new Untar(reader);
+      if(filename.endsWith( ".zip")) {
+        await decompress(fileObj.fullPath, destination.dir);
+      } else if (filename.endsWith(".tar")) {
 
-      for await (const entry of untar) {
-        if (entry.type === "directory") {
-          await ensureDir(path.join(Deno.cwd(), "cli", entry.fileName));
-          continue;
+        const reader = await Deno.open(fileObj.fullPath, { read: true });
+        const untar = new Untar(reader);
+
+        for await (const entry of untar) {
+          if (entry.type === "directory") {
+            await ensureDir(path.join(Deno.cwd(), "cli", entry.fileName));
+            continue;
+          }
+
+          await Deno.writeFile(
+            path.join(Deno.cwd(), "cli", entry.fileName),
+            new Uint8Array(),
+            { mode: 0o777 },
+          );
+          const file = await Deno.open(
+            path.join(Deno.cwd(), "cli", entry.fileName),
+            { write: true },
+          );
+          await copy(entry, file);
         }
-
-        await Deno.writeFile(
-          path.join(Deno.cwd(), "cli", entry.fileName),
-          new Uint8Array(),
-          { mode: 0o777 },
-        );
-        const file = await Deno.open(
-          path.join(Deno.cwd(), "cli", entry.fileName),
-          { write: true },
-        );
-        await copy(entry, file);
+        reader.close();
       }
-      reader.close();
-
       console.info("Cleaning up file system");
       try {
         await Deno.remove(
@@ -75,11 +79,11 @@ export class LetheanUpdater {
   getUrl(version: string) {
     const platform = os.platform();
     const base =
-      `https://github.com/letheanVPN/blockchain/releases/download/v${version}/`;
+      `https://github.com/letheanVPN/blockchain/releases/latest/download/`;
     let url;
     switch (platform) {
       case "darwin":
-        url = base + "macOS.tar";
+        url = base + "lethean-cli-macos.zip";
         break;
       case "linux":
         url = base + "linux.tar";
