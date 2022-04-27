@@ -21,9 +21,10 @@ export class RouteUpdate {
       .description("Update lthn")
       .command("cli", "Downloads the latest CLI binaries")
       .action(async (args) => {
-        await new LetheanUpdater().download().then((dat) => {
+         new LetheanUpdater().download().then((dat) => {
           console.info("Updated Lethean Binaries");
         });
+        throw new StringResponse("Update requested")
       });
   }
 }
