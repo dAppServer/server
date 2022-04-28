@@ -1,5 +1,6 @@
-import { ensureDirSync, unZipFromFile } from "../../deps.ts";
+import { copy, ensureDirSync, unZipFromFile } from "../../deps.ts";
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
+import { ZeroMQServer } from "../../src/services/ipc/zeromq.ts";
 
 export interface Destination {
   /**
@@ -94,11 +95,7 @@ export class LetheanDownloadService {
         ),
       );
     }
-    const blob = await response.blob();
-    /** size in bytes */
-    const size = blob.size;
-    const buffer = await blob.arrayBuffer();
-    const unit8arr = new Deno.Buffer(buffer).bytes();
+
     if (
       typeof destination === "undefined" ||
       typeof destination.dir === "undefined"
@@ -124,9 +121,27 @@ export class LetheanDownloadService {
 
     dir = dir.replace(/\/$/, "");
     ensureDirSync(dir);
-
+    //const blob = await response.blob();
     const fullPath = `${dir}/${file}`;
-    Deno.writeFileSync(fullPath, unit8arr, mode);
+    /** size in bytes */
+    const size = parseInt(response.headers.get("Content-Length") ?? "0");
+    let total = 0;
+    for await(const chunk of response.body!) {
+      total += chunk.byteLength;
+      ZeroMQServer.sendPubMessage('download', JSON.stringify({
+        file: file,
+        dir: dir,
+        fullPath: fullPath,
+        size: size,
+        total: total,
+      }));
+      await Deno.writeFile(fullPath, chunk, { append: true });
+    }
+//    const buffer = await blob.arrayBuffer();
+//    const unit8arr = new Deno.Buffer(buffer).bytes();
+
+
+    //Deno.writeFileSync(fullPath, unit8arr, mode);
     return Promise.resolve({ file, dir, fullPath, size });
   }
 }
