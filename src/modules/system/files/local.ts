@@ -1,6 +1,7 @@
-import { Injectable, Controller, Get, Post, Context, Body, Params } from "../../../../deps.ts";
+import { Injectable, Controller, Get, Post, Params, Body } from "../../../../deps.ts";
 
 import { FileSystemService } from "../../../services/fileSystemService.ts";
+
 
 @Controller("system/files")
 @Injectable()
@@ -9,7 +10,8 @@ export class SystemFilesController {
   @Post("list", {
     isAbsolute: false
   })
-  listFiles(@Params("path") path: string) {
+
+  listFiles(@Body("path") path: string) {
 
     const req = FileSystemService.list(path);
 
@@ -18,13 +20,13 @@ export class SystemFilesController {
   }
 
   @Post("path")
-  path(@Params("convert") convert: string) {
+  path(@Body("convert") convert: string) {
     return FileSystemService.path(convert);
 
   }
 
   @Post("read")
-  pathLookup(@Params("path") path: string) {
+  pathLookup(@Body("path") path: string) {
 
     const req = FileSystemService.read(path);
     if (!req) {
@@ -36,7 +38,8 @@ export class SystemFilesController {
   }
 
   @Post("write")
-  writeFile(@Params("path") path: string, @Params("data") data: string) {
+  writeFile(@Body("path") path: string,
+            @Body("data") data: string) {
 
     try {
       FileSystemService.write(path, atob(data));
@@ -47,7 +50,7 @@ export class SystemFilesController {
   }
 
   @Post("file-check")
-  fileCheck(@Params("path") path: string) {
+  fileCheck(@Body("path") path: string) {
 
     try {
       return JSON.stringify({ "result": FileSystemService.isFile(path) });
@@ -58,7 +61,7 @@ export class SystemFilesController {
   }
 
   @Post("dir-check")
-  dirCheck(@Params("path") path: string) {
+  dirCheck(@Body("path") path: string) {
 
     try {
       return JSON.stringify({ "result": FileSystemService.isDir(path) });

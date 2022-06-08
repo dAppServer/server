@@ -1,4 +1,4 @@
-import { Injectable, Controller, Get, Context, Body, Post, Params } from "../../../../deps.ts";
+import { Injectable, Controller, Get, Body, Post, Params } from "../../../../deps.ts";
 import { FileSystemService } from "../../../services/fileSystemService.ts";
 import { os, path } from "../../../../deps.ts";
 import { IniService } from "../../../services/config/ini.service.ts";
@@ -13,10 +13,10 @@ export class ChainLetheanController {
   }
   @Post("/start")
   async startLetheanDaemon(
-    @Params("ticker") ticker: string,
-    @Params("logDir") logDir: string,
-    @Params("configFile") configFile: string,
-    @Params("dataDir") dataDir: string,
+    @Body("ticker") ticker: string,
+    @Body("logDir") logDir: string,
+    @Body("configFile") configFile: string,
+    @Body("dataDir") dataDir: string,
     ) {
 
     if(!ticker) {
@@ -77,5 +77,10 @@ export class ChainLetheanController {
       } as ProcessManagerRequest,
     );
     return true
+  }
+
+  @Post("/json_rpc")
+  async jsonRpc(){
+    return true;
   }
 }
