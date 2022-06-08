@@ -1,24 +1,24 @@
-import { ServerService } from "./src/services/server.service.ts";
 
-console.info("Starting Lethean Server");
-const letheanServer = new ServerService();
+import { AppModule } from "./src/app.module.ts";
+import { Context, NestFactory, oakCors } from "./deps.ts";
 
-try {
+const app = await NestFactory.create(AppModule);
 
-  if(Deno.args.length == 0 || Deno.args[0] == "server") {
-    console.info("Starting CLI");
-    await letheanServer.warmUpServer();
-    await letheanServer.startServer().catch((error) => {
-      console.error(error);
-    });
-  }else{
-    console.info(`Command to run: ${Deno.args.join(" ")}`);
-    await letheanServer.processCommand(Deno.args).catch((err) =>
-      console.log(err)
-    );
-  }
+app.setGlobalPrefix("api");
+//
+// Timing
+app.use(async (ctx: Context, next:any) => {
+  const start = Date.now();
+  await next();
+  const ms = Date.now() - start;
+  ctx.response.headers.set("X-Response-Time", `${ms}ms`);
+});
 
-} catch (e) {
-  console.error(e);
-}
-console.info("Lethean Server Loaded: http://127.0.0.1:36911");
+app.use(oakCors());
+app.use(app.routes());
+
+const port = Number(Deno.env.get("PORT") || 36911);
+
+
+console.log(`Starting: http://localhost:${port}`);
+await app.listen({ port });

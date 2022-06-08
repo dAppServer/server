@@ -52,7 +52,7 @@ export class IniService {
     return obj;
   }
 
-  stringify(obj: INIObject, ): string {
+  stringify(obj: INIObject|any, ): string {
     let str = "";
     //str += `[${i}]\n`;
     for (let j in obj) {
