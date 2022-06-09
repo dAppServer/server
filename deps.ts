@@ -52,3 +52,5 @@ export {
   compress,
   decompress
 } from "https://deno.land/x/zip@v1.2.3/mod.ts";
+
+export {HttpException} from "https://deno.land/x/oak_exception@v0.0.7/src/exception_status.ts";

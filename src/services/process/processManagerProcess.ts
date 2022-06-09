@@ -43,46 +43,52 @@ export class ProcessManagerProcess extends EventEmitter {
     }
     console.log(processArgs);
 
-    const process = Deno.run(processArgs);
-    const sock = new Sub();
-    const that = this;
-    sock.connect("ws://localhost:36910/pub");
-    await sock.subscribe(`${this.request.key}-stdIn`);
-    console.log(`Subscribed to ${this.request.key}-stdIn/pub`);
-    sock.on("message", function (endpoint, topic, message) {
-      if (topic.toString() === `${that.request.key}-stdIn`) {
-        console.log(that.process);
-        if (process.stdin) {
-          that.request.stdOut(message.toString());
-          process.stdin.write(message);
-        }
-      }
-    });
+    try {
 
-    if (this.request.stdOut) {
-      //@ts-ignore
-      for await (const line of readLines(process.stdout)) {
-        if (line.trim()) {
-          that.request.stdOut(line.toString());
-          ZeroMQServer.sendPubMessage(that.request.key, line);
-          super.emit("stdout", line);
+      const process = Deno.run(processArgs);
+      const sock = new Sub();
+      const that = this;
+      sock.connect("ws://127.0.0.1:36910/pub");
+      await sock.subscribe(`${this.request.key}-stdIn`);
+      console.log(`Subscribed to ${this.request.key}-stdIn/pub`);
+      sock.on("message", function (endpoint, topic, message) {
+        if (topic.toString() === `${that.request.key}-stdIn`) {
+          console.log(that.process);
+          if (process.stdin) {
+            that.request.stdOut(message.toString());
+            process.stdin.write(message);
+          }
+        }
+      });
+      if (this.request.stdOut) {
+        //@ts-ignore
+        for await (const line of readLines(process.stdout)) {
+          if (line.trim()) {
+            that.request.stdOut(line.toString());
+            ZeroMQServer.sendPubMessage(that.request.key, line);
+            super.emit("stdout", line);
+          }
         }
       }
+
+      if (this.request.stdErr) {
+        //@ts-ignore
+        for await (const line of readLines(process.stderr)) {
+          if (line.trim()) {
+            that.request.stdErr(line.toString());
+            ZeroMQServer.sendPubMessage(that.request.key, line);
+            //super.emit("stderr", line);
+          }
+        }
+      }
+
+      //  super.emit("end", 0);
+      process.close();
+      return;
+    }catch (e) {
+
     }
 
-    if (this.request.stdErr) {
-      //@ts-ignore
-      for await (const line of readLines(process.stderr)) {
-        if (line.trim()) {
-          that.request.stdErr(line.toString());
-          ZeroMQServer.sendPubMessage(that.request.key, line);
-          //super.emit("stderr", line);
-        }
-      }
-    }
 
-    super.emit("end", 0);
-    process.close();
-    return;
   }
 }

@@ -1,6 +1,5 @@
-import { Injectable, Controller, Get, Body, Post, Params, Context } from "../../../../deps.ts";
+import {Injectable, Controller, Get, Body, Post, Params, Context, HttpException,  os, path} from "../../../../deps.ts";
 import { FileSystemService } from "../../../services/fileSystemService.ts";
-import { os, path } from "../../../../deps.ts";
 import { IniService } from "../../../services/config/ini.service.ts";
 import { ProcessManager } from "../../../services/process/process.service.ts";
 import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
@@ -27,19 +26,17 @@ export class ChainLetheanController {
     }
 
     if(!configFile) {
-      configFile = "config.ini";
+      configFile = "letheand.conf";
     }
     if(!dataDir) {
       dataDir = "data";
     }
 
     let exeFile = `letheand${os.platform() === "windows" ? ".exe" : ""}`;
+
     let cmd: any = {}
-    if (configFile !== undefined) {
-      configFile = [
-        "conf",
-        configFile,
-      ].join("/");
+
+      configFile = FileSystemService.path(["conf", configFile]);
 
       if (!FileSystemService.isFile(configFile)) {
         console.info(`Config file ${configFile} not found`);
@@ -57,13 +54,8 @@ export class ChainLetheanController {
 
       cmd['configFile'] = configFile;
 
-    }
 
-    exeFile = path.join(
-      Deno.cwd(),
-      "cli",
-      exeFile,
-    );
+    exeFile = FileSystemService.path(['cli', exeFile])
 
     ProcessManager.run(
       exeFile,
@@ -80,7 +72,10 @@ export class ChainLetheanController {
 
   @Post("/json_rpc")
   async jsonRpc(context: Context, @Body() body: any) {
-    //console.log(body)
+
+    if(body === undefined){
+      throw new HttpException("No Request Data", 400)
+    }
     let url = 'json_rpc'
     if(body['url']){
       url = body['url'];
@@ -98,10 +93,8 @@ export class ChainLetheanController {
       );
 
       return await postReq.text();
-
-      //return await postReq.text();
     } catch (error) {
-      console.warn(error);
+      return false
     }
 
   }

@@ -6,6 +6,8 @@ import { LetheanWebsocketServer } from "./src/services/tcp/websocket.server.ts";
 import { FileSystemService } from "./src/services/fileSystemService.ts";
 import { CryptOpenPGP } from "./src/services/crypt/openpgp.ts";
 import { QuasiSalt } from "./src/services/crypt/quasi-salt.ts";
+import {loggerMiddleware} from "./src/middleware/logger.ts";
+import {errorMiddleware} from "./src/middleware/error.ts";
 
 
 
@@ -31,9 +33,8 @@ import { QuasiSalt } from "./src/services/crypt/quasi-salt.ts";
       FileSystemService.isFile("users/server.lthn.pub")
     ) {
       console.info("[SERVER] Server.pub found, checking password");
-      const password = QuasiSalt.hash(
-        path.join(Deno.cwd(), "users", "server.lthn.pub"),
-      );
+      const password = QuasiSalt.hash(FileSystemService.path( "users/server.lthn.pub"));
+
       if (await CryptOpenPGP.getPrivateKey("server", password)) {
         console.info("[SERVER] Keypair unlocked OK");
       } else {
@@ -45,6 +46,7 @@ import { QuasiSalt } from "./src/services/crypt/quasi-salt.ts";
   } catch (error) {
     console.error(
       "[SECURITY] Failed to ensure safe environment, shutting down...",
+        error
     );
 
     console.error(error);
@@ -64,6 +66,10 @@ app.use(async (ctx: Context, next:any) => {
 });
 
 app.use(oakCors());
+app.use(loggerMiddleware)
+app.use(errorMiddleware)
+
+
 app.use(app.routes());
 
 const port = Number(Deno.env.get("PORT") || 36911);
@@ -71,4 +77,4 @@ ZeroMQServer.startServer();
 LetheanWebsocketServer.startServer();
 
 console.log(`Starting: http://localhost:${port}`);
-await app.listen({ port });
+await app.listen({ hostname: "localhost", port: port });
