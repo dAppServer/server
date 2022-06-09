@@ -1,5 +1,4 @@
 import { superoak } from "https://deno.land/x/superoak@4.7.0/mod.ts";
-import { ServerService } from "../../src/services/server.service.ts";
 import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
 import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
 import { assertEquals } from "https://deno.land/std@0.129.0/testing/asserts.ts";
