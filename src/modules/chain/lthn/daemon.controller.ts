@@ -1,4 +1,4 @@
-import { Injectable, Controller, Get, Body, Post, Params } from "../../../../deps.ts";
+import { Injectable, Controller, Get, Body, Post, Params, Context } from "../../../../deps.ts";
 import { FileSystemService } from "../../../services/fileSystemService.ts";
 import { os, path } from "../../../../deps.ts";
 import { IniService } from "../../../services/config/ini.service.ts";
@@ -8,9 +8,8 @@ import { ProcessManagerRequest } from "../../../services/process/processManagerR
 @Controller("daemon")
 
 export class ChainLetheanController {
-  constructor(
-  ) {
-  }
+
+
   @Post("/start")
   async startLetheanDaemon(
     @Body("ticker") ticker: string,
@@ -80,7 +79,30 @@ export class ChainLetheanController {
   }
 
   @Post("/json_rpc")
-  async jsonRpc(){
-    return true;
+  async jsonRpc(context: Context, @Body() body: any) {
+    //console.log(body)
+    let url = 'json_rpc'
+    if(body['url']){
+      url = body['url'];
+    }
+    try {
+      const postReq = await fetch(
+        `http://127.0.0.1:48782/${url}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body['req']),
+        },
+      );
+
+      return await postReq.text();
+
+      //return await postReq.text();
+    } catch (error) {
+      console.warn(error);
+    }
+
   }
 }
