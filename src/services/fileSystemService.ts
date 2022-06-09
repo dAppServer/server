@@ -1,9 +1,10 @@
-import { ensureDirSync, path } from "../../deps.ts";
+import { ensureDirSync, Injectable, path } from "../../deps.ts";
 
 /**
  * @class
  * @classdesc This class is responsible for handling the filesystem.
  */
+@Injectable()
 export class FileSystemService {
   /**
    * Return a system path to the Lethean folder

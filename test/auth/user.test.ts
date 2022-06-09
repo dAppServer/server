@@ -2,7 +2,7 @@ import { LetheanAccount } from "../../src/accounts/user.ts";
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
 import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
 import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
-import { assertEquals } from "https://deno.land/std@0.129.0/testing/asserts.ts";
+import { assertEquals } from "../../deps-test.ts";
 
 Deno.test("LetheanAccount.create", async () => {
   const key: any = await LetheanAccount.create("test", "test");

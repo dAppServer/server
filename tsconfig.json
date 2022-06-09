@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
     "plugins": [{
       "name": "typescript-deno-plugin",
       "enable": true,
