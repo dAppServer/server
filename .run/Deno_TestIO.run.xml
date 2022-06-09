@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Deno:TestIO" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/test/io" programParameters="test -A --unstable">
+  <configuration default="false" name="Deno:TestIO" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/test/io" programParameters="test -A --unstable --config=tsconfig.json">
     <method v="2" />
   </configuration>
 </component>

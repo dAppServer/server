@@ -1,12 +1,14 @@
+import { create, getNumericDate, Header, Payload, verify } from "../../deps.ts";
 
-import {
-  Header, Payload,
-  create, validate, verify, decode, getNumericDate
-} from "https://deno.land/x/djwt@v2.4/mod.ts";
-import { ServerService } from "../services/server.service.ts";
-;
+
 const  JWT_ACCESS_TOKEN_EXP = '600'
   const  JWT_REFRESH_TOKEN_EXP = '600'
+
+const JWT: CryptoKey = await crypto.subtle.generateKey(
+  { name: "HMAC", hash: "SHA-512" },
+  true,
+  ["sign", "verify"],
+);
 
 
 const header: Header = {
@@ -22,7 +24,7 @@ const getAuthToken = async (user: any) => {
     exp: getNumericDate(parseInt(JWT_ACCESS_TOKEN_EXP)),
   };
 
-  return await create(header, payload, ServerService.JWT);
+  return await create(header, payload, JWT);
 };
 
 const getRefreshToken = async (user: any) => {
@@ -32,12 +34,12 @@ const getRefreshToken = async (user: any) => {
     exp: getNumericDate(parseInt(JWT_REFRESH_TOKEN_EXP)),
   };
 
-  return await create(header, payload, ServerService.JWT);
+  return await create(header, payload, JWT);
 };
 
 const getJwtPayload = async (token: string): Promise<any | null> => {
   try {
-    const jwtObject =  await verify(token, ServerService.JWT);
+    const jwtObject =  await verify(token, JWT);
     //console.log(jwtObject);
     if (jwtObject && jwtObject.id) {
       return jwtObject;

@@ -8,6 +8,7 @@ import { CryptOpenPGP } from "./src/services/crypt/openpgp.ts";
 import { QuasiSalt } from "./src/services/crypt/quasi-salt.ts";
 import {loggerMiddleware} from "./src/middleware/logger.ts";
 import {errorMiddleware} from "./src/middleware/error.ts";
+import { JWTAuthMiddleware } from "./src/middleware/jwt-auth.ts";
 
 
 
@@ -68,6 +69,7 @@ app.use(async (ctx: Context, next:any) => {
 app.use(oakCors());
 app.use(loggerMiddleware)
 app.use(errorMiddleware)
+app.use(JWTAuthMiddleware)
 
 
 app.use(app.routes());

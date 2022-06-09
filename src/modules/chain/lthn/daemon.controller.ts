@@ -1,11 +1,12 @@
-import {Injectable, Controller, Get, Body, Post, Params, Context, HttpException,  os, path} from "../../../../deps.ts";
+import { Injectable, Controller, Get, Body, Post, Params, Context, HttpException, os, path, UseGuards } from "../../../../deps.ts";
 import { FileSystemService } from "../../../services/fileSystemService.ts";
 import { IniService } from "../../../services/config/ini.service.ts";
 import { ProcessManager } from "../../../services/process/process.service.ts";
 import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
+import { userGuard } from "../../../middleware/user-guard.ts";
 
 @Controller("daemon")
-
+@UseGuards(userGuard)
 export class ChainLetheanController {
 
 

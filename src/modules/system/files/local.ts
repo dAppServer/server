@@ -1,11 +1,11 @@
-import {Body, Controller, Injectable, Post} from "../../../../deps.ts";
-
+import { Body, Controller, Injectable, Post, UseGuards, HttpException } from "../../../../deps.ts";
 import {FileSystemService} from "../../../services/fileSystemService.ts";
-import {HttpException} from "https://deno.land/x/oak_exception@v0.0.7/src/exception_status.ts";
+import { userGuard } from "../../../middleware/user-guard.ts";
 
 
 @Controller("system/files")
 @Injectable()
+@UseGuards(userGuard)
 export class SystemFilesController {
 
     @Post("list")

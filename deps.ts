@@ -54,3 +54,10 @@ export {
 } from "https://deno.land/x/zip@v1.2.3/mod.ts";
 
 export {HttpException} from "https://deno.land/x/oak_exception@v0.0.7/src/exception_status.ts";
+
+export {
+  create, validate, verify, decode, getNumericDate
+} from "https://deno.land/x/djwt@v2.4/mod.ts";
+export type {
+  Header, Payload
+} from "https://deno.land/x/djwt@v2.4/mod.ts";

@@ -1,5 +1,5 @@
 import { FileSystemService } from "./services/fileSystemService.ts";
-import {  Controller, Get} from "../deps.ts";
+import { Controller, Get, UseGuards } from "../deps.ts";
 
 @Controller("")
 export class AppController {

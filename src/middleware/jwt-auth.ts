@@ -1,6 +1,7 @@
 import { AuthUser, Context } from "./../types.ts";
 import { getJwtPayload } from "../helpers/jwt.ts";
 
+
 /** *
  * JWTAuth middleware
  * Decode authorization bearer token
