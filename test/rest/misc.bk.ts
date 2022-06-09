@@ -4,8 +4,6 @@ import { FileSystemService } from "../../src/services/fileSystemService.ts";
 import { LetheanAccount } from "../../src/accounts/user.ts";
 import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
 import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
-import { IResponse, superoak } from "https://deno.land/x/superoak@4.7.0/mod.ts";
-import { assertExists, assertEquals } from "https://deno.land/std@0.129.0/testing/asserts.ts";
 
 
 Deno.test("console.error", async () => {

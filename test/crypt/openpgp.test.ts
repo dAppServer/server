@@ -1,10 +1,7 @@
 import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
+import { assertEquals, assertStringIncludes } from "../../deps-test.ts";
 
-import {
-  assertEquals,
-  assertStringIncludes,
-} from "https://deno.land/std@0.129.0/testing/asserts.ts";
 
 Deno.test("CryptOpenPGP.createKeyPair", async () => {
   const key: any = await CryptOpenPGP.createKeyPair(

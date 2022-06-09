@@ -1,5 +1,6 @@
 import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
-import { assertEquals } from "https://deno.land/std@0.129.0/testing/asserts.ts";
+import { assertEquals } from "../../deps-test.ts";
+
 
 
 Deno.test("QuasiSalt.hash(test)", async () => {
