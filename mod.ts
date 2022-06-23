@@ -64,6 +64,7 @@ app.use(async (ctx: Context, next:any) => {
   await next();
   const ms = Date.now() - start;
   ctx.response.headers.set("X-Response-Time", `${ms}ms`);
+  ctx.response.headers.set("Access-Control-Allow-Origin", "*");
 });
 
 //app.use(oakCors());
