@@ -21,8 +21,8 @@ const errorMiddleware = async (ctx: Context, next: any) => {
       console.log(err);
     }
 
-    ctx.response.status = status;
-    ctx.response.body = { status, message };
+   // ctx.response.status = status;
+   // ctx.response.body = { status, message };
   }
 };
 

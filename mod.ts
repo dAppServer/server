@@ -66,10 +66,8 @@ app.use(async (ctx: Context, next:any) => {
   ctx.response.headers.set("X-Response-Time", `${ms}ms`);
 });
 
-app.use(oakCors());
-app.use(loggerMiddleware)
-app.use(errorMiddleware)
-app.use(JWTAuthMiddleware)
+//app.use(oakCors());
+//app.use(JWTAuthMiddleware)
 
 
 app.use(app.routes());
