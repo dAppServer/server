@@ -4,10 +4,16 @@ import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
 import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
 import { LetheanAccount } from "../../src/accounts/user.ts";
 import { AppModule } from "../../src/app.module.ts";
+import { FileSystemService } from "../../src/services/fileSystemService.ts";
 
 const app = await NestFactory.create(AppModule);
 app.setGlobalPrefix("api");
 app.use(app.routes())
+
+if (!FileSystemService.isFile("users/server.lthn.pub")) {
+  await CryptOpenPGP.createServerKeyPair();
+}
+
 Deno.test("POST /api/auth/login -- good", async () => {
   const request = await superoak(app);
 
