@@ -67,7 +67,7 @@ app.use(async (ctx: Context, next:any) => {
 });
 
 //app.use(oakCors());
-//app.use(JWTAuthMiddleware)
+app.use(JWTAuthMiddleware)
 
 
 app.use(app.routes());
