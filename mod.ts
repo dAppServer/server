@@ -51,7 +51,7 @@ import { JWTAuthMiddleware } from "./src/middleware/jwt-auth.ts";
     );
 
     console.error(error);
-    Deno.exit(1);
+   // Deno.exit(1);
   }
 
 const app = await NestFactory.create(AppModule);
