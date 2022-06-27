@@ -57,7 +57,6 @@ LetheanDaemonRouter.post("/daemon/start", async (context: Context) => {
 
 LetheanDaemonRouter.post("/daemon/json_rpc", async (context: Context) => {
 
-
     const body = context.request.body({ type: "json" });
     const req = await body.value;
     let url = 'json_rpc'
