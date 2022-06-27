@@ -1,4 +1,5 @@
-import { Context } from "./../types.ts";
+import { Context } from "../../deps.ts";
+
 const loggerMiddleware = async (ctx: Context, next:any) => {
   await next();
   const reqTime = ctx.response.headers.get("X-Response-Time");

@@ -1,43 +1,50 @@
-import { AuthUser, Context, UserRole } from "./../types.ts";
+import { AuthUser, UserRole } from "./../types.ts";
+import { hasUserRole } from "../helpers/roles.ts";
+import { httpErrors, Context } from "../../deps.ts";
 import { getJwtPayload } from "../helpers/jwt.ts";
 import { FileSystemService } from "../services/fileSystemService.ts";
-import { CanActivate } from "../../deps.ts";
 
+/**
+ * has user role middleware
+ * checks authorization for context user, user roles
+ */
+export const userGuard = () => {
+  return async (context: Context, next: any) => {
 
-export class userGuard implements CanActivate {
-  async canActivate(context: Context): Promise<boolean> {
+    if (!context.request.url.pathname.startsWith('/auth') && FileSystemService.list('users').map((file:string) => file.endsWith('.lthn')).includes(true)) {
 
-      if (!context.request.url.pathname.startsWith('/auth') && FileSystemService.list('users').map((file:string) => file.endsWith('.lthn')).includes(true)) {
+      try {
 
-        try {
+        const authUser: AuthUser | null = context.request.headers.get('Authorization')
+          ? await getJwtPayload(context.request.headers.get('Authorization') as string)
+          : null;
 
-          const authUser: AuthUser | null = context.request.headers.get('Authorization')
-            ? await getJwtPayload(context.request.headers.get('Authorization') as string)
-            : null;
-
-          if (authUser) {
-            context.response.status = 200
-            return true
-          } else {
-            context.response.status = 401;
-            context.response.body =  'Not authorised';
-            return false
-            // throw new httpErrors.Unauthorized("Unauthorized user");
-          }
-
-
-        }catch (e) {
+        if (authUser) {
+          context.response.status = 200
+        } else {
           context.response.status = 401;
-          context.response.body =  'Not authorised';
-          return false;
+          context.throw(401, 'Not authorised');
+          // throw new httpErrors.Unauthorized("Unauthorized user");
         }
 
+        //if roles specified, then check auth user's roles
+//        if (roles) {
+//          const isRoleMatched = hasUserRole(authUser, roles);
+//
+//          //if no role mached throw forbidden error
+//          if (!isRoleMatched) {
+//            context.response.status = 403;
+//            context.throw(403, 'Forbidden');
+//          }
+//        }
+
+      }catch (e) {
+        context.response.status = 401;
+        context.throw(401, 'Not authorised');
       }
 
-
-    // throw new ForbiddenException('this is AuthGuard error');
-    return true;
+    }
+    await next();
   }
 }
-
 

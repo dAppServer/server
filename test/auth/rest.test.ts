@@ -1,20 +1,19 @@
 import { assertEquals, expect, superoak } from "../../deps-test.ts";
-import { NestFactory } from "../../deps.ts";
+
 import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
 import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
 import { LetheanAccount } from "../../src/accounts/user.ts";
-import { AppModule } from "../../src/app.module.ts";
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
+import { AppController } from "../../src/app.controller.ts";
 
-const app = await NestFactory.create(AppModule);
-app.setGlobalPrefix("api");
-app.use(app.routes())
+const AppControl = new AppController()
+const app = AppControl.app
 
 if (!FileSystemService.isFile("users/server.lthn.pub")) {
   await CryptOpenPGP.createServerKeyPair();
 }
 
-Deno.test("POST /api/auth/login -- good", async () => {
+Deno.test("POST /auth/login -- good", async () => {
   const request = await superoak(app);
 
   // make user OpenPGP keys for user test with password test
@@ -39,7 +38,7 @@ Deno.test("POST /api/auth/login -- good", async () => {
   );
 
   // test auth works with a REST interface
-  await request.post("/api/auth/login")
+  await request.post("/auth/login")
     .set("Content-Type", "application/json")
     .send(`{"payload": "${btoa(encryptedTest)}"}`)
     .expect(200)
@@ -57,7 +56,7 @@ Deno.test("POST /api/auth/login -- good", async () => {
 });
 
 
-Deno.test("POST /api/auth/login -- bad", async () => {
+Deno.test("POST /auth/login -- bad", async () => {
   const request = await superoak(app);
   await LetheanAccount.create("test", "test");
 
@@ -81,7 +80,7 @@ Deno.test("POST /api/auth/login -- bad", async () => {
   );
 
   // test auth fails with a REST interface
-  await request.post("/api/auth/login")
+  await request.post("/auth/login")
     .set("Content-Type", "application/json")
     .send(`{"payload": "${btoa(encryptedTest)}"}`)
     .expect(401)

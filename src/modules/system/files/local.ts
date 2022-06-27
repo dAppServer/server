@@ -1,75 +1,101 @@
-import { Body, Controller, Injectable, Post, UseGuards, HttpException } from "../../../../deps.ts";
-import {FileSystemService} from "../../../services/fileSystemService.ts";
-import { userGuard } from "../../../middleware/user-guard.ts";
+import { HttpException, Router, Context } from "../../../../deps.ts";
+import { FileSystemService } from "../../../services/fileSystemService.ts";
+
+const FileSystemRouter = new Router();
 
 
-@Controller("system/files")
-@Injectable()
-@UseGuards(userGuard)
-export class SystemFilesController {
+FileSystemRouter.post("/system/files/list", async (context: Context) => {
+  try {
 
-    @Post("list")
-    listFiles(@Body("path") path: string) {
-        try {
-            const req = FileSystemService.list(path);
-            return JSON.stringify(req);
-        } catch (e) {
-            throw new HttpException("Not Found", 404)
-        }
+    const body = context.request.body({ type: "json" });
+    const req = await body.value;
+
+    context.response.body = JSON.stringify(FileSystemService.list(req.path));
+
+  } catch (e) {
+    throw new HttpException("Not Found", 404);
+  }
+
+});
+
+FileSystemRouter.post("/system/files/path", async (context: Context) => {
+  try {
+
+    const body = context.request.body({ type: "json" });
+    const req = await body.value;
+
+    context.response.body = JSON.stringify(FileSystemService.path(req.convert));
+
+  } catch (e) {
+    throw new HttpException("Not Found", 404);
+  }
+
+});
 
 
+FileSystemRouter.post("/system/files/read", async (context: Context) => {
+  try {
+
+    const body = context.request.body({ type: "json" });
+    const req = await body.value;
+
+    const data = FileSystemService.read(req.path);
+    if (data) {
+      context.response.body = btoa(data);
     }
+  } catch (e) {
+    throw new HttpException("Not Found", 404);
+  }
 
-    @Post("path")
-    path(@Body("convert") convert: string) {
-        return FileSystemService.path(convert);
+});
 
+
+FileSystemRouter.post("/system/files/write", async (context: Context) => {
+  try {
+
+    const body = context.request.body({ type: "json" });
+    const req = await body.value;
+    try {
+      FileSystemService.write(req.path, atob(req.data));
+    } catch (e) {
+      throw new HttpException("Write Failed", 500);
     }
+    context.response.body = JSON.stringify(FileSystemService.path(req.convert));
 
-    @Post("read")
-    pathLookup(@Body("path") path: string) {
+  } catch (e) {
+    throw new HttpException("Not Found", 404);
+  }
 
-        const req = FileSystemService.read(path);
-        if (!req) {
-            throw new HttpException("Not found", 404)
-        } else {
-            return btoa(req);
-        }
+});
 
-    }
 
-    @Post("write")
-    writeFile(@Body("path") path: string,
-              @Body("data") data: string) {
+FileSystemRouter.post("/system/files/file-check", async (context: Context) => {
+  try {
 
-        try {
-            FileSystemService.write(path, atob(data));
-        } catch (e) {
-            throw new HttpException("Write Failed", 500)
-        }
-        return true;
-    }
+    const body = context.request.body({ type: "json" });
+    const req = await body.value;
 
-    @Post("file-check")
-    fileCheck(@Body("path") path: any) {
+    context.response.body = JSON.stringify({"result":FileSystemService.isFile(req.path)});
 
-        try {
-            return JSON.stringify({"result": FileSystemService.isFile(path)});
-        } catch (e) {
-            throw new HttpException("Not found", 404)
-        }
+  } catch (e) {
+    throw new HttpException("Not Found", 404);
+  }
 
-    }
+});
 
-    @Post("dir-check")
-    dirCheck(@Body("path") path: string) {
+FileSystemRouter.post("/system/files/dir-check", async (context: Context) => {
+  try {
 
-        try {
-            return JSON.stringify({"result": FileSystemService.isDir(path)});
-        } catch (e) {
-            throw new HttpException("Not found", 404)
+    const body = context.request.body({ type: "json" });
+    const req = await body.value;
 
-        }
-    }
+    context.response.body = JSON.stringify({"result": FileSystemService.isDir(req.path)});
 
-}
+  } catch (e) {
+    throw new HttpException("Not Found", 404);
+  }
+
+});
+
+
+export {FileSystemRouter}

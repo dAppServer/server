@@ -1,23 +1,26 @@
 
-import { Injectable, Controller, Get, Body, Post, Params, Context, HttpException, os, path, Res } from "../../../deps.ts";
+import { Context, HttpException, os, path, Router } from "../../../deps.ts";
 
 import { LetheanAccount } from "../../accounts/user.ts";
 import { UserRole } from "../../types/user/user-role.ts";
 import { CryptOpenPGP } from "../../services/crypt/openpgp.ts";
 import * as jwt from "../../helpers/jwt.ts";
-
-@Controller("auth")
-
-export class AuthController {
+import { FileSystemService } from "../../services/fileSystemService.ts";
 
 
-  @Post("login")
-  async login(
-    @Body("payload") payload: string,
-    context: Context,
-  ) {
+const AuthRouter = new Router()
 
-    return LetheanAccount.login(atob(payload)).then(async (user) => {
+AuthRouter.get("/cert", (context: Context) => {
+  context.response.body = FileSystemService.read("users/server.lthn.pub");
+})
+
+AuthRouter.post("/auth/login", async (context: Context) => {
+
+
+  const body = context.request.body({ type: 'json' })
+  const req = await body.value
+
+    return LetheanAccount.login(atob(req.payload)).then(async (user) => {
       if (user) {
         const content = { id: user, roles: [UserRole.USER] };
         const msg = {
@@ -38,8 +41,9 @@ export class AuthController {
         context.response.body = JSON.stringify({ "result": false });
       }
     })
-  }
+})
 
-}
+export { AuthRouter }
+
 
 

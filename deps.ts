@@ -18,10 +18,8 @@ export * as ini from "https://deno.land/x/gini@1.1.0/mod.ts";
 export { copy } from "https://deno.land/std@0.125.0/streams/conversion.ts";
 export { oakCors } from "https://deno.land/x/cors/mod.ts";
 
-export type { CanActivate} from "https://deno.land/x/oak_nest@v1.10.4/mod.ts";
+export { Application, Context, isHttpError, Status, Router, httpErrors } from "https://deno.land/x/oak/mod.ts";
 
-
-export {Controller, Context, NestFactory, Module, UseGuards, Get, Post, Params, Body, Injectable, Status, isHttpError, Res} from "https://deno.land/x/oak_nest@v1.10.4/mod.ts";
 
 export { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/unzip.ts";
 
