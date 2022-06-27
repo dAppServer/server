@@ -96,7 +96,7 @@ export class FileSystemService {
     try {
       for (
           const dirEntry of Deno.readDirSync(
-          path,
+        FileSystemService.path(path),
       )
           ) {
         if (!dirEntry.name.startsWith(".")) {
