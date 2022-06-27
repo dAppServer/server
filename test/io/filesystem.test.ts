@@ -1,9 +1,7 @@
-import { assertEquals } from "https://deno.land/std@0.129.0/testing/asserts.ts";
 
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
 import { path } from "../../deps.ts";
-import { superoak } from "https://deno.land/x/superoak@4.7.0/src/superoak.ts";
-import { IResponse } from "https://deno.land/x/superdeno@4.8.0/src/test.ts";
+import { assertEquals } from "../../deps-test.ts";
 
 Deno.test('FileSystemService.path - "root" fs test', async () => {
   assertEquals(

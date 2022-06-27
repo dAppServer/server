@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "plugins": [{
-      "name": "typescript-deno-plugin",
-      "enable": true,
-      "importmap": "vendor/import_map.json"
-    }]
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false
   }
 }

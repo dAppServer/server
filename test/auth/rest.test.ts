@@ -1,15 +1,20 @@
-import { superoak } from "https://deno.land/x/superoak@4.7.0/mod.ts";
-import { ServerService } from "../../src/services/server.service.ts";
+import { assertEquals, expect, superoak } from "../../deps-test.ts";
+
 import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
 import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
-import { assertEquals } from "https://deno.land/std@0.129.0/testing/asserts.ts";
 import { LetheanAccount } from "../../src/accounts/user.ts";
-const letheanServer = new ServerService();
-await letheanServer.warmUpServer();
-import { expect } from "https://deno.land/x/expect@v0.2.9/mod.ts";
+import { FileSystemService } from "../../src/services/fileSystemService.ts";
+import { AppController } from "../../src/app.controller.ts";
+
+const AppControl = new AppController()
+const app = AppControl.app
+
+if (!FileSystemService.isFile("users/server.lthn.pub")) {
+  await CryptOpenPGP.createServerKeyPair();
+}
 
 Deno.test("POST /auth/login -- good", async () => {
-  const request = await superoak(letheanServer.app);
+  const request = await superoak(app);
 
   // make user OpenPGP keys for user test with password test
   await LetheanAccount.create("test", "test");
@@ -52,7 +57,7 @@ Deno.test("POST /auth/login -- good", async () => {
 
 
 Deno.test("POST /auth/login -- bad", async () => {
-  const request = await superoak(letheanServer.app);
+  const request = await superoak(app);
   await LetheanAccount.create("test", "test");
 
   // create signed message using the wrong private key for the requested user
@@ -78,9 +83,8 @@ Deno.test("POST /auth/login -- bad", async () => {
   await request.post("/auth/login")
     .set("Content-Type", "application/json")
     .send(`{"payload": "${btoa(encryptedTest)}"}`)
-    .expect(200)
+    .expect(401)
     .set("Accept", "application/json")
     .expect(`{"result":false}`);
 });
 
-await letheanServer.stopServer();

@@ -1,5 +1,5 @@
-import { Context } from "./../types.ts";
-import { uuid } from "../../deps.ts";
+
+import { uuid, Context } from "../../deps.ts";
 
 /**
  * requestId middleware

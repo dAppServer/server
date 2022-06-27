@@ -2,7 +2,11 @@
   "compilerOptions": {
     "allowJs": true,
     "lib": ["deno.window", "deno.unstable"],
-    "strict": true
+    "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+
   },
   "lint": {
     "files": {
