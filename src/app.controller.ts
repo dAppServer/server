@@ -11,6 +11,11 @@ import { timingMiddleware } from "./middleware/timing.ts";
 import { JWTAuthMiddleware } from "./middleware/jwt-auth.ts";
 import { errorMiddleware } from "./middleware/error.ts";
 import { FileSystemRouter } from "./modules/system/files/local.ts";
+import { corsMiddleware } from "./middleware/cors.ts";
+import { LetheanDaemonRouter } from "./modules/chain/lthn/daemon.controller.ts";
+import { SystemUpdateRouter } from "./modules/system/update.controller.ts";
+import { SystemDataConfigRouter } from "./modules/system/data/config.controller.ts";
+import { LetheanRPCRouter } from "./modules/chain/lthn/rpc.controller.ts";
 
 
 export class AppController {
@@ -41,6 +46,10 @@ await this.checkServer()
 
     this.app.use(AuthRouter.routes(), AuthRouter.allowedMethods())
     this.app.use(FileSystemRouter.routes(), FileSystemRouter.allowedMethods())
+    this.app.use(LetheanDaemonRouter.routes(), LetheanDaemonRouter.allowedMethods())
+    this.app.use(LetheanRPCRouter.routes(), LetheanRPCRouter.allowedMethods())
+    this.app.use(SystemUpdateRouter.routes(), SystemUpdateRouter.allowedMethods())
+    this.app.use(SystemDataConfigRouter.routes(), SystemDataConfigRouter.allowedMethods())
   }
 
   baseRoutes(){
@@ -49,6 +58,7 @@ await this.checkServer()
     })
 
 
+    this.app.use(corsMiddleware)
     this.app.use(requestIdMiddleware)
     this.app.use(loggerMiddleware)
     this.app.use(timingMiddleware)

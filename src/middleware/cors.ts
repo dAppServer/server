@@ -1,4 +1,4 @@
-import { Context } from "./../types.ts";
+import { Context } from "../../deps.ts";
 const corsMiddleware = async (ctx: Context, next: any) => {
 
   ctx.response.headers.set("Access-Control-Max-Age", '1');

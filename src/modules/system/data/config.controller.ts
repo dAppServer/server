@@ -1,14 +1,17 @@
 
-import { Controller, Post, Body, Context, UseGuards } from "../../../../deps.ts";
+import { Context, Router } from "../../../../deps.ts";
 import { ConfigFileService } from "../../../services/config/file.service.ts";
-import { userGuard } from "../../../middleware/user-guard.ts";
 
-@Controller("system/data/config")
-@UseGuards(userGuard)
-export class SystemDataConfigController {
+const SystemDataConfigRouter = new Router();
 
-  @Post('get')
-  async upgradeServer(context: Context, @Body() args: any) {
-    context.response.body = await ConfigFileService.loadFile(args);
-  }
-}
+
+SystemDataConfigRouter.post("/system/data/config/get", async (context: Context) => {
+
+  const body = context.request.body({ type: "json" });
+  const req = await body.value;
+
+    context.response.body = await ConfigFileService.loadFile(req);
+
+})
+
+export {SystemDataConfigRouter}

@@ -1,14 +1,17 @@
 
 import { LetheanUpdater } from "../../services/update.service.ts";
-import { Controller, Post } from "../../../deps.ts";
+import { Context, Router } from "../../../deps.ts";
 
-@Controller("system/update")
-export class SystemUpdateController {
+const SystemUpdateRouter = new Router();
 
-  @Post('cli')
-  upgradeServer(){
+
+SystemUpdateRouter.post("/system/update/cli", async (context: Context) => {
+
+
     new LetheanUpdater().download().then((dat:any) => {
       console.info("Updated Lethean Binaries");
     });
-  }
-}
+
+  })
+
+export {SystemUpdateRouter}

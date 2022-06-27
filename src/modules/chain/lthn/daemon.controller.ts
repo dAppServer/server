@@ -1,59 +1,38 @@
-import { Injectable, Controller, Get, Body, Post, Params, Context, HttpException, os, path, UseGuards } from "../../../../deps.ts";
+import { Context, HttpException, os, path, Router } from "../../../../deps.ts";
 import { FileSystemService } from "../../../services/fileSystemService.ts";
 import { IniService } from "../../../services/config/ini.service.ts";
 import { ProcessManager } from "../../../services/process/process.service.ts";
 import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
-import { userGuard } from "../../../middleware/user-guard.ts";
 
-@Controller("daemon")
-@UseGuards(userGuard)
-export class ChainLetheanController {
+const LetheanDaemonRouter = new Router();
 
+LetheanDaemonRouter.post("/daemon/start", async (context: Context) => {
+  try {
 
-  @Post("/start")
-  async startLetheanDaemon(
-    @Body("ticker") ticker: string,
-    @Body("logDir") logDir: string,
-    @Body("configFile") configFile: string,
-    @Body("dataDir") dataDir: string,
-    ) {
-
-    if(!ticker) {
-      ticker = "LTHN";
-    }
-
-    if(!logDir) {
-      logDir = "logs";
-    }
-
-    if(!configFile) {
-      configFile = "letheand.conf";
-    }
-    if(!dataDir) {
-      dataDir = "data";
-    }
+    const body = context.request.body({ type: "json" });
+    const req = await body.value;
 
     let exeFile = `letheand${os.platform() === "windows" ? ".exe" : ""}`;
 
     let cmd: any = {}
 
-      configFile = FileSystemService.path(["conf", configFile]);
+    const configFile = FileSystemService.path(["conf", req.configFile]);
 
-      if (!FileSystemService.isFile(configFile)) {
-        console.info(`Config file ${configFile} not found`);
-        if (!FileSystemService.isDir(path.join(Deno.cwd(), "conf"))) {
-          FileSystemService.ensureDir(path.join(Deno.cwd(), "conf"));
-        }
-        FileSystemService.write(
-          configFile,
-          new IniService().stringify({
-            'log-file': logDir,
-            "data-dir": dataDir,
-          }),
-        );
+    if (!FileSystemService.isFile(req.configFile)) {
+      console.info(`Config file ${req.configFile} not found`);
+      if (!FileSystemService.isDir(path.join(Deno.cwd(), "conf"))) {
+        FileSystemService.ensureDir(path.join(Deno.cwd(), "conf"));
       }
+      FileSystemService.write(
+        configFile,
+        new IniService().stringify({
+          'log-file': req.logDir,
+          "data-dir": req.dataDir,
+        }),
+      );
+    }
 
-      cmd['configFile'] = configFile;
+    cmd['configFile'] = configFile;
 
 
     exeFile = FileSystemService.path(['cli', exeFile])
@@ -68,18 +47,22 @@ export class ChainLetheanController {
         stdOut: (stdOut: unknown) => console.log(stdOut),
       } as ProcessManagerRequest,
     );
-    return true
+    context.response.body = JSON.stringify({"result": true});
+
+  } catch (e) {
+    throw new HttpException("Not Found", 404);
   }
 
-  @Post("/json_rpc")
-  async jsonRpc(context: Context, @Body() body: any) {
+});
 
-    if(body === undefined){
-      throw new HttpException("No Request Data", 400)
-    }
+LetheanDaemonRouter.post("/daemon/json_rpc", async (context: Context) => {
+
+
+    const body = context.request.body({ type: "json" });
+    const req = await body.value;
     let url = 'json_rpc'
-    if(body['url']){
-      url = body['url'];
+    if(req['url']){
+      url = req['url'];
     }
     try {
       const postReq = await fetch(
@@ -89,14 +72,68 @@ export class ChainLetheanController {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(body['req']),
+          body: JSON.stringify(req['req']),
         },
       );
 
-      return await postReq.text();
+      context.response.body = await postReq.text();
     } catch (error) {
       return false
     }
 
-  }
-}
+  })
+
+LetheanDaemonRouter.post("/daemon/export", async (context: Context) => {
+
+  const body = context.request.body({ type: "json" });
+  const req = await body.value;
+
+  const exeFile = "lethean-blockchain-export" +
+    (os.platform() === "windows" ? ".exe" : "");
+
+  ProcessManager.run(
+    path.join(
+      Deno.cwd(),
+      "cli",
+      exeFile,
+    ),
+    req,
+    {
+      key: exeFile.split("/").pop(),
+      stdErr: (stdErr: unknown) => console.log(stdErr),
+      stdIn: (stdIn: unknown) => console.log(stdIn),
+      stdOut: (stdOut: unknown) => console.log(stdOut),
+    } as ProcessManagerRequest,
+  );
+
+
+});
+
+LetheanDaemonRouter.post("/daemon/import", async (context: Context) => {
+
+  const body = context.request.body({ type: "json" });
+  const req = await body.value;
+
+  const exeFile = `lethean-blockchain-import${
+    os.platform() === "windows" ? ".exe" : ""
+  }`;
+
+  ProcessManager.run(
+    path.join(
+      Deno.cwd(),
+      "cli",
+      exeFile,
+    ),
+    req,
+    {
+      key: exeFile.split("/").pop(),
+      stdErr: (stdErr: unknown) => console.log(stdErr),
+      stdIn: (stdIn: unknown) => console.log(stdIn),
+      stdOut: (stdOut: unknown) => console.log(stdOut),
+    } as ProcessManagerRequest,
+  );
+
+
+});
+
+export { LetheanDaemonRouter }
