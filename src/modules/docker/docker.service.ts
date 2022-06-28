@@ -6,9 +6,8 @@ export class DockerService {
 
 
   constructor() {
-    //try{
-      this.docker = new Docker("/var/run/docker.sock");
 
+      this.docker = new Docker("/var/run/docker.sock");
 
   }
 
