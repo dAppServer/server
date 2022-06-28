@@ -1,7 +1,6 @@
 import { Context, Router } from "../../../deps.ts";
 import { HttpException } from "https://deno.land/x/oak_exception@v0.0.7/src/exception_status.ts";
 import { DockerService } from "./docker.service.ts";
-import { FileSystemService } from "src/services/fileSystemService.ts";
 
 const DockerRouter = new Router();
 
