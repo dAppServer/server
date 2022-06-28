@@ -10,10 +10,12 @@ FileSystemRouter.post("/system/files/list", async (context: Context) => {
     const body = context.request.body({ type: "json" });
     const req = await body.value;
 
-    context.response.body = JSON.stringify(FileSystemService.list(FileSystemService.path(req.path)));
+    context.response.body = JSON.stringify(FileSystemService.list(req.path));
+    context.response.status = 200;
 
   } catch (e) {
-    throw new HttpException("Not Found", 404);
+    context.response.status = 404
+    context.response.body = "Not Found"
   }
 
 });
