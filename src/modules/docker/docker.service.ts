@@ -2,7 +2,7 @@ import Docker from "https://deno.land/x/denocker/index.ts"
 
 export class DockerService {
 
-  public docker: Docker;
+  public docker: Docker = undefined;
 
 
   constructor() {
