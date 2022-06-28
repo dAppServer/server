@@ -2,15 +2,13 @@ import Docker from "https://deno.land/x/denocker/index.ts"
 
 export class DockerService {
 
-  public docker: Docker|undefined = undefined;
+  public docker: Docker;
 
 
   constructor() {
-    try{
+    //try{
       this.docker = new Docker("/var/run/docker.sock");
-    }catch (e) {
 
-    }
 
   }
 
