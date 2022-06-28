@@ -12,6 +12,9 @@ SystemUpdateRouter.post("/system/update/cli", async (context: Context) => {
       console.info("Updated Lethean Binaries");
     });
 
+    context.response.status = 200
+    context.response.body = JSON.stringify({result:true})
+
   })
 
 export {SystemUpdateRouter}
