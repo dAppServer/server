@@ -17,7 +17,7 @@ export class StoredObjectService {
         "data",
         "objects",
         args.group,
-        args.object,
+        args.object+ ".json",
       ),
     );
   }
