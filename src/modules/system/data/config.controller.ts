@@ -20,8 +20,8 @@ SystemDataConfigRouter.post("/system/data/object/get", async (context: Context) 
   const body = context.request.body({ type: "json" });
   const req = await body.value;
 
-    context.response.body = StoredObjectService.getObject(req);
-
+    context.response.body = StoredObjectService.getObject({group: req.group, object: req.req});
+    context.response.status = 200;
 })
 SystemDataConfigRouter.post("/system/data/object/set", async (context: Context) => {
 
