@@ -7,7 +7,7 @@ const xmrig = new XmrigService()
 XmrigRouter.get("/mining/xmrig", async (context: Context) => {
   try {
 
-    context.response.body = await new DockerService().listContainers()
+    context.response.body = ''
 
   } catch (e) {
     throw new HttpException("Not Found", 404);
