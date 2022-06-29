@@ -85,6 +85,8 @@ export class XmrigService {
 
     }
 
+    return true
+
 
   }
 

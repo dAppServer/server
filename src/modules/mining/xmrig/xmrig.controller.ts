@@ -38,6 +38,7 @@ XmrigRouter.post("/mining/xmrig/download", async (context: Context) => {
     const body = context.request.body({ type: "json" });
     const req = await body.value;
 
+    context.response.status = 200;
     context.response.body = JSON.stringify( await xmrig.downloadXmrig(req.id))
 
   } catch (e) {
