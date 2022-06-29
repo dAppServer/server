@@ -39,6 +39,7 @@ LetheanRPCRouter.post("/daemon/wallet/json_rpc", async (context: Context) => {
       url = req['url'];
     }
     try {
+     // console.log(url, req)
       const postReq = await fetch(
         `http://127.0.0.1:36963/${url}`,
         {
@@ -46,12 +47,12 @@ LetheanRPCRouter.post("/daemon/wallet/json_rpc", async (context: Context) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(req['req']),
+          body: JSON.stringify(req),
         },
       );
-
+      context.response.status = 200;
       context.response.body = await postReq.text();
-     // console.log(req)
+     // console.log(context.response.body)
     } catch (error) {
       return false
     }
