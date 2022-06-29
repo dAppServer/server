@@ -2,7 +2,6 @@
 import { Context, Router } from "../../../../deps.ts";
 import { ConfigFileService } from "../../../services/config/file.service.ts";
 import { StoredObjectService } from "../../../services/config/store.ts";
-import { StringResponse } from "src/interfaces/string-response.ts";
 
 const SystemDataConfigRouter = new Router();
 

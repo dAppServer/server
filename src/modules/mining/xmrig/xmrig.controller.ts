@@ -1,10 +1,9 @@
 import { Context, Router, HttpException, os, path } from "../../../../deps.ts";
 
 import { XmrigService } from "./xmrig.service.ts";
-import { FileSystemService } from "src/services/fileSystemService.ts";
-import { IniService } from "src/services/config/ini.service.ts";
-import { ProcessManager } from "src/services/process/process.service.ts";
-import { ProcessManagerRequest } from "src/services/process/processManagerRequest.ts";
+import { FileSystemService } from "../../../services/fileSystemService.ts";
+import { ProcessManager } from "../../../services/process/process.service.ts";
+import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
 
 const XmrigRouter = new Router();
 const xmrig = new XmrigService()
