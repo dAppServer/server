@@ -17,6 +17,7 @@ import { SystemUpdateRouter } from "./modules/system/update.controller.ts";
 import { SystemDataConfigRouter } from "./modules/system/data/config.controller.ts";
 import { LetheanRPCRouter } from "./modules/chain/lthn/rpc.controller.ts";
 import { DockerRouter } from "./modules/docker/docker.controller.ts";
+import { XmrigRouter } from "./modules/mining/xmrig/xmrig.controller.ts";
 
 
 export class AppController {
@@ -52,6 +53,7 @@ await this.checkServer()
     this.app.use(SystemUpdateRouter.routes(), SystemUpdateRouter.allowedMethods())
     this.app.use(SystemDataConfigRouter.routes(), SystemDataConfigRouter.allowedMethods())
     this.app.use(DockerRouter.routes(), DockerRouter.allowedMethods())
+    this.app.use(XmrigRouter.routes(), XmrigRouter.allowedMethods())
   }
 
   baseRoutes(){

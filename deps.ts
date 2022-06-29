@@ -10,7 +10,6 @@ export * as path from "https://deno.land/std@0.131.0/path/mod.ts";
 export * as Colors from "https://deno.land/std@0.130.0/fmt/colors.ts";
 export * from "https://deno.land/x/websocket@v0.1.3/mod.ts";
 export * as zmq from "https://deno.land/x/jszmq@v1.3.1/mod.ts";
-export { Untar } from "https://deno.land/std@0.125.0/archive/tar.ts";
 export { encode as he  } from "https://deno.land/std@0.132.0/encoding/hex.ts";
 export { decode as decodeString  } from "https://deno.land/std@0.133.0/encoding/hex.ts";
 export { createHash } from "https://deno.land/std@0.77.0/hash/mod.ts";
@@ -19,11 +18,19 @@ export { copy } from "https://deno.land/std@0.125.0/streams/conversion.ts";
 export { oakCors } from "https://deno.land/x/cors/mod.ts";
 
 export { Application, Context, isHttpError, Status, Router, httpErrors } from "https://deno.land/x/oak/mod.ts";
-
+export { HttpException } from "https://deno.land/x/oak_exception@v0.0.7/src/exception_status.ts";
 
 export { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/unzip.ts";
 
 //export { Webview } from "https://raw.githubusercontent.com/Snider/webview_deno/main/mod.ts";
+
+
+export { readerFromStreamReader } from "https://deno.land/std@0.128.0/streams/conversion.ts";
+export { Untar } from "https://deno.land/std@0.128.0/archive/tar.ts";
+export {
+  assertExists,
+  assertStrictEquals,
+} from "https://deno.land/std@0.128.0/testing/asserts.ts";
 
 export {
   CachePolicy,
@@ -54,7 +61,6 @@ export {
   decompress
 } from "https://deno.land/x/zip@v1.2.3/mod.ts";
 
-export {HttpException} from "https://deno.land/x/oak_exception@v0.0.7/src/exception_status.ts";
 
 export {
   create, validate, verify, decode, getNumericDate
