@@ -1,4 +1,5 @@
 import Docker from "https://deno.land/x/denocker/index.ts"
+import { ContainerCreate } from "https://deno.land/x/denocker/types.ts";
 
 export class DockerService {
 
@@ -11,11 +12,8 @@ export class DockerService {
 
   }
 
-  async createContainer(name: string, image: string) {
-    return await this.docker.containers.create(name, {
-      Image: image,
-      StopTimeout: 10,
-    });
+  async createContainer(name: string, req: ContainerCreate) {
+    return await this.docker.containers.create(name, req);
   }
 
   async listContainers() {

@@ -87,7 +87,7 @@ DockerRouter.post("/docker/containers/create", async (context: Context) => {
     const body = context.request.body({ type: "json" });
     const req = await body.value;
 
-    context.response.body = await new DockerService().createContainer(req.name, req.image)
+    context.response.body = await new DockerService().createContainer(req.name, req.container)
 
   } catch (e) {
     throw new HttpException("Not Found", 404);
