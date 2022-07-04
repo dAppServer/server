@@ -1,0 +1,30 @@
+"use strict";
+exports.__esModule = true;
+exports.methods = void 0;
+exports.methods = [
+    "get",
+    "post",
+    "put",
+    "head",
+    "delete",
+    "options",
+    "copy",
+    "lock",
+    "mkcol",
+    "move",
+    "purge",
+    "propfind",
+    "proppatch",
+    "unlock",
+    "report",
+    "mkactivity",
+    "checkout",
+    "merge",
+    "m-search",
+    "notify",
+    "subscribe",
+    "unsubscribe",
+    "patch",
+    "search",
+    "connect",
+];

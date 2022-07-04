@@ -1,0 +1,10 @@
+import "/npm:component-emitter@1!cjs";
+import "/npm:fast-safe-stringify@2!cjs";
+import "/npm:qs@6!cjs";
+import "/npm:superagent@6.1.0/lib/is-object!cjs";
+import "/npm:superagent@6.1.0/lib/request-base!cjs";
+import "/npm:superagent@6.1.0/lib/utils!cjs";
+import "/npm:superagent@6.1.0/lib/response-base!cjs";
+import "/npm:superagent@6.1.0/lib/agent-base!cjs";
+export * from "/npm:superagent@6.1.0!cjs";
+export { default } from "/npm:superagent@6.1.0!cjs";

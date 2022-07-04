@@ -191,13 +191,32 @@ export class LetheanDownloadService {
         );
         await copy(entry, file);
       }
+    } else if (fullPath.endsWith('.tar.bz2')) {
+      const process = await  Deno.run({
+        cmd: Deno.build.os === "windows"
+          ? [
+            "PowerShell",
+            "Expand-Archive",
+            "-Path",
+            fullPath,
+            "-DestinationPath",
+            dir,
+          ]
+          : ["tar", "xjC", dir, "-f", fullPath],
+        stdout: "inherit",
+        stderr: "inherit",
+      });
+
+      const status = await process.status();
+      await process.close()
+      console.log(status);
     }
 
     try {
-      await Deno.remove(
-        fullPath,
-        { recursive: true },
-      );
+//      await Deno.remove(
+//        fullPath,
+//        { recursive: true },
+//      );
     } catch (e) {
       console.error(e);
     }

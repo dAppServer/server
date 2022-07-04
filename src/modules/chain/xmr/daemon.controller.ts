@@ -154,7 +154,7 @@ MoneroDaemonRouter.post("/chain/xmr/download", async (context: Context) => {
       url = base + "monero-win-x64-v0.17.3.2.zip";
       break;
   }
-  url = new URL(base + "monero-win-x64-v0.17.3.2.zip")
+  url = new URL(url)
       const filename: string = url.pathname.split("/").pop() ?? "";
 
       try {
