@@ -1,5 +1,6 @@
 import { assertExists, assertStrictEquals, copy, decompress, ensureDir, ensureDirSync, path, readerFromStreamReader, Untar } from "../../../../deps.ts";
 import { FileSystemService } from "../../../services/fileSystemService.ts";
+import { Destination, LetheanDownloadService } from "../../../services/download.service.ts";
 
 export class XmrigService {
 
@@ -32,58 +33,23 @@ export class XmrigService {
       return false;
     }
    // const url = "https://github.com/xmrig/xmrig/releases/download/v6.18.0/xmrig-6.18.0-macos-arm64.tar.gz";
-    const url: string = download['url'] as string;
+    const url = new URL(download['url'] as string);
 
     const filename: string = download['name']
 
-    const response = await fetch(url);
 
-    assertStrictEquals(response.status, 200);
-    assertExists(response.body);
+    const destination: Destination = {
+      file: filename,
+      dir: path.join(Deno.cwd(), "cli"),
+    };
 
-    if(url.endsWith('.zip')){
+    FileSystemService.ensureDir(path.join(Deno.cwd(), "cli"));
 
-      //const blob = await response.blob();
+    console.info(`Attempting to download ${url}`);
+    const fileObj = await LetheanDownloadService.download(url, destination);
+    console.info(`Downloaded to: ${destination.dir}`);
 
-      /** size in bytes */
-      const size = parseInt(response.headers.get("Content-Length") ?? "0");
-      let total = 0;
-      for await(const chunk of response.body!) {
-        total += chunk.byteLength;
-        await Deno.writeFile(path.join(Deno.cwd(), "cli", filename), chunk, { append: true });
-      }
-      await decompress(path.join(Deno.cwd(), "cli", filename), path.join(Deno.cwd(), "cli"));
-    }else if(url.endsWith('.tar.gz')){
-      if(response.body == null){
-        return false;
-      }
-      const streamReader = response.body
-        .pipeThrough(new DecompressionStream("gzip"))
-        .getReader();
-
-      const denoReader = readerFromStreamReader(streamReader);
-      const untar = new Untar(denoReader);
-
-      for await (const entry of untar) {
-        const { fileName, type } = entry;
-        if (type === "directory") {
-          await ensureDir(path.join(Deno.cwd(), "cli", fileName));
-          continue;
-        }
-
-        await Deno.writeFile(
-          path.join(Deno.cwd(), "cli", fileName),
-          new Uint8Array(),
-          { mode: 0o777 },
-        );
-        const file = await Deno.open(
-          path.join(Deno.cwd(), "cli", fileName),
-          { write: true },
-        );
-        await copy(entry, file);
-      }
-
-    }
+    console.info(`Unpacking file: ${fileObj.fullPath}`);
 
     return true
 

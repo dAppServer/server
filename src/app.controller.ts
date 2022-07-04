@@ -18,7 +18,7 @@ import { SystemDataConfigRouter } from "./modules/system/data/config.controller.
 import { LetheanRPCRouter } from "./modules/chain/lthn/rpc.controller.ts";
 import { DockerRouter } from "./modules/docker/docker.controller.ts";
 import { XmrigRouter } from "./modules/mining/xmrig/xmrig.controller.ts";
-
+import { MoneroDaemonRouter } from "./modules/chain/xmr/daemon.controller.ts";
 
 export class AppController {
 
@@ -54,6 +54,7 @@ await this.checkServer()
     this.app.use(SystemDataConfigRouter.routes(), SystemDataConfigRouter.allowedMethods())
     this.app.use(DockerRouter.routes(), DockerRouter.allowedMethods())
     this.app.use(XmrigRouter.routes(), XmrigRouter.allowedMethods())
+    this.app.use(MoneroDaemonRouter.routes(), MoneroDaemonRouter.allowedMethods())
   }
 
   baseRoutes(){

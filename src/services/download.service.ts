@@ -1,6 +1,7 @@
-import { copy, ensureDirSync, unZipFromFile } from "../../deps.ts";
+import { copy, ensureDir, ensureDirSync, path, readerFromStreamReader, Untar, unZipFromFile, decompress } from "../../deps.ts";
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
 import { ZeroMQServer } from "../../src/services/ipc/zeromq.ts";
+
 
 export interface Destination {
   /**
@@ -136,6 +137,69 @@ export class LetheanDownloadService {
         total: total,
       }));
       await Deno.writeFile(fullPath, chunk, { append: true });
+    }
+
+    if(fullPath.endsWith('.zip')){
+      await decompress(fullPath, dir, {includeFileName: false});
+    } else if (fullPath.endsWith('.tar')){
+      const reader = await Deno.open(fullPath, { read: true });
+      const untar = new Untar(reader);
+
+      for await (const entry of untar) {
+        if (entry.type === "directory") {
+          await ensureDir(path.join(Deno.cwd(), "cli", entry.fileName));
+          continue;
+        }
+
+        await Deno.writeFile(
+          path.join(Deno.cwd(), "cli", entry.fileName),
+          new Uint8Array(),
+          { mode: 0o777 },
+        );
+        const file = await Deno.open(
+          path.join(Deno.cwd(), "cli", entry.fileName),
+          { write: true },
+        );
+        await copy(entry, file);
+      }
+      reader.close();
+    } else if (fullPath.endsWith('.tar.gz')) {
+
+      const reader = await Deno.open(fullPath, { read: true });
+      const streamReader = reader.readable
+        .pipeThrough(new DecompressionStream("gzip"))
+        .getReader();
+
+      const denoReader = readerFromStreamReader(streamReader);
+      const untar = new Untar(denoReader);
+
+      for await (const entry of untar) {
+        const { fileName, type } = entry;
+        if (type === "directory") {
+          await ensureDir(path.join(Deno.cwd(), "cli", fileName));
+          continue;
+        }
+
+        await Deno.writeFile(
+          path.join(Deno.cwd(), "cli", fileName),
+          new Uint8Array(),
+          { mode: 0o777 },
+        );
+        const file = await Deno.open(
+          path.join(Deno.cwd(), "cli", fileName),
+          { write: true },
+        );
+        await copy(entry, file);
+      }
+    }
+
+    try {
+      await Deno.remove(
+        fullPath,
+        { recursive: true },
+      );
+    } catch (e) {
+      console.error(e);
     }
 //    const buffer = await blob.arrayBuffer();
 //    const unit8arr = new Deno.Buffer(buffer).bytes();

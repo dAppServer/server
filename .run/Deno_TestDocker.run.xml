@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Deno:TestDocker" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/test/docker" programParameters="test -A --unstable --config=tsconfig.json">
+  <configuration default="false" name="Deno:TestDocker" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/test/docker" programParameters="test -A --unstable ">
     <method v="2" />
   </configuration>
 </component>

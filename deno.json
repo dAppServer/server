@@ -5,8 +5,7 @@
     "strict": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "strictPropertyInitialization": false,
-
+    "strictPropertyInitialization": false
   },
   "lint": {
     "files": {
@@ -31,5 +30,6 @@
         "vendor/"
       ]
     }
-  }
+  },
+  "importMap": "./vendor/import_map.json"
 }
