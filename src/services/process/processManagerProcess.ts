@@ -86,7 +86,8 @@ export class ProcessManagerProcess extends EventEmitter {
       process.close();
       return;
     }catch (e) {
-
+      console.log(e)
+      e.preventDefault()
     }
 
 
