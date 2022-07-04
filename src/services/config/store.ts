@@ -11,15 +11,20 @@ export class StoredObjectService {
    * @returns {string}
    */
   public static getObject(args: { group: string; object: string }) {
-    return Deno.readTextFileSync(
-      path.join(
-        Deno.cwd(),
-        "data",
-        "objects",
-        args.group,
-        args.object+ ".json",
-      ),
-    );
+    try {
+      return Deno.readTextFileSync(
+        path.join(
+          Deno.cwd(),
+          "data",
+          "objects",
+          args.group,
+          args.object + ".json"
+        )
+      );
+    } catch (e) {
+      return false;
+    }
+
   }
 
   /**
@@ -28,25 +33,29 @@ export class StoredObjectService {
    * @param {{group: string, object: string, data: string}} args
    */
   public static setObject(
-    args: { group: string; object: string; data: string },
+    args: { group: string; object: string; data: string }
   ) {
-    const objPath = path.join(
-      Deno.cwd(),
-      "data",
-      "objects",
-      args.group,
-      args.object + ".json",
-    );
-    ensureDirSync(
-      path.join(
+    try {
+      const objPath = path.join(
         Deno.cwd(),
         "data",
         "objects",
         args.group,
-      ),
-    );
+        args.object + ".json"
+      );
+      ensureDirSync(
+        path.join(
+          Deno.cwd(),
+          "data",
+          "objects",
+          args.group
+        )
+      );
 
-    Deno.writeTextFileSync(objPath, args.data);
+      Deno.writeTextFileSync(objPath, args.data);
+    } catch (e) {
+      return false;
+    }
   }
 
   /**
@@ -55,14 +64,18 @@ export class StoredObjectService {
    * @param {{group: string, object: string}} args
    */
   public static removeObject(args: { group: string; object: string }) {
-    const objPath = path.join(
-      Deno.cwd(),
-      "data",
-      "objects",
-      args.group,
-      args.object + ".json",
-    );
-    Deno.removeSync(objPath);
+    try {
+      const objPath = path.join(
+        Deno.cwd(),
+        "data",
+        "objects",
+        args.group,
+        args.object + ".json"
+      );
+      Deno.removeSync(objPath);
+    } catch (e) {
+      return false;
+    }
   }
 
   /**
@@ -71,13 +84,17 @@ export class StoredObjectService {
    * @param {{group: string}} args
    */
   public static clearObjects(args: { group: string }) {
-    const objPath = path.join(
-      Deno.cwd(),
-      "data",
-      "objects",
-      args.group,
-    );
-    Deno.removeSync(objPath, { recursive: true });
+    try {
+      const objPath = path.join(
+        Deno.cwd(),
+        "data",
+        "objects",
+        args.group
+      );
+      Deno.removeSync(objPath, { recursive: true });
+    } catch (e) {
+      return false;
+    }
   }
 
   /**
@@ -87,18 +104,22 @@ export class StoredObjectService {
    * @returns {any[]}
    */
   public static countObjects(args: { group: string }) {
-    const objPath = path.join(
-      Deno.cwd(),
-      "data",
-      "objects",
-      args.group,
-    );
-    const ret = [];
-    for (const dirEntry of Deno.readDirSync(objPath)) {
-      if (!dirEntry.name.startsWith(".")) {
-        ret.push(dirEntry.name);
+    try {
+      const objPath = path.join(
+        Deno.cwd(),
+        "data",
+        "objects",
+        args.group
+      );
+      const ret = [];
+      for (const dirEntry of Deno.readDirSync(objPath)) {
+        if (!dirEntry.name.startsWith(".")) {
+          ret.push(dirEntry.name);
+        }
       }
+      return ret;
+    } catch (e) {
+      return false;
     }
-    return ret;
   }
 }
