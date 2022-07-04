@@ -22,7 +22,7 @@ export class StoredObjectService {
         )
       );
     } catch (e) {
-      return false;
+      return {  };
     }
 
   }
