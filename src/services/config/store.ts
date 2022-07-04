@@ -119,7 +119,7 @@ export class StoredObjectService {
       }
       return ret;
     } catch (e) {
-      return false;
+      return [];
     }
   }
 }
