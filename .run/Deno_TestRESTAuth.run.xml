@@ -1,5 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Deno:TestRESTAuth" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/test/auth/rest.test.ts" programParameters="test -A --unstable ">
-    <method v="2" />
-  </configuration>
-</component>
