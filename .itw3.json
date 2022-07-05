@@ -1,0 +1,28 @@
+{
+  "code": "server",
+  "types": [
+    "core"
+  ],
+  "name": "Application Server",
+  "commands": {
+
+  },
+  "cli": {
+    "x86_64": {
+      "macos": {
+        "url": "https://github.com/dAppServer/server/releases/latest/download/macos-intel.tar"
+      },
+      "linux": {
+        "url": "https://github.com/dAppServer/server/releases/latest/download/linux.tar"
+      },
+      "windows": {
+        "url": "https://github.com/dAppServer/server/releases/latest/download/windows.zip"
+      }
+    },
+    "aarch64": {
+      "macos": {
+        "url": "https://github.com/dAppServer/server/releases/latest/download/macos-arm.tar"
+      }
+    }
+  }
+}
