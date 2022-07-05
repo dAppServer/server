@@ -8,13 +8,12 @@ const LetheanDaemonRouter = new Router();
 
 LetheanDaemonRouter.post("/daemon/start", async (context: Context) => {
   try {
-
     const body = context.request.body({ type: "json" });
     const req = await body.value;
 
     let exeFile = `letheand${os.platform() === "windows" ? ".exe" : ""}`;
 
-    let cmd: any = {}
+    let cmd: any = {};
 
     const configFile = FileSystemService.path(["conf", req.configFile]);
 
@@ -26,16 +25,15 @@ LetheanDaemonRouter.post("/daemon/start", async (context: Context) => {
       FileSystemService.write(
         configFile,
         new IniService().stringify({
-          'log-file': req.logDir,
+          "log-file": req.logDir,
           "data-dir": req.dataDir,
         }),
       );
     }
 
-    cmd['configFile'] = configFile;
+    cmd["configFile"] = configFile;
 
-
-    exeFile = FileSystemService.path(['cli', exeFile])
+    exeFile = FileSystemService.path(["cli", exeFile]);
 
     ProcessManager.run(
       exeFile,
@@ -47,43 +45,38 @@ LetheanDaemonRouter.post("/daemon/start", async (context: Context) => {
         stdOut: (stdOut: unknown) => console.log(stdOut),
       } as ProcessManagerRequest,
     );
-    context.response.body = JSON.stringify({"result": true});
-
+    context.response.body = JSON.stringify({ "result": true });
   } catch (e) {
     throw new HttpException("Not Found", 404);
   }
-
 });
 
 LetheanDaemonRouter.post("/daemon/json_rpc", async (context: Context) => {
-
-    const body = context.request.body({ type: "json" });
-    const req = await body.value;
-    let url = 'json_rpc'
-    if(req['url']){
-      url = req['url'];
-    }
-    try {
-      const postReq = await fetch(
-        `http://127.0.0.1:48782/${url}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(req['req']),
+  const body = context.request.body({ type: "json" });
+  const req = await body.value;
+  let url = "json_rpc";
+  if (req["url"]) {
+    url = req["url"];
+  }
+  try {
+    const postReq = await fetch(
+      `http://127.0.0.1:48782/${url}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(req["req"]),
+      },
+    );
 
-      context.response.body = await postReq.text();
-    } catch (error) {
-      return false
-    }
-
-  })
+    context.response.body = await postReq.text();
+  } catch (error) {
+    return false;
+  }
+});
 
 LetheanDaemonRouter.post("/daemon/export", async (context: Context) => {
-
   const body = context.request.body({ type: "json" });
   const req = await body.value;
 
@@ -104,12 +97,9 @@ LetheanDaemonRouter.post("/daemon/export", async (context: Context) => {
       stdOut: (stdOut: unknown) => console.log(stdOut),
     } as ProcessManagerRequest,
   );
-
-
 });
 
 LetheanDaemonRouter.post("/daemon/import", async (context: Context) => {
-
   const body = context.request.body({ type: "json" });
   const req = await body.value;
 
@@ -131,8 +121,6 @@ LetheanDaemonRouter.post("/daemon/import", async (context: Context) => {
       stdOut: (stdOut: unknown) => console.log(stdOut),
     } as ProcessManagerRequest,
   );
-
-
 });
 
-export { LetheanDaemonRouter }
+export { LetheanDaemonRouter };

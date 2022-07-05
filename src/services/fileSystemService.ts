@@ -17,16 +17,15 @@ export class FileSystemService {
       return Deno.cwd();
     }
 
-    if (typeof pathname === 'string') {
+    if (typeof pathname === "string") {
       pathname = pathname.replace(/\.\./g, ".");
       if (pathname.match("/")) {
         pathname = pathname.split("/");
       } else if (pathname.match("\\\\")) {
         pathname = pathname.split("\\\\");
-      }else {
+      } else {
         pathname = [pathname];
       }
-
     }
     return path.join(Deno.cwd(), ...pathname);
   }
@@ -76,7 +75,6 @@ export class FileSystemService {
     if (path.length == 0) return false;
 
     try {
-
       return Deno.statSync(FileSystemService.path(path)).isFile;
     } catch (e) {
       return false;
@@ -95,17 +93,17 @@ export class FileSystemService {
     const ret = [];
     try {
       for (
-          const dirEntry of Deno.readDirSync(
-        FileSystemService.path(path),
-      )
-          ) {
+        const dirEntry of Deno.readDirSync(
+          FileSystemService.path(path),
+        )
+      ) {
         if (!dirEntry.name.startsWith(".")) {
           ret.push(dirEntry.name);
         }
       }
       return ret;
-    }catch (e) {
-      return []
+    } catch (e) {
+      return [];
     }
   }
 

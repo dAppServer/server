@@ -1,5 +1,4 @@
-
-import {path, os, Command} from "../../../../deps.ts";
+import { Command, os, path } from "../../../../deps.ts";
 import { StringResponse } from "../../../interfaces/string-response.ts";
 import { ProcessManager } from "../../../services/process/process.service.ts";
 import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";

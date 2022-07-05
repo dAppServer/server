@@ -1,4 +1,12 @@
-import { copy, ensureDir, ensureFile, os, path, Untar, decompress } from "../../deps.ts";
+import {
+  copy,
+  decompress,
+  ensureDir,
+  ensureFile,
+  os,
+  path,
+  Untar,
+} from "../../deps.ts";
 
 import { ZeroMQServer } from "./ipc/zeromq.ts";
 import { FileSystemService } from "./fileSystemService.ts";
@@ -27,10 +35,9 @@ export class LetheanUpdater {
 
       console.info(`Unpacking file: ${fileObj.fullPath}`);
 
-      if(filename.endsWith( ".zip")) {
+      if (filename.endsWith(".zip")) {
         await decompress(fileObj.fullPath, destination.dir);
       } else if (filename.endsWith(".tar")) {
-
         const reader = await Deno.open(fileObj.fullPath, { read: true });
         const untar = new Untar(reader);
 

@@ -52,15 +52,15 @@ export class IniService {
     return obj;
   }
 
-  stringify(obj: INIObject|any, ): string {
+  stringify(obj: INIObject | any): string {
     let str = "";
     //str += `[${i}]\n`;
     for (let j in obj) {
       let variable = [j, obj[j]];
-//      if (typeof variable[1] === "string") {
-//        str += `${variable[0]}="${variable[1]}"\n`;
-//      } else {
-        str += `${variable[0]}=${variable[1]}\n`;
+      //      if (typeof variable[1] === "string") {
+      //        str += `${variable[0]}="${variable[1]}"\n`;
+      //      } else {
+      str += `${variable[0]}=${variable[1]}\n`;
       //}
     }
     return str;

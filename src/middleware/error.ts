@@ -1,4 +1,4 @@
-import { isHttpError, Status, Context } from "../../deps.ts";
+import { Context, isHttpError, Status } from "../../deps.ts";
 
 const errorMiddleware = async (ctx: Context, next: any) => {
   try {
@@ -13,15 +13,15 @@ const errorMiddleware = async (ctx: Context, next: any) => {
      * end user in non "development" mode
      */
     if (!isHttpError(err)) {
-      message = Deno.env.get('DEV') ? message : "Internal Server Error";
+      message = Deno.env.get("DEV") ? message : "Internal Server Error";
     }
 
-    if (Deno.env.get('DEV')) {
+    if (Deno.env.get("DEV")) {
       console.log(err);
     }
 
-   // ctx.response.status = status;
-   // ctx.response.body = { status, message };
+    // ctx.response.status = status;
+    // ctx.response.body = { status, message };
   }
 };
 

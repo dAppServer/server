@@ -45,7 +45,6 @@ export class LetheanWebsocketServer {
             console.log("Subscriber connected to port 36910/pub");
             const wsClient = ws;
             sock.on("message", function (endpoint, topic, message) {
-
               wsClient.send(
                 JSON.stringify([
                   req[1],

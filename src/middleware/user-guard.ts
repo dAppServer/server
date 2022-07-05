@@ -1,6 +1,6 @@
 import { AuthUser, UserRole } from "./../types.ts";
 import { hasUserRole } from "../helpers/roles.ts";
-import { httpErrors, Context } from "../../deps.ts";
+import { Context, httpErrors } from "../../deps.ts";
 import { getJwtPayload } from "../helpers/jwt.ts";
 import { FileSystemService } from "../services/fileSystemService.ts";
 
@@ -10,41 +10,43 @@ import { FileSystemService } from "../services/fileSystemService.ts";
  */
 export const userGuard = () => {
   return async (context: Context, next: any) => {
-
-    if (!context.request.url.pathname.startsWith('/auth') && FileSystemService.list('users').map((file:string) => file.endsWith('.lthn')).includes(true)) {
-
+    if (
+      !context.request.url.pathname.startsWith("/auth") &&
+      FileSystemService.list("users").map((file: string) =>
+        file.endsWith(".lthn")
+      ).includes(true)
+    ) {
       try {
-
-        const authUser: AuthUser | null = context.request.headers.get('Authorization')
-          ? await getJwtPayload(context.request.headers.get('Authorization') as string)
-          : null;
+        const authUser: AuthUser | null =
+          context.request.headers.get("Authorization")
+            ? await getJwtPayload(
+              context.request.headers.get("Authorization") as string,
+            )
+            : null;
 
         if (authUser) {
-          context.response.status = 200
+          context.response.status = 200;
         } else {
           context.response.status = 401;
-          context.throw(401, 'Not authorised');
+          context.throw(401, "Not authorised");
           // throw new httpErrors.Unauthorized("Unauthorized user");
         }
 
         //if roles specified, then check auth user's roles
-//        if (roles) {
-//          const isRoleMatched = hasUserRole(authUser, roles);
-//
-//          //if no role mached throw forbidden error
-//          if (!isRoleMatched) {
-//            context.response.status = 403;
-//            context.throw(403, 'Forbidden');
-//          }
-//        }
-
-      }catch (e) {
+        //        if (roles) {
+        //          const isRoleMatched = hasUserRole(authUser, roles);
+        //
+        //          //if no role mached throw forbidden error
+        //          if (!isRoleMatched) {
+        //            context.response.status = 403;
+        //            context.throw(403, 'Forbidden');
+        //          }
+        //        }
+      } catch (e) {
         context.response.status = 401;
-        context.throw(401, 'Not authorised');
+        context.throw(401, "Not authorised");
       }
-
     }
     await next();
-  }
-}
-
+  };
+};

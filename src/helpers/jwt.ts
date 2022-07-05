@@ -1,15 +1,13 @@
 import { create, getNumericDate, Header, Payload, verify } from "../../deps.ts";
 
-
-const  JWT_ACCESS_TOKEN_EXP = '600'
-  const  JWT_REFRESH_TOKEN_EXP = '600'
+const JWT_ACCESS_TOKEN_EXP = "600";
+const JWT_REFRESH_TOKEN_EXP = "600";
 
 const JWT: CryptoKey = await crypto.subtle.generateKey(
   { name: "HMAC", hash: "SHA-512" },
   true,
   ["sign", "verify"],
 );
-
 
 const header: Header = {
   alg: "HS512",
@@ -39,7 +37,7 @@ const getRefreshToken = async (user: any) => {
 
 const getJwtPayload = async (token: string): Promise<any | null> => {
   try {
-    const jwtObject =  await verify(token, JWT);
+    const jwtObject = await verify(token, JWT);
     //console.log(jwtObject);
     if (jwtObject && jwtObject.id) {
       return jwtObject;

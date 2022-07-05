@@ -44,7 +44,6 @@ export class ProcessManagerProcess extends EventEmitter {
     console.log(processArgs);
 
     try {
-
       const process = Deno.run(processArgs);
       const sock = new Sub();
       const that = this;
@@ -85,11 +84,9 @@ export class ProcessManagerProcess extends EventEmitter {
       //  super.emit("end", 0);
       process.close();
       return;
-    }catch (e) {
-      console.log(e)
-      e.preventDefault()
+    } catch (e) {
+      console.log(e);
+      e.preventDefault();
     }
-
-
   }
 }

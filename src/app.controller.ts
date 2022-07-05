@@ -21,21 +21,17 @@ import { XmrigRouter } from "./modules/mining/xmrig/xmrig.controller.ts";
 import { MoneroDaemonRouter } from "./modules/chain/xmr/daemon.controller.ts";
 
 export class AppController {
-
   public app = new Application();
 
-  router = new Router()
-
+  router = new Router();
 
   constructor() {
-
-    this.baseRoutes()
-    this.moduleRoutes()
+    this.baseRoutes();
+    this.moduleRoutes();
   }
 
   async startServer() {
-
-await this.checkServer()
+    await this.checkServer();
 
     const port = Number(Deno.env.get("PORT") || 36911);
     ZeroMQServer.startServer();
@@ -44,31 +40,41 @@ await this.checkServer()
     console.log(`Starting: http://localhost:${port}`);
     await this.app.listen({ hostname: "localhost", port: port });
   }
-  moduleRoutes(){
-
-    this.app.use(AuthRouter.routes(), AuthRouter.allowedMethods())
-    this.app.use(FileSystemRouter.routes(), FileSystemRouter.allowedMethods())
-    this.app.use(LetheanDaemonRouter.routes(), LetheanDaemonRouter.allowedMethods())
-    this.app.use(LetheanRPCRouter.routes(), LetheanRPCRouter.allowedMethods())
-    this.app.use(SystemUpdateRouter.routes(), SystemUpdateRouter.allowedMethods())
-    this.app.use(SystemDataConfigRouter.routes(), SystemDataConfigRouter.allowedMethods())
-    this.app.use(DockerRouter.routes(), DockerRouter.allowedMethods())
-    this.app.use(XmrigRouter.routes(), XmrigRouter.allowedMethods())
-    this.app.use(MoneroDaemonRouter.routes(), MoneroDaemonRouter.allowedMethods())
+  moduleRoutes() {
+    this.app.use(AuthRouter.routes(), AuthRouter.allowedMethods());
+    this.app.use(FileSystemRouter.routes(), FileSystemRouter.allowedMethods());
+    this.app.use(
+      LetheanDaemonRouter.routes(),
+      LetheanDaemonRouter.allowedMethods(),
+    );
+    this.app.use(LetheanRPCRouter.routes(), LetheanRPCRouter.allowedMethods());
+    this.app.use(
+      SystemUpdateRouter.routes(),
+      SystemUpdateRouter.allowedMethods(),
+    );
+    this.app.use(
+      SystemDataConfigRouter.routes(),
+      SystemDataConfigRouter.allowedMethods(),
+    );
+    this.app.use(DockerRouter.routes(), DockerRouter.allowedMethods());
+    this.app.use(XmrigRouter.routes(), XmrigRouter.allowedMethods());
+    this.app.use(
+      MoneroDaemonRouter.routes(),
+      MoneroDaemonRouter.allowedMethods(),
+    );
   }
 
-  baseRoutes(){
+  baseRoutes() {
     this.router.get("/", (ctx: Context) => {
       ctx.response.body = new Date().toString();
-    })
+    });
 
+    this.app.use(corsMiddleware);
+    this.app.use(requestIdMiddleware);
+    this.app.use(loggerMiddleware);
+    this.app.use(timingMiddleware);
 
-    this.app.use(corsMiddleware)
-    this.app.use(requestIdMiddleware)
-    this.app.use(loggerMiddleware)
-    this.app.use(timingMiddleware)
-
-    this.app.use(errorMiddleware)
+    this.app.use(errorMiddleware);
   }
 
   async checkServer() {
@@ -94,7 +100,9 @@ await this.checkServer()
         FileSystemService.isFile("users/server.lthn.pub")
       ) {
         console.info("[SERVER] Server.pub found, checking password");
-        const password = QuasiSalt.hash(FileSystemService.path("users/server.lthn.pub"));
+        const password = QuasiSalt.hash(
+          FileSystemService.path("users/server.lthn.pub"),
+        );
 
         if (await CryptOpenPGP.getPrivateKey("server", password)) {
           console.info("[SERVER] Keypair unlocked OK");
@@ -107,11 +115,11 @@ await this.checkServer()
     } catch (error) {
       console.error(
         "[SECURITY] Failed to ensure safe environment, shutting down...",
-        error
+        error,
       );
 
       console.error(error);
-       Deno.exit(1);
+      Deno.exit(1);
     }
   }
 }

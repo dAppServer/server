@@ -18,13 +18,12 @@ export class StoredObjectService {
           "data",
           "objects",
           args.group,
-          args.object + ".json"
-        )
+          args.object + ".json",
+        ),
       );
     } catch (e) {
-      return {  };
+      return {};
     }
-
   }
 
   /**
@@ -33,7 +32,7 @@ export class StoredObjectService {
    * @param {{group: string, object: string, data: string}} args
    */
   public static setObject(
-    args: { group: string; object: string; data: string }
+    args: { group: string; object: string; data: string },
   ) {
     try {
       const objPath = path.join(
@@ -41,21 +40,22 @@ export class StoredObjectService {
         "data",
         "objects",
         args.group,
-        args.object + ".json"
+        args.object + ".json",
       );
       ensureDirSync(
         path.join(
           Deno.cwd(),
           "data",
           "objects",
-          args.group
-        )
+          args.group,
+        ),
       );
 
       Deno.writeTextFileSync(objPath, args.data);
     } catch (e) {
       return false;
     }
+    return true
   }
 
   /**
@@ -70,7 +70,7 @@ export class StoredObjectService {
         "data",
         "objects",
         args.group,
-        args.object + ".json"
+        args.object + ".json",
       );
       Deno.removeSync(objPath);
     } catch (e) {
@@ -89,7 +89,7 @@ export class StoredObjectService {
         Deno.cwd(),
         "data",
         "objects",
-        args.group
+        args.group,
       );
       Deno.removeSync(objPath, { recursive: true });
     } catch (e) {
@@ -109,7 +109,7 @@ export class StoredObjectService {
         Deno.cwd(),
         "data",
         "objects",
-        args.group
+        args.group,
       );
       const ret = [];
       for (const dirEntry of Deno.readDirSync(objPath)) {

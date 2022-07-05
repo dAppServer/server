@@ -1,4 +1,3 @@
-
 import { StringResponse } from "../interfaces/string-response.ts";
 import { StoredObjectService } from "../services/config/store.ts";
 import { Command } from "../../deps.ts";
@@ -19,7 +18,7 @@ export class RouteObject {
       .option("-d,--data <string>", "Data object to save")
       .action((args) => {
         const textDecoder = new TextDecoder("utf-8");
-        const decodedValue = atob(args.data)
+        const decodedValue = atob(args.data);
 
         StoredObjectService.setObject({
           group: args.group,

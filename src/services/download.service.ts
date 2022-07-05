@@ -1,7 +1,15 @@
-import { copy, ensureDir, ensureDirSync, path, readerFromStreamReader, Untar, unZipFromFile, decompress } from "../../deps.ts";
+import {
+  copy,
+  decompress,
+  ensureDir,
+  ensureDirSync,
+  path,
+  readerFromStreamReader,
+  Untar,
+  unZipFromFile,
+} from "../../deps.ts";
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
 import { ZeroMQServer } from "../../src/services/ipc/zeromq.ts";
-
 
 export interface Destination {
   /**
@@ -127,21 +135,24 @@ export class LetheanDownloadService {
     /** size in bytes */
     const size = parseInt(response.headers.get("Content-Length") ?? "0");
     let total = 0;
-    for await(const chunk of response.body!) {
+    for await (const chunk of response.body!) {
       total += chunk.byteLength;
-      ZeroMQServer.sendPubMessage('download', JSON.stringify({
-        file: file,
-        dir: dir,
-        fullPath: fullPath,
-        size: size,
-        total: total,
-      }));
+      ZeroMQServer.sendPubMessage(
+        "download",
+        JSON.stringify({
+          file: file,
+          dir: dir,
+          fullPath: fullPath,
+          size: size,
+          total: total,
+        }),
+      );
       await Deno.writeFile(fullPath, chunk, { append: true });
     }
 
-    if(fullPath.endsWith('.zip')){
-      await decompress(fullPath, dir, {includeFileName: false});
-    } else if (fullPath.endsWith('.tar')){
+    if (fullPath.endsWith(".zip")) {
+      await decompress(fullPath, dir, { includeFileName: false });
+    } else if (fullPath.endsWith(".tar")) {
       const reader = await Deno.open(fullPath, { read: true });
       const untar = new Untar(reader);
 
@@ -163,8 +174,7 @@ export class LetheanDownloadService {
         await copy(entry, file);
       }
       reader.close();
-    } else if (fullPath.endsWith('.tar.gz')) {
-
+    } else if (fullPath.endsWith(".tar.gz")) {
       const reader = await Deno.open(fullPath, { read: true });
       const streamReader = reader.readable
         .pipeThrough(new DecompressionStream("gzip"))
@@ -191,8 +201,8 @@ export class LetheanDownloadService {
         );
         await copy(entry, file);
       }
-    } else if (fullPath.endsWith('.tar.bz2')) {
-      const process = await  Deno.run({
+    } else if (fullPath.endsWith(".tar.bz2")) {
+      const process = await Deno.run({
         cmd: Deno.build.os === "windows"
           ? [
             "PowerShell",
@@ -208,21 +218,20 @@ export class LetheanDownloadService {
       });
 
       const status = await process.status();
-      await process.close()
+      await process.close();
       console.log(status);
     }
 
     try {
-//      await Deno.remove(
-//        fullPath,
-//        { recursive: true },
-//      );
+      //      await Deno.remove(
+      //        fullPath,
+      //        { recursive: true },
+      //      );
     } catch (e) {
       console.error(e);
     }
-//    const buffer = await blob.arrayBuffer();
-//    const unit8arr = new Deno.Buffer(buffer).bytes();
-
+    //    const buffer = await blob.arrayBuffer();
+    //    const unit8arr = new Deno.Buffer(buffer).bytes();
 
     //Deno.writeFileSync(fullPath, unit8arr, mode);
     return Promise.resolve({ file, dir, fullPath, size });
