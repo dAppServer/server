@@ -14,6 +14,16 @@ AppManagerRouter.get("/apps/list", async (context: Context) => {
   }
 });
 
+AppManagerRouter.get("/apps/marketplace", async (context: Context) => {
+  try {
+    context.response.status = 200;
+    context.response.body = await apps.getMarketPlaceApps();
+  } catch (e) {
+    context.response.status = 404;
+    context.response.body = "Not Found";
+  }
+});
+
 AppManagerRouter.post("/apps/install", async (context: Context) => {
   try {
       const body = context.request.body({ type: "json" });

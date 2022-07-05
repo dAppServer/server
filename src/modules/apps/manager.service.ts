@@ -66,10 +66,16 @@ export class AppManager {
    * @returns {Promise<any>}
    */
   getConfig() {
-    this.apps = JSON.parse(StoredObjectService.getObject({
+    this.apps = StoredObjectService.getObject({
       group: "apps",
       object: "installed",
-    }));
+    });
+
+    try{
+      this.apps = JSON.parse(this.apps)
+    }catch (e) {
+
+    }
     return this.apps;
   }
 
@@ -111,6 +117,22 @@ export class AppManager {
       object: "installed",
       data: JSON.stringify(this.apps)
     });
+
+  }
+
+  async getMarketPlaceApps() {
+//
+    const postReq = await fetch(
+      'https://raw.githubusercontent.com/dAppServer/app-marketplace/main/index.json',
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      },
+    );
+
+    return await postReq.json();
 
   }
 }

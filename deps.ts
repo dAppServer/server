@@ -28,8 +28,10 @@ export { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/unzip.ts";
 export { readerFromStreamReader } from "https://deno.land/std@0.128.0/streams/conversion.ts";
 export { Untar } from "https://deno.land/std@0.128.0/archive/tar.ts";
 export {
+  assertEquals,
   assertExists,
   assertStrictEquals,
+  assertArrayIncludes
 } from "https://deno.land/std@0.128.0/testing/asserts.ts";
 
 export {
