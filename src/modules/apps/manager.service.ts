@@ -120,10 +120,15 @@ export class AppManager {
 
   }
 
-  async getMarketPlaceApps() {
-//
+  async getMarketPlaceApps(opts?:{dir:string}) {
+    let dir = ''
+     if(opts && opts.dir){
+       dir = `${opts.dir}/`
+     }
+    let url = `https://raw.githubusercontent.com/dAppServer/app-marketplace/main/${dir}index.json`
+
     const postReq = await fetch(
-      'https://raw.githubusercontent.com/dAppServer/app-marketplace/main/index.json',
+      url,
       {
         method: "GET",
         headers: {

@@ -27,6 +27,16 @@ Deno.test("GET /apps/marketplace", async () => {
   assertArrayIncludes(market['dirs'], ['blockchain'])
 });
 
+Deno.test("GET /apps/marketplace - Category", async () => {
+  const request = await superoak(app);
+  const data = await request.get("/apps/marketplace?dir=blockchain").expect(200);
+  const market = JSON.parse(data.text)
+  assertEquals(market['version'], 1)
+  assertEquals(market['apps'][0]['name'], 'Lethean')
+  assertEquals(market['apps'][0]['pkg'], 'https://raw.githubusercontent.com/letheanVPN/blockchain-iz/main/.itw3.json')
+  assertArrayIncludes(market['dirs'], [])
+});
+
 Deno.test("POST /apps/install", async () => {
   const request = await superoak(app);
   const data = await request.post("/apps/install")

@@ -34,3 +34,14 @@ Deno.test("App Marketplace - List", async () => {
     assertArrayIncludes(market['dirs'], ['blockchain'])
 
 });
+
+Deno.test("App Marketplace - Category Blockchain", async () => {
+    //console.log()
+    const market = await manager.getMarketPlaceApps({dir: "blockchain"})
+
+    assertEquals(market['version'], 1)
+    assertEquals(market['apps'][0]['name'], 'Lethean')
+    assertEquals(market['apps'][0]['pkg'], 'https://raw.githubusercontent.com/letheanVPN/blockchain-iz/main/.itw3.json')
+    assertArrayIncludes(market['dirs'], [])
+
+});
