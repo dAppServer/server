@@ -4,6 +4,9 @@
     "core"
   ],
   "name": "Application Server",
+  "install": {
+    "lthn": "/"
+  },
   "commands": {
 
   },
