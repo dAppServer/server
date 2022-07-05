@@ -66,10 +66,10 @@ export class AppManager {
    * @returns {Promise<any>}
    */
   getConfig() {
-    this.apps = StoredObjectService.getObject({
+    this.apps = JSON.parse(StoredObjectService.getObject({
       group: "apps",
       object: "installed",
-    });
+    }));
     return this.apps;
   }
 

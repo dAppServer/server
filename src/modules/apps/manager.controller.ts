@@ -1,7 +1,5 @@
 import { Context, Router } from "../../../deps.ts";
-import { HttpException } from "https://deno.land/x/oak_exception@v0.0.7/src/exception_status.ts";
 import { AppManager } from "./manager.service.ts";
-import { DockerService } from "src/modules/docker/docker.service.ts";
 
 const AppManagerRouter = new Router();
 const apps = new AppManager();
@@ -16,7 +14,7 @@ AppManagerRouter.get("/apps/list", async (context: Context) => {
   }
 });
 
-AppManagerRouter.get("/apps/install", async (context: Context) => {
+AppManagerRouter.post("/apps/install", async (context: Context) => {
   try {
       const body = context.request.body({ type: "json" });
       const req = await body.value;
@@ -24,19 +22,25 @@ AppManagerRouter.get("/apps/install", async (context: Context) => {
     context.response.status = 200;
     context.response.body = apps.installApp(req.name);
   } catch (e) {
+    console.log(e)
     context.response.status = 404;
     context.response.body = "Not Found";
   }
 });
-AppManagerRouter.get("/apps/remove", async (context: Context) => {
+AppManagerRouter.post("/apps/remove", async (context: Context) => {
   try {
       const body = context.request.body({ type: "json" });
       const req = await body.value;
 
     context.response.status = 200;
-    context.response.body = apps.removeApp(req.name);
+    apps.getConfig()
+    apps.removeApp(req.name);
+    context.response.body = true
   } catch (e) {
+    console.log(e)
     context.response.status = 404;
     context.response.body = "Not Found";
   }
 });
+
+export  {AppManagerRouter}
