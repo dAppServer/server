@@ -70,7 +70,6 @@ export class AppController {
     this.app.use(DockerRouter.routes(), DockerRouter.allowedMethods());
     this.app.use(AppManagerRouter.routes(), AppManagerRouter.allowedMethods());
     this.app.use(XmrigRouter.routes(), XmrigRouter.allowedMethods());
-    this.app.use(SystemBrowserRouter.routes(), SystemBrowserRouter.allowedMethods());
     this.app.use(
       MoneroDaemonRouter.routes(),
       MoneroDaemonRouter.allowedMethods(),

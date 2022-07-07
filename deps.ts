@@ -22,7 +22,7 @@ export { HttpException } from "https://deno.land/x/oak_exception@v0.0.7/src/exce
 
 export { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/unzip.ts";
 
-export { Webview, SizeHint, preload } from "https://deno.land/x/webview@0.7.3/mod.ts";
+//export { Webview, SizeHint, preload } from "https://deno.land/x/webview@0.7.3/mod.ts";
 
 
 export { readerFromStreamReader } from "https://deno.land/std@0.128.0/streams/conversion.ts";
