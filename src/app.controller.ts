@@ -20,26 +20,36 @@ import { DockerRouter } from "./modules/docker/docker.controller.ts";
 import { XmrigRouter } from "./modules/mining/xmrig/xmrig.controller.ts";
 import { MoneroDaemonRouter } from "./modules/chain/xmr/daemon.controller.ts";
 import { AppManagerRouter } from "./modules/apps/manager.controller.ts";
+import { SystemBrowserRouter } from "./modules/browser/window.controller.ts";
 
 export class AppController {
   public app = new Application();
 
   router = new Router();
+  port = 36911;
+  loadSockets = true
+  constructor(args?:any) {
 
-  constructor() {
+    if(args && args.port){
+      console.log(args)
+      this.port = args.port
+      this.loadSockets = false
+    }
     this.baseRoutes();
     this.moduleRoutes();
+
   }
 
   async startServer() {
     await this.checkServer();
+    if (this.loadSockets){
+      ZeroMQServer.startServer();
+      LetheanWebsocketServer.startServer();
+    }
 
-    const port = Number(Deno.env.get("PORT") || 36911);
-    ZeroMQServer.startServer();
-    LetheanWebsocketServer.startServer();
 
-    console.log(`Starting: http://localhost:${port}`);
-    await this.app.listen({ hostname: "localhost", port: port });
+    console.log(`Starting: http://localhost:${this.port}`);
+    await this.app.listen({ hostname: "localhost", port: this.port });
   }
   moduleRoutes() {
     this.app.use(AuthRouter.routes(), AuthRouter.allowedMethods());
@@ -60,6 +70,7 @@ export class AppController {
     this.app.use(DockerRouter.routes(), DockerRouter.allowedMethods());
     this.app.use(AppManagerRouter.routes(), AppManagerRouter.allowedMethods());
     this.app.use(XmrigRouter.routes(), XmrigRouter.allowedMethods());
+    this.app.use(SystemBrowserRouter.routes(), SystemBrowserRouter.allowedMethods());
     this.app.use(
       MoneroDaemonRouter.routes(),
       MoneroDaemonRouter.allowedMethods(),

@@ -1,4 +1,4 @@
-DENO_VERSION := 1.23.2
+DENO_VERSION := 1.23.3
 DENO_INSTALL := third_party
 
 ifeq ($(OS),Windows_NT)
@@ -29,17 +29,20 @@ endif
 
 include deno.mk
 
-.PHONY: all run build test test-apps test-auth test-crypt test-docker test-io test-rest test-xmrig help fmt
+.PHONY: all run build test test-apps test-auth test-crypt test-docker test-io test-rest test-xmrig help fmt vendor
 all: help
 
 run: $(DENO_BIN) ## Run Server
 	$(call deno,run -A -c deno.json --watch --unstable mod.ts)
 
+vendor:  $(DENO_BIN) ## Update Vendor bundle
+	$(call deno,vendor -f mod.ts deps.ts deps-test.ts)
+
 fmt: $(DENO_BIN) ## Format code
 	$(call deno,fmt -c deno.json)
 
 build: $(DENO_BIN) ## Build binary for the host machine
-	$(call deno,compile -A --output build/lthn -c deno.json --unstable mod.ts)
+	$(call deno,compile -A --output build/lthn -c deno.json  --unstable mod.ts)
 
 build-linux: $(DENO_BIN) ## Build binary for Linux
 	$(call deno,compile -A --output build/lthn -c deno.json --unstable --target x86_64-unknown-linux-gnu mod.ts)
