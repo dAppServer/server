@@ -39,9 +39,9 @@ AppManagerRouter.post("/apps/install", async (context: Context) => {
   try {
       const body = context.request.body({ type: "json" });
       const req = await body.value;
-
+    console.log("Installing", req)
     context.response.status = 200;
-    context.response.body = apps.installApp(req.name);
+    context.response.body = await apps.installApp(req.code, req.pkg);
   } catch (e) {
     console.log(e)
     context.response.status = 404;
@@ -55,7 +55,7 @@ AppManagerRouter.post("/apps/remove", async (context: Context) => {
 
     context.response.status = 200;
     apps.getConfig()
-    apps.removeApp(req.name);
+    apps.removeApp(req.code);
     context.response.body = true
   } catch (e) {
     console.log(e)

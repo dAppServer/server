@@ -3,6 +3,9 @@
   "type": "core",
   "name": "Application Server",
   "install": "/",
+  "uninstall": [
+    {"rm": "lthn"}
+  ],
   "commands": {
 
   },

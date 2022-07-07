@@ -15,12 +15,12 @@ LetheanDaemonRouter.post("/daemon/start", async (context: Context) => {
 
     let cmd: any = {};
 
-    const configFile = FileSystemService.path(["conf", req.configFile]);
+    const configFile = FileSystemService.path(path.join("conf","lthn", req.configFile));
 
-    if (!FileSystemService.isFile(req.configFile)) {
-      console.info(`Config file ${req.configFile} not found`);
-      if (!FileSystemService.isDir(path.join(Deno.cwd(), "conf"))) {
-        FileSystemService.ensureDir(path.join(Deno.cwd(), "conf"));
+    if (!FileSystemService.isFile(configFile)) {
+      console.info(`Config file ${configFile} not found`);
+      if (!FileSystemService.isDir(path.join(Deno.cwd(), "conf","lthn"))) {
+        FileSystemService.ensureDir(path.join(Deno.cwd(), "conf", "lthn"));
       }
       FileSystemService.write(
         configFile,
@@ -33,7 +33,7 @@ LetheanDaemonRouter.post("/daemon/start", async (context: Context) => {
 
     cmd["configFile"] = configFile;
 
-    exeFile = FileSystemService.path(["cli", exeFile]);
+    exeFile = FileSystemService.path(["cli", "lthn", exeFile]);
 
     ProcessManager.run(
       exeFile,
@@ -87,6 +87,7 @@ LetheanDaemonRouter.post("/daemon/export", async (context: Context) => {
     path.join(
       Deno.cwd(),
       "cli",
+      "lthn",
       exeFile,
     ),
     req,
@@ -111,6 +112,7 @@ LetheanDaemonRouter.post("/daemon/import", async (context: Context) => {
     path.join(
       Deno.cwd(),
       "cli",
+      "lthn",
       exeFile,
     ),
     req,

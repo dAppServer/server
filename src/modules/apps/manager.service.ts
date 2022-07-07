@@ -44,17 +44,24 @@ export class AppManager {
    *
    * @returns {Promise<boolean>}
    */
-  async install() {
-    const jsonResponse = await fetch(this.plugin.config, { cache: "no-cache" });
+  async install(name: string, pkg: string) {
+    const jsonResponse = await fetch(pkg, { cache: "no-cache" });
     const pluginConfig = await jsonResponse.json();
 
-    if (pluginConfig["code"] == this.plugin.code) {
-      await LetheanDownloadService.downloadZipContents(
-        pluginConfig["app"]["url"],
-        `apps/${this.plugin.code.split("-").join("/")}`,
-      );
+    if (pluginConfig["code"] == name) {
+
+      if(pluginConfig['type'] === 'bin') {
+        const downloadUrl = pluginConfig["downloads"]["aarch64"] == undefined ? pluginConfig["downloads"]["x86_64"][Deno.build.os]['url'] : pluginConfig["downloads"][Deno.build.arch][Deno.build.os]['url'];
+        await LetheanDownloadService.downloadContents(
+          downloadUrl,
+          pluginConfig["install"]
+        );
+        StoredObjectService.setObject({ group: "apps", object: pluginConfig["code"], data: JSON.stringify(pluginConfig) })
+
+        this.apps[pluginConfig["code"]] = {"name": pluginConfig["name"], "version": pluginConfig["version"], "pkg": pkg}
+      }
     } else {
-      console.error("Package code miss match.");
+      console.error("Package code miss match.", pluginConfig["code"], name);
     }
 
     return true;
@@ -83,13 +90,18 @@ export class AppManager {
    * Install Known Application
    *
    * @param {string} name
+   * @param pkg
    * @returns {Promise<any>}
    */
-  installApp(name: string) {
-    if(!this.apps[name]){
-      this.apps[name] = true;
+  async installApp(name: string, pkg?: string) {
+    if (!this.apps[name]) {
+      this.apps[name] = pkg ? pkg : true;
     }
-    return  this.saveConfig()
+    if(pkg){
+      await this.install(name, pkg)
+    }
+
+    return this.saveConfig()
   }
 
   /**

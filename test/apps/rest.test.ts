@@ -41,7 +41,7 @@ Deno.test("POST /apps/install", async () => {
   const request = await superoak(app);
   const data = await request.post("/apps/install")
     .set("Content-Type", "application/json")
-    .send(`{"name": "test"}`)
+    .send(`{"name": "server", "pkg": "https://raw.githubusercontent.com/dAppServer/server/main/.itw3.json"}`)
     .expect(200)
     .expect("true");
 

@@ -58,26 +58,26 @@ export class LetheanDownloadService {
    * @param {string} dest
    * @returns {Promise<void>}
    */
-  static async downloadZipContents(url: string, dest: string) {
-    const filename = url.split("/").pop() ?? "";
-    const destination: Destination = {
-      file: filename,
-      dir: FileSystemService.path(dest),
-    };
-    FileSystemService.ensureDir(dest);
-    console.info(`Attempting to download ${url}`);
-    const fileObj = await LetheanDownloadService.download(
-      new URL(url),
-      destination,
-    );
-    console.info(`Extracting to: ${dest}`);
-    await unZipFromFile(
-      fileObj.fullPath,
-      dest,
-      { includeFileName: false },
-    );
+  static async downloadContents(url: string, dest: string) {
+    try {
 
-    await Deno.remove(fileObj.fullPath);
+
+      const filename = url.split("/").pop() ?? "";
+      const destination: Destination = {
+        file: filename,
+        dir: FileSystemService.path(dest),
+      };
+      FileSystemService.ensureDir(destination.dir as string);
+      console.info(`Attempting to download ${url}`);
+      const fileObj = await LetheanDownloadService.download(
+        new URL(url),
+        destination,
+      );
+      console.info(`Extracting to: ${destination.dir}`);
+    }catch (e) {
+      return false
+    }
+    return true
   }
 
   /**
@@ -158,20 +158,21 @@ export class LetheanDownloadService {
 
       for await (const entry of untar) {
         if (entry.type === "directory") {
-          await ensureDir(path.join(Deno.cwd(), "cli", entry.fileName));
+          await ensureDir(path.join( dir, entry.fileName));
           continue;
         }
 
         await Deno.writeFile(
-          path.join(Deno.cwd(), "cli", entry.fileName),
+          path.join( dir, entry.fileName),
           new Uint8Array(),
           { mode: 0o777 },
         );
         const file = await Deno.open(
-          path.join(Deno.cwd(), "cli", entry.fileName),
+          path.join( dir, entry.fileName),
           { write: true },
         );
         await copy(entry, file);
+        file.close()
       }
       reader.close();
     } else if (fullPath.endsWith(".tar.gz")) {
@@ -186,21 +187,23 @@ export class LetheanDownloadService {
       for await (const entry of untar) {
         const { fileName, type } = entry;
         if (type === "directory") {
-          await ensureDir(path.join(Deno.cwd(), "cli", fileName));
+          await ensureDir(path.join( dir, fileName));
           continue;
         }
 
         await Deno.writeFile(
-          path.join(Deno.cwd(), "cli", fileName),
+          path.join( dir, fileName),
           new Uint8Array(),
           { mode: 0o777 },
         );
         const file = await Deno.open(
-          path.join(Deno.cwd(), "cli", fileName),
+          path.join( dir, fileName),
           { write: true },
         );
         await copy(entry, file);
+        file.close()
       }
+      reader.close();
     } else if (fullPath.endsWith(".tar.bz2")) {
       const process = await Deno.run({
         cmd: Deno.build.os === "windows"
@@ -223,10 +226,10 @@ export class LetheanDownloadService {
     }
 
     try {
-      //      await Deno.remove(
-      //        fullPath,
-      //        { recursive: true },
-      //      );
+            await Deno.remove(
+              fullPath,
+              { recursive: true },
+            );
     } catch (e) {
       console.error(e);
     }

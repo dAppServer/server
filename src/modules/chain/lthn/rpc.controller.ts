@@ -17,6 +17,7 @@ LetheanRPCRouter.post("/daemon/wallet/rpc", async (context: Context) => {
     path.join(
       Deno.cwd(),
       "cli",
+      "lthn",
       exeFile,
     ),
     req,

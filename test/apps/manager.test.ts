@@ -11,15 +11,15 @@ try{
 Deno.test("App Manager - install", async () => {
 
     assertEquals( manager.apps, {  });
-    manager.installApp('miner_xmrig')
-    assertEquals( manager.apps, { "miner_xmrig": true });
+    await manager.installApp('server', "https://raw.githubusercontent.com/dAppServer/server/main/.itw3.json")
+    assertEquals( manager.apps['server'] !== undefined, true);
 
 
 });
 Deno.test("App Manager - remove", async () => {
 
-    assertEquals( manager.apps, { "miner_xmrig": true });
-     manager.removeApp('miner_xmrig')
+    assertEquals(manager.apps['server'] !== undefined, true);
+     manager.removeApp('server')
     assertEquals( manager.apps, {  });
 
 });
