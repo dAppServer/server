@@ -49,17 +49,22 @@ export class AppManager {
     const pluginConfig = await jsonResponse.json();
 
     if (pluginConfig["code"] == name) {
-
+      const downloadUrl = pluginConfig["downloads"]["aarch64"] == undefined ? pluginConfig["downloads"]["x86_64"][Deno.build.os]['url'] : pluginConfig["downloads"][Deno.build.arch][Deno.build.os]['url'];
+      let installDir;
       if(pluginConfig['type'] === 'bin') {
-        const downloadUrl = pluginConfig["downloads"]["aarch64"] == undefined ? pluginConfig["downloads"]["x86_64"][Deno.build.os]['url'] : pluginConfig["downloads"][Deno.build.arch][Deno.build.os]['url'];
-        await LetheanDownloadService.downloadContents(
-          downloadUrl,
-          pluginConfig["install"]
-        );
-        StoredObjectService.setObject({ group: "apps", object: pluginConfig["code"], data: JSON.stringify(pluginConfig) })
-
-        this.apps[pluginConfig["code"]] = {"name": pluginConfig["name"], "version": pluginConfig["version"], "pkg": pkg}
+        installDir = path.join('cli', pluginConfig['install'])
+      } else if(pluginConfig['type'] === 'core' && pluginConfig['code'] === 'server'){
+        installDir = path.join( pluginConfig['install'])
       }
+
+      await LetheanDownloadService.downloadContents(
+        downloadUrl,
+        installDir
+      );
+
+      StoredObjectService.setObject({ group: "apps", object: pluginConfig["code"], data: JSON.stringify(pluginConfig) })
+
+      this.apps[pluginConfig["code"]] = {"name": pluginConfig["name"], "version": pluginConfig["version"], "pkg": pkg}
     } else {
       console.error("Package code miss match.", pluginConfig["code"], name);
     }
