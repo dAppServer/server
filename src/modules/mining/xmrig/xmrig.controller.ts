@@ -48,7 +48,7 @@ XmrigRouter.post("/mining/xmrig/start", async (context: Context) => {
 
     let exeFile = `xmrig${os.platform() === "windows" ? ".exe" : ""}`;
 
-    exeFile = FileSystemService.path(["cli", "xmrig-6.18.0", exeFile]);
+    exeFile = FileSystemService.path(["cli", "xmrig", "xmrig-6.18.0", exeFile]);
 
     ProcessManager.run(
       exeFile,
