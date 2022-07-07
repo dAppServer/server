@@ -17,10 +17,10 @@ LetheanDaemonRouter.post("/daemon/start", async (context: Context) => {
 
     const configFile = FileSystemService.path(path.join("conf","lthn", req.configFile));
 
-    if (!FileSystemService.isFile(configFile)) {
+    if (!FileSystemService.isFile(path.join("conf","lthn", req.configFile))) {
       console.info(`Config file ${configFile} not found`);
-      if (!FileSystemService.isDir(path.join(Deno.cwd(), "conf","lthn"))) {
-        FileSystemService.ensureDir(path.join(Deno.cwd(), "conf", "lthn"));
+      if (!FileSystemService.isDir(path.join( "conf","lthn"))) {
+        FileSystemService.ensureDir(path.join( "conf", "lthn"));
       }
       FileSystemService.write(
         configFile,
