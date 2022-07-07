@@ -50,7 +50,7 @@ export class AppManager {
 
     if (pluginConfig["code"] == name) {
       const downloadUrl = pluginConfig["downloads"]["aarch64"] == undefined ? pluginConfig["downloads"]["x86_64"][Deno.build.os]['url'] : pluginConfig["downloads"][Deno.build.arch][Deno.build.os]['url'];
-      let installDir;
+      let installDir = '';
       if(pluginConfig['type'] === 'bin') {
         installDir = path.join('cli', pluginConfig['install'])
       } else if(pluginConfig['type'] === 'core' && pluginConfig['code'] === 'server'){
