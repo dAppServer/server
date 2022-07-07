@@ -1,8 +1,6 @@
 {
   "code": "server",
-  "types": [
-    "core"
-  ],
+  "type": "core",
   "name": "Application Server",
   "install": "/",
   "commands": {
