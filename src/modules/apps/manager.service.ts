@@ -1,5 +1,5 @@
 import { FileSystemService } from "../../services/fileSystemService.ts";
-import { path } from "../../../deps.ts";
+import { ensureDir, path } from "../../../deps.ts";
 import { LetheanDownloadService } from "../../services/download.service.ts";
 import { StoredObjectService } from "../../services/config/store.ts";
 /**
@@ -61,6 +61,11 @@ export class AppManager {
         downloadUrl,
         installDir
       );
+
+      if(pluginConfig['namespace']){
+        await ensureDir(FileSystemService.path(path.join('data', pluginConfig['namespace'])))
+        await ensureDir(FileSystemService.path(path.join('conf', pluginConfig['namespace'])))
+      }
 
       StoredObjectService.setObject({ group: "apps", object: pluginConfig["code"], data: JSON.stringify(pluginConfig) })
 
