@@ -1,6 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Deno:Compile" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/mod.ts" programParameters="compile -A --unstable --import-map vendor/import_map.json">
-    <option name="applicationArguments" value=" " />
-    <method v="2" />
-  </configuration>
-</component>
