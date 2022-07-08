@@ -18,7 +18,7 @@ jobs:
       - run: npm install
       - name: Testing
         run: npm run test
-      - run: npm run server:build:windows && mv build\lthn.exe lthn.exe
+      - run: npm run server:build:windows
       - uses: papeloto/action-zip@v1
         with:
           files: lthn.exe
@@ -49,7 +49,7 @@ jobs:
       - name: Testing
         run: npm run test
       - run: npm run server:build:macos-arm
-      - run: chmod +x build/lthn && mv build/lthn lthn
+      - run: chmod +x lthn
       - run: tar -cvf macos-arm.tar lthn
       - uses: actions/upload-artifact@v3
         with:
@@ -77,7 +77,7 @@ jobs:
       - name: Testing
         run: npm run test
       - run: npm run server:build:macos-intel
-      - run: chmod +x build/lthn && mv build/lthn lthn
+      - run: chmod +x lthn
       - run: tar -cvf macos-intel.tar lthn
       - uses: actions/upload-artifact@v3
         with:
@@ -106,7 +106,7 @@ jobs:
       - name: Generate coverage report
         run: deno coverage --lcov cov > cov.lcov
       - run: npm run server:build:linux
-      - run: chmod +x build/lthn && mv build/lthn lthn && tar -cvf linux.tar lthn
+      - run: chmod +x lthn && tar -cvf linux.tar lthn
       - name: Upload coverage report
         uses: coverallsapp/github-action@master
         with:
