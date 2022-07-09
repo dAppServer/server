@@ -18,10 +18,11 @@ jobs:
       - run: npm install
       - name: Testing
         run: make test
-      - run: make build-windows && mv build/lthn.exe ./lthn.exe
+      - run: make build-windows
       - uses: papeloto/action-zip@v1
         with:
-          files: lthn.exe
+          files: build/lthn.exe
+          recursive: false
           dest: windows.zip
       - uses: actions/upload-artifact@v3
         with:
