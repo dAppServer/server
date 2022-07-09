@@ -17,8 +17,8 @@ jobs:
           node-version: 16.x
       - run: npm install
       - name: Testing
-        run: npm run test
-      - run: npm run server:build:windows
+        run: make test
+      - run: make build-windows
       - uses: papeloto/action-zip@v1
         with:
           files: lthn.exe
@@ -47,8 +47,8 @@ jobs:
           node-version: 16.x
       - run: npm install
       - name: Testing
-        run: npm run test
-      - run: npm run server:build:macos-arm
+        run: make test
+      - run: make build-macos-arm
       - run: chmod +x lthn
       - run: tar -cvf macos-arm.tar lthn
       - uses: actions/upload-artifact@v3
@@ -75,8 +75,8 @@ jobs:
           node-version: 16.x
       - run: npm install
       - name: Testing
-        run: npm run test
-      - run: npm run server:build:macos-intel
+        run: make-test
+      - run: make build-macos
       - run: chmod +x lthn
       - run: tar -cvf macos-intel.tar lthn
       - uses: actions/upload-artifact@v3
@@ -101,17 +101,8 @@ jobs:
           node-version: 16.x
       - run: npm install
       - run: sudo apt-get update && sudo apt-get -y install libwebkit2gtk-4.0-37
-      - name: Testing
-        run: npm run test
-      - name: Generate coverage report
-        run: deno coverage --lcov cov > cov.lcov
-      - run: npm run server:build:linux
+      - run: make build-linux
       - run: chmod +x lthn && tar -cvf linux.tar lthn
-      - name: Upload coverage report
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: cov.lcov
       - uses: actions/upload-artifact@v3
         with:
           name: linux
