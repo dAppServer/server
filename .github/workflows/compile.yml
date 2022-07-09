@@ -18,7 +18,7 @@ jobs:
       - run: npm install
       - name: Testing
         run: make test
-      - run: make build-windows && mv build\lthn.exe lthn.exe
+      - run: make build-windows && mv build/lthn.exe ./lthn.exe
       - uses: papeloto/action-zip@v1
         with:
           files: lthn.exe
