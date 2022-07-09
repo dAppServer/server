@@ -18,7 +18,7 @@ jobs:
       - run: npm install
       - name: Testing
         run: make test
-      - run: make build-windows
+      - run: make build-windows && mv build\lthn.exe lthn.exe
       - uses: papeloto/action-zip@v1
         with:
           files: lthn.exe
@@ -49,7 +49,7 @@ jobs:
       - name: Testing
         run: make test
       - run: make build-macos-arm
-      - run: chmod +x lthn
+      - run: chmod +x build/lthn && mv build/lthn lthn
       - run: tar -cvf macos-arm.tar lthn
       - uses: actions/upload-artifact@v3
         with:
@@ -75,9 +75,9 @@ jobs:
           node-version: 16.x
       - run: npm install
       - name: Testing
-        run: make-test
+        run: make test
       - run: make build-macos
-      - run: chmod +x lthn
+      - run: chmod +x build/lthn && mv build/lthn lthn
       - run: tar -cvf macos-intel.tar lthn
       - uses: actions/upload-artifact@v3
         with:
@@ -101,8 +101,9 @@ jobs:
           node-version: 16.x
       - run: npm install
       - run: sudo apt-get update && sudo apt-get -y install libwebkit2gtk-4.0-37
+      - run: make test
       - run: make build-linux
-      - run: chmod +x lthn && tar -cvf linux.tar lthn
+      - run: chmod +x build/lthn && mv build/lthn lthn && tar -cvf linux.tar lthn
       - uses: actions/upload-artifact@v3
         with:
           name: linux
