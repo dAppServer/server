@@ -60,7 +60,7 @@ build-macos-arm: $(DENO_BIN)  ## Build binary for macOS Arm
 
 
 test: $(DENO_BIN) ## Run full testsuite
-	$(call deno,test -A --unstable -c deno.json --import-map vendor/import_map.json $(TEST_DIR))
+	$(call deno,test --coverage=cov -A --unstable -c deno.json --import-map vendor/import_map.json $(TEST_DIR))
 
 test-apps: $(DENO_BIN) ## Run Testsuite: apps
 	$(call deno,test -A --unstable -c deno.json --import-map vendor/import_map.json $(TEST_DIR)apps)
