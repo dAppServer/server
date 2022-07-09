@@ -39,7 +39,7 @@ DENO_ZIP := $(DENO_DIR)\bin\deno.zip
 $(DENO_BIN):
 	md $(DENO_DIR)\bin
 	curl -Lo $(DENO_ZIP) $(RELEASE_URL)
-	tar xf $(DENO_ZIP) -C $(DENO_DIR)\bin
+	unzip -a $(DENO_ZIP) -d $(DENO_DIR)\bin
 	del /q $(DENO_ZIP)
 
 define deno
