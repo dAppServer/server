@@ -20,7 +20,9 @@
   },
   "fmt": {
     "files": {
-      "include": ["src/"],
+      "include": [
+        "src/"
+      ],
       "exclude": [
         "src/testdata/",
         "third_party/",
