@@ -22,7 +22,7 @@ Deno.test("GET /apps/marketplace", async () => {
   const market = JSON.parse(data.text)
   assertEquals(market['version'], 1)
   assertEquals(market['apps'][0]['name'], 'Application Server')
-  assertEquals(market['apps'][0]['types'][0], 'core')
+  assertEquals(market['apps'][0]['type'], 'core')
   assertEquals(market['apps'][0]['pkg'], 'https://raw.githubusercontent.com/dAppServer/server/main/.itw3.json')
   assertArrayIncludes(market['dirs'], ['blockchain'])
 });
@@ -33,6 +33,7 @@ Deno.test("GET /apps/marketplace - Category", async () => {
   const market = JSON.parse(data.text)
   assertEquals(market['version'], 1)
   assertEquals(market['apps'][0]['name'], 'Lethean Blockchain')
+  assertEquals(market['apps'][0]['type'], 'bin')
   assertEquals(market['apps'][0]['pkg'], 'https://raw.githubusercontent.com/letheanVPN/blockchain-iz/main/.itw3.json')
   assertArrayIncludes(market['dirs'], [])
 });
