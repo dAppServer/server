@@ -1,34 +1,39 @@
-import { Context, HttpException, os, path, Router } from "../../../../deps.ts";
+import { Context, os, path, Router } from "../../../../deps.ts";
 import { FileSystemService } from "../../../services/fileSystemService.ts";
-import { IniService } from "../../../services/config/ini.service.ts";
 import { ProcessManager } from "../../../services/process/process.service.ts";
 import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
 
 const LetheanRPCRouter = new Router();
 
 LetheanRPCRouter.post("/daemon/wallet/rpc", async (context: Context) => {
-  const body = context.request.body({ type: "json" });
-  const req = await body.value;
-  const exeFile = "lethean-wallet-rpc" +
-    (os.platform() === "windows" ? ".exe" : "");
+  try {
 
-  req["walletDir"] = FileSystemService.path(req["walletDir"]);
-  ProcessManager.run(
-    path.join(
-      Deno.cwd(),
-      "cli",
-      "lthn",
-      exeFile,
-    ),
-    req,
-    {
-      key: exeFile.split("/").pop(),
-      stdErr: (stdErr: unknown) => console.log(stdErr),
-      stdIn: (stdIn: unknown) => console.log(stdIn),
-      stdOut: (stdOut: unknown) => console.log(stdOut),
-    } as ProcessManagerRequest,
-  );
-  context.response.body = "started";
+    const body = context.request.body({ type: "json" });
+    const req = await body.value;
+    const exeFile = "lethean-wallet-rpc" +
+      (os.platform() === "windows" ? ".exe" : "");
+
+    req["walletDir"] = FileSystemService.path(req["walletDir"]);
+    ProcessManager.run(
+      path.join(
+        Deno.cwd(),
+        "cli",
+        "lthn",
+        exeFile,
+      ),
+      req,
+      {
+        key: exeFile.split("/").pop(),
+        stdErr: (stdErr: unknown) => console.log(stdErr),
+        stdIn: (stdIn: unknown) => console.log(stdIn),
+        stdOut: (stdOut: unknown) => console.log(stdOut),
+      } as ProcessManagerRequest,
+    );
+    context.response.status = 200
+    context.response.body = "started";
+  }catch (e) {
+    context.response.status = 500
+  }
 });
 
 LetheanRPCRouter.post("/daemon/wallet/json_rpc", async (context: Context) => {
@@ -54,7 +59,8 @@ LetheanRPCRouter.post("/daemon/wallet/json_rpc", async (context: Context) => {
     context.response.body = await postReq.text();
     // console.log(context.response.body)
   } catch (error) {
-    return false;
+    context.response.body = error.text
+    context.response.status = 500
   }
 });
 

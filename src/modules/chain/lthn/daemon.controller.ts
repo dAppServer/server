@@ -47,7 +47,8 @@ LetheanDaemonRouter.post("/daemon/start", async (context: Context) => {
     );
     context.response.body = JSON.stringify({ "result": true });
   } catch (e) {
-    throw new HttpException("Not Found", 404);
+    context.response.status = 404
+    context.response.body = "Not Found"
   }
 });
 
@@ -69,10 +70,11 @@ LetheanDaemonRouter.post("/daemon/json_rpc", async (context: Context) => {
         body: JSON.stringify(req["req"]),
       },
     );
-
+    context.response.status = 200
     context.response.body = await postReq.text();
   } catch (error) {
-    return false;
+    context.response.status = 500
+    context.response.body = error.text
   }
 });
 
