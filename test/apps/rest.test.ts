@@ -21,7 +21,7 @@ Deno.test("GET /apps/marketplace", async () => {
   const data = await request.get("/apps/marketplace").expect(200);
   const market = JSON.parse(data.text)
   assertEquals(market['version'], 1)
-  assertEquals(market['apps'][0]['name'], 'server')
+  assertEquals(market['apps'][0]['name'], 'Application Server')
   assertEquals(market['apps'][0]['types'][0], 'core')
   assertEquals(market['apps'][0]['pkg'], 'https://raw.githubusercontent.com/dAppServer/server/main/.itw3.json')
   assertArrayIncludes(market['dirs'], ['blockchain'])

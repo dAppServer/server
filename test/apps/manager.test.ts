@@ -28,7 +28,7 @@ Deno.test("App Marketplace - List", async () => {
     //console.log()
     const market = await manager.getMarketPlaceApps()
     assertEquals(market['version'], 1)
-    assertEquals(market['apps'][0]['name'], 'server')
+    assertEquals(market['apps'][0]['name'], 'Application Server')
     assertEquals(market['apps'][0]['types'][0], 'core')
     assertEquals(market['apps'][0]['pkg'], 'https://raw.githubusercontent.com/dAppServer/server/main/.itw3.json')
     assertArrayIncludes(market['dirs'], ['blockchain'])
