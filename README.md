@@ -24,10 +24,9 @@ write tests, it'll be sensible.
 ```
 
 - Build Status:
-  [![lethean-server](https://github.com/letheanVPN/lethean-server/actions/workflows/compile.yml/badge.svg)](https://github.com/letheanVPN/lethean-server/actions/workflows/compile.yml)
+  [![lethean-server](https://github.com/dAppServer/server/actions/workflows/compile.yml/badge.svg)](https://github.com/dAppServer/server/actions/workflows/compile.yml)
 - Test Coverage:
-  [![Coverage Status](https://coveralls.io/repos/github/letheanVPN/lethean-server/badge.svg?branch=main)](https://coveralls.io/github/letheanVPN/lethean-server?branch=main)
-
+  [![Coverage Status](https://coveralls.io/repos/github/dAppServer/server/badge.svg?branch=main)](https://coveralls.io/github/dAppServer/server?branch=main)
 ## Requirements
 
 1. Deno https://deno.land
