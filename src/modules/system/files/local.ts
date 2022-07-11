@@ -16,6 +16,19 @@ FileSystemRouter.post("/system/files/list", async (context: Context) => {
   }
 });
 
+FileSystemRouter.post("/system/files/detailed-list", async (context: Context) => {
+  try {
+    const body = context.request.body({ type: "json" });
+    const req = await body.value;
+
+    context.response.body = JSON.stringify(FileSystemService.detailedList(req.path));
+    context.response.status = 200;
+  } catch (e) {
+    context.response.status = 404;
+    context.response.body = "Not Found";
+  }
+});
+
 FileSystemRouter.post("/system/files/path", async (context: Context) => {
   try {
     const body = context.request.body({ type: "json" });

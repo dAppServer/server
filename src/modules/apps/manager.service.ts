@@ -2,6 +2,7 @@ import { FileSystemService } from "../../services/fileSystemService.ts";
 import { ensureDir, path } from "../../../deps.ts";
 import { LetheanDownloadService } from "../../services/download.service.ts";
 import { StoredObjectService } from "../../services/config/store.ts";
+
 /**
  * Install an app from the Lethean repository
  * @param appName The name of the app to install
@@ -12,7 +13,7 @@ export class AppManager {
   plugin: { code: string; config: string } = {
     code: "lthn-app-setup",
     config:
-      "https://raw.githubusercontent.com/letheanVPN/lthn-app-setup/main/lthn.json",
+      "https://raw.githubusercontent.com/letheanVPN/lthn-app-setup/main/lthn.json"
   };
   public apps: any;
 
@@ -25,7 +26,7 @@ export class AppManager {
     if (plugin) {
       this.plugin = plugin;
     }
-    this.getConfig()
+    this.getConfig();
   }
 
   /**
@@ -35,7 +36,7 @@ export class AppManager {
    */
   installed() {
     return FileSystemService.isDir(
-      `apps/${this.plugin.code.split("-").join("/")}`,
+      `apps/${this.plugin.code.split("-").join("/")}`
     );
   }
 
@@ -49,27 +50,46 @@ export class AppManager {
     const pluginConfig = await jsonResponse.json();
 
     if (pluginConfig["code"] == name) {
-      const downloadUrl = pluginConfig["downloads"]["aarch64"] == undefined ? pluginConfig["downloads"]["x86_64"][Deno.build.os]['url'] : pluginConfig["downloads"][Deno.build.arch][Deno.build.os]['url'];
-      let installDir = '';
-      if(pluginConfig['type'] === 'bin') {
-        installDir = path.join('cli', pluginConfig['install'])
-      } else if(pluginConfig['type'] === 'core' && pluginConfig['code'] === 'server'){
-        installDir = path.join( pluginConfig['install'])
+      /**
+       * for types bin and core, we are just downloading backend services to be used by te server
+       */
+      if (pluginConfig["type"] == "bin" || pluginConfig["type"] == "core") {
+        const downloadUrl = pluginConfig["downloads"]["aarch64"] == undefined ? pluginConfig["downloads"]["x86_64"][Deno.build.os]["url"] : pluginConfig["downloads"][Deno.build.arch][Deno.build.os]["url"];
+        let installDir = "";
+        if (pluginConfig["type"] === "bin") {
+          installDir = path.join("cli", pluginConfig["install"]);
+          pluginConfig["directory"] =  FileSystemService.path(installDir)
+        } else if (pluginConfig["type"] === "core" && pluginConfig["code"] === "server") {
+          installDir = path.join(pluginConfig["install"]);
+        }
+        await LetheanDownloadService.downloadContents(
+          downloadUrl,
+          installDir
+        );
+
+        if (pluginConfig["namespace"]) {
+          await ensureDir(FileSystemService.path(path.join("data", pluginConfig["namespace"])));
+          await ensureDir(FileSystemService.path(path.join("conf", pluginConfig["namespace"])));
+        }
+
+        /**
+         * the type `app` is the only way to get UI elements in and cant included binaries, but can depend on a binary package
+         */
+      } else {
+
+        await LetheanDownloadService.downloadContents(
+          pluginConfig["app"]["url"],
+          `apps/${pluginConfig["code"].split("-").join("/")}`
+        );
+
       }
+      StoredObjectService.setObject({ group: "apps", object: pluginConfig["code"], data: JSON.stringify(pluginConfig) });
 
-      await LetheanDownloadService.downloadContents(
-        downloadUrl,
-        installDir
-      );
+      this.apps[pluginConfig["code"]] = { "name": pluginConfig["name"], "version": pluginConfig["version"], "pkg": pkg };
 
-      if(pluginConfig['namespace']){
-        await ensureDir(FileSystemService.path(path.join('data', pluginConfig['namespace'])))
-        await ensureDir(FileSystemService.path(path.join('conf', pluginConfig['namespace'])))
+      if(pluginConfig['type'] == 'app'){
+        this.apps[pluginConfig["code"]]['directory'] = `apps/${pluginConfig["code"].split("-").join("/")}`
       }
-
-      StoredObjectService.setObject({ group: "apps", object: pluginConfig["code"], data: JSON.stringify(pluginConfig) })
-
-      this.apps[pluginConfig["code"]] = {"name": pluginConfig["name"], "version": pluginConfig["version"], "pkg": pkg}
     } else {
       console.error("Package code miss match.", pluginConfig["code"], name);
     }
@@ -77,6 +97,11 @@ export class AppManager {
     return true;
   }
 
+  uninstall(code: string){
+    if(this.apps[code] && this.apps[code]['directory']){
+      FileSystemService.delete(this.apps[code]['directory'])
+    }
+  }
   /**
    * Load application install state
    *
@@ -85,12 +110,12 @@ export class AppManager {
   getConfig() {
     this.apps = StoredObjectService.getObject({
       group: "apps",
-      object: "installed",
+      object: "installed"
     });
 
-    try{
-      this.apps = JSON.parse(this.apps)
-    }catch (e) {
+    try {
+      this.apps = JSON.parse(this.apps);
+    } catch (e) {
 
     }
     return this.apps;
@@ -107,11 +132,11 @@ export class AppManager {
     if (!this.apps[name]) {
       this.apps[name] = pkg ? pkg : true;
     }
-    if(pkg){
-      await this.install(name, pkg)
+    if (pkg) {
+      await this.install(name, pkg);
     }
 
-    return this.saveConfig()
+    return this.saveConfig();
   }
 
   /**
@@ -121,10 +146,11 @@ export class AppManager {
    * @returns {Promise<any>}
    */
   removeApp(name: string) {
-    if(this.apps[name]){
+    if (this.apps[name]) {
+      this.uninstall(name)
       delete this.apps[name];
     }
-    return  this.saveConfig();
+    return this.saveConfig();
   }
 
 
@@ -133,7 +159,7 @@ export class AppManager {
    *
    * @returns {Promise<void>}
    */
-   saveConfig() {
+  saveConfig() {
     return StoredObjectService.setObject({
       group: "apps",
       object: "installed",
@@ -142,21 +168,21 @@ export class AppManager {
 
   }
 
-  async getMarketPlaceApps(opts?:{dir:string}) {
-    let dir = ''
-     if(opts && opts.dir){
-       dir = `${opts.dir}/`
-     }
-    let url = `https://raw.githubusercontent.com/dAppServer/app-marketplace/main/${dir}index.json`
+  async getMarketPlaceApps(opts?: { dir: string }) {
+    let dir = "";
+    if (opts && opts.dir) {
+      dir = `${opts.dir}/`;
+    }
+    let url = `https://raw.githubusercontent.com/dAppServer/app-marketplace/main/${dir}index.json`;
 
     const postReq = await fetch(
       url,
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         }
-      },
+      }
     );
 
     return await postReq.json();

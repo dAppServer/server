@@ -1,4 +1,5 @@
 import { ensureDirSync, path } from "../../deps.ts";
+import DirEntry = Deno.DirEntry;
 
 /**
  * @class
@@ -107,6 +108,22 @@ export class FileSystemService {
     }
   }
 
+  static detailedList(path: string): DirEntry[] {
+    const ret = [];
+    try {
+      for (
+        const dirEntry of Deno.readDirSync(
+          FileSystemService.path(path),
+        )
+      ) {
+          ret.push(dirEntry);
+      }
+      return ret;
+    } catch (e) {
+      return [];
+    }
+  }
+
   /**
    * Write to the Lethean data folder
    *
@@ -147,7 +164,11 @@ export class FileSystemService {
    */
   static delete(filepath: string) {
     try {
-      Deno.removeSync(FileSystemService.path(filepath));
+      const delPath = FileSystemService.path(filepath);
+      if(delPath.length < 3){
+        return false;
+      }
+      Deno.removeSync(delPath, { recursive: true });
     } catch (e) {
       return false;
     }
