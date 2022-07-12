@@ -89,6 +89,15 @@ export class AppManager {
 
       if(pluginConfig['type'] == 'app'){
         this.apps[pluginConfig["code"]]['directory'] = `apps/${pluginConfig["code"].split("-").join("/")}`
+
+        if(pluginConfig['menu']){
+          let menu = JSON.parse(StoredObjectService.getObject({ group: 'apps', object: 'menu'}) as string)
+          if(!menu.forEach((item: any) => { if(item['title']){return true}})){
+            menu.push({app: pluginConfig['code'], ...pluginConfig['menu']['main']})
+          }
+          StoredObjectService.setObject({ group: "apps", object: 'menu', data: JSON.stringify(menu) });
+
+        }
       }
     } else {
       console.error("Package code miss match.", pluginConfig["code"], name);
@@ -100,7 +109,19 @@ export class AppManager {
   uninstall(code: string){
     if(this.apps[code] && this.apps[code]['directory']){
       FileSystemService.delete(this.apps[code]['directory'])
-    }
+      try {
+        let menu = JSON.parse(StoredObjectService.getObject({ group: 'apps', object: 'menu' }) as string)
+        let newMenu: string[] = menu.map((item: any) => {
+          if (item['title'] !== code) {
+            return item
+          }
+        })
+        StoredObjectService.setObject({ group: "apps", object: menu, data: JSON.stringify(newMenu) });
+      }catch (e) {
+
+      }
+      }
+
   }
   /**
    * Load application install state
