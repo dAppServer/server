@@ -1,9 +1,15 @@
 import { AppController } from "./src/app.controller.ts";
 import { parse } from "./deps.ts";
 
-const app = new AppController(parse(Deno.args));
+const startAgs = parse(Deno.args);
+if (startAgs["serve"]) {
 
-app.startServer().then((r: any) => console.log(r));
+} else {
+
+  const app = new AppController(startAgs);
+
+  app.startServer().then((r: any) => console.log(r));
+}
 
 
 

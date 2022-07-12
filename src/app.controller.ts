@@ -38,6 +38,15 @@ export class AppController {
     this.baseRoutes();
     this.moduleRoutes();
 
+    this.app.use( async (context: Context, next: any) => {
+      try {
+        await context.send({
+          root: `${Deno.cwd()}/apps`
+        });
+      } catch {
+        await next();
+      }
+    });
   }
 
   async startServer() {
@@ -77,9 +86,7 @@ export class AppController {
   }
 
   baseRoutes() {
-    this.router.get("/", (ctx: Context) => {
-      ctx.response.body = new Date().toString();
-    });
+
 
     this.app.use(corsMiddleware);
     this.app.use(requestIdMiddleware);
