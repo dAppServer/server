@@ -1,17 +1,17 @@
 import { assertStrictEquals,assertEquals, assertArrayIncludes, path } from "../../deps.ts";
 import { AppManager } from "../../src/modules/apps/manager.service.ts";
-const manager = new AppManager();
+
 
 try{
     Deno.removeSync(path.join(Deno.cwd(),'data', 'objects', 'apps', 'installed.json'))
 }catch (e) {
 
 }
-
+const manager = new AppManager();
 Deno.test("App Manager - install", async () => {
 
     assertEquals( manager.apps, {  });
-    await manager.installApp('server', "https://raw.githubusercontent.com/dAppServer/server/main/.itw3.json")
+    await manager.installApp("server", "https://raw.githubusercontent.com/dAppServer/server/main/.itw3.json")
     assertEquals( manager.apps['server'] !== undefined, true);
 
 
