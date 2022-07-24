@@ -108,16 +108,6 @@ Deno.test("FileSystemService.ensureDir", async () => {
   );
   assertEquals(
     FileSystemService.delete("testing"),
-    false,
-    "Could not delete testing",
-  );
-  assertEquals(
-    FileSystemService.delete("testing/testing"),
-    true,
-    "Could not delete testing",
-  );
-  assertEquals(
-    FileSystemService.delete("testing"),
     true,
     "Could not delete testing",
   );

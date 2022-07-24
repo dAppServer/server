@@ -161,14 +161,17 @@ export class FileSystemService {
    * Delete a file
    *
    * @param filepath string
+   * @param recursive
    */
-  static delete(filepath: string) {
+  static delete(filepath: string, recursive = true) {
     try {
       const delPath = FileSystemService.path(filepath);
+      // @todo consider changing this, quick add to stop rm /
       if(delPath.length < 3){
         return false;
       }
-      Deno.removeSync(delPath, { recursive: true });
+
+      Deno.removeSync(delPath, { recursive });
     } catch (e) {
       return false;
     }
