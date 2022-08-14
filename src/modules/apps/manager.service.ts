@@ -181,7 +181,7 @@ export class AppManager {
   }
 
   /**
-   * Load application install state
+   * Load application install state from the stored object service
    *
    * @returns {Promise<any>}
    */
@@ -194,8 +194,17 @@ export class AppManager {
     try {
       this.apps = JSON.parse(this.apps);
     } catch (e) {
+      this.apps = {}
+      if(!FileSystemService.isFile('data/objects/apps/installed.json')){
+        StoredObjectService.setObject({
+          group: "apps",
+          object: "installed",
+          data: this.apps
+        });
+      }else{
+        console.error("Failed to load config object, but it the file is present. Please check data/objects/apps/installed.json is valid json, or delete the file for it to be remade.")
+      }
 
-      console.error(e)
     }
     return this.apps;
   }
