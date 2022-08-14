@@ -134,7 +134,7 @@ export class AppController {
       if (Deno.env.get("LETHEAN_SECURITY_CHECK") === "false") {
         console.info("[SERVER] Security check disabled");
       }
-
+      // create OpenPGP keypair if non found for the installed path
       if (!FileSystemService.isFile("users/server.lthn.pub")) {
         console.info("[SECURITY] Missing Server keypair, Generating...");
         await CryptOpenPGP.createServerKeyPair();
@@ -147,7 +147,7 @@ export class AppController {
       if (!FileSystemService.isFile("users/server.lthn.pub")) {
         error.push("Missing Server public key, Exiting...");
       }
-
+      // check to see if we are able to unlock the private key for the paths OpenPGP key
       if (
         FileSystemService.isFile("users/server.lthn.pub")
       ) {
@@ -164,6 +164,25 @@ export class AppController {
       } else {
         error.push("[SERVER] Server.pub not found");
       }
+
+      // check the base folders exsists, can be done better later
+      if (!FileSystemService.isDir('wallets')) {
+        FileSystemService.ensureDir('wallets')
+      }
+      if (!FileSystemService.isDir('apps')) {
+        FileSystemService.ensureDir('apps')
+      }
+      if (!FileSystemService.isDir('conf')) {
+        FileSystemService.ensureDir('conf')
+      }
+      if (!FileSystemService.isDir('cli')) {
+        FileSystemService.ensureDir('cli')
+      }
+      if (!FileSystemService.isDir('data')) {
+        FileSystemService.ensureDir('data')
+      }
+
+
     } catch (error) {
       error.push("[SECURITY] Failed to ensure safe environment, shutting down...");
     }

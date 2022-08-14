@@ -135,6 +135,12 @@ export class AppManager {
   }
 
 
+  /**
+   * adds menu entries to application menu
+   *
+   * @param {PluginConfig} plugin
+   * @returns {boolean}
+   */
   installMenu(plugin: PluginConfig) {
     let menu = JSON.parse(StoredObjectService.getObject({ group: "apps", object: "menu" }) as string);
     if (!menu.forEach((item: any) => {
@@ -189,6 +195,7 @@ export class AppManager {
       this.apps = JSON.parse(this.apps);
     } catch (e) {
 
+      console.error(e)
     }
     return this.apps;
   }
