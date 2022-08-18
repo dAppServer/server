@@ -4,6 +4,11 @@ import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
 import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
 import { assertEquals } from "../../deps-test.ts";
 
+/**
+ * Creates a OpenPGP user account relative to the running server
+ * files should live in `$(pwd)/users/${QuasiSalt.hash("test")}.lthn.pub`
+ * password for arnmoured OpenPGP files
+ */
 Deno.test("LetheanAccount.create", async () => {
   const key: any = await LetheanAccount.create("test", "test");
   await LetheanAccount.create("test2", "test");
@@ -22,6 +27,9 @@ Deno.test("LetheanAccount.create", async () => {
   );
 });
 
+/**
+ * Perform a login programmatically, the process is best described in the Rest test case
+ */
 Deno.test("LetheanAccount.login - Good", async () => {
   if (!FileSystemService.isFile("users/server.lthn.pub")) {
     await CryptOpenPGP.createServerKeyPair();
@@ -44,6 +52,10 @@ Deno.test("LetheanAccount.login - Good", async () => {
   );
 });
 
+/**
+ * this should fail from the message inside the encrypted payload being signed by the wrong key
+ * than the hash requested
+ */
 Deno.test("LetheanAccount.login - Bad Not signed by req user", async () => {
   if (!FileSystemService.isFile("users/server.lthn.pub")) {
     await CryptOpenPGP.createServerKeyPair();
@@ -63,6 +75,9 @@ Deno.test("LetheanAccount.login - Bad Not signed by req user", async () => {
   assertEquals(await LetheanAccount.login(encryptedTest2), false);
 });
 
+/**
+ * fail because the system dosnt know this user
+ */
 Deno.test("LetheanAccount.login - Bad Not known user", async () => {
   if (!FileSystemService.isFile("users/server.lthn.pub")) {
     await CryptOpenPGP.createServerKeyPair();
@@ -82,6 +97,9 @@ Deno.test("LetheanAccount.login - Bad Not known user", async () => {
   assertEquals(await LetheanAccount.login(encryptedTest2), false);
 });
 
+/**
+ * Clean up the test data (and test deleting)
+ */
 Deno.test("LetheanAccount.delete", async () => {
   await LetheanAccount.delete("test");
   await LetheanAccount.delete("test2");
