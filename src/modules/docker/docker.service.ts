@@ -1,14 +1,13 @@
-import Docker from "https://deno.land/x/denocker/index.ts";
-import { ContainerCreate } from "https://deno.land/x/denocker/types.ts";
+import * as denocker from 'https://deno.land/x/denocker@v0.2.1/index.ts';
 
 export class DockerService {
-  public docker: Docker;
+  public docker: denocker.Docker;
 
   constructor() {
-    this.docker = new Docker("/var/run/docker.sock");
+    this.docker = new denocker.Docker("/var/run/docker.sock");
   }
 
-  async createContainer(name: string, req: ContainerCreate) {
+  async createContainer(name: string, req: denocker.ContainerCreate) {
     return await this.docker.containers.create(name, req);
   }
 
