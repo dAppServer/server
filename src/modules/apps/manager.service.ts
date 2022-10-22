@@ -101,7 +101,7 @@ export class AppManager {
           plugin["downloads"]["x86_64"][Deno.build.os]["url"],
           installDir
         );
-      } else if(plugin['downloads']) {
+      } else if (plugin["downloads"]) {
         await LetheanDownloadService.downloadContents(
           plugin["downloads"][Deno.build.arch][Deno.build.os]["url"],
           installDir
@@ -116,17 +116,24 @@ export class AppManager {
 
     } else if (plugin["type"] && PluginType.APP) {
 
-      if(plugin["downloads"]){
+      if (plugin["downloads"]) {
         await LetheanDownloadService.downloadContents(
           plugin["downloads"]["app"],
           `apps/${plugin["code"].split("-").join("/")}`
         );
-      }else if(plugin['app']){
+      } else if (plugin["app"]) {
         await LetheanDownloadService.downloadContents(
           plugin["app"]["url"],
           `apps/${plugin["code"].split("-").join("/")}`
         );
+        if (plugin["app"]["hooks"] && plugin["app"]["hooks"]["rename"] &&
+          plugin["app"]["hooks"]["rename"]["from"] &&
+          plugin["app"]["hooks"]["rename"]["to"]) {
+          Deno.renameSync(`apps/${plugin["code"].split("-").join("/")}/${plugin["app"]["hooks"]["rename"]["from"]}`,
+            `apps/${plugin["code"].split("-").join("/")}/${plugin["app"]["hooks"]["rename"]["to"]}`);
+        }
       }
+
 
     } else {
       console.log("Plugin type not known");
@@ -203,15 +210,15 @@ export class AppManager {
     try {
       this.apps = JSON.parse(this.apps);
     } catch (e) {
-      this.apps = {}
-      if(!FileSystemService.isFile('data/objects/apps/installed.json')){
+      this.apps = {};
+      if (!FileSystemService.isFile("data/objects/apps/installed.json")) {
         StoredObjectService.setObject({
           group: "apps",
           object: "installed",
           data: this.apps
         });
-      }else{
-        console.error("Failed to load config object, but it the file is present. Please check data/objects/apps/installed.json is valid json, or delete the file for it to be remade.")
+      } else {
+        console.error("Failed to load config object, but it the file is present. Please check data/objects/apps/installed.json is valid json, or delete the file for it to be remade.");
       }
 
     }

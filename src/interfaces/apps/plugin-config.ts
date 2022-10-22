@@ -8,7 +8,7 @@ export interface PluginConfig {
   code: string
   depends: any
   downloads?: PluginDownloads
-  app?: {url:string, type: string}
+  app?: {url:string, type: string, hooks?:{rename: { from: string, to: string }}}
   menu: any
   name: string
   namespace: string
