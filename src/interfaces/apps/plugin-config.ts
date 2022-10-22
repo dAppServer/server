@@ -7,7 +7,8 @@ export enum PluginType {
 export interface PluginConfig {
   code: string
   depends: any
-  downloads: PluginDownloads
+  downloads?: PluginDownloads
+  app?: {url:string, type: string}
   menu: any
   name: string
   namespace: string

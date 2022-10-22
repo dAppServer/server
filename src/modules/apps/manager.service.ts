@@ -95,13 +95,13 @@ export class AppManager {
 
       let installDir = "";
 
-      if (Deno.build.arch == "aarch64" && plugin["downloads"]["aarch64"]) {
+      if (Deno.build.arch == "aarch64" && plugin["downloads"] && plugin["downloads"]["aarch64"]) {
 
         await LetheanDownloadService.downloadContents(
           plugin["downloads"]["x86_64"][Deno.build.os]["url"],
           installDir
         );
-      } else {
+      } else if(plugin['downloads']) {
         await LetheanDownloadService.downloadContents(
           plugin["downloads"][Deno.build.arch][Deno.build.os]["url"],
           installDir
@@ -115,10 +115,19 @@ export class AppManager {
       }
 
     } else if (plugin["type"] && PluginType.APP) {
-      await LetheanDownloadService.downloadContents(
-        plugin["downloads"]["app"],
-        `apps/${plugin["code"].split("-").join("/")}`
-      );
+
+      if(plugin["downloads"]){
+        await LetheanDownloadService.downloadContents(
+          plugin["downloads"]["app"],
+          `apps/${plugin["code"].split("-").join("/")}`
+        );
+      }else if(plugin['app']){
+        await LetheanDownloadService.downloadContents(
+          plugin["app"]["url"],
+          `apps/${plugin["code"].split("-").join("/")}`
+        );
+      }
+
     } else {
       console.log("Plugin type not known");
       return false;
