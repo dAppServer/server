@@ -34,8 +34,8 @@
         "users/",
         "cli/",
         "conf/"
-
       ]
     }
-  }
+  },
+  "importMap": "./vendor/import_map.json"
 }

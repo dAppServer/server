@@ -1,17 +1,13 @@
 {
   "imports": {
     "https://deno.land/x/cors/mod.ts": "./deno.land/x/cors@v1.2.2/mod.ts",
-    "https://deno.land/x/oak/mod.ts": "./deno.land/x/oak@v10.6.0/mod.ts",
-    "https://deno.land/x/denocker/index.ts": "./deno.land/x/denocker@v0.2.0/index.ts",
-    "https://deno.land/x/denocker/types.ts": "./deno.land/x/denocker@v0.2.0/types.ts",
-    "https://deno.land/x/base64/mod.ts": "./deno.land/x/base64@v0.2.1/mod.ts",
+    "https://deno.land/x/oak/mod.ts": "./deno.land/x/oak@v11.1.0/mod.ts",
     "https://cdn.skypack.dev/lodash": "./cdn.skypack.dev/lodash.js",
     "https://jspm.dev/superagent@6.1.0": "./jspm.dev/superagent@6.1.0.js",
-    "https://deno.land/std/fs/exists.ts": "./deno.land/std@0.147.0/fs/exists.ts",
+    "https://deno.land/std/fs/exists.ts": "./deno.land/std@0.160.0/fs/exists.ts",
     "https://cdn.skypack.dev/": "./cdn.skypack.dev/",
     "https://deno.land/": "./deno.land/",
-    "https://jspm.dev/": "./jspm.dev/",
-    "https://raw.githubusercontent.com/": "./raw.githubusercontent.com/"
+    "https://jspm.dev/": "./jspm.dev/"
   },
   "scopes": {
     "./cdn.skypack.dev/": {
