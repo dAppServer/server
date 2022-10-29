@@ -1,5 +1,7 @@
 import { Context, Router } from "../../../deps.ts";
 import { AppManager } from "./manager.service.ts";
+import { AppManagerConfig } from "./config.service.ts";
+import { AppManagerInstaller } from "./installer.service.ts";
 
 const AppManagerRouter = new Router();
 const apps = new AppManager();
@@ -7,7 +9,8 @@ const apps = new AppManager();
 AppManagerRouter.get("/apps/list", async (context: Context) => {
   try {
     context.response.status = 200;
-    context.response.body = apps.getConfig();
+    const AppConfig = new AppManagerConfig()
+    context.response.body = AppConfig.getConfig();
   } catch (e) {
     context.response.status = 404;
     context.response.body = "Not Found";
@@ -54,8 +57,8 @@ AppManagerRouter.post("/apps/remove", async (context: Context) => {
       const req = await body.value;
 
     context.response.status = 200;
-    apps.getConfig()
-    apps.removeApp(req.code);
+    const AppManager = new AppManagerInstaller()
+    AppManager.uninstall(req.code);
     context.response.body = true
   } catch (e) {
     console.log(e)
