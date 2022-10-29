@@ -1,8 +1,7 @@
-import { Command, he, path } from "../../deps.ts";
+import {  path } from "../../deps.ts";
 import { QuasiSalt } from "../services/crypt/quasi-salt.ts";
 import { CryptOpenPGP } from "../services/crypt/openpgp.ts";
 import { FileSystemService } from "../services/fileSystemService.ts";
-import { StringResponse } from "../interfaces/string-response.ts";
 
 export class LetheanAccount {
   static async login(payload: string) {
