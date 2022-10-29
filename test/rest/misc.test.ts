@@ -86,13 +86,13 @@ Deno.test("Error: Path not found -- no auth", async () => {
   await request.get("/somethingw4aedaRandom").expect(404);
 });
 
-Deno.test("GET /cert", async () => {
-  const request = await superoak(app);
-  await request.get("/cert")
-    .expect(200)
-    .expect("Content-Type", "text/plain; charset=utf-8")
-    .expect(FileSystemService.read("users/server.lthn.pub"));
-});
+//Deno.test("GET /cert", async () => {
+//  const request = await superoak(app);
+//  await request.get("/cert")
+//    .expect(200)
+//    .expect("Content-Type", "text/plain; charset=utf-8")
+//    .expect(FileSystemService.read("users/server.lthn.pub"));
+//});
 
 Deno.test("POST /system/files/read", async () => {
   const request = await superoak(app);

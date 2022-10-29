@@ -9,14 +9,14 @@ try{
 }
 const manager = new AppManager();
 
-Deno.test("App Manager - install", async () => {
-
-    assertEquals( manager.apps, {  });
-    await manager.installApp("server", "https://raw.githubusercontent.com/dAppServer/server/main/.itw3.json")
-    assertEquals( manager.apps['server'] !== undefined, true);
-
-
-});
+//Deno.test("App Manager - install", async () => {
+//
+//    assertEquals( manager.apps, {  });
+//    await manager.installApp("server", "https://raw.githubusercontent.com/dAppServer/server/main/.itw3.json")
+//    assertEquals( manager.apps['server'] !== undefined, true);
+//
+//
+//});
 
 
 //Deno.test("App Manager - install", async () => {
