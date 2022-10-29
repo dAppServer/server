@@ -11,3 +11,4 @@ lethean-server
 /apps
 /wallets
 /users
+/docs/.cache
