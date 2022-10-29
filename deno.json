@@ -3,7 +3,6 @@
     "allowJs": true,
     "lib": ["deno.window", "deno.unstable"],
     "strict": true,
-    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false
   },
