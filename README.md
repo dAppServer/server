@@ -40,3 +40,11 @@ deno run --reload --allow-all --unstable https://raw.githubusercontent.com/lethe
 https://hub.docker.com/r/lthn/server
 
 `docker pull lthn/server:latest`
+
+## documentation
+
+```shell
+cd docs
+pip install mkdocs-material mkdocs-git-revision-date-localized-plugin pillow cairosvg
+mkdocs serve
+```
