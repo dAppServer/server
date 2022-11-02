@@ -2,8 +2,29 @@
 
 Clientside PWA server mainly used within a GUI application but can be used to run a local internet accessible server (at your risk)
 
+We use Deno which is a TypeScript runtime built with Rust and TypeScript, there is no nodeJS runtime but you can use some packages as there is compatability.
 
-## Local build
+- Deno Documentation: https://deno.land/manual/introduction 
+- Deno API Reference: https://deno.land/api 
+- Deno Standard Library: https://deno.land/std?doc
+
+Deno packages, adding a new package is fine, but please run `make vendor` whenever a new package is added,
+this is because the `./vendor` folder has a code copy so that the system can be loaded with the below command.
+
+`deno run https://raw.githubusercontent.com/dAppServer/server/main/mod.ts`
+
+# Development setup
+
+## Install (Automatic)
+
+When using the Make system Deno is installed automatically relative to this folder into a folder `./third_party`
+you can also install it by running the tests with `make test`
+
+## Install Deno (Manual not needed if using Makefile)
+
+Linux/MacOS:`curl -fsSL https://deno.land/install.sh | sh` \
+PowerShell(Windows): `irm https://deno.land/install.ps1 | iex` \
+Homebrew (Mac): `brew install deno`
 
 ```shell
 git clone https://github.com/dAppServer/server.git
@@ -12,6 +33,10 @@ make run
 ```
 
 ## Build commands
+
+We use Make as many people know this and means you dont need to remember command flags;
+
+Dependencies need to be listed in `./deps.ts`
 
 ```shell
  make build-linux                    Build binary for Linux
@@ -32,3 +57,16 @@ make run
  make test                           Run full testsuite
  make vendor                         Update Vendor bundle
 ```
+
+# Application API's / Services
+
+- Static File Server
+- Filesystem Service
+- Download Service
+- Process Manager
+- Process stdIn/stdOut ZeroMQ WebSocket
+- OpenPGP / CryptPkcs8 / QuasiSalt
+- Json object store
+- `.ini` service
+- handlebars based Config file generator 
+- Package manager to install 3rd party PWAs
