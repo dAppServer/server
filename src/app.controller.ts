@@ -29,7 +29,7 @@ import { SystemBrowserRouter } from "./modules/browser/window.controller.ts";
 export class AppController {
   public app = new Application();
 
-  router = new Router();
+  router: Router = new Router();
   port = 36911;
   loadSockets = true;
 
@@ -75,28 +75,31 @@ export class AppController {
    *  - AppRouterFactory - abstract class to enforce core functionality
    */
   moduleRoutes() {
-    this.app.use(AuthRouter.routes(), AuthRouter.allowedMethods());
-    this.app.use(FileSystemRouter.routes(), FileSystemRouter.allowedMethods());
-    this.app.use(
+    this.router.use(AuthRouter.routes(), AuthRouter.allowedMethods());
+    this.router.use(FileSystemRouter.routes(), FileSystemRouter.allowedMethods());
+    this.router.use(
       LetheanDaemonRouter.routes(),
       LetheanDaemonRouter.allowedMethods()
     );
-    this.app.use(LetheanRPCRouter.routes(), LetheanRPCRouter.allowedMethods());
-    this.app.use(
+    this.router.use(LetheanRPCRouter.routes(), LetheanRPCRouter.allowedMethods());
+    this.router.use(
       SystemUpdateRouter.routes(),
       SystemUpdateRouter.allowedMethods()
     );
-    this.app.use(
+    this.router.use(
       SystemDataConfigRouter.routes(),
       SystemDataConfigRouter.allowedMethods()
     );
 //    this.app.use(DockerRouter.routes(), DockerRouter.allowedMethods());
-    this.app.use(AppManagerRouter.routes(), AppManagerRouter.allowedMethods());
-    this.app.use(XmrigRouter.routes(), XmrigRouter.allowedMethods());
-    this.app.use(
+    this.router.use(AppManagerRouter.routes(), AppManagerRouter.allowedMethods());
+    this.router.use(XmrigRouter.routes(), XmrigRouter.allowedMethods());
+    this.router.use(
       MoneroDaemonRouter.routes(),
       MoneroDaemonRouter.allowedMethods()
     );
+
+    this.app.use(this.router.routes(), this.router.allowedMethods())
+    console.info(`Loaded Routes`)
   }
 
   /**

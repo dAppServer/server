@@ -18,6 +18,7 @@ export { copy } from "https://deno.land/std@0.125.0/streams/conversion.ts";
 export { oakCors } from "https://deno.land/x/cors/mod.ts";
 export { parse } from "https://deno.land/std@0.147.0/flags/mod.ts"
 export { Application, Context, isHttpError, Status, Router, httpErrors } from "https://deno.land/x/oak/mod.ts";
+export type { RouterContext } from "https://deno.land/x/oak@v11.1.0/router.ts";
 export { HttpException } from "https://deno.land/x/oak_exception@v0.0.7/src/exception_status.ts";
 
 export { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/unzip.ts";
