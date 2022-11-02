@@ -1,8 +1,12 @@
 # Lethean Server
+[![lethean-server](https://github.com/dAppServer/server/actions/workflows/compile.yml/badge.svg)](https://github.com/dAppServer/server/actions/workflows/compile.yml)
+[![Coverage Status](https://coveralls.io/repos/github/dAppServer/server/badge.svg?branch=main)](https://coveralls.io/github/dAppServer/server?branch=main)
 
 Clientside PWA server mainly used within a GUI application but can be used to run a local internet accessible server (at your risk)
 
 We use Deno which is a TypeScript runtime built with Rust and TypeScript, there is no nodeJS runtime but you can use some packages as there is compatability.
+
+## Requirements
 
 - Deno Documentation: https://deno.land/manual/introduction 
 - Deno API Reference: https://deno.land/api 
@@ -71,15 +75,6 @@ Dependencies need to be listed in `./deps.ts`
 - handlebars based Config file generator 
 - Package manager to install 3rd party PWAs
 
-
-- Build Status:
-  [![lethean-server](https://github.com/dAppServer/server/actions/workflows/compile.yml/badge.svg)](https://github.com/dAppServer/server/actions/workflows/compile.yml)
-- Test Coverage:
-  [![Coverage Status](https://coveralls.io/repos/github/dAppServer/server/badge.svg?branch=main)](https://coveralls.io/github/dAppServer/server?branch=main)
-## Requirements
-
-1. Deno https://deno.land
-2. Lethean data directory `$HOME/Lethean`
 
 ## Development Server
 
