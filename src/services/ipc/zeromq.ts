@@ -89,7 +89,7 @@ export class ZeroMQServer {
     sock.connect(ZeroMQServer.pubEndpoint);
     sock.subscribe(channel);
     console.info("Subscriber connected to port 36910");
-    sock.on("message", console.log);
+    //sock.on("message", console.log);
   }
 
   /**

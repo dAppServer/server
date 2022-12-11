@@ -52,7 +52,7 @@ export class ProcessManagerProcess extends EventEmitter {
       console.log(`Subscribed to ${this.request.key}-stdIn/pub`);
       sock.on("message", function (endpoint, topic, message) {
         if (topic.toString() === `${that.request.key}-stdIn`) {
-          console.log(that.process);
+          //console.log(that.process);
           if (process.stdin) {
             that.request.stdOut(message.toString());
             process.stdin.write(message);
