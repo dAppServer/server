@@ -41,6 +41,11 @@ export class AppManagerConfig {
     return this.apps;
   }
 
+  addConfigKey(code: string, data: any){
+    this.getConfig()
+    this.apps[code] = data;
+    return this.saveConfig()
+  }
   removeConfigKey(code: string){
     this.getConfig()
     delete this.apps[code];
