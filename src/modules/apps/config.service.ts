@@ -10,8 +10,8 @@ export class AppManagerConfig {
 
   saveConfig() {
     return StoredObjectService.setObject({
-      group: "apps",
-      object: "installed",
+      group: "conf",
+      object: "installed-apps",
       data: JSON.stringify(this.apps)
     });
 
@@ -19,18 +19,18 @@ export class AppManagerConfig {
 
   getConfig() {
     this.apps = StoredObjectService.getObject({
-      group: "apps",
-      object: "installed"
+      group: "conf",
+      object: "installed-apps"
     });
 
     try {
       this.apps = JSON.parse(this.apps);
     } catch (e) {
       this.apps = {};
-      if (!FileSystemService.isFile("data/objects/apps/installed.json")) {
+      if (!FileSystemService.isFile("data/objects/conf/installed-apps.json")) {
         StoredObjectService.setObject({
-          group: "apps",
-          object: "installed",
+          group: "conf",
+          object: "installed-apps",
           data: JSON.stringify(this.apps)
         });
       } else {

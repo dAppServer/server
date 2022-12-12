@@ -8,10 +8,11 @@ import { AppManagerConfig } from "./config.service.ts";
 
 export class AppManagerInstaller {
 
-  public apps: any;
+  public app: any;
+  public config: AppManagerConfig;
 
   constructor() {
-    this.apps = new AppManagerConfig()
+    this.config = new AppManagerConfig()
   }
   /**
    * Attempts to install the package locally
@@ -34,16 +35,17 @@ export class AppManagerInstaller {
         await this.installDownload(pluginConfig);
         StoredObjectService.setObject({ group: "apps", object: pluginConfig["code"], data: JSON.stringify(pluginConfig) });
 
-        this.apps[pluginConfig["code"]] = { "name": pluginConfig["name"], "version": pluginConfig["version"], "pkg": pkg };
+        this.app = { "name": pluginConfig["name"], "version": pluginConfig["version"], "pkg": pkg };
 
         if (pluginConfig["type"] == "app") {
-          this.apps[pluginConfig["code"]]["directory"] = `apps/${pluginConfig["code"].split("-").join("/")}`;
+          this.app["directory"] = `apps/${pluginConfig["code"].split("-").join("/")}`;
 
           if (pluginConfig["menu"]) {
             await this.installMenu(pluginConfig);
           }
-          return;
         }
+        this.config.addConfigKey(pluginConfig["code"], this.app)
+        return
       } else {
         // @todo finish cleaning this up
         console.log(`Package code miss match. ${pluginConfig["code"]} ${name}`);
@@ -131,7 +133,7 @@ export class AppManagerInstaller {
    * @returns {boolean}
    */
   installMenu(plugin: PluginConfig) {
-    let menu = JSON.parse(StoredObjectService.getObject({ group: "apps", object: "menu" }) as string);
+    let menu = JSON.parse(StoredObjectService.getObject({ group: "conf", object: "menu" }) as string);
     if (!menu.forEach((item: any) => {
       if (item["title"]) {
         return true;
@@ -139,7 +141,7 @@ export class AppManagerInstaller {
     })) {
       menu.push({ app: plugin["code"], ...plugin["menu"]["main"] });
     }
-    return StoredObjectService.setObject({ group: "apps", object: "menu", data: JSON.stringify(menu) });
+    return StoredObjectService.setObject({ group: "conf", object: "menu", data: JSON.stringify(menu) });
 
   }
 
@@ -150,24 +152,20 @@ export class AppManagerInstaller {
    * @returns {boolean | boolean}
    */
   uninstall(code: string): boolean {
-    if (this.apps[code] && this.apps[code]["directory"]) {
-      FileSystemService.delete(this.apps[code]["directory"]);
+    if (this.app && this.app["directory"]) {
+      FileSystemService.delete(this.app["directory"]);
       try {
-        let menu = JSON.parse(StoredObjectService.getObject({ group: "apps", object: "menu" }) as string);
+        let menu = JSON.parse(StoredObjectService.getObject({ group: "conf", object: "menu" }) as string);
         let newMenu: string[] = menu.map((item: any) => {
           if (item["title"] !== code) {
             return item;
           }
         });
-        return StoredObjectService.setObject({ group: "apps", object: menu, data: JSON.stringify(newMenu) });
+        return StoredObjectService.setObject({ group: "conf", object: menu, data: JSON.stringify(newMenu) });
       } catch (e) {
         return false;
       }
     }
-
-
-
-
 
     return false;
 
