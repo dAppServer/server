@@ -1,10 +1,14 @@
 import { AppController } from "./src/app.controller.ts";
-import { parse } from "./deps.ts";
+import { parse, path } from "./deps.ts";
 
 const startAgs = parse(Deno.args, {
   string: ['port'],
   boolean: ["background", "openapi"]
 });
+
+if(path.join(Deno.cwd(),'Lethean') !== Deno.cwd()){
+  Deno.chdir(path.join(Deno.cwd(),'Lethean'))
+}
 
 const app = new AppController(startAgs);
 
