@@ -38,7 +38,7 @@ export class AppManagerInstaller {
         this.app = { "name": pluginConfig["name"], "version": pluginConfig["version"], "pkg": pkg };
 
         if (pluginConfig["type"] == "app") {
-          this.app["directory"] = `apps/${pluginConfig["code"].split("-").join("/")}`;
+          this.app["directory"] = this.getAppDirectory(pluginConfig["code"]);
 
           if (pluginConfig["menu"]) {
             await this.installMenu(pluginConfig);
@@ -68,18 +68,16 @@ export class AppManagerInstaller {
 
     if (plugin["type"] === PluginType.BIN || plugin["type"] === PluginType.CORE) {
 
-      let installDir = "";
-
       if (Deno.build.os === "darwin" && Deno.build.arch == "aarch64" && (plugin["downloads"] && !plugin["downloads"]["aarch64"])) {
 
         await LetheanDownloadService.downloadContents(
           plugin["downloads"]["x86_64"][Deno.build.os]["url"],
-          installDir
+          this.getAppDirectory(plugin["code"])
         );
       } else if (plugin["downloads"]) {
         await LetheanDownloadService.downloadContents(
           plugin["downloads"][Deno.build.arch][Deno.build.os]["url"],
-          installDir
+          this.getAppDirectory(plugin["code"])
         );
 
       }
@@ -94,18 +92,18 @@ export class AppManagerInstaller {
       if (plugin["downloads"]) {
         await LetheanDownloadService.downloadContents(
           plugin["downloads"]["app"],
-          `apps/${plugin["code"].split("-").join("/")}`
+          this.getAppDirectory(plugin["code"])
         );
       } else if (plugin["app"]) {
         await LetheanDownloadService.downloadContents(
           plugin["app"]["url"],
-          `apps/${plugin["code"].split("-").join("/")}`
+          this.getAppDirectory(plugin["code"])
         );
         if (plugin["app"]["hooks"] && plugin["app"]["hooks"]["rename"] &&
           plugin["app"]["hooks"]["rename"]["from"] &&
           plugin["app"]["hooks"]["rename"]["to"]) {
-          Deno.renameSync(`apps/${plugin["code"].split("-").join("/")}/${plugin["app"]["hooks"]["rename"]["from"]}`,
-            `apps/${plugin["code"].split("-").join("/")}/${plugin["app"]["hooks"]["rename"]["to"]}`);
+          Deno.renameSync(`${this.getAppDirectory(plugin["code"])}/${plugin["app"]["hooks"]["rename"]["from"]}`,
+            `${this.getAppDirectory(plugin["code"])}/${plugin["app"]["hooks"]["rename"]["to"]}`);
         }
       }
 
@@ -171,4 +169,15 @@ export class AppManagerInstaller {
 
   }
 
+  /**
+   * Returns the installation directory for a app
+   *
+   * @param {string} code
+   * @returns {string}
+   */
+  getAppDirectory(code: string){
+    return `apps/${code.split("-").join("/")}`
+  }
+
 }
+
