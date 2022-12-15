@@ -70,7 +70,7 @@ export class AppManagerInstaller {
 
       let installDir = "";
 
-      if (Deno.build.arch == "aarch64" && plugin["downloads"] && plugin["downloads"]["aarch64"]) {
+      if (Deno.build.os === "darwin" && Deno.build.arch == "aarch64" && (plugin["downloads"] && !plugin["downloads"]["aarch64"])) {
 
         await LetheanDownloadService.downloadContents(
           plugin["downloads"]["x86_64"][Deno.build.os]["url"],
