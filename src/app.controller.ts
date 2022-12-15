@@ -134,6 +134,24 @@ export class AppController {
     const error = [];
     try {
 
+      console.info(`[SERVER] Dir: ${Deno.cwd()}`)
+      // check the base folders exsists, can be done better later
+      if (!FileSystemService.isDir('wallets')) {
+        FileSystemService.ensureDir('wallets')
+      }
+      if (!FileSystemService.isDir('apps')) {
+        FileSystemService.ensureDir('apps')
+      }
+      if (!FileSystemService.isDir('conf')) {
+        FileSystemService.ensureDir('conf')
+      }
+      if (!FileSystemService.isDir('cli')) {
+        FileSystemService.ensureDir('cli')
+      }
+      if (!FileSystemService.isDir('data')) {
+        FileSystemService.ensureDir('data')
+      }
+
       if (Deno.env.get("LETHEAN_SECURITY_CHECK") === "false") {
         console.info("[SERVER] Security check disabled");
       }
@@ -166,23 +184,6 @@ export class AppController {
         }
       } else {
         error.push("[SERVER] Server.pub not found");
-      }
-
-      // check the base folders exsists, can be done better later
-      if (!FileSystemService.isDir('wallets')) {
-        FileSystemService.ensureDir('wallets')
-      }
-      if (!FileSystemService.isDir('apps')) {
-        FileSystemService.ensureDir('apps')
-      }
-      if (!FileSystemService.isDir('conf')) {
-        FileSystemService.ensureDir('conf')
-      }
-      if (!FileSystemService.isDir('cli')) {
-        FileSystemService.ensureDir('cli')
-      }
-      if (!FileSystemService.isDir('data')) {
-        FileSystemService.ensureDir('data')
       }
 
 
