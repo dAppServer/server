@@ -16,8 +16,6 @@ const app = new AppController(startAgs);
 
 if(startAgs['openapi']){
 
-  //console.log(await app.app.state)
-  // cray cray bizznitches gravitate towards me, :smirk:
   app.router.forEach((route) => {
     console.log(route)
   })
