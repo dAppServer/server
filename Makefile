@@ -33,7 +33,7 @@ include deno.mk
 all: help
 
 run: $(DENO_BIN) ## Run Server
-	$(call deno,run -A -c deno.json --watch --import-map vendor/import_map.json --unstable mod.ts)
+	$(call deno,run -A -c deno.json --import-map vendor/import_map.json --unstable mod.ts)
 
 vendor:  $(DENO_BIN) ## Update Vendor bundle
 	rm -rf vendor

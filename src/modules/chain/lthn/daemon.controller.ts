@@ -33,8 +33,8 @@ LetheanDaemonRouter.post("/daemon/start", async (context: Context) => {
 
     cmd["configFile"] = configFile;
 
-    exeFile = FileSystemService.path(["cli", "lthn", exeFile]);
-
+    exeFile = FileSystemService.path(["cli", exeFile]);
+    console.log(exeFile)
     ProcessManager.run(
       exeFile,
       cmd,

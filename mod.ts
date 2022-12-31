@@ -6,6 +6,7 @@ const startAgs = parse(Deno.args, {
   boolean: ["background", "openapi"]
 });
 const home:string = Deno.env.get('HOME') ? Deno.env.get('HOME') : Deno.cwd();
+const startDir = Deno.cwd();
 
 if(path.join(home,'Lethean') !== Deno.cwd()){
   Deno.chdir(path.join(home,'Lethean'))
@@ -29,8 +30,3 @@ if(startAgs['openapi']){
     console.info("Lethean Server Process Ended")
   });
 }
-
-
-
-
-
