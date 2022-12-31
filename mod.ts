@@ -5,9 +5,10 @@ const startAgs = parse(Deno.args, {
   string: ['port'],
   boolean: ["background", "openapi"]
 });
+const home:string = Deno.env.get('HOME') ? Deno.env.get('HOME') : Deno.cwd();
 
-if(path.join(Deno.cwd(),'Lethean') !== Deno.cwd()){
-  Deno.chdir(path.join(Deno.cwd(),'Lethean'))
+if(path.join(home,'Lethean') !== Deno.cwd()){
+  Deno.chdir(path.join(home,'Lethean'))
 }
 
 const app = new AppController(startAgs);
