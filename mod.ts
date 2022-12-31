@@ -5,7 +5,7 @@ const startAgs = parse(Deno.args, {
   string: ['port'],
   boolean: ["background", "openapi"]
 });
-const home:string = Deno.env.get('HOME') ? Deno.env.get('HOME') : Deno.cwd();
+const home = Deno.env.get('HOME') ? Deno.env.get('HOME') as string : Deno.cwd();
 const startDir = Deno.cwd();
 
 if(path.join(home,'Lethean') !== Deno.cwd()){
