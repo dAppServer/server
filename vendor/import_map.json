@@ -1,6 +1,5 @@
 {
   "imports": {
-    "https://deno.land/x/danet/mod.ts": "./deno.land/x/danet@1.3.3/mod.ts",
     "https://deno.land/x/cors/mod.ts": "./deno.land/x/cors@v1.2.2/mod.ts",
     "https://deno.land/x/handlebars/mod.ts": "./deno.land/x/handlebars@v0.9.0/mod.ts",
     "https://esm.sh/handlebars@4.7.6": "./esm.sh/handlebars@4.7.6.js",
