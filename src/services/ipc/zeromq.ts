@@ -1,4 +1,4 @@
-import { zmq } from "../../../deps.ts";
+import { zmq, Logger } from "../../../deps.ts";
 
 /**
  * ZeroMQ Websocket server
@@ -44,18 +44,20 @@ export class ZeroMQServer {
    * @type {{[p: string]: any}}
    */
   static sockets: { [name: string]: any } = {};
-
+  private static logger: Logger = new Logger('ZeroMQServer');
   /**
    * Loads sockets for Pub(), Push(), Rep()
    * Then starts a WebSocket server: ws://localhost:36910
    */
   public static startServer(): void {
-    console.info("Starting ZeroMQ WebSocket: ws://127.0.0.1:36910");
+
+    ZeroMQServer.logger.log("Starting ZeroMQ WebSocket: ws://127.0.0.1:36910")
     try {
       ZeroMQServer.socketServer = new zmq.DenoHttpServer(
         "ws://127.0.0.1:36910",
       );
     } catch (e) {
+      ZeroMQServer.logger.warn("ZeroMQ Websocket already running")
       console.info("ZeroMQ Websocket already running");
       return;
     }

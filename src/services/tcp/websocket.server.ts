@@ -1,5 +1,5 @@
 import { ZeroMQServer } from "../ipc/zeromq.ts";
-import { WebSocketClient, WebSocketServer, zmq } from "../../../deps.ts";
+import { Logger, WebSocketClient, WebSocketServer, zmq } from "../../../deps.ts";
 export interface WebSocketMessageRequest {
   daemon: string;
 }
@@ -9,7 +9,7 @@ export interface WebSocketMessageRequest {
  */
 export class LetheanWebsocketServer {
   private static server: WebSocketServer;
-
+  private static logger: Logger = new Logger('WebSocketServer');
   static strip(s: string) {
     return s.split("").filter(function (x: string) {
       const n = x.charCodeAt(0);
@@ -63,7 +63,7 @@ export class LetheanWebsocketServer {
    * @param message
    */
   public static startServer() {
-    console.info("Starting stdOut WebSocket: ws://127.0.0.1:36909");
+    LetheanWebsocketServer.logger.log("Starting stdOut WebSocket: ws://127.0.0.1:36909");
     LetheanWebsocketServer.init();
   }
 
