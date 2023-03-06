@@ -1,4 +1,4 @@
-import { openpgp, path } from "../../../deps.ts";
+import { Injectable, openpgp, path } from "../../../deps.ts";
 import { FileSystemService } from "../fileSystemService.ts";
 import { QuasiSalt } from "../crypt/quasi-salt.ts";
 
@@ -8,14 +8,17 @@ import { QuasiSalt } from "../crypt/quasi-salt.ts";
  * @export
  * @class OpenPGPService
  */
-export class CryptOpenPGP {
+@Injectable()
+export class OpenPGPService {
+
+  constructor(private fileService: FileSystemService) {}
   /**
    * @param {string} id
    * @param {string} data
    * @param {string} passphrase
    * @returns {Promise<string>}
    */
-  static async encryptPGP(
+   async encryptPGP(
     id: string,
     data: string,
     passphrase?: string,
@@ -40,7 +43,7 @@ export class CryptOpenPGP {
    * @param signedBy
    * @returns {Promise<string>}
    */
-  static async decryptPGP(
+   async decryptPGP(
     id: string,
     message: string,
     passphrase: string,
@@ -87,7 +90,7 @@ export class CryptOpenPGP {
    * @param {string} passphrase
    * @returns {Promise<string>}
    */
-  static async getPrivateKey(id: string, passphrase: string) {
+   async getPrivateKey(id: string, passphrase: string) {
     if (!id) {
       throw new Error("No id provided");
     }
@@ -96,7 +99,7 @@ export class CryptOpenPGP {
       throw new Error("No passphrase provided");
     }
 
-    const privateKey = FileSystemService.read(`users/${id}.lthn.key`);
+    const privateKey = this.fileService.read(`users/${id}.lthn.key`);
 
     if (!privateKey || privateKey.length === 0) {
       throw new Error(`Failed to load private key id: ${id}`);
@@ -112,11 +115,11 @@ export class CryptOpenPGP {
    * @param {string} id
    * @returns {Promise<openpgp.PublicKey>}
    */
-  static async getPublicKey(id: string) {
+  async getPublicKey(id: string) {
     if (!id) {
       throw new Error("No id provided");
     }
-    const publicKey = FileSystemService.read(`users/${id}.lthn.pub`);
+    const publicKey = this.fileService.read(`users/${id}.lthn.pub`);
 
     if (!publicKey || publicKey.length === 0) {
       throw new Error(`Failed to load public key id: ${id}`);
@@ -131,13 +134,13 @@ export class CryptOpenPGP {
    * @param {string} data
    * @returns {Promise<any>}
    */
-  static async readMessage(data: string) {
+  async readMessage(data: string) {
     return await openpgp.readMessage({
       armoredMessage: data,
     }) as openpgp.Message;
   }
 
-  static async readSignedMessage(data: string) {
+  async readSignedMessage(data: string) {
     return await openpgp.readCleartextMessage({
       cleartextMessage: data,
     }) as openpgp.CleartextMessage;
@@ -150,7 +153,7 @@ export class CryptOpenPGP {
    * @param password
    * @returns {Promise<any>}
    */
-  public static async createKeyPair(username: string, password: string) {
+  public async createKeyPair(username: string, password: string) {
     return await openpgp.generateKey({
       type: "rsa", // Type of the key, defaults to ECC
       rsaBits: 4096,
@@ -165,18 +168,18 @@ export class CryptOpenPGP {
    * @param {string} passphrase
    * @returns {Promise<string>}
    */
-  public static async createServerKeyPair() {
+  public async createServerKeyPair() {
     const { privateKey, publicKey, revocationCertificate }: any =
-      await CryptOpenPGP.createKeyPair(
+      await this.createKeyPair(
         "server",
         QuasiSalt.hash(path.join(Deno.cwd(), "users", "server.lthn.pub")),
       );
 
-    FileSystemService.write(`users/server.lthn.pub`, publicKey);
+    this.fileService.write(`users/server.lthn.pub`, publicKey);
 
-    FileSystemService.write(`users/server.lthn.rev`, revocationCertificate);
+    this.fileService.write(`users/server.lthn.rev`, revocationCertificate);
 
-    FileSystemService.write(`users/server.lthn.key`, privateKey);
+    this.fileService.write(`users/server.lthn.key`, privateKey);
   }
 
   /**
@@ -184,22 +187,22 @@ export class CryptOpenPGP {
    * @param {string} passphrase
    * @returns {Promise<string>}
    */
-  static async createUserKeyPair(username: string, password: string) {
+   async createUserKeyPair(username: string, password: string) {
     const usernameHash = QuasiSalt.hash(username);
     const { privateKey, publicKey, revocationCertificate }: any =
-      await CryptOpenPGP.createKeyPair(usernameHash, password);
+      await this.createKeyPair(usernameHash, password);
 
-    FileSystemService.write(`users/${usernameHash}.lthn.pub`, publicKey);
+    this.fileService.write(`users/${usernameHash}.lthn.pub`, publicKey);
 
-    FileSystemService.write(
+    this.fileService.write(
       `users/${usernameHash}.lthn.rev`,
       revocationCertificate,
     );
 
-    FileSystemService.write(`users/${usernameHash}.lthn.key`, privateKey);
+    this.fileService.write(`users/${usernameHash}.lthn.key`, privateKey);
   }
 
-  static async sign(data: string, privateKey: string, passphrase: string) {
+  async sign(data: string, privateKey: string, passphrase: string) {
     const options: any = {
       message: await openpgp.createCleartextMessage({ text: data }),
       signingKeys: await this.getPrivateKey(privateKey, passphrase),
@@ -208,7 +211,7 @@ export class CryptOpenPGP {
     return await openpgp.sign(options);
   }
 
-  static async verify(data: any, publicKey: string) {
+  async verify(data: any, publicKey: string) {
     const options: any = {
       message: data,
       verificationKeys: await this.getPublicKey(publicKey),
