@@ -1,7 +1,7 @@
 import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
 export { os };
 
-export { Controller, Get, Module, DanetApplication, Logger, Injectable } from 'https://deno.land/x/danet/mod.ts';
+export { Controller, Get, Module, DanetApplication, Logger, Injectable, type DanetMiddleware, type HttpContext, type NextFunction } from 'https://deno.land/x/danet@1.3.3/mod.ts';
 export {
   ensureDir,
   ensureDirSync,

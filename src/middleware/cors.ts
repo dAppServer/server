@@ -1,13 +1,15 @@
-import { Context } from "../../deps.ts";
-const corsMiddleware = async (ctx: Context, next: any) => {
-  ctx.response.headers.set("Access-Control-Max-Age", "1");
-  ctx.response.headers.set("Access-Control-Allow-Origin", `*`);
-  ctx.response.headers.set("Access-Control-Allow-Headers", `*`);
-  ctx.response.headers.set(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, HEAD",
-  );
-  await next();
-};
+import { Injectable, DanetMiddleware , HttpContext, NextFunction} from "../../deps.ts";
 
-export { corsMiddleware };
+@Injectable()
+export class CorsMiddleware implements DanetMiddleware {
+  async action(ctx: HttpContext, next: NextFunction) {
+    ctx.response.headers.set("Access-Control-Max-Age", "1");
+    ctx.response.headers.set("Access-Control-Allow-Origin", `*`);
+    ctx.response.headers.set("Access-Control-Allow-Headers", `*`);
+    ctx.response.headers.set(
+      "Access-Control-Allow-Methods",
+      "GET, POST, OPTIONS, HEAD",
+    );
+    await next();
+  }
+}
