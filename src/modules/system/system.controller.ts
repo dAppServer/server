@@ -1,7 +1,7 @@
-import { QuasiSalt } from "../services/crypt/quasi-salt.ts";
-import { Get, Tag, Controller, Logger } from "../../deps.ts";
-import { FileSystemService } from "../services/fileSystemService.ts";
-import { OpenPGPService } from "../services/crypt/openpgp.ts";
+import { QuasiSalt } from "../../services/crypt/quasi-salt.ts";
+import { Get, Tag, Controller, Logger } from "../../../deps.ts";
+import { FileSystemService } from "../io/filesystem/fileSystemService.ts";
+import { OpenPGPService } from "../../services/crypt/openpgp.ts";
 
 @Tag("System")
 @Controller("system")

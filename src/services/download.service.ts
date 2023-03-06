@@ -8,8 +8,8 @@ import {
   Untar,
   unZipFromFile,
 } from "../../deps.ts";
-import { FileSystemService } from "../../src/services/fileSystemService.ts";
-import { ZeroMQServer } from "../../src/services/ipc/zeromq.ts";
+import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
+import { ZeroMQServer } from "../modules/io/ipc/zeromq.ts";
 
 export interface Destination {
   /**

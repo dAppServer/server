@@ -1,4 +1,4 @@
-import { FileSystemService } from "../../services/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
 import { AppManagerInstaller } from "./installer.service.ts";
 import { AppManagerConfig } from "./config.service.ts";
 

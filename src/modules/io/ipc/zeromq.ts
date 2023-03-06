@@ -1,4 +1,4 @@
-import { zmq, Logger } from "../../../deps.ts";
+import { zmq, Logger } from "../../../../deps.ts";
 
 /**
  * ZeroMQ Websocket server

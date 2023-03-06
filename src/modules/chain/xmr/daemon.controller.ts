@@ -9,7 +9,7 @@ import {
   Router,
   Untar,
 } from "../../../../deps.ts";
-import { FileSystemService } from "../../../services/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
 import { IniService } from "../../../services/config/ini.service.ts";
 import { ProcessManager } from "../../../services/process/process.service.ts";
 import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
@@ -17,7 +17,7 @@ import {
   Destination,
   LetheanDownloadService,
 } from "../../../services/download.service.ts";
-import { ZeroMQServer } from "../../../services/ipc/zeromq.ts";
+import { ZeroMQServer } from "../../io/ipc/zeromq.ts";
 
 const MoneroDaemonRouter = new Router();
 

@@ -1,5 +1,5 @@
 
-import { FileSystemService } from "../../src/services/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
 
 import { LetheanAccount } from "../../src/accounts/user.ts";
 import { OpenPGPService } from "../../src/services/crypt/openpgp.ts";

@@ -1,5 +1,5 @@
 import { Context, os, path, Router } from "../../../../deps.ts";
-import { FileSystemService } from "../../../services/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
 import { IniService } from "../../../services/config/ini.service.ts";
 import { ProcessManager } from "../../../services/process/process.service.ts";
 import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";

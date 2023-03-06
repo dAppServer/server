@@ -1,6 +1,6 @@
-import { FileSystemService } from "../../../services/fileSystemService.ts";
+import { FileSystemService } from "./fileSystemService.ts";
 import { Controller, Post, Body, Tag } from "../../../../deps.ts";
-import { CreateFileDTO, FilePathDTO } from "../../../interfaces/io/filesystem/local.interface.ts";
+import { CreateFileDTO, FilePathDTO } from "./local.interface.ts";
 
 @Tag( "File System" )
 @Controller("filesystem" )

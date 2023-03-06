@@ -1,6 +1,6 @@
 import { AuthUser } from "./../types.ts";
 import { getJwtPayload } from "../helpers/jwt.ts";
-import { FileSystemService } from "../services/fileSystemService.ts";
+import { FileSystemService } from "../modules/io/filesystem/fileSystemService.ts";
 import { Injectable, DanetMiddleware, HttpContext, NextFunction, Logger } from "../../deps.ts";
 
 /**
@@ -30,11 +30,11 @@ export class JWTAuthMiddleware implements DanetMiddleware {
         if (authUser) {
           ctx.response.status = 200;
         } else {
-          ctx.response.status = 401;
-          ctx.throw(401, "Not authorised");
+         // ctx.response.status = 401;
+          //ctx.throw(401, "Not authorised");
           // throw new httpErrors.Unauthorized("Unauthorized user");
         }
-        await next();
+        //await next();
       } catch (err) {
       }
     }

@@ -2,7 +2,7 @@ import { AuthUser, UserRole } from "./../types.ts";
 import { hasUserRole } from "../helpers/roles.ts";
 import { Context, httpErrors } from "../../deps.ts";
 import { getJwtPayload } from "../helpers/jwt.ts";
-import { FileSystemService } from "../services/fileSystemService.ts";
+import { FileSystemService } from "../modules/io/filesystem/fileSystemService.ts";
 
 /**
  * has user role middleware

@@ -1,5 +1,5 @@
 
-import { FileSystemService } from "../../src/services/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
 import { path } from "../../deps.ts";
 import { assertEquals } from "../../deps-test.ts";
 

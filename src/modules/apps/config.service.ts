@@ -1,5 +1,5 @@
 import { StoredObjectService } from "../../services/config/store.ts";
-import { FileSystemService } from "../../services/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
 
 export class AppManagerConfig {
   public apps: any;

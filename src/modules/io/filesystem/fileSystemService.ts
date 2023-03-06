@@ -1,4 +1,4 @@
-import { ensureDirSync, path, Injectable } from "../../deps.ts";
+import { ensureDirSync, path, Injectable } from "../../../../deps.ts";
 import DirEntry = Deno.DirEntry;
 
 /**

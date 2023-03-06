@@ -1,7 +1,7 @@
 import { Context, HttpException, os, path, Router } from "../../../../deps.ts";
 
 import { XmrigService } from "./xmrig.service.ts";
-import { FileSystemService } from "../../../services/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
 import { ProcessManager } from "../../../services/process/process.service.ts";
 import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
 

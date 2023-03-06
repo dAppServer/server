@@ -1,7 +1,7 @@
 import { PluginConfig, PluginType } from "../../interfaces/apps/plugin-config.ts";
 import { StoredObjectService } from "../../services/config/store.ts";
 import { LetheanDownloadService } from "../../services/download.service.ts";
-import { FileSystemService } from "../../services/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
 import { ensureDir, path } from "../../../deps.ts";
 import { AppManagerConfig } from "./config.service.ts";
 

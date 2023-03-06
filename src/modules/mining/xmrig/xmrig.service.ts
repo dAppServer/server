@@ -9,7 +9,7 @@ import {
   readerFromStreamReader,
   Untar,
 } from "../../../../deps.ts";
-import { FileSystemService } from "../../../services/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
 import {
   Destination,
   LetheanDownloadService,

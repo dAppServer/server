@@ -1,7 +1,7 @@
-import { Injectable, path } from "../../../deps.ts";
-import { QuasiSalt } from "../crypt/quasi-salt.ts";
-import { OpenPGPService } from "../crypt/openpgp.ts";
-import { FileSystemService } from "../fileSystemService.ts";
+import { Injectable, path } from "../../../../deps.ts";
+import { QuasiSalt } from "../../../services/crypt/quasi-salt.ts";
+import { OpenPGPService } from "../../../services/crypt/openpgp.ts";
+import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
 
 @Injectable()
 export class AuthLetheanService {

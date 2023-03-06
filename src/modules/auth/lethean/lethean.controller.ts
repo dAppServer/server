@@ -1,11 +1,11 @@
-import { Post, Body, Tag, Controller, UnauthorizedException, InternalServerErrorException } from "../../../deps.ts";
-import { UserRole } from "../../types/user/user-role.ts";
-import * as jwt from "../../helpers/jwt.ts";
-import { FileSystemService } from "../../services/fileSystemService.ts";
-import { OpenPGPService } from "../../services/crypt/openpgp.ts";
-import { AuthLetheanService } from "../../services/auth/lethean.service.ts";
-import { CreateAccountDTO, CreateAccountResponseDTO, DeleteAccountDTO, EncryptedRequestDTO, EncryptedResponseDTO } from "../../interfaces/encrypted-request.interface.ts";
-import { QuasiSalt } from "../../services/crypt/quasi-salt.ts";
+import { Post, Body, Tag, Controller, UnauthorizedException, InternalServerErrorException } from "../../../../deps.ts";
+import { UserRole } from "../../../types/user/user-role.ts";
+import * as jwt from "../../../helpers/jwt.ts";
+import { OpenPGPService } from "../../../services/crypt/openpgp.ts";
+import { CreateAccountDTO, CreateAccountResponseDTO, DeleteAccountDTO, EncryptedRequestDTO, EncryptedResponseDTO } from "../../../interfaces/encrypted-request.interface.ts";
+import { QuasiSalt } from "../../../services/crypt/quasi-salt.ts";
+import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
+import { AuthLetheanService } from "../../auth/lethean/lethean.service.ts";
 
 @Tag("Auth")
 @Controller("auth")

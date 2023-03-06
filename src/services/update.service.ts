@@ -8,8 +8,8 @@ import {
   Untar,
 } from "../../deps.ts";
 
-import { ZeroMQServer } from "./ipc/zeromq.ts";
-import { FileSystemService } from "./fileSystemService.ts";
+import { ZeroMQServer } from "../modules/io/ipc/zeromq.ts";
+import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
 import { Destination, LetheanDownloadService } from "./download.service.ts";
 
 /**
