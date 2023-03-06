@@ -1,19 +1,18 @@
-import { Context, uuid } from "../../deps.ts";
+import { Injectable, DanetMiddleware , HttpContext, NextFunction, uuid} from "../../deps.ts";
 
-/**
- * requestId middleware
- * attach requestId in request & response header
- */
-const requestIdMiddleware = async (ctx: Context, next: any) => {
-  let requestId = ctx.request.headers.get("X-Response-Id");
-  if (!requestId) {
-    /** if request id not being set, set unique request id */
-    requestId = uuid.generate();
-    ctx.response.headers.set("X-Response-Id", requestId.toString());
+@Injectable()
+export class RequestIDMiddleware implements DanetMiddleware {
+
+  async action(ctx: HttpContext, next: NextFunction) {
+    let requestId = ctx.request.headers.get("X-Response-Id");
+    if (!requestId) {
+      /** if request id not being set, set unique request id */
+      requestId = uuid.generate();
+      ctx.response.headers.set("X-Response-Id", requestId.toString());
+    }
+    /** add request id in response header */
+    ctx.response.headers.set("X-Response-Id", requestId);
+    await next();
+    
   }
-  await next();
-  /** add request id in response header */
-  ctx.response.headers.set("X-Response-Id", requestId);
-};
-
-export { requestIdMiddleware };
+}
