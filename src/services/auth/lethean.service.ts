@@ -1,25 +1,28 @@
-import {  path } from "../../deps.ts";
-import { QuasiSalt } from "../services/crypt/quasi-salt.ts";
-import { OpenPGPService } from "../services/crypt/openpgp.ts";
-import { FileSystemService } from "../services/fileSystemService.ts";
+import { Injectable, path } from "../../../deps.ts";
+import { QuasiSalt } from "../crypt/quasi-salt.ts";
+import { OpenPGPService } from "../crypt/openpgp.ts";
+import { FileSystemService } from "../fileSystemService.ts";
 
-export class LetheanAccount {
-  static async login(payload: string) {
+@Injectable()
+export class AuthLetheanService {
+
+  constructor(private fileService: FileSystemService, private openpgp: OpenPGPService) {}
+  async login(payload: string) {
     try {
-      const decrypted = await OpenPGPService.decryptPGP(
+      const decrypted = await this.openpgp.decryptPGP(
         "server",
         payload,
         QuasiSalt.hash(path.join(Deno.cwd(), "users", "server.lthn.pub")),
       );
 
-      return await OpenPGPService.readSignedMessage(decrypted).then(
+      return await this.openpgp.readSignedMessage(decrypted).then(
         async (data) => {
           const userAuth = JSON.parse(data.text);
-          const user = await OpenPGPService.verify(data, userAuth["id"]);
+          const user = await this.openpgp.verify(data, userAuth["id"]);
 
           if (
             user && user == await data.getSigningKeyIDs()[0].toHex() &&
-            FileSystemService.isFile(`users/${userAuth["id"]}.lthn.key`)
+            this.fileService.isFile(`users/${userAuth["id"]}.lthn.key`)
           ) {
             return userAuth["id"];
           }
@@ -34,25 +37,25 @@ export class LetheanAccount {
   /**
    * creates a Lethean user account
    */
-  static async create(username: string, password: string) {
+  async create(username: string, password: string) {
     try {
       const usernameHash: string = QuasiSalt.hash(username);
 
       const { privateKey, publicKey, revocationCertificate }: any =
-        await OpenPGPService.createKeyPair(usernameHash, password);
+        await this.openpgp.createKeyPair(usernameHash, password);
 
-      FileSystemService.write(`users/${usernameHash}.lthn.pub`, publicKey);
+      this.fileService.write(`users/${usernameHash}.lthn.pub`, publicKey);
 
-      FileSystemService.write(
+      this.fileService.write(
         `users/${usernameHash}.lthn.rev`,
         revocationCertificate,
       );
 
-      FileSystemService.write(`users/${usernameHash}.lthn.key`, privateKey);
+      this.fileService.write(`users/${usernameHash}.lthn.key`, privateKey);
 
-      FileSystemService.write(
+      this.fileService.write(
         `users/${usernameHash}.lthn`,
-        await OpenPGPService.encryptPGP(
+        await this.openpgp.encryptPGP(
           usernameHash,
           JSON.stringify({
             username: username,
@@ -70,7 +73,7 @@ export class LetheanAccount {
   /**
    * deletes a Lethean user account
    */
-  static delete(username: string) {
+  delete(username: string) {
     try {
       // because someone will do this, we all know it, and it will suck for them
       // if you delete the server .key, all joining data will be lost forever.
@@ -81,13 +84,13 @@ export class LetheanAccount {
       }
       const usernameHash: string = QuasiSalt.hash(username);
 
-      FileSystemService.delete(`users/${usernameHash}.lthn.pub`);
+      this.fileService.delete(`users/${usernameHash}.lthn.pub`);
 
-      FileSystemService.delete(`users/${usernameHash}.lthn.rev`);
+      this.fileService.delete(`users/${usernameHash}.lthn.rev`);
 
-      FileSystemService.delete(`users/${usernameHash}.lthn.key`);
+      this.fileService.delete(`users/${usernameHash}.lthn.key`);
 
-      FileSystemService.delete(`users/${usernameHash}.lthn`);
+      this.fileService.delete(`users/${usernameHash}.lthn`);
     } catch (error) {
       return false;
     }

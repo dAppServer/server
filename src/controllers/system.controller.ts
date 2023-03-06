@@ -79,4 +79,9 @@ export class SystemController {
     return "System OK";
 
   }
+
+  @Get('cert')
+  getServerCertificate() {
+    return this.fileService.read("users/server.lthn.pub");
+  }
 }
