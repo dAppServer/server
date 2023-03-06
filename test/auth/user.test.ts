@@ -1,7 +1,7 @@
 import { LetheanAccount } from "../../src/accounts/user.ts";
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
 import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
-import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
+import { OpenPGPService } from "../../src/services/crypt/openpgp.ts";
 import { assertEquals } from "../../deps-test.ts";
 
 /**
@@ -32,16 +32,16 @@ Deno.test("LetheanAccount.create", async () => {
  */
 Deno.test("LetheanAccount.login - Good", async () => {
   if (!FileSystemService.isFile("users/server.lthn.pub")) {
-    await CryptOpenPGP.createServerKeyPair();
+    await OpenPGPService.createServerKeyPair();
   }
 
-  const auth = await CryptOpenPGP.sign(
+  const auth = await OpenPGPService.sign(
     `{"id":"${QuasiSalt.hash("test")}"}`,
     QuasiSalt.hash("test"),
     "test",
   );
 
-  const encryptedTest = await CryptOpenPGP.encryptPGP(
+  const encryptedTest = await OpenPGPService.encryptPGP(
     "server",
     auth,
   );
@@ -58,16 +58,16 @@ Deno.test("LetheanAccount.login - Good", async () => {
  */
 Deno.test("LetheanAccount.login - Bad Not signed by req user", async () => {
   if (!FileSystemService.isFile("users/server.lthn.pub")) {
-    await CryptOpenPGP.createServerKeyPair();
+    await OpenPGPService.createServerKeyPair();
   }
 
-  const auth2 = await CryptOpenPGP.sign(
+  const auth2 = await OpenPGPService.sign(
     `{"id":"${QuasiSalt.hash("test")}"}`,
     QuasiSalt.hash("test2"),
     "test",
   );
 
-  const encryptedTest2 = await CryptOpenPGP.encryptPGP(
+  const encryptedTest2 = await OpenPGPService.encryptPGP(
     "server",
     auth2,
   );
@@ -80,16 +80,16 @@ Deno.test("LetheanAccount.login - Bad Not signed by req user", async () => {
  */
 Deno.test("LetheanAccount.login - Bad Not known user", async () => {
   if (!FileSystemService.isFile("users/server.lthn.pub")) {
-    await CryptOpenPGP.createServerKeyPair();
+    await OpenPGPService.createServerKeyPair();
   }
 
-  const auth2 = await CryptOpenPGP.sign(
+  const auth2 = await OpenPGPService.sign(
     `{"id":"${QuasiSalt.hash("testwewew")}"}`,
     QuasiSalt.hash("test"),
     "test",
   );
 
-  const encryptedTest2 = await CryptOpenPGP.encryptPGP(
+  const encryptedTest2 = await OpenPGPService.encryptPGP(
     "server",
     auth2,
   );

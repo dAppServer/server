@@ -1,6 +1,6 @@
 import { assertEquals, expect, superoak } from "../../deps-test.ts";
 
-import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
+import { OpenPGPService } from "../../src/services/crypt/openpgp.ts";
 import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
 import { LetheanAccount } from "../../src/accounts/user.ts";
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
@@ -10,7 +10,7 @@ const AppControl = new AppController()
 const app = AppControl.app
 
 if (!FileSystemService.isFile("users/server.lthn.pub")) {
-  await CryptOpenPGP.createServerKeyPair();
+  await OpenPGPService.createServerKeyPair();
 }
 
 Deno.test("POST /auth/login -- good", async () => {
@@ -19,14 +19,14 @@ Deno.test("POST /auth/login -- good", async () => {
   // make user OpenPGP keys for user test with password test
   await LetheanAccount.create("test", "test");
   // create signed message to send to the server
-  const auth = await CryptOpenPGP.sign(
+  const auth = await OpenPGPService.sign(
     `{"id":"${QuasiSalt.hash("test")}"}`,
     QuasiSalt.hash("test"),
     "test",
   );
 
   // use the server public key to encrypt the message
-  const encryptedTest = await CryptOpenPGP.encryptPGP(
+  const encryptedTest = await OpenPGPService.encryptPGP(
     "server",
     auth,
   );
@@ -47,7 +47,7 @@ Deno.test("POST /auth/login -- good", async () => {
       // decompress the response
       const reply = atob(JSON.parse(response1.text)['result'])
       // decrypt the reply with the initial user private key
-      const token = JSON.parse(await CryptOpenPGP.decryptPGP(QuasiSalt.hash("test"), reply, 'test'))
+      const token = JSON.parse(await OpenPGPService.decryptPGP(QuasiSalt.hash("test"), reply, 'test'))
       // test the access_token is returned
       expect(token).toHaveProperty("access_token");
       // test the refresh_token is returned
@@ -61,14 +61,14 @@ Deno.test("POST /auth/login -- bad", async () => {
   await LetheanAccount.create("test", "test");
 
   // create signed message using the wrong private key for the requested user
-  const auth = await CryptOpenPGP.sign(
+  const auth = await OpenPGPService.sign(
     `{"id":"${QuasiSalt.hash("testwewew")}"}`,
     QuasiSalt.hash("test"),
     "test",
   );
 
   // use the server public key to encrypt the message
-  const encryptedTest = await CryptOpenPGP.encryptPGP(
+  const encryptedTest = await OpenPGPService.encryptPGP(
     "server",
     auth,
   );

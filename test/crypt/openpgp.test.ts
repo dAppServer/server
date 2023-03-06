@@ -1,10 +1,10 @@
-import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
+import { OpenPGPService } from "../../src/services/crypt/openpgp.ts";
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
 import { assertEquals, assertStringIncludes } from "../../deps-test.ts";
 
 
 Deno.test("CryptOpenPGP.createKeyPair", async () => {
-  const key: any = await CryptOpenPGP.createKeyPair(
+  const key: any = await OpenPGPService.createKeyPair(
     "09f3b17c6fab2d948fb29a5ab9aaf9755fd24c3c146ed19795a85c446241ad89",
     "test",
   );
@@ -40,7 +40,7 @@ Deno.test("CryptOpenPGP.createKeyPair", async () => {
 });
 
 Deno.test("CryptOpenPGP.getPublicKey", async () => {
-  const publicKey = await CryptOpenPGP.getPublicKey(
+  const publicKey = await OpenPGPService.getPublicKey(
     "09f3b17c6fab2d948fb29a5ab9aaf9755fd24c3c146ed19795a85c446241ad89",
   );
 
@@ -52,7 +52,7 @@ Deno.test("CryptOpenPGP.getPublicKey", async () => {
 });
 
 Deno.test("CryptOpenPGP.getPrivateKey", async () => {
-  const privateKey = await CryptOpenPGP.getPrivateKey(
+  const privateKey = await OpenPGPService.getPrivateKey(
     "09f3b17c6fab2d948fb29a5ab9aaf9755fd24c3c146ed19795a85c446241ad89",
     "test",
   );
@@ -65,7 +65,7 @@ Deno.test("CryptOpenPGP.getPrivateKey", async () => {
 });
 
 Deno.test("CryptOpenPGP.createServerKeyPair", async () => {
-  const key: any = await CryptOpenPGP.createServerKeyPair();
+  const key: any = await OpenPGPService.createServerKeyPair();
   assertEquals(
     FileSystemService.isFile("users/server.lthn.pub"),
     true,

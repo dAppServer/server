@@ -2,7 +2,7 @@
 import { FileSystemService } from "../../src/services/fileSystemService.ts";
 
 import { LetheanAccount } from "../../src/accounts/user.ts";
-import { CryptOpenPGP } from "../../src/services/crypt/openpgp.ts";
+import { OpenPGPService } from "../../src/services/crypt/openpgp.ts";
 import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
 import { Context } from "../../deps.ts";
 import { assertEquals, assertExists, superoak } from "../../deps-test.ts";
@@ -28,13 +28,13 @@ const app = AppControl.app
   const authRequest = await superoak(app);
 
   await LetheanAccount.create("test", "test");
-  const auth = await CryptOpenPGP.sign(
+  const auth = await OpenPGPService.sign(
     `{"id":"${QuasiSalt.hash("test")}"}`,
     QuasiSalt.hash("test"),
     "test",
   );
 
-  const encryptedTest = await CryptOpenPGP.encryptPGP(
+  const encryptedTest = await OpenPGPService.encryptPGP(
     "server",
     auth,
   );
@@ -52,7 +52,7 @@ const app = AppControl.app
     .set("Accept", "application/json")
     .then(async (response1: any) => {
       const reply = atob(JSON.parse(response1.text)['result'])
-      return JSON.parse(await CryptOpenPGP.decryptPGP(QuasiSalt.hash("test"), reply, 'test'))
+      return JSON.parse(await OpenPGPService.decryptPGP(QuasiSalt.hash("test"), reply, 'test'))
     }).catch((e:any) => {
       console.error(e);
     });
