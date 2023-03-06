@@ -1,9 +1,11 @@
-import { Context } from "../../deps.ts";
-const timingMiddleware = async (ctx: Context, next: any) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  ctx.response.headers.set("X-Response-Time", `${ms}ms`);
-};
+import { Injectable, DanetMiddleware , HttpContext, NextFunction} from "../../deps.ts";
 
-export { timingMiddleware };
+@Injectable()
+export class TimingMiddleware implements DanetMiddleware {
+  async action(ctx: HttpContext, next: NextFunction) {
+    const start = Date.now();
+    await next();
+    const ms = Date.now() - start;
+    ctx.response.headers.set("X-Response-Time", `${ms}ms`);
+  }
+}

@@ -106,7 +106,6 @@ export class BaseController {
    */
 //  baseRoutes() {
 //
-//    this.app.use(corsMiddleware);
 //    this.app.use(requestIdMiddleware);
 //    this.app.use(loggerMiddleware);
 //    this.app.use(timingMiddleware);
