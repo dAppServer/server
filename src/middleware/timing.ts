@@ -1,5 +1,8 @@
 import { Injectable, DanetMiddleware , HttpContext, NextFunction} from "../../deps.ts";
 
+/**
+ * Response time middleware, wraps the request in a timer and sets the X-Response-Time header
+ */
 @Injectable()
 export class TimingMiddleware implements DanetMiddleware {
   async action(ctx: HttpContext, next: NextFunction) {

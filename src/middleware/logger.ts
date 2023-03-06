@@ -1,9 +1,10 @@
 import { Injectable, DanetMiddleware , HttpContext, NextFunction, Logger} from "../../deps.ts";
 
-@Injectable()
 /**
  * Logger middleware, Please first in the middleware list
+ * This logs to the console
  */
+@Injectable()
 export class LoggerMiddleware implements DanetMiddleware {
 
   private logger = new Logger('Request');

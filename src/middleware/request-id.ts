@@ -13,6 +13,5 @@ export class RequestIDMiddleware implements DanetMiddleware {
     /** add request id in response header */
     ctx.response.headers.set("X-Response-Id", requestId);
     await next();
-    
   }
 }

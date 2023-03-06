@@ -1,21 +1,22 @@
-import { AuthUser, Context } from "./../types.ts";
+import { AuthUser } from "./../types.ts";
 import { getJwtPayload } from "../helpers/jwt.ts";
 import { FileSystemService } from "../services/fileSystemService.ts";
+import { Injectable, DanetMiddleware, HttpContext, NextFunction, Logger } from "../../deps.ts";
 
-/** *
- * JWTAuth middleware
- * Decode authorization bearer token
- * and attach as an user in application context
+/**
+ * JSON Web Token middleware
  */
-const JWTAuthMiddleware = () => {
-  return async (
-    ctx: Context,
-    next: any,
-  ) => {
-    console.log(ctx.request.url.pathname);
+@Injectable()
+export class JWTAuthMiddleware implements DanetMiddleware {
+
+  private logger = new Logger("Request");
+
+  constructor(private fileService: FileSystemService){}
+
+  async action(ctx: HttpContext, next: NextFunction) {
     if (
       !ctx.request.url.pathname.startsWith("/auth") &&
-      FileSystemService.list("users").map((file: string) =>
+      this.fileService.list("users").map((file: string) =>
         file.endsWith(".lthn")
       ).includes(true)
     ) {
@@ -23,7 +24,7 @@ const JWTAuthMiddleware = () => {
         const authUser: AuthUser | null =
           ctx.request.headers.get("Authorization")
             ? await getJwtPayload(
-              ctx.request.headers.get("Authorization") as string,
+              ctx.request.headers.get("Authorization") as string
             )
             : null;
         if (authUser) {
@@ -38,7 +39,5 @@ const JWTAuthMiddleware = () => {
       }
     }
     await next();
-  };
-};
-
-export { JWTAuthMiddleware };
+  }
+}
