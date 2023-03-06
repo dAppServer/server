@@ -12,5 +12,8 @@ export const bootstrap = async () => {
   // LoggerMiddleware must be the first middleware
   // TimingMiddleware must be the second middleware
   application.addGlobalMiddlewares(LoggerMiddleware,TimingMiddleware, CorsMiddleware, RequestIDMiddleware, JWTAuthMiddleware);
+  // Static file server
+  const staticAssetsPath = `${Deno.cwd()}/apps`;
+  application.useStaticAssets(staticAssetsPath);
   return application;
 }
