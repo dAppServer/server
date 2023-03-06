@@ -1,21 +1,21 @@
 import {  path } from "../../deps.ts";
 import { QuasiSalt } from "../services/crypt/quasi-salt.ts";
-import { CryptOpenPGP } from "../services/crypt/openpgp.ts";
+import { OpenPGPService } from "../services/crypt/openpgp.ts";
 import { FileSystemService } from "../services/fileSystemService.ts";
 
 export class LetheanAccount {
   static async login(payload: string) {
     try {
-      const decrypted = await CryptOpenPGP.decryptPGP(
+      const decrypted = await OpenPGPService.decryptPGP(
         "server",
         payload,
         QuasiSalt.hash(path.join(Deno.cwd(), "users", "server.lthn.pub")),
       );
 
-      return await CryptOpenPGP.readSignedMessage(decrypted).then(
+      return await OpenPGPService.readSignedMessage(decrypted).then(
         async (data) => {
           const userAuth = JSON.parse(data.text);
-          const user = await CryptOpenPGP.verify(data, userAuth["id"]);
+          const user = await OpenPGPService.verify(data, userAuth["id"]);
 
           if (
             user && user == await data.getSigningKeyIDs()[0].toHex() &&
@@ -39,7 +39,7 @@ export class LetheanAccount {
       const usernameHash: string = QuasiSalt.hash(username);
 
       const { privateKey, publicKey, revocationCertificate }: any =
-        await CryptOpenPGP.createKeyPair(usernameHash, password);
+        await OpenPGPService.createKeyPair(usernameHash, password);
 
       FileSystemService.write(`users/${usernameHash}.lthn.pub`, publicKey);
 
@@ -52,7 +52,7 @@ export class LetheanAccount {
 
       FileSystemService.write(
         `users/${usernameHash}.lthn`,
-        await CryptOpenPGP.encryptPGP(
+        await OpenPGPService.encryptPGP(
           usernameHash,
           JSON.stringify({
             username: username,

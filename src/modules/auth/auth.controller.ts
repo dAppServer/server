@@ -2,7 +2,7 @@ import { Context, HttpException, os, path, Router } from "../../../deps.ts";
 
 import { LetheanAccount } from "../../accounts/user.ts";
 import { UserRole } from "../../types/user/user-role.ts";
-import { CryptOpenPGP } from "../../services/crypt/openpgp.ts";
+import { OpenPGPService } from "../../services/crypt/openpgp.ts";
 import * as jwt from "../../helpers/jwt.ts";
 import { FileSystemService } from "../../services/fileSystemService.ts";
 
@@ -28,7 +28,7 @@ AuthRouter.post("/auth/login", async (context: Context) => {
       context.response.status = 200;
       context.response.body = JSON.stringify({
         "result": btoa(
-          await CryptOpenPGP.encryptPGP(user, JSON.stringify(msg)),
+          await OpenPGPService.encryptPGP(user, JSON.stringify(msg)),
         ),
       });
     } else {
