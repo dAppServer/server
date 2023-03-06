@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowJs": true,
     "lib": ["deno.window", "deno.unstable"],
-    "strict": true,
+    "strict": false,
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false
   },

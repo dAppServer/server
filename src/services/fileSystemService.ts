@@ -1,11 +1,11 @@
-import { ensureDirSync, path } from "../../deps.ts";
+import { ensureDirSync, path, Injectable } from "../../deps.ts";
 import DirEntry = Deno.DirEntry;
 
 /**
  * @class
  * @classdesc This class is responsible for handling the filesystem.
  */
-
+@Injectable()
 export class FileSystemService {
   /**
    * Return a system path to the Lethean folder
@@ -13,7 +13,7 @@ export class FileSystemService {
    * @param pathname
    * @returns {string}
    */
-  static path(pathname: any): string {
+   path(pathname: any): string {
     if (pathname == undefined) {
       return Deno.cwd();
     }
@@ -42,9 +42,9 @@ export class FileSystemService {
    * @returns {string} | false
    * @param path
    */
-  static read(path: string) {
+   read(path: string) {
     try {
-      return Deno.readTextFileSync(FileSystemService.path(path)) as string;
+      return Deno.readTextFileSync(this.path(path)) as string;
     } catch (e) {
       return false;
     }
@@ -56,11 +56,11 @@ export class FileSystemService {
    * @returns {boolean}
    * @param path
    */
-  static isDir(path: string) {
+   isDir(path: string) {
     if (path.length == 0) return false;
 
     try {
-      return Deno.statSync(FileSystemService.path(path)).isDirectory;
+      return Deno.statSync(this.path(path)).isDirectory;
     } catch (e) {
       return false;
     }
@@ -72,11 +72,11 @@ export class FileSystemService {
    * @returns {boolean}
    * @param path
    */
-  static isFile(path: string) {
+   isFile(path: string) {
     if (path.length == 0) return false;
 
     try {
-      return Deno.statSync(FileSystemService.path(path)).isFile;
+      return Deno.statSync(this.path(path)).isFile;
     } catch (e) {
       return false;
     }
@@ -90,12 +90,12 @@ export class FileSystemService {
    *   FileSystemService.list( "./")
    * @param path
    */
-  static list(path: string): string[] {
+   list(path: string): string[] {
     const ret = [];
     try {
       for (
         const dirEntry of Deno.readDirSync(
-          FileSystemService.path(path),
+          this.path(path),
         )
       ) {
         if (!dirEntry.name.startsWith(".")) {
@@ -108,12 +108,12 @@ export class FileSystemService {
     }
   }
 
-  static detailedList(path: string): DirEntry[] {
+   detailedList(path: string): DirEntry[] {
     const ret = [];
     try {
       for (
         const dirEntry of Deno.readDirSync(
-          FileSystemService.path(path),
+          this.path(path),
         )
       ) {
           ret.push(dirEntry);
@@ -131,9 +131,9 @@ export class FileSystemService {
    * @param filepath string
    * @param data string
    */
-  static write(filepath: string, data: string) {
+   write(filepath: string, data: string) {
     try {
-      FileSystemService.ensureDir(path.dirname(filepath));
+      this.ensureDir(path.dirname(filepath));
 
       Deno.writeTextFileSync(filepath, data);
     } catch (e) {
@@ -148,9 +148,9 @@ export class FileSystemService {
    *
    * @param {string} path relative path to the Lethean folder
    */
-  static ensureDir(path: string) {
+   ensureDir(path: string) {
     try {
-      ensureDirSync(FileSystemService.path(path));
+      ensureDirSync(this.path(path));
     } catch (e) {
       return false;
     }
@@ -163,9 +163,9 @@ export class FileSystemService {
    * @param filepath string
    * @param recursive
    */
-  static delete(filepath: string, recursive = true) {
+   delete(filepath: string, recursive = true) {
     try {
-      const delPath = FileSystemService.path(filepath);
+      const delPath = this.path(filepath);
       // @todo consider changing this, quick add to stop rm /
       if(delPath.length < 3){
         return false;
