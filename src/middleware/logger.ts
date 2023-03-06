@@ -1,13 +1,17 @@
-import { Context } from "../../deps.ts";
+import { Injectable, DanetMiddleware , HttpContext, NextFunction, Logger} from "../../deps.ts";
 
-const loggerMiddleware = async (ctx: Context, next: any) => {
-  await next();
-  const reqTime = ctx.response.headers.get("X-Response-Time");
-  const reqId = ctx.response.headers.get("X-Response-Id");
-  const status = ctx.response.status;
-  console.info(
-    `${reqId} ${ctx.request.method} ${ctx.request.url} - ${reqTime} status: ${status}`,
-  );
-};
+@Injectable()
+/**
+ * Logger middleware, Please first in the middleware list
+ */
+export class LoggerMiddleware implements DanetMiddleware {
 
-export { loggerMiddleware };
+  private logger = new Logger('Request');
+  async action(ctx: HttpContext, next: NextFunction) {
+    await next();
+    const reqTime = ctx.response.headers.get("X-Response-Time");
+    const reqId = ctx.response.headers.get("X-Response-Id");
+    const status = ctx.response.status;
+    this.logger.log(`${reqId} ${ctx.request.method} ${ctx.request.url} - ${reqTime} status: ${status}`)
+  }
+}
