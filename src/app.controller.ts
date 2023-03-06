@@ -1,4 +1,4 @@
-import { Controller, Get, Logger } from "../deps.ts";
+import { Controller, Get, Tag } from "../deps.ts";
 import { ZeroMQServer } from "./services/ipc/zeromq.ts";
 import { LetheanWebsocketServer } from "./services/tcp/websocket.server.ts";
 //import { AuthRouter } from "./modules/auth/auth.controller.ts";
@@ -30,11 +30,12 @@ export class BaseController {
     LetheanWebsocketServer.startServer();
 
   }
+  @Tag("Info")
   @Get("/")
   welcomePage(): string {
     return "Welcome to the ITW3 API";
   }
-  
+
   /**
    * Module loader
    * @todo Changes needed to this function
@@ -70,7 +71,7 @@ export class BaseController {
 //    this.app.use(this.router.routes(), this.router.allowedMethods())
 //    console.info(`Loaded Routes`)
 //  }
-  
-  
- 
+
+
+
 }

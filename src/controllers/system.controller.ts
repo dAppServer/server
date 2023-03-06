@@ -1,8 +1,9 @@
 import { QuasiSalt } from "../services/crypt/quasi-salt.ts";
-import { Get, Controller, Logger } from "../../deps.ts";
+import { Get, Tag, Controller, Logger } from "../../deps.ts";
 import { FileSystemService } from "../services/fileSystemService.ts";
 import { OpenPGPService } from "../services/crypt/openpgp.ts";
 
+@Tag("System")
 @Controller("system")
 export class SystemController {
 

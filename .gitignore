@@ -12,3 +12,4 @@ lethean-server
 /wallets
 /users
 /docs/.cache
+/out-tsc
