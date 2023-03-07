@@ -1,4 +1,4 @@
-import { he } from "../../../deps.ts";
+import { he } from "../../../../deps.ts";
 const td = (d: Uint8Array) => new TextDecoder().decode(d);
 
 export class CryptPkcs8 {

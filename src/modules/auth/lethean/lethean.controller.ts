@@ -1,11 +1,12 @@
 import { Post, Body, Tag, Controller, UnauthorizedException, InternalServerErrorException } from "../../../../deps.ts";
 import { UserRole } from "../../../types/user/user-role.ts";
 import * as jwt from "../../../helpers/jwt.ts";
-import { OpenPGPService } from "../../../services/crypt/openpgp.ts";
 import { CreateAccountDTO, CreateAccountResponseDTO, DeleteAccountDTO, EncryptedRequestDTO, EncryptedResponseDTO } from "../../../interfaces/encrypted-request.interface.ts";
-import { QuasiSalt } from "../../../services/crypt/quasi-salt.ts";
+
 import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
 import { AuthLetheanService } from "../../auth/lethean/lethean.service.ts";
+import { OpenPGPService } from "../../cryptography/openpgp/openpgp.ts";
+import { QuasiSaltService } from "../../cryptography/hash/quasi-salt.service.ts";
 
 @Tag("Auth")
 @Controller("auth")
@@ -13,7 +14,8 @@ export class AuthLetheanController {
 
   constructor(private fileService: FileSystemService,
               private openpgp: OpenPGPService,
-              private auth: AuthLetheanService) {
+              private auth: AuthLetheanService,
+              private quasi: QuasiSaltService) {
   }
 
   /**
@@ -51,7 +53,7 @@ export class AuthLetheanController {
   @Post("lethean/create")
   async create(@Body() body: CreateAccountDTO): Promise<CreateAccountResponseDTO> {
     try {
-      const usernameHash: string = QuasiSalt.hash(body.username);
+      const usernameHash: string = this.quasi.hash(body.username);
 
       const { privateKey, publicKey, revocationCertificate }: any =
         await this.openpgp.createKeyPair(usernameHash, body.password);
@@ -98,7 +100,7 @@ export class AuthLetheanController {
       if (body.username == "server") {
         return false;
       }
-      const usernameHash: string = QuasiSalt.hash(body.username);
+      const usernameHash: string = this.quasi.hash(body.username);
 
       this.fileService.delete(`users/${usernameHash}.lthn.pub`);
 

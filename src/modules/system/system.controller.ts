@@ -1,13 +1,15 @@
-import { QuasiSalt } from "../../services/crypt/quasi-salt.ts";
 import { Get, Tag, Controller, Logger } from "../../../deps.ts";
 import { FileSystemService } from "../io/filesystem/fileSystemService.ts";
-import { OpenPGPService } from "../../services/crypt/openpgp.ts";
+import { OpenPGPService } from "../cryptography/openpgp/openpgp.ts";
+import { QuasiSaltService } from "../cryptography/hash/quasi-salt.service.ts";
 
 @Tag("System")
 @Controller("system")
 export class SystemController {
 
-  constructor(private fileService: FileSystemService, private openpgp: OpenPGPService) {}
+  constructor(private fileService: FileSystemService,
+              private openpgp: OpenPGPService,
+              private quasi: QuasiSaltService) {}
   private logger: Logger = new Logger('LetheanServer');
   @Get("check")
   async checkServer(): Promise<string> {
@@ -54,7 +56,7 @@ export class SystemController {
         this.fileService.isFile("users/server.lthn.pub")
       ) {
         this.logger.log("[SERVER] Server.pub found, checking password");
-        const password = QuasiSalt.hash(
+        const password = this.quasi.hash(
           this.fileService.path("users/server.lthn.pub")
         );
 

@@ -1,18 +1,20 @@
 import { Injectable, path } from "../../../../deps.ts";
-import { QuasiSalt } from "../../../services/crypt/quasi-salt.ts";
-import { OpenPGPService } from "../../../services/crypt/openpgp.ts";
+import { OpenPGPService } from "../../cryptography/openpgp/openpgp.ts";
 import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
+import { QuasiSaltService } from "../../cryptography/hash/quasi-salt.service.ts";
 
 @Injectable()
 export class AuthLetheanService {
 
-  constructor(private fileService: FileSystemService, private openpgp: OpenPGPService) {}
+  constructor(private fileService: FileSystemService,
+              private openpgp: OpenPGPService,
+              private quasi: QuasiSaltService) {}
   async login(payload: string) {
     try {
       const decrypted = await this.openpgp.decryptPGP(
         "server",
         payload,
-        QuasiSalt.hash(path.join(Deno.cwd(), "users", "server.lthn.pub")),
+        this.quasi.hash(path.join(Deno.cwd(), "users", "server.lthn.pub")),
       );
 
       return await this.openpgp.readSignedMessage(decrypted).then(
@@ -39,7 +41,7 @@ export class AuthLetheanService {
    */
   async create(username: string, password: string) {
     try {
-      const usernameHash: string = QuasiSalt.hash(username);
+      const usernameHash: string = this.quasi.hash(username);
 
       const { privateKey, publicKey, revocationCertificate }: any =
         await this.openpgp.createKeyPair(usernameHash, password);
@@ -82,7 +84,7 @@ export class AuthLetheanService {
       if (username == "server") {
         return false;
       }
-      const usernameHash: string = QuasiSalt.hash(username);
+      const usernameHash: string = this.quasi.hash(username);
 
       this.fileService.delete(`users/${usernameHash}.lthn.pub`);
 
