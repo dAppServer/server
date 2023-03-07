@@ -34,7 +34,8 @@ export class OpenPGPService {
       message: await openpgp.createMessage({
         text: data
       }),
-      encryptionKeys: key
+      encryptionKeys: key,
+      signingKeys: signingKey
     });
   }
 

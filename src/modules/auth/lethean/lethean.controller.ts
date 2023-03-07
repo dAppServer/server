@@ -5,7 +5,7 @@ import { CreateAccountDTO, CreateAccountResponseDTO, DeleteAccountDTO, Encrypted
 
 import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
 import { AuthLetheanService } from "../../auth/lethean/lethean.service.ts";
-import { OpenPGPService } from "../../cryptography/openpgp/openpgp.ts";
+import { OpenPGPService } from "../../cryptography/openpgp/openpgp.service.ts";
 import { QuasiSaltService } from "../../cryptography/hash/quasi-salt.service.ts";
 
 @Tag("Auth")

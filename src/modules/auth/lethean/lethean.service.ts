@@ -1,5 +1,5 @@
 import { Injectable, path } from "../../../../deps.ts";
-import { OpenPGPService } from "../../cryptography/openpgp/openpgp.ts";
+import { OpenPGPService } from "../../cryptography/openpgp/openpgp.service.ts";
 import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
 import { QuasiSaltService } from "../../cryptography/hash/quasi-salt.service.ts";
 
