@@ -1,24 +1,11 @@
-import { ini, path, renderFile } from "../../../deps.ts";
+import { ini, Injectable, path, renderFile } from "../../../deps.ts";
+import { INIObject } from "./ini.interface.ts";
 
 // the user facing ini object
-interface UserINIObject {
-  parse(str: string): object;
 
-  stringify(obj: object): string;
-}
-
-// internal ini variable object, its what is used for vars
-interface INIVariableObject {
-  [name: string]: number | string | boolean | null;
-}
-
-// internal INI object, its what parseFunc() parses to.
-interface INIObject {
-  [section: string]: INIVariableObject;
-}
-
+@Injectable()
 export class IniService {
-  convertVariable(str: string): number | string | boolean | null {
+  private convertVariable(str: string): number | string | boolean | null {
     if (str.match(/\'.+\'/gi) || str.match(/\".+\"/gi)) {
       return str.slice(1, str.length - 1);
     } else if (str === "false") {
@@ -28,7 +15,7 @@ export class IniService {
     } else if (str === "null") {
       return null;
     } else if (
-      Number(str) != NaN || Number(str) != undefined || Number(str) != null
+      !isNaN(Number(str)) || Number(str) != undefined || Number(str) != null
     ) {
       return Number(str);
     } else {
