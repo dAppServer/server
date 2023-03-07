@@ -2,55 +2,27 @@ import {
   copy,
   decompress,
   ensureDir,
-  ensureDirSync,
+  ensureDirSync, Injectable,
   path,
   readerFromStreamReader,
   Untar,
-  unZipFromFile,
-} from "../../deps.ts";
-import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
-import { ZeroMQServer } from "../modules/io/ipc/zeromq.ts";
+  unZipFromFile
+} from "../../../../deps.ts";
+import { FileSystemService } from "../filesystem/fileSystemService.ts";
+import { ZeroMQServer } from "../ipc/zeromq.ts";
+import { DownloadDestination, DownloadedFile } from "../tcp/download.interface.ts";
 
-export interface Destination {
-  /**
-   * The destination directory
-   */
-  dir?: string;
-  /**
-   * The destination file
-   */
-  file?: string;
-  /**
-   * The destination file name
-   */
-  mode?: number;
-}
 
-export interface DownloadedFile {
-  /**
-   * The name of the file
-   */
-  file: string;
-  /**
-   * The path to the file
-   */
-  dir: string;
-  /**
-   * The mode of the file
-   */
-  fullPath: string;
-  /**
-   * The mode of the file
-   */
-  size: number;
-}
 
 /**
  * @class DownloadService
  * @description
  * Service to download files from the internet
  */
+@Injectable()
 export class LetheanDownloadService {
+
+  constructor(private fileService: FileSystemService) {}
   /**
    * Downloads and extracts a zip file's contents to the dest directory
    *
@@ -58,18 +30,13 @@ export class LetheanDownloadService {
    * @param {string} dest
    * @returns {Promise<void>}
    */
-  static async downloadContents(url: string, dest: string) {
+  async downloadContents(url: string, dest: string) {
     try {
-
-
       const filename = url.split("/").pop() ?? "";
-      const destination: Destination = {
-        file: filename,
-        dir: FileSystemService.path(dest),
-      };
-      FileSystemService.ensureDir(destination.dir as string);
+      const destination = new DownloadDestination(filename, this.fileService.path(dest));
+      this.fileService.ensureDir(destination.dir as string);
       console.info(`Attempting to download ${url}`);
-      const fileObj = await LetheanDownloadService.download(
+      const fileObj = await this.download(
         new URL(url),
         destination,
       );
@@ -88,9 +55,9 @@ export class LetheanDownloadService {
    * @param options
    * @returns {Promise<DownloadedFile>}
    */
-  static async download(
+  async download(
     url: URL,
-    destination?: Destination,
+    destination?: DownloadDestination,
     options?: RequestInit,
   ): Promise<DownloadedFile> {
     let file: string, dir = "", mode = {};
