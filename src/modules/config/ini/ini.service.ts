@@ -1,4 +1,4 @@
-import { ini, Injectable, path, renderFile } from "../../../deps.ts";
+import { ini, Injectable, path, renderFile } from "../../../../deps.ts";
 import { INIObject } from "./ini.interface.ts";
 
 // the user facing ini object

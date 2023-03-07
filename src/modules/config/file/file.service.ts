@@ -1,5 +1,5 @@
-import { ini, Injectable, path, renderFile, render } from "../../../deps.ts";
-import { FileSystemService } from "../io/filesystem/fileSystemService.ts";
+import { ini, Injectable, path, renderFile, render } from "../../../../deps.ts";
+import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
 
 @Injectable()
 export class ConfigFileService {

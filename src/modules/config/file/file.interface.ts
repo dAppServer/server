@@ -1,5 +1,5 @@
-import { ApiProperty } from "../../../deps.ts";
-import { ConfigObjectGetDTO } from "./object.interface.ts";
+import { ApiProperty } from "../../../../deps.ts";
+import { ConfigObjectGetDTO } from "../object/object.interface.ts";
 
 export class ConfigFileRenderDTO {
   @ApiProperty()

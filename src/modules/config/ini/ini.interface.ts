@@ -1,4 +1,4 @@
-import { ApiProperty } from "../../../deps.ts";
+import { ApiProperty } from "../../../../deps.ts";
 
 export interface UserINIObject {
   parse(str: string): object;

@@ -1,5 +1,5 @@
 import { IniService } from "./ini.service.ts";
-import { Body, Controller, Post, Tag } from "../../../deps.ts";
+import { Body, Controller, Post, Tag } from "../../../../deps.ts";
 import { INIObjectParseJSONDTO } from "./ini.interface.ts";
 
 @Tag("Config")

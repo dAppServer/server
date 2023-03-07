@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Tag } from "../../../deps.ts";
+import { Body, Controller, Post, Tag } from "../../../../deps.ts";
 import { ConfigObjectClearDTO, ConfigObjectCountDTO, ConfigObjectGetDTO, ConfigObjectRemoveDTO, ConfigObjectSetDTO } from "./object.interface.ts";
 import { ObjectService } from "./object.service.ts";
 

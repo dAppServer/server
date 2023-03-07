@@ -1,5 +1,5 @@
-import { ensureDirSync, Injectable, os, path } from "../../../deps.ts";
-import { FileSystemService } from "../io/filesystem/fileSystemService.ts";
+import { ensureDirSync, Injectable, os, path } from "../../../../deps.ts";
+import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
 
 /**
  * Store
