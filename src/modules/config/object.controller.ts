@@ -59,13 +59,3 @@ export class ObjectController {
   }
 }
 
-//SystemDataConfigRouter.post(
-//  "/system/data/config/get",
-//  async (context: Context) => {
-//    const body = context.request.body({ type: "json" });
-//    const req = await body.value;
-//
-//    context.response.body = await ConfigFileService.loadFile(req);
-//  },
-//);
-
