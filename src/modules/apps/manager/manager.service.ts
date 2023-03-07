@@ -1,6 +1,7 @@
-import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
-import { AppManagerInstaller } from "./installer.service.ts";
-import { AppManagerConfig } from "./config.service.ts";
+import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
+import { AppManagerInstaller } from "../pkg/installer.service.ts";
+import { AppManagerConfig } from "../pkg/config.service.ts";
+import { Injectable } from "../../../../deps.ts";
 
 /**
  * Install an app from the Lethean repository
@@ -8,6 +9,7 @@ import { AppManagerConfig } from "./config.service.ts";
  * @param version The version of the app to install
  * @param destination The destination folder to install the app to
  */
+@Injectable()
 export class AppManager {
   plugin: { code: string; config: string } = {
     code: "lthn-app-setup",
@@ -15,20 +17,28 @@ export class AppManager {
       "https://raw.githubusercontent.com/letheanVPN/lthn-app-setup/main/lthn.json"
   };
   public apps: any;
-  private config: AppManagerConfig
+  private config: AppManagerConfig;
 
   /**
    * Init a plugin on the system
    *
-   * @param {{code: string, config: string}} plugin
+   * @param configService
+   * @param fileSystem
+   * @param installer
    */
-  constructor(plugin?: { code: string; config: string }) {
+  constructor(private configService: AppManagerConfig,
+              private fileSystem: FileSystemService,
+              private installer: AppManagerInstaller
+  ) {
+    this.apps = this.configService.getConfig();
+
+  }
+
+  loadPlugin(plugin?: { code: string; config: string }) {
     if (plugin) {
       this.plugin = plugin;
     }
 
-    this.config =  new AppManagerConfig()
-    this.apps = this.config.getConfig()
 
   }
 
@@ -38,12 +48,10 @@ export class AppManager {
    * @returns {boolean}
    */
   installed() {
-    return FileSystemService.isDir(
+    return this.fileSystem.isDir(
       `apps/${this.plugin.code.split("-").join("/")}`
     );
   }
-
-
 
   /**
    * Install Known Application
@@ -57,9 +65,7 @@ export class AppManager {
       this.apps[name] = pkg ? pkg : true;
     }
     if (pkg) {
-      const AppInstaller = new AppManagerInstaller()
-
-      return await AppInstaller.install(name, pkg);
+      return await this.installer.install(name, pkg);
     }
 
     return false;
@@ -73,12 +79,10 @@ export class AppManager {
    */
   removeApp(name: string) {
     if (this.apps[name]) {
-      const AppInstaller = new AppManagerInstaller()
-       AppInstaller.uninstall(name);
-      const AppConfig = new AppManagerConfig()
-      AppConfig.removeConfigKey(name)
+      this.installer.uninstall(name);
+      this.configService.removeConfigKey(name);
     }
-    return false
+    return false;
   }
 
   async getMarketPlaceApps(opts?: { dir: string }) {

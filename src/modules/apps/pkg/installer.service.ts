@@ -1,19 +1,20 @@
-import { PluginConfig, PluginType } from "../../interfaces/apps/plugin-config.ts";
-import { StoredObjectService } from "../../services/config/store.ts";
-import { LetheanDownloadService } from "../../services/download.service.ts";
-import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
-import { ensureDir, path } from "../../../deps.ts";
 import { AppManagerConfig } from "./config.service.ts";
-
-
+import { ensureDir, Injectable, path } from "../../../../deps.ts";
+import { ObjectService } from "../../config/object/object.service.ts";
+import { PluginConfig, PluginType } from "./pkg.interface.ts";
+import { LetheanDownloadService } from "../../io/tcp/download.service.ts";
+import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
+@Injectable()
 export class AppManagerInstaller {
 
   public app: any;
-  public config: AppManagerConfig;
 
-  constructor() {
-    this.config = new AppManagerConfig()
+  constructor(private configService: AppManagerConfig,
+              private object: ObjectService,
+              private download: LetheanDownloadService,
+              private fileSystem: FileSystemService) {
   }
+
   /**
    * Attempts to install the package locally
    *
@@ -33,7 +34,7 @@ export class AppManagerInstaller {
          */
         await this.installDependants(pluginConfig);
         await this.installDownload(pluginConfig);
-        StoredObjectService.setObject({ group: "apps", object: pluginConfig["code"], data: JSON.stringify(pluginConfig) });
+        this.object.setObject("apps", pluginConfig["code"], JSON.stringify(pluginConfig));
 
         this.app = { "name": pluginConfig["name"], "version": pluginConfig["version"], "pkg": pkg };
 
@@ -41,11 +42,11 @@ export class AppManagerInstaller {
           this.app["directory"] = this.getAppDirectory(pluginConfig["code"]);
 
           if (pluginConfig["menu"]) {
-            await this.installMenu(pluginConfig);
+             this.installMenu(pluginConfig);
           }
         }
-        this.config.addConfigKey(pluginConfig["code"], this.app)
-        return
+        this.configService.addConfigKey(pluginConfig["code"], this.app);
+        return;
       } else {
         // @todo finish cleaning this up
         console.log(`Package code miss match. ${pluginConfig["code"]} ${name}`);
@@ -56,7 +57,6 @@ export class AppManagerInstaller {
       console.log(e);
       return false;
     }
-    return true;
   }
 
   /**
@@ -70,12 +70,12 @@ export class AppManagerInstaller {
 
       if (Deno.build.os === "darwin" && Deno.build.arch == "aarch64" && (plugin["downloads"] && !plugin["downloads"]["aarch64"])) {
 
-        await LetheanDownloadService.downloadContents(
+        await this.download.downloadContents(
           plugin["downloads"]["x86_64"][Deno.build.os]["url"],
           this.getAppDirectory(plugin["code"])
         );
       } else if (plugin["downloads"]) {
-        await LetheanDownloadService.downloadContents(
+        await this.download.downloadContents(
           plugin["downloads"][Deno.build.arch][Deno.build.os]["url"],
           this.getAppDirectory(plugin["code"])
         );
@@ -83,19 +83,19 @@ export class AppManagerInstaller {
       }
 
       if (plugin["namespace"]) {
-        await ensureDir(FileSystemService.path(path.join("data", plugin["namespace"])));
-        await ensureDir(FileSystemService.path(path.join("conf", plugin["namespace"])));
+        await ensureDir(this.fileSystem.path(path.join("data", plugin["namespace"])));
+        await ensureDir(this.fileSystem.path(path.join("conf", plugin["namespace"])));
       }
 
     } else if (plugin["type"] && PluginType.APP) {
 
       if (plugin["downloads"]) {
-        await LetheanDownloadService.downloadContents(
+        await this.download.downloadContents(
           plugin["downloads"]["app"],
           this.getAppDirectory(plugin["code"])
         );
       } else if (plugin["app"]) {
-        await LetheanDownloadService.downloadContents(
+        await this.download.downloadContents(
           plugin["app"]["url"],
           this.getAppDirectory(plugin["code"])
         );
@@ -131,7 +131,7 @@ export class AppManagerInstaller {
    * @returns {boolean}
    */
   installMenu(plugin: PluginConfig) {
-    let menu = JSON.parse(StoredObjectService.getObject({ group: "conf", object: "menu" }) as string);
+    let menu = JSON.parse(this.object.getObject( "conf",  "menu" ) as string);
     if (!menu.forEach((item: any) => {
       if (item["title"]) {
         return true;
@@ -139,7 +139,7 @@ export class AppManagerInstaller {
     })) {
       menu.push({ app: plugin["code"], ...plugin["menu"]["main"] });
     }
-    return StoredObjectService.setObject({ group: "conf", object: "menu", data: JSON.stringify(menu) });
+    return this.object.setObject( "conf",  "menu",  JSON.stringify(menu) );
 
   }
 
@@ -151,15 +151,15 @@ export class AppManagerInstaller {
    */
   uninstall(code: string): boolean {
     if (this.app && this.app["directory"]) {
-      FileSystemService.delete(this.app["directory"]);
+      this.fileSystem.delete(this.app["directory"]);
       try {
-        let menu = JSON.parse(StoredObjectService.getObject({ group: "conf", object: "menu" }) as string);
+        let menu = JSON.parse(this.object.getObject(  "conf",  "menu" ) as string);
         let newMenu: string[] = menu.map((item: any) => {
           if (item["title"] !== code) {
             return item;
           }
         });
-        return StoredObjectService.setObject({ group: "conf", object: menu, data: JSON.stringify(newMenu) });
+        return this.object.setObject( "conf",  menu,  JSON.stringify(newMenu) );
       } catch (e) {
         return false;
       }
@@ -175,8 +175,8 @@ export class AppManagerInstaller {
    * @param {string} code
    * @returns {string}
    */
-  getAppDirectory(code: string){
-    return `apps/${code.split("-").join("/")}`
+  getAppDirectory(code: string) {
+    return `apps/${code.split("-").join("/")}`;
   }
 
 }

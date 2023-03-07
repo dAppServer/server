@@ -5,10 +5,11 @@ import { AuthModule } from "./modules/auth/auth.module.ts";
 import { SystemController } from "./modules/system/system.controller.ts";
 import { ConfigModule } from "./modules/config/config.module.ts";
 import { CryptographyModule } from "./modules/cryptography/cryptography.module.ts";
+import { AppsModule } from "./modules/apps/apps.module.ts";
 
 @Module({
   controllers: [BaseController, SystemController],
   injectables: [],
-  imports: [IOModule, AuthModule, ConfigModule, CryptographyModule],
+  imports: [IOModule, AuthModule, ConfigModule, CryptographyModule, AppsModule],
 })
 export class AppModule {}
