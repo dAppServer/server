@@ -6,6 +6,10 @@ export { Controller, Get, Post, Put, Delete, Param, Body, Module, DanetApplicati
 export { SwaggerModule, SpecBuilder } from 'https://deno.land/x/danet_swagger@1.4.1/mod.ts';
 export {Tag, ApiProperty, BodyType, Optional, ReturnedType} from "https://deno.land/x/danet_swagger@1.4.1/decorators.ts"
 
+
+export {EventEmitter} from "https://deno.land/std@0.79.0/node/events.ts";
+export { readLines } from "https://deno.land/std@0.79.0/io/bufio.ts";
+
 export {
   ensureDir,
   ensureDirSync,
