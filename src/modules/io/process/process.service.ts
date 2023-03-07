@@ -1,5 +1,6 @@
-import { ProcessManagerRequest } from "./processManagerRequest.ts";
+import { ProcessManagerRequest } from "./process.interface.ts";
 import { ProcessManagerProcess } from "./processManagerProcess.ts";
+import { Injectable } from "../../../../deps.ts";
 
 /**
  * Lethean ProcessManager handles all aspects of running external binaries
@@ -11,9 +12,10 @@ import { ProcessManagerProcess } from "./processManagerProcess.ts";
  * 		stdErr: (stdErr: unknown) => console.log(stdErr),
  * 		stdIn: (stdIn: unknown) => console.log(stdIn),
  * 		stdOut: (stdOut: unknown) => console.log(stdOut)
- * 	} as ProcessManagerRequest
+ * 	} as ProcessInterface
  * 	);
  */
+@Injectable()
 export class ProcessManager {
   /**
    * Turns on console.log with 1 or 0
@@ -41,13 +43,13 @@ export class ProcessManager {
    * @param {ProcessManagerRequest} options
    * @returns {Promise<void>}
    */
-  static run(command: string, args: any, options: ProcessManagerRequest) {
+  run(command: string, args: any, options: ProcessManagerRequest) {
     if (!args) {
       console.log("No arguments passed to ProcessManager");
       return;
     }
 
-    if (options.key && this.process[options.key]) {
+    if (options.key && ProcessManager.process[options.key]) {
       return this.getProcess(options.key);
     }
 
@@ -74,7 +76,7 @@ export class ProcessManager {
       );
     }
 
-    return ProcessManager.addProcess({
+    return this.addProcess({
       key: options.key,
       command: cmdArgs,
       stdIn: options.stdIn,
@@ -90,11 +92,11 @@ export class ProcessManager {
    * @returns {ProcessManagerProcess}
    * @private
    */
-  private static addProcess(process: ProcessManagerRequest) {
-    if (this.process && this.process[process.key]) {
-      return this.process[process.key];
+  public addProcess(process: ProcessManagerRequest) {
+    if (ProcessManager.process && ProcessManager.process[process.key]) {
+      return ProcessManager.process[process.key];
     }
-    return this.process[process.key] = new ProcessManagerProcess(process);
+    return ProcessManager.process[process.key] = new ProcessManagerProcess(process);
   }
 
   /**
@@ -104,11 +106,11 @@ export class ProcessManager {
    * @param {string} key
    * @returns {ProcessManagerProcess}
    */
-  public static getProcess(key: string) {
-    if (!this.process[key]) {
+  public getProcess(key: string) {
+    if (!ProcessManager.process[key]) {
       throw new Error(`Can't find process ${key}`);
     }
-    return this.process[key];
+    return ProcessManager.process[key];
   }
 
   /**
@@ -117,12 +119,12 @@ export class ProcessManager {
    * @example ProcessManager.startProcess('letheand.exe')
    * @param {string} key
    */
-  public static startProcess(key: string) {
-    if (!this.process[key]) {
+  public startProcess(key: string) {
+    if (!ProcessManager.process[key]) {
       throw new Error(`Can't find process ${key}`);
     }
     //@todo ad a feeder to centralised io handling, eg websocket srv
-    this.process[key].run().catch(console.error);
+    ProcessManager.process[key].run().catch(console.error);
   }
 
   /**
@@ -131,12 +133,12 @@ export class ProcessManager {
    * @example ProcessManager.stopProcess('letheand.exe')
    * @param {string} key
    */
-  public static stopProcess(key: string) {
-    if (!this.process[key]) {
+  public stopProcess(key: string) {
+    if (!ProcessManager.process[key]) {
       throw new Error(`Can't find process ${key}`);
     }
 
-    this.process[key].process.stop();
+    ProcessManager.process[key].process.stop();
   }
 
   /**
@@ -145,11 +147,11 @@ export class ProcessManager {
    * @example ProcessManager.killProcess('letheand.exe')
    * @param {string} key
    */
-  public static killProcess(key: string) {
-    if (!this.process[key]) {
+  public killProcess(key: string) {
+    if (!ProcessManager.process[key]) {
       throw new Error(`Can't find process ${key}`);
     }
 
-    this.process[key].process.kill();
+    ProcessManager.process[key].process.kill();
   }
 }

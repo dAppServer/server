@@ -2,8 +2,8 @@ import { FileSystemService } from "./fileSystemService.ts";
 import { Controller, Post, Body, Tag } from "../../../../deps.ts";
 import { CreateFileDTO, FilePathDTO } from "./local.interface.ts";
 
-@Tag( "File System" )
-@Controller("filesystem" )
+@Tag( "Input/Output" )
+@Controller("io/filesystem" )
 export class FileSystemController  {
   constructor(private fileSystemService: FileSystemService) {}
 

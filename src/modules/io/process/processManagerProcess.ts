@@ -1,8 +1,7 @@
-import { ProcessManagerRequest } from "./processManagerRequest.ts";
-import EventEmitter from "https://deno.land/std@0.79.0/node/events.ts";
-import { readLines } from "https://deno.land/std@0.79.0/io/bufio.ts";
+import { ProcessManagerRequest } from "./process.interface.ts";
 import { Sub } from "https://deno.land/x/jszmq@v1.3.1/mod.ts";
-import { ZeroMQServer } from "../../modules/io/ipc/zeromq.ts";
+import { ZeroMQServer } from "../ipc/zeromq.ts";
+import { EventEmitter } from "../../../../deps.ts";
 
 /**
  * Interacts with the external binary directly handling its stdIn, stdOut, stdErr
