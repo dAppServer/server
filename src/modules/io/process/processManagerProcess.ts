@@ -1,7 +1,7 @@
 import { ProcessManagerRequest } from "./process.interface.ts";
 import { Sub } from "https://deno.land/x/jszmq@v1.3.1/mod.ts";
 import { ZeroMQServer } from "../ipc/zeromq.ts";
-import { EventEmitter } from "../../../../deps.ts";
+import { EventEmitter, readLines } from "../../../../deps.ts";
 
 /**
  * Interacts with the external binary directly handling its stdIn, stdOut, stdErr

@@ -2,8 +2,8 @@
 import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
 
 import { LetheanAccount } from "../../src/accounts/user.ts";
-import { OpenPGPService } from "../../src/services/crypt/openpgp.ts";
-import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
+import { OpenPGPService } from "src/modules/cryptography/openpgp/openpgp.ts";
+import { QuasiSalt } from "src/modules/cryptography/hash/quasi-salt.ts";
 import { Context } from "../../deps.ts";
 import { assertEquals, assertExists, superoak } from "../../deps-test.ts";
 import { AppController } from "../../src/app.controller.ts";

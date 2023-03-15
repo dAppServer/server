@@ -1,5 +1,5 @@
 import { FileSystemService } from "./fileSystemService.ts";
-import { Controller, Post, Body, Tag } from "../../../../deps.ts";
+import { Controller, Post, Body, Tag, Options, Get } from "../../../../deps.ts";
 import { CreateFileDTO, FilePathDTO } from "./local.interface.ts";
 
 @Tag( "Input/Output" )
@@ -17,6 +17,8 @@ export class FileSystemController  {
     return this.fileSystemService.list(body.path);
   }
 
+  @Options("list")
+  test3() {}
   /**
    * Lists directory contents with detailed information
    * @param {FilePathDTO} body
@@ -26,7 +28,8 @@ export class FileSystemController  {
   getDetailedDirectoryList(@Body() body: FilePathDTO) {
     return this.fileSystemService.detailedList(body.path);
   }
-
+  @Options("list-detailed")
+  test2() {}
   /**
    * Reads file contents
    * @param {FilePathDTO} body
@@ -34,8 +37,15 @@ export class FileSystemController  {
    */
   @Post("read")
   readFile(@Body() body: FilePathDTO) {
-    return this.fileSystemService.read(body.path);
+
+    const result = this.fileSystemService.read(body.path);
+    if(result === false) return false;
+    return btoa(result);
   }
+
+  @Options("read")
+  test() {}
+
 
   /**
    * Writes file contents
@@ -44,9 +54,12 @@ export class FileSystemController  {
    */
   @Post("write")
   writeFile(@Body() body: CreateFileDTO) {
-    return this.fileSystemService.write(body.path, body.data);
+    const data = atob(body.data);
+    return this.fileSystemService.write(body.path, data);
   }
 
+  @Options("write")
+  test4() {}
   /**
    * Checks if path is a file
    * @param {FilePathDTO} body
@@ -56,6 +69,8 @@ export class FileSystemController  {
   isFile(@Body() body: FilePathDTO) {
     return this.fileSystemService.isFile(body.path);
   }
+  @Options("is-file")
+  test5() {}
 
   /**
    * Checks if path is a directory
@@ -66,4 +81,6 @@ export class FileSystemController  {
   isDir(@Body() body: FilePathDTO) {
     return this.fileSystemService.isDir(body.path);
   }
+  @Options("is-dir")
+  test6() {}
 }

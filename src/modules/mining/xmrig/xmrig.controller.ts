@@ -2,8 +2,8 @@ import { Context, HttpException, os, path, Router } from "../../../../deps.ts";
 
 import { XmrigService } from "./xmrig.service.ts";
 import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
-import { ProcessManager } from "../../../services/process/process.service.ts";
-import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
+import { ProcessManager } from "../../io/process/process.service.ts";
+import { ProcessInterface } from "src/modules/io/process/process.interface.ts";
 
 const XmrigRouter = new Router();
 const xmrig = new XmrigService();
@@ -74,7 +74,7 @@ XmrigRouter.post("/mining/xmrig/start", async (context: Context) => {
         stdErr: (stdErr: unknown) => console.log(stdErr),
         stdIn: (stdIn: unknown) => console.log(stdIn),
         stdOut: (stdOut: unknown) => console.log(stdOut),
-      } as ProcessManagerRequest,
+      } as ProcessInterface,
     );
     context.response.body = JSON.stringify({ "result": true });
   } catch (e) {

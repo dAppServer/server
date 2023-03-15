@@ -1,4 +1,4 @@
-import { QuasiSalt } from "../../src/services/crypt/quasi-salt.ts";
+import { QuasiSalt } from "src/modules/cryptography/hash/quasi-salt.ts";
 
 import { assertEquals } from "../../deps-test.ts";
 

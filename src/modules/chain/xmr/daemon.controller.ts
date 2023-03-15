@@ -10,13 +10,13 @@ import {
   Untar,
 } from "../../../../deps.ts";
 import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
-import { IniService } from "../../../services/config/ini.service.ts";
-import { ProcessManager } from "../../../services/process/process.service.ts";
-import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
+import { IniService } from "src/modules/config/ini.service.ts";
+import { ProcessManager } from "../../io/process/process.service.ts";
+import { ProcessInterface } from "src/modules/io/process/process.interface.ts";
 import {
   Destination,
   LetheanDownloadService,
-} from "../../../services/download.service.ts";
+} from "src/modules/io/tcp/download.service.ts";
 import { ZeroMQServer } from "../../io/ipc/zeromq.ts";
 
 const MoneroDaemonRouter = new Router();
@@ -58,7 +58,7 @@ MoneroDaemonRouter.post("/chain/xmr/start", async (context: Context) => {
         stdErr: (stdErr: unknown) => console.log(stdErr),
         stdIn: (stdIn: unknown) => console.log(stdIn),
         stdOut: (stdOut: unknown) => console.log(stdOut),
-      } as ProcessManagerRequest,
+      } as ProcessInterface,
     );
     context.response.body = JSON.stringify({ "result": true });
   } catch (e) {
@@ -110,7 +110,7 @@ MoneroDaemonRouter.post("/chain/xmr/export", async (context: Context) => {
       stdErr: (stdErr: unknown) => console.log(stdErr),
       stdIn: (stdIn: unknown) => console.log(stdIn),
       stdOut: (stdOut: unknown) => console.log(stdOut),
-    } as ProcessManagerRequest,
+    } as ProcessInterface,
   );
 });
 
@@ -134,7 +134,7 @@ MoneroDaemonRouter.post("/chain/xmr/import", async (context: Context) => {
       stdErr: (stdErr: unknown) => console.log(stdErr),
       stdIn: (stdIn: unknown) => console.log(stdIn),
       stdOut: (stdOut: unknown) => console.log(stdOut),
-    } as ProcessManagerRequest,
+    } as ProcessInterface,
   );
 });
 

@@ -1,8 +1,8 @@
 import { Context, HttpException, os, path, Router } from "../../../../deps.ts";
 import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
-import { IniService } from "../../../services/config/ini.service.ts";
-import { ProcessManager } from "../../../services/process/process.service.ts";
-import { ProcessManagerRequest } from "../../../services/process/processManagerRequest.ts";
+import { IniService } from "src/modules/config/ini.service.ts";
+import { ProcessManager } from "../../io/process/process.service.ts";
+import { ProcessInterface } from "src/modules/io/process/process.interface.ts";
 
 const LetheanRPCRouter = new Router();
 
@@ -25,7 +25,7 @@ LetheanRPCRouter.post("/daemon/wallet/rpc", async (context: Context) => {
       stdErr: (stdErr: unknown) => console.log(stdErr),
       stdIn: (stdIn: unknown) => console.log(stdIn),
       stdOut: (stdOut: unknown) => console.log(stdOut),
-    } as ProcessManagerRequest,
+    } as ProcessInterface,
   );
   context.response.body = "started";
 });

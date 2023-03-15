@@ -13,7 +13,7 @@ import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.t
 import {
   Destination,
   LetheanDownloadService,
-} from "../../../services/download.service.ts";
+} from "src/modules/io/tcp/download.service.ts";
 
 export class XmrigService {
   isInstalled() {
