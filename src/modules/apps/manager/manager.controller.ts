@@ -34,16 +34,23 @@ export class AppManagerController {
   test2() {}
 
   @Post("install")
-  async installApp(@Param("code") code: string, @Param("pkg") pkg?: string) {
-    return await this.apps.installApp(code, pkg);
+  @ReturnedType(Object)
+  async installApp(@Body("code") code: string, @Body("pkg") pkg?: string): Promise<{success: boolean}> {
+      let download = await this.apps.installApp(code, pkg);
+      return { success: true };
   }
 
   @Options("install")
   test3() {}
 
   @Post("remove")
-  removeApp(@Param("code") code: string) {
-    return this.apps.removeApp(code);
+  @ReturnedType(Object)
+  removeApp(@Body("code") code: string): {success: boolean} {
+     if(this.apps.removeApp(code)) {
+       return { success: true };
+     }else {
+       return { success: false };
+     }
   }
 
   @Options("remove")
