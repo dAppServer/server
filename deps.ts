@@ -1,7 +1,7 @@
 import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
 export { os };
 
-export { Controller, Get, Post, Put, Delete, Options, Param, Body, Module, DanetApplication, Logger, Injectable, UseFilter, type DanetMiddleware, type HttpContext, type NextFunction,
+export { Controller, Get, Post, Put, Delete, Options, Query, Param, Body, Module, DanetApplication, Logger, Injectable, UseFilter, type DanetMiddleware, type HttpContext, type NextFunction,
   UnauthorizedException, InternalServerErrorException, type ExceptionFilter, Catch } from 'https://deno.land/x/danet@1.3.3/mod.ts';
 export { SwaggerModule, SpecBuilder } from 'https://deno.land/x/danet_swagger@1.4.1/mod.ts';
 export {Tag, ApiProperty, BodyType, Optional, ReturnedType} from "https://deno.land/x/danet_swagger@1.4.1/decorators.ts"

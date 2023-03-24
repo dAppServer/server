@@ -1,6 +1,6 @@
 import { AppManager } from "../manager/manager.service.ts";
 import { AppManagerConfig } from "../pkg/config.service.ts";
-import { Body, Controller, Get, Options, Param, Post, ReturnedType, Tag } from "../../../../deps.ts";
+import { Body, Controller, Get, Options, Query, Param, Post, ReturnedType, Tag } from "../../../../deps.ts";
 import { MarketplaceGetDTO } from "./manager.interface.ts";
 
 
@@ -22,10 +22,9 @@ export class AppManagerController {
 
   @Get("marketplace")
   @ReturnedType(String)
-  getMarketPlaceApps(@Param('dir') dir?: string) {
-
-    if (dir) {
-      return this.apps.getMarketPlaceApps({ dir: dir });
+  getMarketPlaceApps(@Query() q?: {dir?: string }) {
+    if (q.dir) {
+      return this.apps.getMarketPlaceApps({ dir: q.dir });
     } else {
       return this.apps.getMarketPlaceApps();
     }
