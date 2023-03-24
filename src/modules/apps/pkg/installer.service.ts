@@ -4,6 +4,7 @@ import { ObjectService } from "../../config/object/object.service.ts";
 import { PluginConfig, PluginType } from "./pkg.interface.ts";
 import { LetheanDownloadService } from "../../io/tcp/download.service.ts";
 import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
+
 @Injectable()
 export class AppManagerInstaller {
 
@@ -21,42 +22,36 @@ export class AppManagerInstaller {
    * @returns {Promise<boolean>}
    */
   async install(name: string, pkg: string) {
-    try {
-
-      // obviously lots wrong here, i know, validation
-      const jsonResponse = await fetch(pkg, { cache: "no-cache" });
-      const pluginConfig = await jsonResponse.json() as PluginConfig;
+    // obviously lots wrong here, i know, validation
+    const jsonResponse = await fetch(pkg, { cache: "no-cache" });
+    const pluginConfig = await jsonResponse.json() as PluginConfig;
 
 
-      if (pluginConfig["code"] == name) {
-        /**
-         * for types bin and core, we are just downloading backend services to be used by te server
-         */
-        await this.installDependants(pluginConfig);
-        await this.installDownload(pluginConfig);
-        this.object.setObject("apps", pluginConfig["code"], JSON.stringify(pluginConfig));
+    if (pluginConfig["code"] == name) {
+      /**
+       * for types bin and core, we are just downloading backend services to be used by te server
+       */
+      await this.installDependants(pluginConfig);
+      await this.installDownload(pluginConfig);
+      this.object.setObject("apps", pluginConfig["code"], JSON.stringify(pluginConfig));
 
-        this.app = { "name": pluginConfig["name"], "version": pluginConfig["version"], "pkg": pkg };
+      this.app = { "name": pluginConfig["name"], "version": pluginConfig["version"], "pkg": pkg };
 
-        if (pluginConfig["type"] == "app") {
-          this.app["directory"] = this.getAppDirectory(pluginConfig["code"]);
+      if (pluginConfig["type"] == "app") {
+        this.app["directory"] = this.getAppDirectory(pluginConfig["code"]);
 
-          if (pluginConfig["menu"]) {
-             this.installMenu(pluginConfig);
-          }
+        if (pluginConfig["menu"]) {
+          this.installMenu(pluginConfig);
         }
-        this.configService.addConfigKey(pluginConfig["code"], this.app);
-        return;
-      } else {
-        // @todo finish cleaning this up
-        console.log(`Package code miss match. ${pluginConfig["code"]} ${name}`);
-        return false;
       }
-
-    } catch (e) {
-      console.log(e);
-      return false;
+      this.configService.addConfigKey(pluginConfig["code"], this.app);
+      console.log(`Installed ${pluginConfig["name"]} ${pluginConfig["version"]}`);
+      return true;
+    } else {
+      throw new Error(`Package code miss match. ${pluginConfig["code"]} ${name}`);
     }
+
+
   }
 
   /**
@@ -68,24 +63,25 @@ export class AppManagerInstaller {
 
     if (plugin["type"] === PluginType.BIN || plugin["type"] === PluginType.CORE) {
 
+      if (plugin["namespace"]) {
+        await ensureDir(this.fileSystem.path(path.join("data", plugin["namespace"])));
+        await ensureDir(this.fileSystem.path(path.join("conf", plugin["namespace"])));
+      }
+
       if (Deno.build.os === "darwin" && Deno.build.arch == "aarch64" && (plugin["downloads"] && !plugin["downloads"]["aarch64"])) {
 
-        await this.download.downloadContents(
+        return await this.download.downloadContents(
           plugin["downloads"]["x86_64"][Deno.build.os]["url"],
           this.getAppDirectory(plugin["code"])
         );
       } else if (plugin["downloads"]) {
-        await this.download.downloadContents(
+        return await this.download.downloadContents(
           plugin["downloads"][Deno.build.arch][Deno.build.os]["url"],
           this.getAppDirectory(plugin["code"])
         );
 
       }
 
-      if (plugin["namespace"]) {
-        await ensureDir(this.fileSystem.path(path.join("data", plugin["namespace"])));
-        await ensureDir(this.fileSystem.path(path.join("conf", plugin["namespace"])));
-      }
 
     } else if (plugin["type"] && PluginType.APP) {
 
@@ -113,6 +109,8 @@ export class AppManagerInstaller {
       return false;
     }
 
+    return true;
+
   }
 
   installDependants(plugin: PluginConfig) {
@@ -131,16 +129,24 @@ export class AppManagerInstaller {
    * @returns {boolean}
    */
   installMenu(plugin: PluginConfig) {
-    let menu = JSON.parse(this.object.getObject( "conf",  "menu" ) as string);
-    if (!menu.forEach((item: any) => {
-      if (item["title"]) {
-        return true;
-      }
-    })) {
-      menu.push({ app: plugin["code"], ...plugin["menu"]["main"] });
-    }
-    return this.object.setObject( "conf",  "menu",  JSON.stringify(menu) );
+    let menuSrc = this.object.getObject("conf", "menu") as string;
+    if (menuSrc.length > 1) {
+      try {
+        let menu = JSON.parse(menuSrc);
+        if (!menu.forEach((item: any) => {
+          if (item["title"]) {
+            return true;
+          }
+        })) {
+          menu.push({ app: plugin["code"], ...plugin["menu"]["main"] });
+        }
+        return this.object.setObject("conf", "menu", JSON.stringify(menu));
+      } catch (e) {
 
+      }
+    } else {
+      return this.object.setObject("conf", "menu", JSON.stringify([{ app: plugin["code"], ...plugin["menu"]["main"] }]));
+    }
   }
 
   /**
@@ -153,13 +159,13 @@ export class AppManagerInstaller {
     if (this.app && this.app["directory"]) {
       this.fileSystem.delete(this.app["directory"]);
       try {
-        let menu = JSON.parse(this.object.getObject(  "conf",  "menu" ) as string);
+        let menu = JSON.parse(this.object.getObject("conf", "menu") as string);
         let newMenu: string[] = menu.map((item: any) => {
           if (item["title"] !== code) {
             return item;
           }
         });
-        return this.object.setObject( "conf",  menu,  JSON.stringify(newMenu) );
+        return this.object.setObject("conf", menu, JSON.stringify(newMenu));
       } catch (e) {
         return false;
       }
@@ -175,7 +181,8 @@ export class AppManagerInstaller {
    * @param {string} code
    * @returns {string}
    */
-  getAppDirectory(code: string) {
+  getAppDirectory(code: string
+  ) {
     return `apps/${code.split("-").join("/")}`;
   }
 
