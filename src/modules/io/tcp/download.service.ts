@@ -35,12 +35,12 @@ export class LetheanDownloadService {
       const filename = url.split("/").pop() ?? "";
       const destination = new DownloadDestination(filename, this.fileService.path(dest));
       this.fileService.ensureDir(destination.dir as string);
-      console.info(`Attempting to download ${url}`);
+      //console.info(`Attempting to download ${url}`);
       const fileObj = await this.download(
         new URL(url),
         destination,
       );
-      console.info(`Extracting to: ${destination.dir}`);
+      //console.info(`Extracting to: ${destination.dir}`);
     }catch (e) {
       return false
     }
