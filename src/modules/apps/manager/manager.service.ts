@@ -81,6 +81,7 @@ export class AppManager {
     if (this.apps[name]) {
       this.installer.uninstall(name);
       this.configService.removeConfigKey(name);
+      return true;
     }
     return false;
   }
