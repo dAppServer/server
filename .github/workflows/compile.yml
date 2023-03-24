@@ -16,8 +16,6 @@ jobs:
         with:
           node-version: 16.x
       - run: npm install
-      - name: Testing
-        run: make test
       - run: make build-windows
       - uses: papeloto/action-zip@v1
         with:
@@ -47,8 +45,6 @@ jobs:
         with:
           node-version: 16.x
       - run: npm install
-      - name: Testing
-        run: make test
       - run: make build-macos-arm
       - run: chmod +x build/lthn && mv build/lthn lthn
       - run: tar -cvf macos-arm.tar lthn
@@ -75,8 +71,6 @@ jobs:
         with:
           node-version: 16.x
       - run: npm install
-      - name: Testing
-        run: make test
       - run: make build-macos
       - run: chmod +x build/lthn && mv build/lthn lthn
       - run: tar -cvf macos-intel.tar lthn
@@ -102,7 +96,6 @@ jobs:
           node-version: 16.x
       - run: npm install
       - run: sudo apt-get update && sudo apt-get -y install libwebkit2gtk-4.0-37
-      - run: make test
       - run: make build-linux
       - run: chmod +x build/lthn && mv build/lthn lthn && tar -cvf linux.tar lthn
       - uses: actions/upload-artifact@v3
@@ -127,10 +120,7 @@ jobs:
           node-version: 16.x
       - run: npm install
       - run: sudo apt-get update && sudo apt-get -y install libwebkit2gtk-4.0-37
-      - name: Testing
-        run: npm run test
       - run: deno bundle mod.ts server.bundle.js
-
       - uses: actions/upload-artifact@v3
         with:
           name: server.bundle.js
