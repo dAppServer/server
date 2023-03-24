@@ -1,6 +1,6 @@
 import { AppManager } from "../manager/manager.service.ts";
 import { AppManagerConfig } from "../pkg/config.service.ts";
-import { Body, Controller, Get, Param, Post, Tag } from "../../../../deps.ts";
+import { Body, Controller, Get, Options, Param, Post, ReturnedType, Tag } from "../../../../deps.ts";
 import { MarketplaceGetDTO } from "./manager.interface.ts";
 
 
@@ -12,27 +12,42 @@ export class AppManagerController {
   }
 
   @Get("installed")
+  @ReturnedType(String)
   listApps() {
     return this.appConfig.getConfig();
   }
 
-  @Post("marketplace")
-  getMarketPlaceApps(@Body() body: MarketplaceGetDTO) {
-    if (body.dir) {
-      return this.apps.getMarketPlaceApps({ dir: body.dir });
+  @Options("installed")
+  test() {}
+
+  @Get("marketplace")
+  @ReturnedType(String)
+  getMarketPlaceApps(@Param('dir') dir?: string) {
+
+    if (dir) {
+      return this.apps.getMarketPlaceApps({ dir: dir });
     } else {
       return this.apps.getMarketPlaceApps();
     }
   }
+
+  @Options("marketplace")
+  test2() {}
 
   @Post("install")
   async installApp(@Param("code") code: string, @Param("pkg") pkg?: string) {
     return await this.apps.installApp(code, pkg);
   }
 
+  @Options("install")
+  test3() {}
+
   @Post("remove")
   removeApp(@Param("code") code: string) {
     return this.apps.removeApp(code);
   }
+
+  @Options("remove")
+  test4() {}
 }
 
