@@ -1,9 +1,8 @@
 import {
-  copy,
   decompress,
-  readerFromStreamReader,
   Untar
 } from "/deps.ts";
+import { copy, readerFromStreamReader } from "std/streams/mod.ts";
 import  * as path from "std/path/mod.ts";
 import { Injectable } from "danet/mod.ts";
 import { ensureDir, ensureDirSync } from "std/fs/mod.ts"
