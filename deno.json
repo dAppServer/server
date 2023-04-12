@@ -38,7 +38,6 @@
   },
   "imports": {
     "./mod.ts": "./mod.ts",
-    "/deps.ts": "./deps.ts",
     "lib/": "./lib/",
     "/": "./src/",
     "./": "./src/",
@@ -46,6 +45,10 @@
     "danet/": "https://deno.land/x/danet@1.5.0/",
     "danetSwagger/": "https://deno.land/x/danet_swagger@1.6.0/",
     "zip/": "https://deno.land/x/zip@v1.2.5/",
-    "jszmq/": "https://deno.land/x/jszmq@v1.3.1/"
+    "jszmq/": "https://deno.land/x/jszmq@v1.3.1/",
+    "ini/": "https://deno.land/x/gini@1.1.0/",
+    "jwt/": "https://deno.land/x/djwt@v2.8/",
+    "mustache/": "https://deno.land/x/mustache@v0.3.0/",
+    "websocket/": "https://deno.land/x/websocket@v0.1.3/"
   }
 }

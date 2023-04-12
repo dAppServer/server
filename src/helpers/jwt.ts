@@ -1,4 +1,4 @@
-import { create, getNumericDate, Header, Payload, verify } from "/deps.ts";
+import { create, getNumericDate, Header, Payload, verify } from "jwt/mod.ts";
 
 const JWT_ACCESS_TOKEN_EXP = "600";
 const JWT_REFRESH_TOKEN_EXP = "600";
