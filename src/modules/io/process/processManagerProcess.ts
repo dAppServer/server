@@ -1,7 +1,7 @@
 import { ProcessManagerRequest } from "/modules/io/process/process.interface.ts";
 import { Sub } from "https://deno.land/x/jszmq@v1.3.1/mod.ts";
 import { ZeroMQServer } from "/modules/io/ipc/zeromq.ts";
-import { readLines } from "/deps.ts";
+import { readLines } from "std/io/read_lines.ts";
 import { EventEmitter } from "node:events";
 
 /**
