@@ -1,9 +1,9 @@
-import { ProcessManagerRequest } from "/modules/io/process/process.interface.ts";
+import { ProcessManagerRequest } from "@module/io/process/process.interface.ts";
 import { Sub } from "https://deno.land/x/jszmq@v1.3.1/mod.ts";
-import { ZeroMQServer } from "/modules/io/ipc/zeromq.ts";
+import { ZeroMQServer } from "@module/io/ipc/zeromq.ts";
 import { readLines } from "std/io/read_lines.ts";
-import { EventEmitter } from "node:events";
-
+//import { EventEmitter } from "node:events";
+import { EventEmitter } from "https://deno.land/std@0.177.0/node/events.ts";
 /**
  * Interacts with the external binary directly handling its stdIn, stdOut, stdErr
  * its a async event emitter that mimicks NodeJs's event emitter

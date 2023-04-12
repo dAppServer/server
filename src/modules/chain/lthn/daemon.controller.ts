@@ -1,11 +1,11 @@
 import  * as path from "std/path/mod.ts";
 import { Body, Controller, Post } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
-import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
-import { IniService } from "/modules/config/ini/ini.service.ts";
-import { ProcessManager } from "/modules/io/process/process.service.ts";
-import { ProcessManagerRequest } from "/modules/io/process/process.interface.ts";
-import { BlockchainLetheanDaemonStartDTO, BlockchainLetheanRPCDTO } from "/modules/chain/lthn/lethean.interface.ts";
+import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
+import { IniService } from "@module/config/ini/ini.service.ts";
+import { ProcessManager } from "@module/io/process/process.service.ts";
+import { ProcessManagerRequest } from "@module/io/process/process.interface.ts";
+import { BlockchainLetheanDaemonStartDTO, BlockchainLetheanRPCDTO } from "@module/chain/lthn/lethean.interface.ts";
 
 @Tag("blockchain")
 @Controller("blockchain/lethean")

@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts"
-import { OpenPGPService } from "/modules/cryptography/openpgp/openpgp.service.ts";
-import { OpenPGPCreateKeyPairDTO, OpenPGPDecryptBYIDDTO, OpenPGPEncryptBYIDDTO, OpenPGPGetPublicKeyDTO, OpenPGPKeyPairDTO, OpenPGPSignBYIDDTO, OpenPGPVerifyBYIDDTO } from "/modules/cryptography/openpgp/openpgp.interface.ts";
+import { OpenPGPService } from "@module/cryptography/openpgp/openpgp.service.ts";
+import { OpenPGPCreateKeyPairDTO, OpenPGPDecryptBYIDDTO, OpenPGPEncryptBYIDDTO, OpenPGPGetPublicKeyDTO, OpenPGPKeyPairDTO, OpenPGPSignBYIDDTO, OpenPGPVerifyBYIDDTO } from "@module/cryptography/openpgp/openpgp.interface.ts";
 
 @Tag("Cryptography")
 @Controller("crypto/openpgp")

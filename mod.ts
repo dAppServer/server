@@ -7,7 +7,7 @@ if(path.join(home,'Lethean') !== Deno.cwd()){
   Deno.chdir(path.join(home,'Lethean'))
 }
 
-import { bootstrap } from './bootstrap.ts';
+import { bootstrap } from './src/bootstrap.ts';
 
 const application = await bootstrap();
 await application.listen(Number(Deno.env.get('PORT') || 36911));

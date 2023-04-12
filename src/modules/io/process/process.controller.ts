@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
-import { ProcessManager } from "/modules/io/process/process.service.ts";
-import { ProcessAddDTO, ProcessKillDTO, ProcessRunDTO, ProcessStartDTO, ProcessStopDTO } from "/modules/io/process/process.interface.ts";
+import { ProcessManager } from "@module/io/process/process.service.ts";
+import { ProcessAddDTO, ProcessKillDTO, ProcessRunDTO, ProcessStartDTO, ProcessStopDTO } from "@module/io/process/process.interface.ts";
 
 @Tag( "Process" )
 @Controller("process" )

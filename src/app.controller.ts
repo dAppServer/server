@@ -1,7 +1,7 @@
 import { Controller, Get } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
-import { ZeroMQServer } from "/modules/io/ipc/zeromq.ts";
-import { LetheanWebsocketServer } from "/modules/io/tcp/websocket.server.ts";
+import { ZeroMQServer } from "@module/io/ipc/zeromq.ts";
+import { LetheanWebsocketServer } from "@module/io/tcp/websocket.server.ts";
 //import { AuthRouter } from "./modules/auth/auth.controller.ts";
 //import { LetheanWebsocketServer } from "./services/tcp/websocket.server.ts";
 //import { FileSystemRouter } from "./modules/system/files/local.ts";

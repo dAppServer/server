@@ -1,5 +1,5 @@
-import { AppManager } from "/modules/apps/manager/manager.service.ts";
-import { AppManagerConfig } from "/modules/apps/pkg/config.service.ts";
+import { AppManager } from "@module/apps/manager/manager.service.ts";
+import { AppManagerConfig } from "@module/apps/pkg/config.service.ts";
 import { Body, Controller, Get, Query, Post } from "danet/mod.ts";
 import { Tag, ReturnedType } from "danetSwagger/decorators.ts";
 

@@ -1,9 +1,9 @@
 import { Body, Controller, Post } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
-import { QuasiSaltService } from "/modules/cryptography/hash/quasi-salt.service.ts";
-import { QuasiSaltHashDTO, QuasiSaltHashVerifyDTO } from "/modules/cryptography/hash/quasi-salt.interface.ts";
-import { HashDTO } from "/modules/cryptography/hash/hash.interface.ts";
-import { HashService } from "/modules/cryptography/hash/hash.service.ts";
+import { QuasiSaltService } from "@module/cryptography/hash/quasi-salt.service.ts";
+import { QuasiSaltHashDTO, QuasiSaltHashVerifyDTO } from "@module/cryptography/hash/quasi-salt.interface.ts";
+import { HashDTO } from "@module/cryptography/hash/hash.interface.ts";
+import { HashService } from "@module/cryptography/hash/hash.service.ts";
 
 @Tag("Cryptography")
 @Controller("crypto/hash")

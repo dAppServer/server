@@ -1,7 +1,7 @@
 import { renderFile, render } from "mustache/mod.ts";
 import  * as path from "std/path/mod.ts";
 import { Injectable } from "danet/mod.ts";
-import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
 
 @Injectable()
 export class ConfigFileService {

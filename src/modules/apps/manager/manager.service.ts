@@ -1,6 +1,6 @@
-import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
-import { AppManagerInstaller } from "/modules/apps/pkg/installer.service.ts";
-import { AppManagerConfig } from "/modules/apps/pkg/config.service.ts";
+import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
+import { AppManagerInstaller } from "@module/apps/pkg/installer.service.ts";
+import { AppManagerConfig } from "@module/apps/pkg/config.service.ts";
 import { Injectable } from "danet/mod.ts";
 
 /**

@@ -1,11 +1,11 @@
-import { AppManagerConfig } from "/modules/apps/pkg/config.service.ts";
+import { AppManagerConfig } from "@module/apps/pkg/config.service.ts";
 import  * as path from "std/path/mod.ts";
 import { Injectable } from "danet/mod.ts";
 import { ensureDir } from "std/fs/mod.ts"
-import { ObjectService } from "/modules/config/object/object.service.ts";
-import { PluginConfig, PluginType } from "/modules/apps/pkg/pkg.interface.ts";
-import { LetheanDownloadService } from "/modules/io/tcp/download.service.ts";
-import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { ObjectService } from "@module/config/object/object.service.ts";
+import { PluginConfig, PluginType } from "@module/apps/pkg/pkg.interface.ts";
+import { LetheanDownloadService } from "@module/io/tcp/download.service.ts";
+import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
 
 @Injectable()
 export class AppManagerInstaller {

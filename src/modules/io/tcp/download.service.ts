@@ -4,9 +4,9 @@ import { copy, readerFromStreamReader } from "std/streams/mod.ts";
 import  * as path from "std/path/mod.ts";
 import { Injectable } from "danet/mod.ts";
 import { ensureDir, ensureDirSync } from "std/fs/mod.ts"
-import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
-import { ZeroMQServer } from "/modules/io/ipc/zeromq.ts";
-import { DownloadDestination, DownloadedFile } from "/modules/io/tcp/download.interface.ts";
+import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
+import { ZeroMQServer } from "@module/io/ipc/zeromq.ts";
+import { DownloadDestination, DownloadedFile } from "@module/io/tcp/download.interface.ts";
 
 
 

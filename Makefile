@@ -1,4 +1,4 @@
-DENO_VERSION := 1.31.1
+DENO_VERSION := 1.32.4
 DENO_INSTALL := third_party
 
 ifeq ($(OS),Windows_NT)
@@ -42,16 +42,16 @@ fmt: $(DENO_BIN) ## Format code
 	$(call deno,fmt -c deno.json --import-map vendor/import_map.json)
 
 build: $(DENO_BIN) ## Build binary for the host machine
-	$(call deno,bundle -c deno.json  --unstable mod.ts bundle.js)
-	$(call deno,compile -A --output build/lthn -c deno.json  --unstable bundle.js)
+	$(call deno,bundle --unstable mod.ts bundle.js)
+	$(call deno,compile -A --output build/lthn -c deno.json --unstable bundle.js)
 
 build-linux: $(DENO_BIN) ## Build binary for Linux
 	$(call deno,bundle -c deno.json  --unstable mod.ts bundle.js)
-	$(call deno,compile -A --output build/lthn -c deno.json --unstable --import-map vendor/import_map.json --target x86_64-unknown-linux-gnu bundle.js)
+	$(call deno,compile -A --output build/lthn -c deno.json --unstable --target x86_64-unknown-linux-gnu bundle.js)
 
 build-windows: $(DENO_BIN)  ## Build binary for Windows x86_64
 	$(call deno,bundle -c deno.json  --unstable mod.ts bundle.js)
-	$(call deno,compile -A --output build/lthn -c deno.json --unstable --import-map vendor/import_map.json --target x86_64-pc-windows-msvc bundle.js)
+	$(call deno,compile -A --output build/lthn -c deno.json --unstable --target x86_64-pc-windows-msvc bundle.js)
 
 build-macos: $(DENO_BIN)  ## Build binary for macOS Intel
 	$(call deno,bundle -c deno.json  --unstable mod.ts bundle.js)

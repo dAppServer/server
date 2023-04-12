@@ -1,11 +1,11 @@
-import { AppModule } from '/app.module.ts';
+import { AppModule } from './app.module.ts';
 import { DanetApplication } from "danet/mod.ts";
 import { SpecBuilder, SwaggerModule } from "danetSwagger/mod.ts";
-import { CorsMiddleware } from "/middleware/cors.ts";
-import { LoggerMiddleware } from "/middleware/logger.ts";
-import { TimingMiddleware } from "/middleware/timing.ts";
-import { RequestIDMiddleware } from "/middleware/request-id.ts";
-import { JWTAuthMiddleware } from "/middleware/jwt-auth.ts";
+import { CorsMiddleware } from "@middleware/cors.ts";
+import { LoggerMiddleware } from "@middleware/logger.ts";
+import { TimingMiddleware } from "@middleware/timing.ts";
+import { RequestIDMiddleware } from "@middleware/request-id.ts";
+import { JWTAuthMiddleware } from "@middleware/jwt-auth.ts";
 
 export const bootstrap = async () => {
   const application = new DanetApplication();

@@ -1,5 +1,5 @@
-import { ProcessManagerRequest } from "/modules/io/process/process.interface.ts";
-import { ProcessManagerProcess } from "/modules/io/process/processManagerProcess.ts";
+import { ProcessManagerRequest } from "@module/io/process/process.interface.ts";
+import { ProcessManagerProcess } from "@module/io/process/processManagerProcess.ts";
 import { Injectable } from "danet/mod.ts";
 
 /**

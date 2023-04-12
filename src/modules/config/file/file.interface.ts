@@ -1,5 +1,5 @@
 import { ApiProperty } from "danetSwagger/decorators.ts";
-import { ConfigObjectGetDTO } from "/modules/config/object/object.interface.ts";
+import { ConfigObjectGetDTO } from "@module/config/object/object.interface.ts";
 
 export class ConfigFileRenderDTO {
   @ApiProperty()

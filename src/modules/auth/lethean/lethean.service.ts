@@ -1,8 +1,8 @@
 import  * as path from "std/path/mod.ts";
 import { Injectable } from "danet/mod.ts";
-import { OpenPGPService } from "/modules/cryptography/openpgp/openpgp.service.ts";
-import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
-import { QuasiSaltService } from "/modules/cryptography/hash/quasi-salt.service.ts";
+import { OpenPGPService } from "@module/cryptography/openpgp/openpgp.service.ts";
+import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
+import { QuasiSaltService } from "@module/cryptography/hash/quasi-salt.service.ts";
 
 @Injectable()
 export class AuthLetheanService {

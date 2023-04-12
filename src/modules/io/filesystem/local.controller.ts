@@ -1,7 +1,7 @@
-import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
 import { Controller, Post, Body } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
-import { CreateFileDTO, FilePathDTO } from "/modules/io/filesystem/local.interface.ts";
+import { CreateFileDTO, FilePathDTO } from "@module/io/filesystem/local.interface.ts";
 
 @Tag( "Input/Output" )
 @Controller("io/filesystem" )

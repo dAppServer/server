@@ -1,10 +1,10 @@
 import { Module } from "danet/mod.ts";
-import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
-import { FileSystemController } from "/modules/io/filesystem/local.controller.ts";
-import { DownloadController } from "/modules/io/tcp/download.controller.ts";
-import { LetheanDownloadService } from "/modules/io/tcp/download.service.ts";
-import { ProcessController } from "/modules/io/process/process.controller.ts";
-import { ProcessManager } from "/modules/io/process/process.service.ts";
+import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
+import { FileSystemController } from "@module/io/filesystem/local.controller.ts";
+import { DownloadController } from "@module/io/tcp/download.controller.ts";
+import { LetheanDownloadService } from "@module/io/tcp/download.service.ts";
+import { ProcessController } from "@module/io/process/process.controller.ts";
+import { ProcessManager } from "@module/io/process/process.service.ts";
 
 @Module({
   controllers: [

@@ -1,6 +1,6 @@
 import  * as path from "std/path/mod.ts";
 import { Injectable } from "danet/mod.ts";
-import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
 
 /**
  * Store

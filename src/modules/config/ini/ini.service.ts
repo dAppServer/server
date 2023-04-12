@@ -1,5 +1,5 @@
 import { Injectable } from "danet/mod.ts";
-import { INIObject } from "/modules/config/ini/ini.interface.ts";
+import { INIObject } from "@module/config/ini/ini.interface.ts";
 
 // the user facing ini object
 

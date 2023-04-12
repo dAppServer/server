@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
-import { ConfigObjectClearDTO, ConfigObjectCountDTO, ConfigObjectGetDTO, ConfigObjectRemoveDTO, ConfigObjectSetDTO } from "/modules/config/object/object.interface.ts";
-import { ObjectService } from "/modules/config/object/object.service.ts";
+import { ConfigObjectClearDTO, ConfigObjectCountDTO, ConfigObjectGetDTO, ConfigObjectRemoveDTO, ConfigObjectSetDTO } from "@module/config/object/object.interface.ts";
+import { ObjectService } from "@module/config/object/object.service.ts";
 
 @Tag("Config")
 @Controller("config/object")

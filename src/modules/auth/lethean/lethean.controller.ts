@@ -1,13 +1,13 @@
 import { Post, Body, Controller, UnauthorizedException, InternalServerErrorException } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
-import { UserRole } from "/types/user/user-role.ts";
-import * as jwt from "/helpers/jwt.ts";
-import { CreateAccountDTO, CreateAccountResponseDTO, DeleteAccountDTO, EncryptedRequestDTO, EncryptedResponseDTO } from "/interfaces/encrypted-request.interface.ts";
+import { UserRole } from "../../../types/user/user-role.ts";
+import * as jwt from "@helpers/jwt.ts";
+import { CreateAccountDTO, CreateAccountResponseDTO, DeleteAccountDTO, EncryptedRequestDTO, EncryptedResponseDTO } from "@interfaces/encrypted-request.interface.ts";
 
-import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
-import { AuthLetheanService } from "/modules/auth/lethean/lethean.service.ts";
-import { OpenPGPService } from "/modules/cryptography/openpgp/openpgp.service.ts";
-import { QuasiSaltService } from "/modules/cryptography/hash/quasi-salt.service.ts";
+import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
+import { AuthLetheanService } from "@module/auth/lethean/lethean.service.ts";
+import { OpenPGPService } from "@module/cryptography/openpgp/openpgp.service.ts";
+import { QuasiSaltService } from "@module/cryptography/hash/quasi-salt.service.ts";
 
 @Tag("Auth")
 @Controller("auth")

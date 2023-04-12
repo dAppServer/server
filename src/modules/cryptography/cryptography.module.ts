@@ -1,9 +1,9 @@
 import { Module } from "danet/mod.ts";
-import { HashController } from "/modules/cryptography/hash/hash.controller.ts";
-import { QuasiSaltService } from "/modules/cryptography/hash/quasi-salt.service.ts";
-import { OpenPGPService } from "/modules/cryptography/openpgp/openpgp.service.ts";
-import { HashService } from "/modules/cryptography/hash/hash.service.ts";
-import { OpenPGPController } from "/modules/cryptography/openpgp/openpgp.controller.ts";
+import { HashController } from "@module/cryptography/hash/hash.controller.ts";
+import { QuasiSaltService } from "@module/cryptography/hash/quasi-salt.service.ts";
+import { OpenPGPService } from "@module/cryptography/openpgp/openpgp.service.ts";
+import { HashService } from "@module/cryptography/hash/hash.service.ts";
+import { OpenPGPController } from "@module/cryptography/openpgp/openpgp.controller.ts";
 
 @Module({
   controllers: [
