@@ -1,5 +1,5 @@
 import { Injectable, DanetMiddleware , HttpContext, NextFunction} from "danet/mod.ts";
-import { uuid } from "/deps.ts";
+import { v4 as uuid } from "std/uuid/mod.ts";
 @Injectable()
 export class RequestIDMiddleware implements DanetMiddleware {
 
