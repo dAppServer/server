@@ -1,6 +1,3 @@
-
-
-export {EventEmitter} from "https://deno.land/std@0.79.0/node/events.ts";
 export { readLines } from "https://deno.land/std@0.79.0/io/bufio.ts";
 export * as path from "https://deno.land/std@0.131.0/path/mod.ts";
 export * as Colors from "https://deno.land/std@0.130.0/fmt/colors.ts";
@@ -11,15 +8,10 @@ export { decode as decodeString  } from "https://deno.land/std@0.133.0/encoding/
 export { createHash } from "https://deno.land/std@0.77.0/hash/mod.ts";
 export * as ini from "https://deno.land/x/gini@1.1.0/mod.ts";
 export { copy } from "https://deno.land/std@0.125.0/streams/conversion.ts";
-//export { oakCors } from "https://deno.land/x/cors/mod.ts";
 export { parse } from "https://deno.land/std@0.147.0/flags/mod.ts"
-//export { Application, Context, isHttpError, Status, Router, httpErrors } from "https://deno.land/x/oak/mod.ts";
-//export type { RouterContext } from "https://deno.land/x/oak@v11.1.0/router.ts";
 export { HttpException } from "https://deno.land/x/oak_exception@v0.0.7/src/exception_status.ts";
 
 export { unZipFromFile } from "https://deno.land/x/zip@v1.1.0/unzip.ts";
-
-
 export { readerFromStreamReader } from "https://deno.land/std@0.128.0/streams/conversion.ts";
 export { Untar } from "https://deno.land/std@0.128.0/archive/tar.ts";
 export {

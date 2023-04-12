@@ -1,4 +1,4 @@
-import { ApiProperty } from "/deps.ts";
+import { ApiProperty } from "danetSwagger/decorators.ts";
 
 export class FilePathDTO {
   @ApiProperty()
