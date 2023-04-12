@@ -1,4 +1,4 @@
-import { Body, Controller, Options, os, path, Post, Tag } from "../../../../deps.ts";
+import { Body, Controller, Options, path, Post, Tag } from "../../../../deps.ts";
 import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
 import { IniService } from "../../config/ini/ini.service.ts";
 import { ProcessManager } from "../../io/process/process.service.ts";
@@ -16,7 +16,7 @@ export class LetheanDaemonController {
 
   @Post("daemon/start")
   startDaemon(@Body() body: BlockchainLetheanDaemonStartDTO) {
-    let exeFile = `letheand${os.platform() === "windows" ? ".exe" : ""}`;
+    let exeFile = `letheand${Deno.build.os === "windows" ? ".exe" : ""}`;
     let cmd: any = {};
 
     const configFile = this.fileSystem.path(path.join("conf", "lthn", body.configFile));
@@ -51,8 +51,6 @@ export class LetheanDaemonController {
 
   }
 
-  @Options("daemon/start")
-  test() {}
   @Post("daemon/json_rpc")
   async jsonRpc(@Body() body: BlockchainLetheanRPCDTO) {
     let url = "json_rpc";
@@ -74,12 +72,10 @@ export class LetheanDaemonController {
 
   }
 
-  @Options("daemon/json_rpc")
-  test2() {}
   @Post("daemon/export")
   exportBlockchain(@Body() body: any) {
     const exeFile = `lethean-blockchain-export${
-      os.platform() === "windows" ? ".exe" : ""
+      Deno.build.os === "windows" ? ".exe" : ""
     }`;
     this.process.run(
       this.fileSystem.path(["cli", exeFile]),
@@ -93,12 +89,10 @@ export class LetheanDaemonController {
     );
   }
 
-  @Options("daemon/export")
-  test3() {}
   @Post("daemon/import")
   importBlockchain(@Body() body: any) {
     const exeFile = `lethean-blockchain-import${
-      os.platform() === "windows" ? ".exe" : ""
+      Deno.build.os === "windows" ? ".exe" : ""
     }`;
     this.process.run(
       this.fileSystem.path(["cli", exeFile]),
@@ -111,9 +105,5 @@ export class LetheanDaemonController {
       } as ProcessManagerRequest
     );
   }
-  @Options("daemon/import")
-  test4() {}
-
-
 }
 

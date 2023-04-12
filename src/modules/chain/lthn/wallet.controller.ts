@@ -1,4 +1,4 @@
-import { Body, Controller, os, path, Post, Tag } from "../../../../deps.ts";
+import { Body, Controller, path, Post, Tag } from "../../../../deps.ts";
 import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
 import { ProcessManager } from "../../io/process/process.service.ts";
 import { ProcessManagerRequest } from "../../io/process/process.interface.ts";
@@ -14,7 +14,7 @@ export class LetheanWalletController {
   @Post("wallet/start")
   startWallet(@Body() body: BlockchainLetheanWalletStartDTO) {
     const exeFile = "lethean-wallet-rpc" +
-      (os.platform() === "windows" ? ".exe" : "");
+      (Deno.build.os === "windows" ? ".exe" : "");
 
     body["walletDir"] = this.fileSystem.path(body["walletDir"]);
     this.process.run(

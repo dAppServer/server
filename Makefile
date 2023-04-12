@@ -43,7 +43,7 @@ fmt: $(DENO_BIN) ## Format code
 
 build: $(DENO_BIN) ## Build binary for the host machine
 	$(call deno,bundle -c deno.json  --unstable mod.ts bundle.js)
-	$(call deno,compile -A --output build/lthn -c deno.json  --unstable --import-map vendor/import_map.json bundle.js)
+	$(call deno,compile -A --output build/lthn -c deno.json  --unstable bundle.js)
 
 build-linux: $(DENO_BIN) ## Build binary for Linux
 	$(call deno,bundle -c deno.json  --unstable mod.ts bundle.js)

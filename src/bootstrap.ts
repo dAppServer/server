@@ -8,21 +8,13 @@ import { JWTAuthMiddleware } from "./middleware/jwt-auth.ts";
 
 export const bootstrap = async () => {
   const application = new DanetApplication();
-  application.addGlobalMiddlewares(LoggerMiddleware,TimingMiddleware, CorsMiddleware, RequestIDMiddleware, JWTAuthMiddleware);
-
-  await application.init(AppModule);
-  application.router.use(application.router.allowedMethods());
-
- // console.log(application.danetRouter.router);
-//  application.router.forEach((route) => {
-//    route.methods.push("OPTIONS")
-//
-//    console.log(route);
-//  })
-
-
   // LoggerMiddleware must be the first middleware
   // TimingMiddleware must be the second middleware
+  application.addGlobalMiddlewares(LoggerMiddleware,TimingMiddleware, CorsMiddleware, RequestIDMiddleware, JWTAuthMiddleware);
+  application.enableCors();
+  await application.init(AppModule);
+
+
 
   // Swagger API Docs + JSON Definition
   const spec = new SpecBuilder()

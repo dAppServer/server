@@ -1,10 +1,7 @@
-import os from "https://deno.land/x/dos@v0.11.0/mod.ts";
-export { os };
-
 export { Controller, Get, Post, Put, Delete, Options, Query, Param, Body, Module, DanetApplication, Logger, Injectable, UseFilter, type DanetMiddleware, type HttpContext, type NextFunction,
-  UnauthorizedException, InternalServerErrorException, type ExceptionFilter, Catch } from 'https://deno.land/x/danet@1.3.3/mod.ts';
-export { SwaggerModule, SpecBuilder } from 'https://deno.land/x/danet_swagger@1.4.1/mod.ts';
-export {Tag, ApiProperty, BodyType, Optional, ReturnedType} from "https://deno.land/x/danet_swagger@1.4.1/decorators.ts"
+  UnauthorizedException, InternalServerErrorException, type ExceptionFilter, Catch } from 'https://deno.land/x/danet@1.4.0/mod.ts';
+export { SwaggerModule, SpecBuilder } from 'https://deno.land/x/danet_swagger@1.6.0/mod.ts';
+export {Tag, ApiProperty, BodyType, Optional, ReturnedType} from "https://deno.land/x/danet_swagger@1.6.0/decorators.ts"
 
 
 export {EventEmitter} from "https://deno.land/std@0.79.0/node/events.ts";
@@ -24,7 +21,7 @@ export { decode as decodeString  } from "https://deno.land/std@0.133.0/encoding/
 export { createHash } from "https://deno.land/std@0.77.0/hash/mod.ts";
 export * as ini from "https://deno.land/x/gini@1.1.0/mod.ts";
 export { copy } from "https://deno.land/std@0.125.0/streams/conversion.ts";
-export { oakCors } from "https://deno.land/x/cors/mod.ts";
+//export { oakCors } from "https://deno.land/x/cors/mod.ts";
 export { parse } from "https://deno.land/std@0.147.0/flags/mod.ts"
 //export { Application, Context, isHttpError, Status, Router, httpErrors } from "https://deno.land/x/oak/mod.ts";
 //export type { RouterContext } from "https://deno.land/x/oak@v11.1.0/router.ts";
@@ -44,19 +41,19 @@ export {
   assertArrayIncludes
 } from "https://deno.land/std@0.128.0/testing/asserts.ts";
 
-export {
-  CachePolicy,
-  download,
-  prepare,
-} from "https://deno.land/x/plug@0.5.1/plug.ts";
+//export {
+//  CachePolicy,
+//  download,
+//  prepare,
+//} from "https://deno.land/x/plug@1.0.1/mod.ts";
 
-export { Command } from "https://deno.land/x/cliffy@v0.22.2/command/mod.ts";
-export { CompletionsCommand } from "https://deno.land/x/cliffy@v0.22.2/command/completions/mod.ts";
-export { HelpCommand } from "https://deno.land/x/cliffy@v0.22.2/command/help/mod.ts";
-export {
-  GithubProvider,
-  UpgradeCommand,
-} from "https://deno.land/x/cliffy@v0.22.2/command/upgrade/mod.ts";
+//export { Command } from "https://deno.land/x/cliffy@v0.22.2/command/mod.ts";
+//export { CompletionsCommand } from "https://deno.land/x/cliffy@v0.22.2/command/completions/mod.ts";
+//export { HelpCommand } from "https://deno.land/x/cliffy@v0.22.2/command/help/mod.ts";
+//export {
+//  GithubProvider,
+//  UpgradeCommand,
+//} from "https://deno.land/x/cliffy@v0.22.2/command/upgrade/mod.ts";
 export { renderFile, render } from "https://deno.land/x/mustache@v0.3.0/mod.ts";
 import "./src/helpers/utils.ts";
 export * as openpgp from "./lib/openpgp.mjs";

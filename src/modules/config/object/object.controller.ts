@@ -18,8 +18,6 @@ export class ObjectController {
     return this.object.getObject(body.group, body.object);
   }
 
-  @Options("get")
-  public test() {}
   /**
    * Set a config object
    * @param {ConfigObjectSetDTO} body
@@ -30,8 +28,6 @@ export class ObjectController {
     return this.object.setObject(body.group, body.object, body.data);
   }
 
-  @Options("set")
-  public test2() {}
   /**
    * Remove a config object
    * @param {ConfigObjectRemoveDTO} body
@@ -42,8 +38,6 @@ export class ObjectController {
     return this.object.removeObject(body.group, body.object);
   }
 
-  @Options("remove")
-  public test3() {}
   /**
    * Clear all config objects for a group
    * @param {ConfigObjectClearDTO} body
@@ -54,8 +48,6 @@ export class ObjectController {
     return this.object.clearObjects(body.group);
   }
 
-  @Options("clear")
-  public test4() {}
   /**
    * Count all config objects for a group
    * @param {ConfigObjectCountDTO} body
@@ -65,7 +57,6 @@ export class ObjectController {
   public countConfig(@Body() body: ConfigObjectCountDTO) {
     return this.object.countObjects(body.group);
   }
-  @Options("count")
-  public test5() {}
+
 }
 

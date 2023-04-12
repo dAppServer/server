@@ -17,9 +17,6 @@ export class AppManagerController {
     return this.appConfig.getConfig();
   }
 
-  @Options("installed")
-  test() {}
-
   @Get("marketplace")
   @ReturnedType(String)
   getMarketPlaceApps(@Query() q?: {dir?: string }) {
@@ -30,18 +27,12 @@ export class AppManagerController {
     }
   }
 
-  @Options("marketplace")
-  test2() {}
-
   @Post("install")
   @ReturnedType(Object)
   async installApp(@Body("code") code: string, @Body("pkg") pkg?: string): Promise<{success: boolean}> {
       let download = await this.apps.installApp(code, pkg);
       return { success: true };
   }
-
-  @Options("install")
-  test3() {}
 
   @Post("remove")
   @ReturnedType(Object)
@@ -53,7 +44,5 @@ export class AppManagerController {
      }
   }
 
-  @Options("remove")
-  test4() {}
 }
 

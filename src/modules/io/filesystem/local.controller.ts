@@ -17,8 +17,6 @@ export class FileSystemController  {
     return this.fileSystemService.list(body.path);
   }
 
-  @Options("list")
-  test3() {}
   /**
    * Lists directory contents with detailed information
    * @param {FilePathDTO} body
@@ -28,8 +26,7 @@ export class FileSystemController  {
   getDetailedDirectoryList(@Body() body: FilePathDTO) {
     return this.fileSystemService.detailedList(body.path);
   }
-  @Options("list-detailed")
-  test2() {}
+
   /**
    * Reads file contents
    * @param {FilePathDTO} body
@@ -43,10 +40,6 @@ export class FileSystemController  {
     return btoa(result);
   }
 
-  @Options("read")
-  test() {}
-
-
   /**
    * Writes file contents
    * @param {CreateFileDTO} body
@@ -58,8 +51,6 @@ export class FileSystemController  {
     return this.fileSystemService.write(body.path, data);
   }
 
-  @Options("write")
-  test4() {}
   /**
    * Checks if path is a file
    * @param {FilePathDTO} body
@@ -69,8 +60,6 @@ export class FileSystemController  {
   isFile(@Body() body: FilePathDTO) {
     return this.fileSystemService.isFile(body.path);
   }
-  @Options("is-file")
-  test5() {}
 
   /**
    * Checks if path is a directory
@@ -81,6 +70,5 @@ export class FileSystemController  {
   isDir(@Body() body: FilePathDTO) {
     return this.fileSystemService.isDir(body.path);
   }
-  @Options("is-dir")
-  test6() {}
+
 }
