@@ -1,8 +1,8 @@
-import { Body, Controller, Post, Tag } from "../../../../deps.ts";
-import { QuasiSaltService } from "./quasi-salt.service.ts";
-import { QuasiSaltHashDTO, QuasiSaltHashVerifyDTO } from "./quasi-salt.interface.ts";
-import { HashDTO } from "./hash.interface.ts";
-import { HashService } from "./hash.service.ts";
+import { Body, Controller, Post, Tag } from "/deps.ts";
+import { QuasiSaltService } from "/modules/cryptography/hash/quasi-salt.service.ts";
+import { QuasiSaltHashDTO, QuasiSaltHashVerifyDTO } from "/modules/cryptography/hash/quasi-salt.interface.ts";
+import { HashDTO } from "/modules/cryptography/hash/hash.interface.ts";
+import { HashService } from "/modules/cryptography/hash/hash.service.ts";
 
 @Tag("Cryptography")
 @Controller("crypto/hash")

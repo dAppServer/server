@@ -1,4 +1,4 @@
-import { Injectable, DanetMiddleware , HttpContext, NextFunction, uuid} from "../../deps.ts";
+import { Injectable, DanetMiddleware , HttpContext, NextFunction, uuid} from "/deps.ts";
 
 @Injectable()
 export class RequestIDMiddleware implements DanetMiddleware {

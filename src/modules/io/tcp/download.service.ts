@@ -7,10 +7,10 @@ import {
   readerFromStreamReader,
   Untar,
   unZipFromFile
-} from "../../../../deps.ts";
-import { FileSystemService } from "../filesystem/fileSystemService.ts";
-import { ZeroMQServer } from "../ipc/zeromq.ts";
-import { DownloadDestination, DownloadedFile } from "../tcp/download.interface.ts";
+} from "/deps.ts";
+import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { ZeroMQServer } from "/modules/io/ipc/zeromq.ts";
+import { DownloadDestination, DownloadedFile } from "/modules/io/tcp/download.interface.ts";
 
 
 

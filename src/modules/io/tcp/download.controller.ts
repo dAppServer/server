@@ -1,6 +1,6 @@
-import { Post, Tag, Controller, Logger, Body } from "../../../../deps.ts";
-import { LetheanDownloadService } from "./download.service.ts";
-import { DownloadDestination, DownloadedFile, FileDownloadRequest } from "./download.interface.ts";
+import { Post, Tag, Controller, Logger, Body } from "/deps.ts";
+import { LetheanDownloadService } from "/modules/io/tcp/download.service.ts";
+import { DownloadDestination, DownloadedFile, FileDownloadRequest } from "/modules/io/tcp/download.interface.ts";
 
 
 @Tag("Input/Output")

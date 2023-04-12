@@ -1,4 +1,4 @@
-import { Colors } from "../../deps.ts";
+import { Colors } from "/deps.ts";
 
 /**
  * Console Information style

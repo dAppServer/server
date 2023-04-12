@@ -1,4 +1,4 @@
-import { createHash, Injectable } from "../../../../deps.ts";
+import { createHash, Injectable } from "/deps.ts";
 
 @Injectable()
 export class HashService {

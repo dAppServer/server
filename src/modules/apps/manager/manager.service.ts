@@ -1,7 +1,7 @@
-import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
-import { AppManagerInstaller } from "../pkg/installer.service.ts";
-import { AppManagerConfig } from "../pkg/config.service.ts";
-import { Injectable } from "../../../../deps.ts";
+import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { AppManagerInstaller } from "/modules/apps/pkg/installer.service.ts";
+import { AppManagerConfig } from "/modules/apps/pkg/config.service.ts";
+import { Injectable } from "/deps.ts";
 
 /**
  * Install an app from the Lethean repository

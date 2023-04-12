@@ -1,4 +1,4 @@
-import { Injectable, DanetMiddleware, HttpContext, NextFunction } from "../../deps.ts";
+import { Injectable, DanetMiddleware, HttpContext, NextFunction } from "/deps.ts";
 
 @Injectable()
 export class CorsMiddleware implements DanetMiddleware {

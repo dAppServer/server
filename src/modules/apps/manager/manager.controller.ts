@@ -1,8 +1,6 @@
-import { AppManager } from "../manager/manager.service.ts";
-import { AppManagerConfig } from "../pkg/config.service.ts";
-import { Body, Controller, Get, Options, Query, Param, Post, ReturnedType, Tag } from "../../../../deps.ts";
-import { MarketplaceGetDTO } from "./manager.interface.ts";
-
+import { AppManager } from "/modules/apps/manager/manager.service.ts";
+import { AppManagerConfig } from "/modules/apps/pkg/config.service.ts";
+import { Body, Controller, Get, Options, Query, Param, Post, ReturnedType, Tag } from "/deps.ts";
 
 @Tag("Apps")
 @Controller("apps")

@@ -1,4 +1,4 @@
-import { ApiProperty, Optional } from "../../../../deps.ts";
+import { ApiProperty, Optional } from "/deps.ts";
 
 export class MarketplaceGetDTO {
   @ApiProperty()

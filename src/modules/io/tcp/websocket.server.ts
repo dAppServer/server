@@ -1,5 +1,5 @@
-import { ZeroMQServer } from "../ipc/zeromq.ts";
-import { Logger, WebSocketClient, WebSocketServer, zmq } from "../../../../deps.ts";
+import { ZeroMQServer } from "/modules/io/ipc/zeromq.ts";
+import { Logger, WebSocketClient, WebSocketServer, zmq } from "/deps.ts";
 export interface WebSocketMessageRequest {
   daemon: string;
 }

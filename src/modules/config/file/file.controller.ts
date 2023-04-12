@@ -1,7 +1,7 @@
-import { Body, Controller, Post, Tag } from "../../../../deps.ts";
-import { ConfigFileService } from "./file.service.ts";
-import { ConfigFileLoadDTO, ConfigFileRenderAndLoadDTO, ConfigFileRenderDTO, ConfigFileRenderStringDTO } from "./file.interface.ts";
-import { ObjectService } from "../object/object.service.ts";
+import { Body, Controller, Post, Tag } from "/deps.ts";
+import { ConfigFileService } from "/modules/config/file/file.service.ts";
+import { ConfigFileLoadDTO, ConfigFileRenderAndLoadDTO, ConfigFileRenderDTO, ConfigFileRenderStringDTO } from "/modules/config/file/file.interface.ts";
+import { ObjectService } from "/modules/config/object/object.service.ts";
 
 @Tag("Config")
 @Controller("config/file")

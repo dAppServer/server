@@ -1,9 +1,9 @@
-import { AppManagerConfig } from "./config.service.ts";
-import { ensureDir, Injectable, path } from "../../../../deps.ts";
-import { ObjectService } from "../../config/object/object.service.ts";
-import { PluginConfig, PluginType } from "./pkg.interface.ts";
-import { LetheanDownloadService } from "../../io/tcp/download.service.ts";
-import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
+import { AppManagerConfig } from "/modules/apps/pkg/config.service.ts";
+import { ensureDir, Injectable, path } from "/deps.ts";
+import { ObjectService } from "/modules/config/object/object.service.ts";
+import { PluginConfig, PluginType } from "/modules/apps/pkg/pkg.interface.ts";
+import { LetheanDownloadService } from "/modules/io/tcp/download.service.ts";
+import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
 
 @Injectable()
 export class AppManagerInstaller {

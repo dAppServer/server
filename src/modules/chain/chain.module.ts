@@ -1,8 +1,8 @@
-import { Module } from "../../../deps.ts";
-import { LetheanDaemonController } from "./lthn/daemon.controller.ts";
-import { LetheanWalletController } from "./lthn/wallet.controller.ts";
-import { FileSystemService } from "../io/filesystem/fileSystemService.ts";
-import { ProcessManager } from "../io/process/process.service.ts";
+import { Module } from "/deps.ts";
+import { LetheanDaemonController } from "/modules/chain/lthn/daemon.controller.ts";
+import { LetheanWalletController } from "/modules/chain/lthn/wallet.controller.ts";
+import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { ProcessManager } from "/modules/io/process/process.service.ts";
 
 @Module({
   controllers: [

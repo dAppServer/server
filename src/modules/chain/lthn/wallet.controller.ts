@@ -1,8 +1,8 @@
-import { Body, Controller, path, Post, Tag } from "../../../../deps.ts";
-import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
-import { ProcessManager } from "../../io/process/process.service.ts";
-import { ProcessManagerRequest } from "../../io/process/process.interface.ts";
-import { BlockchainLetheanWalletStartDTO } from "./lethean.interface.ts";
+import { Body, Controller, path, Post, Tag } from "/deps.ts";
+import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { ProcessManager } from "/modules/io/process/process.service.ts";
+import { ProcessManagerRequest } from "/modules/io/process/process.interface.ts";
+import { BlockchainLetheanWalletStartDTO } from "/modules/chain/lthn/lethean.interface.ts";
 
 @Tag("blockchain")
 @Controller("blockchain/lethean")

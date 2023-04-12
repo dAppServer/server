@@ -1,6 +1,6 @@
-import { Controller, Get, Tag } from "../deps.ts";
-import { ZeroMQServer } from "./modules/io/ipc/zeromq.ts";
-import { LetheanWebsocketServer } from "./modules/io/tcp/websocket.server.ts";
+import { Controller, Get, Tag } from "/deps.ts";
+import { ZeroMQServer } from "/modules/io/ipc/zeromq.ts";
+import { LetheanWebsocketServer } from "/modules/io/tcp/websocket.server.ts";
 //import { AuthRouter } from "./modules/auth/auth.controller.ts";
 //import { LetheanWebsocketServer } from "./services/tcp/websocket.server.ts";
 //import { FileSystemRouter } from "./modules/system/files/local.ts";

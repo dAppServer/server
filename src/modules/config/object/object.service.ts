@@ -1,5 +1,5 @@
-import { Injectable, path } from "../../../../deps.ts";
-import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
+import { Injectable, path } from "/deps.ts";
+import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
 
 /**
  * Store

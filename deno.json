@@ -36,5 +36,11 @@
       ]
     }
   },
-  "importMap": "./vendor/import_map.json"
+  "imports": {
+    "./mod.ts": "./mod.ts",
+    "/deps.ts": "./deps.ts",
+    "lib/": "./lib/",
+    "/": "./src/",
+    "./": "./src/"
+  }
 }

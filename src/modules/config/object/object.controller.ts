@@ -1,6 +1,6 @@
-import { Body, Controller, Options, Post, Tag } from "../../../../deps.ts";
-import { ConfigObjectClearDTO, ConfigObjectCountDTO, ConfigObjectGetDTO, ConfigObjectRemoveDTO, ConfigObjectSetDTO } from "./object.interface.ts";
-import { ObjectService } from "./object.service.ts";
+import { Body, Controller, Options, Post, Tag } from "/deps.ts";
+import { ConfigObjectClearDTO, ConfigObjectCountDTO, ConfigObjectGetDTO, ConfigObjectRemoveDTO, ConfigObjectSetDTO } from "/modules/config/object/object.interface.ts";
+import { ObjectService } from "/modules/config/object/object.service.ts";
 
 @Tag("Config")
 @Controller("config/object")

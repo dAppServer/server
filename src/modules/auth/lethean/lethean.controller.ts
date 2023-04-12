@@ -1,12 +1,12 @@
-import { Post, Body, Tag, Controller, UnauthorizedException, InternalServerErrorException } from "../../../../deps.ts";
-import { UserRole } from "../../../types/user/user-role.ts";
-import * as jwt from "../../../helpers/jwt.ts";
-import { CreateAccountDTO, CreateAccountResponseDTO, DeleteAccountDTO, EncryptedRequestDTO, EncryptedResponseDTO } from "../../../interfaces/encrypted-request.interface.ts";
+import { Post, Body, Tag, Controller, UnauthorizedException, InternalServerErrorException } from "/deps.ts";
+import { UserRole } from "/types/user/user-role.ts";
+import * as jwt from "/helpers/jwt.ts";
+import { CreateAccountDTO, CreateAccountResponseDTO, DeleteAccountDTO, EncryptedRequestDTO, EncryptedResponseDTO } from "/interfaces/encrypted-request.interface.ts";
 
-import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
-import { AuthLetheanService } from "../../auth/lethean/lethean.service.ts";
-import { OpenPGPService } from "../../cryptography/openpgp/openpgp.service.ts";
-import { QuasiSaltService } from "../../cryptography/hash/quasi-salt.service.ts";
+import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { AuthLetheanService } from "/modules/auth/lethean/lethean.service.ts";
+import { OpenPGPService } from "/modules/cryptography/openpgp/openpgp.service.ts";
+import { QuasiSaltService } from "/modules/cryptography/hash/quasi-salt.service.ts";
 
 @Tag("Auth")
 @Controller("auth")

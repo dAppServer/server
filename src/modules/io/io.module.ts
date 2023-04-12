@@ -1,10 +1,10 @@
-import { Module } from "../../../deps.ts";
-import { FileSystemService } from "./filesystem/fileSystemService.ts";
-import { FileSystemController } from "./filesystem/local.controller.ts";
-import { DownloadController } from "./tcp/download.controller.ts";
-import { LetheanDownloadService } from "./tcp/download.service.ts";
-import { ProcessController } from "./process/process.controller.ts";
-import { ProcessManager } from "./process/process.service.ts";
+import { Module } from "/deps.ts";
+import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { FileSystemController } from "/modules/io/filesystem/local.controller.ts";
+import { DownloadController } from "/modules/io/tcp/download.controller.ts";
+import { LetheanDownloadService } from "/modules/io/tcp/download.service.ts";
+import { ProcessController } from "/modules/io/process/process.controller.ts";
+import { ProcessManager } from "/modules/io/process/process.service.ts";
 
 @Module({
   controllers: [

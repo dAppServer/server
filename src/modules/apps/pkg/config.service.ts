@@ -1,6 +1,6 @@
-import { ObjectService } from "../../config/object/object.service.ts";
-import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
-import { Injectable } from "../../../../deps.ts";
+import { ObjectService } from "/modules/config/object/object.service.ts";
+import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { Injectable } from "/deps.ts";
 
 @Injectable()
 export class AppManagerConfig {

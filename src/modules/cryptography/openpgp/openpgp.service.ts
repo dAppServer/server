@@ -1,6 +1,6 @@
-import { Injectable, openpgp, path } from "../../../../deps.ts";
-import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
-import { QuasiSaltService } from "../hash/quasi-salt.service.ts";
+import { Injectable, openpgp, path } from "/deps.ts";
+import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { QuasiSaltService } from "/modules/cryptography/hash/quasi-salt.service.ts";
 
 /**
  * OpenPGP Service

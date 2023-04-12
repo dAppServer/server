@@ -1,6 +1,6 @@
-import { Controller, Post, Body, Tag } from "../../../../deps.ts";
-import { ProcessManager } from "./process.service.ts";
-import { ProcessAddDTO, ProcessKillDTO, ProcessRunDTO, ProcessStartDTO, ProcessStopDTO } from "./process.interface.ts";
+import { Controller, Post, Body, Tag } from "/deps.ts";
+import { ProcessManager } from "/modules/io/process/process.service.ts";
+import { ProcessAddDTO, ProcessKillDTO, ProcessRunDTO, ProcessStartDTO, ProcessStopDTO } from "/modules/io/process/process.interface.ts";
 
 @Tag( "Process" )
 @Controller("process" )

@@ -1,4 +1,4 @@
-import { UserRole } from "../user/user-role.ts";
+
 
 /**
  * Authenticated user info

@@ -1,6 +1,6 @@
-import { ProcessManagerRequest } from "./process.interface.ts";
-import { ProcessManagerProcess } from "./processManagerProcess.ts";
-import { Injectable } from "../../../../deps.ts";
+import { ProcessManagerRequest } from "/modules/io/process/process.interface.ts";
+import { ProcessManagerProcess } from "/modules/io/process/processManagerProcess.ts";
+import { Injectable } from "/deps.ts";
 
 /**
  * Lethean ProcessManager handles all aspects of running external binaries

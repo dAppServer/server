@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": "./src",
+    "rootDir": "./",
     "outDir": "./out-tsc",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

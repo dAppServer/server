@@ -1,9 +1,9 @@
-import { Body, Controller, Options, path, Post, Tag } from "../../../../deps.ts";
-import { FileSystemService } from "../../io/filesystem/fileSystemService.ts";
-import { IniService } from "../../config/ini/ini.service.ts";
-import { ProcessManager } from "../../io/process/process.service.ts";
-import { ProcessManagerRequest } from "../../io/process/process.interface.ts";
-import { BlockchainLetheanDaemonStartDTO, BlockchainLetheanRPCDTO } from "./lethean.interface.ts";
+import { Body, Controller, Options, path, Post, Tag } from "/deps.ts";
+import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
+import { IniService } from "/modules/config/ini/ini.service.ts";
+import { ProcessManager } from "/modules/io/process/process.service.ts";
+import { ProcessManagerRequest } from "/modules/io/process/process.interface.ts";
+import { BlockchainLetheanDaemonStartDTO, BlockchainLetheanRPCDTO } from "/modules/chain/lthn/lethean.interface.ts";
 
 @Tag("blockchain")
 @Controller("blockchain/lethean")
