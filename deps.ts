@@ -1,5 +1,3 @@
-//export * as path from "https://deno.land/std@0.131.0/path/mod.ts";
-export * as Colors from "https://deno.land/std@0.130.0/fmt/colors.ts";
 export * from "https://deno.land/x/websocket@v0.1.3/mod.ts";
 export * as zmq from "https://deno.land/x/jszmq@v1.3.1/mod.ts";
 export { createHash } from "https://deno.land/std@0.77.0/hash/mod.ts";

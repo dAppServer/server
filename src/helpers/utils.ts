@@ -1,4 +1,4 @@
-import { Colors } from "/deps.ts";
+import * as Colors from "std/fmt/colors.ts";
 
 /**
  * Console Information style
