@@ -1,5 +1,5 @@
 import { Injectable, DanetMiddleware , HttpContext, NextFunction} from "danet/mod.ts";
-import { v4 as uuid } from "std/uuid/mod.ts";
+import { crypto } from "std/crypto/mod.ts";
 @Injectable()
 export class RequestIDMiddleware implements DanetMiddleware {
 
@@ -7,7 +7,7 @@ export class RequestIDMiddleware implements DanetMiddleware {
     let requestId = ctx.request.headers.get("X-Response-Id");
     if (!requestId) {
       /** if request id not being set, set unique request id */
-      requestId = uuid.generate();
+      requestId = crypto.randomUUID();
       ctx.response.headers.set("X-Response-Id", requestId.toString());
     }
     /** add request id in response header */

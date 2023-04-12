@@ -20,11 +20,6 @@ export class HashController {
     return this.quasi.verify(body.input, body.hash);
   }
 
-  @Post("md5")
-  md5(@Body() body: HashDTO): string {
-    return this.hash.hash(body.input, "md5");
-  }
-
   @Post("sha256")
   sha256(@Body() body: HashDTO): string {
     return this.hash.hash(body.input, "SHA-256");
