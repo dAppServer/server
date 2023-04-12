@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
-import { path } from "/deps.ts";
+import  * as path from "std/path/mod.ts";
 import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
 import { ProcessManager } from "/modules/io/process/process.service.ts";
 import { ProcessManagerRequest } from "/modules/io/process/process.interface.ts";

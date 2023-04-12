@@ -1,5 +1,5 @@
 import { AppManagerConfig } from "/modules/apps/pkg/config.service.ts";
-import { path } from "/deps.ts";
+import  * as path from "std/path/mod.ts";
 import { Injectable } from "danet/mod.ts";
 import { ensureDir } from "std/fs/mod.ts"
 import { ObjectService } from "/modules/config/object/object.service.ts";

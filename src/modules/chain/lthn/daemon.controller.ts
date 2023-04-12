@@ -1,4 +1,4 @@
-import { path } from "/deps.ts";
+import  * as path from "std/path/mod.ts";
 import { Body, Controller, Post } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
 import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";

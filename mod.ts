@@ -1,6 +1,5 @@
 
-import { path } from "/deps.ts";
-
+import  * as path from "std/path/mod.ts";
 
 const home = Deno.env.get('HOME') ? Deno.env.get('HOME') as string : Deno.cwd();
 

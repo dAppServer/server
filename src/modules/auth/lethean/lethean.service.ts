@@ -1,4 +1,4 @@
-import { path } from "/deps.ts";
+import  * as path from "std/path/mod.ts";
 import { Injectable } from "danet/mod.ts";
 import { OpenPGPService } from "/modules/cryptography/openpgp/openpgp.service.ts";
 import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";

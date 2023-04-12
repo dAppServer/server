@@ -1,11 +1,10 @@
 import {
   copy,
   decompress,
-  path,
   readerFromStreamReader,
-  Untar,
-  unZipFromFile
+  Untar
 } from "/deps.ts";
+import  * as path from "std/path/mod.ts";
 import { Injectable } from "danet/mod.ts";
 import { ensureDir, ensureDirSync } from "std/fs/mod.ts"
 import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
