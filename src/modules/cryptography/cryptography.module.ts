@@ -1,4 +1,4 @@
-import { Module } from "/deps.ts";
+import { Module } from "danet/mod.ts";
 import { HashController } from "/modules/cryptography/hash/hash.controller.ts";
 import { QuasiSaltService } from "/modules/cryptography/hash/quasi-salt.service.ts";
 import { OpenPGPService } from "/modules/cryptography/openpgp/openpgp.service.ts";

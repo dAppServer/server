@@ -1,4 +1,6 @@
-import { ensureDirSync, path, Injectable } from "/deps.ts";
+import { path } from "/deps.ts";
+import { ensureDirSync } from "std/fs/mod.ts"
+import { Injectable } from "danet/mod.ts";
 import DirEntry = Deno.DirEntry;
 
 /**

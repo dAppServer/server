@@ -3,8 +3,6 @@ import {
   assertStrictEquals,
   copy,
   decompress,
-  ensureDir,
-  ensureDirSync,
   path,
   readerFromStreamReader,
   Untar,

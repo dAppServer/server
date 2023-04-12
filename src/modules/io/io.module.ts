@@ -1,4 +1,4 @@
-import { Module } from "/deps.ts";
+import { Module } from "danet/mod.ts";
 import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
 import { FileSystemController } from "/modules/io/filesystem/local.controller.ts";
 import { DownloadController } from "/modules/io/tcp/download.controller.ts";

@@ -1,5 +1,6 @@
 import { IniService } from "/modules/config/ini/ini.service.ts";
-import { Body, Controller, Post, Tag } from "/deps.ts";
+import { Body, Controller, Post } from "danet/mod.ts";
+import { Tag } from "danetSwagger/decorators.ts";
 import { INIObjectParseJSONDTO } from "/modules/config/ini/ini.interface.ts";
 
 @Tag("Config")

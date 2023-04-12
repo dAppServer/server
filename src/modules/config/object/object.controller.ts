@@ -1,4 +1,5 @@
-import { Body, Controller, Options, Post, Tag } from "/deps.ts";
+import { Body, Controller, Post } from "danet/mod.ts";
+import { Tag } from "danetSwagger/decorators.ts";
 import { ConfigObjectClearDTO, ConfigObjectCountDTO, ConfigObjectGetDTO, ConfigObjectRemoveDTO, ConfigObjectSetDTO } from "/modules/config/object/object.interface.ts";
 import { ObjectService } from "/modules/config/object/object.service.ts";
 

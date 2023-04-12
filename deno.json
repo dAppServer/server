@@ -41,6 +41,9 @@
     "/deps.ts": "./deps.ts",
     "lib/": "./lib/",
     "/": "./src/",
-    "./": "./src/"
+    "./": "./src/",
+    "std/": "https://deno.land/std@0.182.0/",
+    "danet/": "https://deno.land/x/danet@1.5.0/",
+    "danetSwagger/": "https://deno.land/x/danet_swagger@1.6.0/",
   }
 }

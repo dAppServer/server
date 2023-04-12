@@ -1,4 +1,4 @@
-import { Module } from "/deps.ts";
+import { Module } from "danet/mod.ts";
 import { ObjectController } from "/modules/config/object/object.controller.ts";
 import { ObjectService } from "/modules/config/object/object.service.ts";
 import { FileController } from "/modules/config/file/file.controller.ts";

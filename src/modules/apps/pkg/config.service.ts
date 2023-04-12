@@ -1,7 +1,6 @@
 import { ObjectService } from "/modules/config/object/object.service.ts";
 import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
-import { Injectable } from "/deps.ts";
-
+import { Injectable } from "danet/mod.ts";
 @Injectable()
 export class AppManagerConfig {
   public apps: any;

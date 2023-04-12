@@ -1,5 +1,5 @@
-import { createHash, Injectable } from "/deps.ts";
-
+import { createHash } from "/deps.ts";
+import { Injectable } from "danet/mod.ts";
 @Injectable()
 export class HashService {
 

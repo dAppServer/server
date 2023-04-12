@@ -1,4 +1,5 @@
-import { Post, Tag, Controller, Logger, Body } from "/deps.ts";
+import { Post, Controller, Logger, Body } from "danet/mod.ts";
+import { Tag } from "danetSwagger/decorators.ts";
 import { LetheanDownloadService } from "/modules/io/tcp/download.service.ts";
 import { DownloadDestination, DownloadedFile, FileDownloadRequest } from "/modules/io/tcp/download.interface.ts";
 

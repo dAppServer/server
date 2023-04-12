@@ -1,4 +1,4 @@
-import { Module } from "/deps.ts";
+import { Module } from "danet/mod.ts";
 import { LetheanDaemonController } from "/modules/chain/lthn/daemon.controller.ts";
 import { LetheanWalletController } from "/modules/chain/lthn/wallet.controller.ts";
 import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";

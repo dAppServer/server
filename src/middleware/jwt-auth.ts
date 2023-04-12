@@ -1,7 +1,7 @@
 import { AuthUser } from "/types/auth/auth-user.ts";
 import { getJwtPayload } from "/helpers/jwt.ts";
 import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
-import { Injectable, DanetMiddleware, HttpContext, NextFunction, Logger } from "/deps.ts";
+import { Injectable, DanetMiddleware, HttpContext, NextFunction, Logger } from "danet/mod.ts";
 
 /**
  * JSON Web Token middleware

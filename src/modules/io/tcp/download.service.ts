@@ -1,13 +1,13 @@
 import {
   copy,
   decompress,
-  ensureDir,
-  ensureDirSync, Injectable,
   path,
   readerFromStreamReader,
   Untar,
   unZipFromFile
 } from "/deps.ts";
+import { Injectable } from "danet/mod.ts";
+import { ensureDir, ensureDirSync } from "std/fs/mod.ts"
 import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
 import { ZeroMQServer } from "/modules/io/ipc/zeromq.ts";
 import { DownloadDestination, DownloadedFile } from "/modules/io/tcp/download.interface.ts";

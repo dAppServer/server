@@ -1,5 +1,7 @@
 import { AppManagerConfig } from "/modules/apps/pkg/config.service.ts";
-import { ensureDir, Injectable, path } from "/deps.ts";
+import { path } from "/deps.ts";
+import { Injectable } from "danet/mod.ts";
+import { ensureDir } from "std/fs/mod.ts"
 import { ObjectService } from "/modules/config/object/object.service.ts";
 import { PluginConfig, PluginType } from "/modules/apps/pkg/pkg.interface.ts";
 import { LetheanDownloadService } from "/modules/io/tcp/download.service.ts";

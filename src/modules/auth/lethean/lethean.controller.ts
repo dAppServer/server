@@ -1,4 +1,5 @@
-import { Post, Body, Tag, Controller, UnauthorizedException, InternalServerErrorException } from "/deps.ts";
+import { Post, Body, Controller, UnauthorizedException, InternalServerErrorException } from "danet/mod.ts";
+import { Tag } from "danetSwagger/decorators.ts";
 import { UserRole } from "/types/user/user-role.ts";
 import * as jwt from "/helpers/jwt.ts";
 import { CreateAccountDTO, CreateAccountResponseDTO, DeleteAccountDTO, EncryptedRequestDTO, EncryptedResponseDTO } from "/interfaces/encrypted-request.interface.ts";

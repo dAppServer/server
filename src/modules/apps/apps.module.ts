@@ -1,4 +1,4 @@
-import { Module } from "/deps.ts";
+import { Module } from "danet/mod.ts";
 import { ObjectService } from "/modules/config/object/object.service.ts";
 import { LetheanDownloadService } from "/modules/io/tcp/download.service.ts";
 import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";

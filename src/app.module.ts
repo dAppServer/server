@@ -1,4 +1,4 @@
-import { Module } from "/deps.ts";
+import { Module } from "danet/mod.ts";
 import { BaseController } from "/app.controller.ts";
 import { IOModule } from "/modules/io/io.module.ts";
 import { AuthModule } from "/modules/auth/auth.module.ts";

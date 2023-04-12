@@ -1,4 +1,5 @@
-import { Injectable, openpgp, path } from "/deps.ts";
+import { openpgp, path } from "/deps.ts";
+import { Injectable } from "danet/mod.ts";
 import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
 import { QuasiSaltService } from "/modules/cryptography/hash/quasi-salt.service.ts";
 

@@ -1,4 +1,4 @@
-import { Injectable, DanetMiddleware , HttpContext, NextFunction, Logger} from "/deps.ts";
+import { Injectable, DanetMiddleware , HttpContext, NextFunction, Logger} from "danet/mod.ts";
 
 /**
  * Logger middleware, Please first in the middleware list

@@ -1,4 +1,4 @@
-import { Module } from "/deps.ts";
+import { Module } from "danet/mod.ts";
 import { AuthLetheanController } from "/modules/auth/lethean/lethean.controller.ts";
 import { AuthLetheanService } from "/modules/auth/lethean/lethean.service.ts";
 import { OpenPGPService } from "/modules/cryptography/openpgp/openpgp.service.ts";

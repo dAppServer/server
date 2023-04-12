@@ -1,4 +1,5 @@
-import { zmq, Logger } from "/deps.ts";
+import { zmq } from "/deps.ts";
+import { Logger } from "danet/mod.ts";
 
 /**
  * ZeroMQ Websocket server

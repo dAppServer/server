@@ -1,5 +1,6 @@
 import { AppModule } from '/app.module.ts';
-import { DanetApplication, SpecBuilder, SwaggerModule } from "/deps.ts";
+import { DanetApplication } from "danet/mod.ts";
+import { SpecBuilder, SwaggerModule } from "danetSwagger/mod.ts";
 import { CorsMiddleware } from "/middleware/cors.ts";
 import { LoggerMiddleware } from "/middleware/logger.ts";
 import { TimingMiddleware } from "/middleware/timing.ts";

@@ -1,4 +1,5 @@
-import { Get, Tag, Controller, Logger } from "/deps.ts";
+import { Get, Controller, Logger } from "danet/mod.ts";
+import { Tag } from "danetSwagger/decorators.ts";
 import { FileSystemService } from "/modules/io/filesystem/fileSystemService.ts";
 import { OpenPGPService } from "/modules/cryptography/openpgp/openpgp.service.ts";
 import { QuasiSaltService } from "/modules/cryptography/hash/quasi-salt.service.ts";
