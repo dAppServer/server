@@ -1,6 +1,4 @@
-import {
-  decompress
-} from "/deps.ts";
+import { decompress } from "zip/mod.ts";
 import { Untar } from "std/archive/mod.ts";
 import { copy, readerFromStreamReader } from "std/streams/mod.ts";
 import  * as path from "std/path/mod.ts";

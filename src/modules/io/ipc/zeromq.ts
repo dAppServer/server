@@ -1,4 +1,4 @@
-import { zmq } from "/deps.ts";
+import * as zmq from "jszmq/mod.ts";
 import { Logger } from "danet/mod.ts";
 
 /**

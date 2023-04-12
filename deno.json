@@ -45,5 +45,7 @@
     "std/": "https://deno.land/std@0.182.0/",
     "danet/": "https://deno.land/x/danet@1.5.0/",
     "danetSwagger/": "https://deno.land/x/danet_swagger@1.6.0/",
+    "zip/": "https://deno.land/x/zip@v1.2.5/",
+    "jszmq/": "https://deno.land/x/jszmq@v1.3.1/"
   }
 }
