@@ -1,4 +1,4 @@
-import { createHash } from "/deps.ts";
+import { crypto, toHashString, } from "std/crypto/mod.ts";
 import { Injectable } from "danet/mod.ts";
 @Injectable()
 export class QuasiSaltService {
@@ -39,9 +39,11 @@ export class QuasiSaltService {
   }
 
   hash(input: string): string {
-    return createHash("sha256")
-      .update(input + this.createSalt(input))
-      .toString() as string;
+    const hash = crypto.subtle.digestSync(
+      "SHA-256",
+      new TextEncoder().encode(input + this.createSalt(input)),
+    );
+    return toHashString(hash);
   }
 
   /**
