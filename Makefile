@@ -44,6 +44,9 @@ fmt: $(DENO_BIN) ## Format code
 bundle: $(DENO_BIN) ## Bundle code
 	$(call deno,bundle --unstable mod.ts bundle.js)
 
+build-sdk:
+	bash docs/build-sdk.sh
+
 build: $(DENO_BIN) bundle ## Build binary for the host machine
 	$(call deno,compile -A --unstable --output build/lthn bundle.js)
 

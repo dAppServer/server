@@ -1,0 +1,10 @@
+{
+  "additionalProperties": {
+    "apiPackage": "server-sdk-bash",
+    "generateBashCompletion": true,
+    "generateZshCompletion":  true,
+    "processMarkdown":  true,
+    "scriptName":"dapp-server-sdk",
+    "hostEnvironmentVariable": "https://localhost:36911/"
+  }
+}

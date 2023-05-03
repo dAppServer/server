@@ -1,0 +1,6 @@
+{
+  "additionalProperties": {
+    "packageName": "server-sdk-go",
+    "generateInterfaces": true
+  }
+}
