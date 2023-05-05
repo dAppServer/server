@@ -1,7 +1,7 @@
 import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
 import { Controller, Post, Body } from "danet/mod.ts";
-import { Tag } from "danetSwagger/decorators.ts";
-import { CreateFileDTO, FilePathDTO } from "@module/io/filesystem/local.interface.ts";
+import { Tag, ReturnedType } from "danetSwagger/decorators.ts";
+import { CreateFileDTO, FilePathCheckDTO, FilePathDTO } from "@module/io/filesystem/local.interface.ts";
 
 @Tag( "Input/Output" )
 @Controller("io/filesystem" )
@@ -58,8 +58,12 @@ export class FileSystemController  {
    * @returns {boolean}
    */
   @Post("is-file")
-  isFile(@Body() body: FilePathDTO) {
-    return this.fileSystemService.isFile(body.path);
+  @ReturnedType(FilePathCheckDTO)
+  isFile(@Body() body: FilePathDTO): FilePathCheckDTO {
+    return {
+      path: body.path,
+      result: this.fileSystemService.isFile(body.path)
+    };
   }
 
   /**
@@ -68,8 +72,12 @@ export class FileSystemController  {
    * @returns {boolean}
    */
   @Post("is-dir")
-  isDir(@Body() body: FilePathDTO) {
-    return this.fileSystemService.isDir(body.path);
+  @ReturnedType(FilePathCheckDTO)
+  isDir(@Body() body: FilePathDTO): FilePathCheckDTO {
+    return {
+      path: body.path,
+      result: this.fileSystemService.isDir(body.path)
+    };
   }
 
 }
