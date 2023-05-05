@@ -1,4 +1,4 @@
-import { Post, Body, Controller, UnauthorizedException, InternalServerErrorException } from "danet/mod.ts";
+import { Post, Body, Controller, UnauthorizedException, InternalServerErrorException, ConflictException } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
 import { UserRole } from "../../../types/user/user-role.ts";
 import * as jwt from "@helpers/jwt.ts";
@@ -53,6 +53,12 @@ export class AuthLetheanController {
    */
   @Post("lethean/create")
   async create(@Body() body: CreateAccountDTO): Promise<CreateAccountResponseDTO> {
+
+    // block duplicate account creation
+    if (this.fileService.isFile(`users/${this.quasi.hash(body.username)}.lthn.key`)) {
+      throw new ConflictException();
+    }
+
     try {
       const usernameHash: string = this.quasi.hash(body.username);
 
