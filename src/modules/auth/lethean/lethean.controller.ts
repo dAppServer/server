@@ -1,5 +1,5 @@
 import { Post, Body, Controller, UnauthorizedException, InternalServerErrorException, ConflictException } from "danet/mod.ts";
-import { Tag } from "danetSwagger/decorators.ts";
+import { Tag, ReturnedType } from "danetSwagger/decorators.ts";
 import { UserRole } from "../../../types/user/user-role.ts";
 import * as jwt from "@helpers/jwt.ts";
 import { CreateAccountDTO, CreateAccountResponseDTO, DeleteAccountDTO, EncryptedRequestDTO, EncryptedResponseDTO } from "@interfaces/encrypted-request.interface.ts";
@@ -25,6 +25,7 @@ export class AuthLetheanController {
    * @returns {Promise<EncryptedResponseDTO>}
    */
   @Post("lethean/login")
+  @ReturnedType(EncryptedResponseDTO)
   async login(@Body() body: EncryptedRequestDTO): Promise<EncryptedResponseDTO> {
     const user = await this.auth.login(atob(body.payload));
 
@@ -52,15 +53,18 @@ export class AuthLetheanController {
    * @returns {Promise<CreateAccountResponseDTO>}
    */
   @Post("lethean/create")
+  @ReturnedType(CreateAccountResponseDTO)
   async create(@Body() body: CreateAccountDTO): Promise<CreateAccountResponseDTO> {
 
+    const usernameHash: string = this.quasi.hash(body.username);
+
     // block duplicate account creation
-    if (this.fileService.isFile(`users/${this.quasi.hash(body.username)}.lthn.key`)) {
+    if (this.fileService.isFile(`users/${usernameHash}.lthn.key`)) {
       throw new ConflictException();
     }
 
     try {
-      const usernameHash: string = this.quasi.hash(body.username);
+
 
       const { privateKey, publicKey, revocationCertificate }: any =
         await this.openpgp.createKeyPair(usernameHash, body.password);
