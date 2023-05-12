@@ -23,7 +23,6 @@ export class LetheanWalletController {
       path.join(
         Deno.cwd(),
         "cli",
-        "lthn",
         exeFile
       ),
       body,
