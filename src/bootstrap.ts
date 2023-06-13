@@ -16,20 +16,17 @@ export const bootstrap = async () => {
   await application.init(AppModule);
 
 
-
   // Swagger API Docs + JSON Definition
   const spec = new SpecBuilder()
     .setTitle('Lethean Server')
     .setDescription('Lethean dAppServer')
     .setVersion('1.0')
     .addServer('http://localhost:36911')
-    .setContact('Lethean', 'https://lt.hn', 'hello@lt.hn')
+    .setContact('Lethean', 'https://lethean.io', 'hello@lt.hn')
     .setLicense('EUPL-1.2', 'https://eupl.eu/1.2/en/')
     .build();
   const document = await SwaggerModule.createDocument(application, spec);
   await SwaggerModule.setup('api', application, document);
-  // Static file server
-//  const staticAssetsPath = `${Deno.cwd()}/apps`;
-//  application.useStaticAssets(staticAssetsPath);
+
   return application;
 }
