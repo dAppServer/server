@@ -20,7 +20,7 @@ export const bootstrap = async () => {
   const spec = new SpecBuilder()
     .setTitle('Lethean Server')
     .setDescription('Lethean dAppServer')
-    .setVersion('1.0')
+    .setVersion('3.1.1')
     .addServer('http://localhost:36911')
     .setContact('Lethean', 'https://lethean.io', 'hello@lt.hn')
     .setLicense('EUPL-1.2', 'https://eupl.eu/1.2/en/')

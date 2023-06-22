@@ -2,7 +2,8 @@
   "additionalProperties": {
     "apiModulePrefix":"serverSDK",
     "configurationPrefix":"serverSDK",
-    "npmName":"@dappserver/server-sdk-angular",
-    "ngVersion": 12
+    "npmName":"@lethean/api-angular",
+    "ngVersion": 15,
+    "withInterfaces": true
   }
 }

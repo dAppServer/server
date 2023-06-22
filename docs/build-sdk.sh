@@ -31,7 +31,7 @@ do
   # Build the SDK's
   openapi-generator-cli generate  --skip-validate-spec -i "${BASE_DIR}/docs/openapi.json" -g "$filename" \
       -o "${BASE_DIR}/docs/sdk/client/$filename" -c "$f" --git-host "github.com" \
-    --git-repo-id "@dAppServer/server-sdk-$filename" --git-user-id "snider" --artifact-version "${PACKAGE_VERSION}" --group-id "dappserver" \
+    --git-repo-id "server-sdk-$filename" --git-user-id "dAppServer" --artifact-version "${PACKAGE_VERSION}" --group-id "dappserver" \
     -p packageVersion="${PACKAGE_VERSION}" --global-property "apiTests=true" --additional-properties=npmVersion="${PACKAGE_VERSION}",artifactVersion="${PACKAGE_VERSION}";
 
   # Push to git
