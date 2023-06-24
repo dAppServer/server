@@ -2,9 +2,7 @@
   "additionalProperties": {
     "apiModulePrefix":"serverSDK",
     "configurationPrefix":"serverSDK",
-    "npmName":"@lethean/api-angular",
-    "ngVersion": 15,
-    "providedIn": "any",
-    "supportsES6": true
+    "npmName":"@lethean/api-typescript",
+    "providedIn": "any"
   }
 }

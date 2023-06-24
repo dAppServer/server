@@ -44,8 +44,11 @@ fmt: $(DENO_BIN) ## Format code
 bundle: $(DENO_BIN) ## Bundle code
 	$(call deno,bundle --unstable mod.ts bundle.js)
 
-build-sdk-angular:
+build-sdk-angular: ## SDK Build: Angular
 	bash docs/build-sdk.sh -p typescript-angular
+
+build-sdk-typescript: ## SDK Build: TypeScript
+	bash docs/build-sdk.sh -p typescript
 
 build: $(DENO_BIN) bundle ## Build binary for the host machine
 	$(call deno,compile -A --unstable --output build/lthn bundle.js)

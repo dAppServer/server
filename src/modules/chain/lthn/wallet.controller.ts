@@ -5,6 +5,7 @@ import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
 import { ProcessManager } from "@module/io/process/process.service.ts";
 import { ProcessManagerRequest } from "@module/io/process/process.interface.ts";
 import { BlockchainLetheanWalletStartDTO } from "@module/chain/lthn/lethean.interface.ts";
+import {ReturnedType} from "https://deno.land/x/danet_swagger@1.6.1/decorators.ts";
 
 @Tag("blockchain")
 @Controller("blockchain/lethean")
@@ -36,7 +37,8 @@ export class LetheanWalletController {
   }
 
   @Post("wallet/json_rpc")
-  async walletJsonRpc(@Body() body: any) {
+  @ReturnedType(String)
+  async walletJsonRpc(@Body() body: any): Promise<string> {
     let url = "json_rpc";
     if (body["url"]) {
       url = body["url"];
