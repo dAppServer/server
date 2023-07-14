@@ -34,8 +34,7 @@ export class LetheanDaemonController {
             this.fileSystem.write(
                 configFile,
                 this.ini.stringify({
-                    "log-file": body.logDir,
-                    "data-dir": body.dataDir
+                    "log-file": body.logDir
                 })
             );
         }
@@ -122,9 +121,9 @@ export class LetheanDaemonController {
     @Post("daemon/downloadDaemon")
     downloadDaemon(@Body() body: any) {
         const urls = {
-            'linux': 'https://github.com/letheanVPN/blockchain-iz/releases/latest/download/linux.tar',
-            'windows': 'https://github.com/letheanVPN/blockchain-iz/releases/latest/download/windows.tar',
-            'mac': 'https://github.com/letheanVPN/blockchain-iz/releases/latest/download/lethean-cli-macos.zip'
+            'linux': 'https://github.com/letheanVPN/blockchain-iz/releases/latest/download/lethean-cli-linux.tar',
+            'windows': 'https://github.com/letheanVPN/blockchain-iz/releases/latest/download/lethean-cli-windows.tar',
+            'mac': 'https://github.com/letheanVPN/blockchain-iz/releases/latest/download/lethean-cli-macos.tar'
         }
         if(urls[Deno.build.os]){
             this.download.downloadContents(urls[Deno.build.os], 'cli/lthn').catch((err) => {
