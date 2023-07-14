@@ -13,3 +13,4 @@ lethean-server
 /users
 /docs/.cache
 /out-tsc
+docs/sdk/
