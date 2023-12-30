@@ -1,0 +1,37 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "request": "launch",
+            "name": "Launch Server",
+            "type": "node",
+            "program": "${workspaceFolder}/mod.ts",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "C:\\Users\\lashb\\.deno\\bin\\deno.EXE",
+            "runtimeArgs": [
+                "run",
+                "--inspect-brk",
+                "--allow-all"
+            ],
+            "attachSimplePort": 9229
+        },
+        {
+            "request": "launch",
+            "name": "Update Vendors",
+            "type": "node",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "C:\\Users\\lashb\\.deno\\bin\\deno.EXE",
+            "runtimeArgs": [
+                "vendor",
+                "-f",
+                "mod.ts",
+                "deps.ts",
+                "deps-test.ts"
+            ],
+            "attachSimplePort": 9229
+        }
+    ]
+}
