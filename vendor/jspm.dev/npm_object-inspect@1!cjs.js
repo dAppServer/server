@@ -1,1 +1,1 @@
-export { default } from "/npm:object-inspect@1.12.3!cjs";
+export { default } from "/npm:object-inspect@1.13.1!cjs";

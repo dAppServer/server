@@ -1,0 +1,15 @@
+import "/npm:handlebars@4.7.6/dist/cjs/handlebars/utils!cjs";
+import "/npm:handlebars@4.7.6/dist/cjs/handlebars/exception!cjs";
+import "/npm:handlebars@4.7.6/_/cac9e115.js";
+import "/npm:handlebars@4.7.6/dist/cjs/handlebars/safe-string!cjs";
+import "/npm:handlebars@4.7.6/dist/cjs/handlebars/runtime!cjs";
+import "/npm:handlebars@4.7.6/_/a1417093.js";
+import "/npm:handlebars@4.7.6/dist/cjs/handlebars/compiler/ast!cjs";
+import "/npm:handlebars@4.7.6/dist/cjs/handlebars/compiler/parser!cjs";
+import "/npm:handlebars@4.7.6/dist/cjs/handlebars/compiler/visitor!cjs";
+import "/npm:handlebars@4.7.6/dist/cjs/handlebars!cjs";
+import "/npm:handlebars@4.7.6/dist/cjs/handlebars/compiler/compiler!cjs";
+import "/npm:source-map@0.6!cjs";
+import "/npm:handlebars@4.7.6/dist/cjs/handlebars/compiler/javascript-compiler!cjs";
+import "/npm:@jspm/core@2/nodelibs/fs";
+export { default } from "/npm:handlebars@4.7.6!cjs";
