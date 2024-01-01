@@ -9,7 +9,7 @@
   "lint": {
     "files": {
       "include": ["src/"],
-      "exclude": ["src/testdata/"]
+      "exclude": ["src/testdata/", "ui/"]
     },
     "rules": {
       "tags": ["recommended"],
@@ -32,7 +32,8 @@
         "data/",
         "users/",
         "cli/",
-        "conf/"
+        "conf/",
+        "ui/"
       ]
     }
   },
