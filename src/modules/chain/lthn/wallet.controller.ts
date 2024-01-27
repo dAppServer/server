@@ -20,7 +20,7 @@ export class LetheanWalletController {
             (Deno.build.os === "windows" ? ".exe" : "");
 
         body["walletDir"] = this.fileSystem.path(body["walletDir"]);
-        body['rpcBindPort'] = body['rpcBindPort'].toString();
+        body['rpcBindPort'] = body['rpcBindPort'];
         body['trustedDaemon'] = true
         exeFile = this.fileSystem.path(["cli", 'lthn', exeFile]);
 

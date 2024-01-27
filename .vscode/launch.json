@@ -10,7 +10,7 @@
             "type": "node",
             "program": "${workspaceFolder}/mod.ts",
             "cwd": "${workspaceFolder}",
-            "runtimeExecutable": "C:\\Users\\lashb\\.deno\\bin\\deno.EXE",
+            "runtimeExecutable": "deno",
             "runtimeArgs": [
                 "run",
                 "--inspect-brk",
@@ -23,7 +23,7 @@
             "name": "Update Vendors",
             "type": "node",
             "cwd": "${workspaceFolder}",
-            "runtimeExecutable": "C:\\Users\\lashb\\.deno\\bin\\deno.EXE",
+            "runtimeExecutable": "deno",
             "runtimeArgs": [
                 "vendor",
                 "-f",

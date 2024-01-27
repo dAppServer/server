@@ -765,5 +765,15 @@
     "https://esm.sh/handlebars@4.7.7": "d06e76a5f1c37b8b5a5115e6bf284933f7dd1592594943d43b68830c4e5807d0",
     "https://esm.sh/v135/handlebars@4.7.7/denonext/handlebars.mjs": "54bcd776736561fd69c50fc895e720143f7e64009e6a81fb8e515b85cbb87616",
     "https://esm.sh/v135/source-map@0.6.1/denonext/source-map.mjs": "ccff3bb06dea7c01a2c83cf12113697592e418fd06b55ae2bb4cb0a4e51a98b8"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:openpgp@^5.10.1",
+        "npm:pem-ts@^3.0.0",
+        "npm:typescript-deno-plugin@^1.31.0",
+        "npm:typescript@^4.6.3"
+      ]
+    }
   }
 }

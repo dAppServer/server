@@ -45,7 +45,7 @@
     "@interfaces/": "./src/interfaces/",
     "@middleware/": "./src/middleware/",
     "std/": "https://deno.land/std@0.182.0/",
-    "danet/": "https://deno.land/x/danet@1.5.0/",
+    "danet/": "https://deno.land/x/danet@2.0.1/",
     "danetSwagger/": "https://deno.land/x/danet_swagger@1.6.1/",
     "zip/": "https://deno.land/x/zip@v1.2.5/",
     "jszmq/": "https://deno.land/x/jszmq@v1.3.1/",
