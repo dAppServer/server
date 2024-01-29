@@ -1,6 +1,11 @@
 {
   "tasks": {
     "launch-server": "deno run -A --unstable mod.ts",
+    "compile": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/lthn bundle.js",
+    "compile-win": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/lthn.exe --target x86_64-pc-windows-msvc --no-terminal bundle.js",
+    "compile-lin": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/lthn --target x86_64-unknown-linux-gnu bundle.js",
+    "compile-mac": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/lthn --target x86_64-apple-darwin bundle.js",
+    "compile-mac-m1": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/lthn --target aarch64-apple-darwin bundle.js",
     "test": "deno test -A --unstable test"
   },
   "compilerOptions": {
@@ -12,10 +17,8 @@
     "strictPropertyInitialization": false
   },
   "lint": {
-    "files": {
       "include": ["src/"],
-      "exclude": ["src/testdata/"]
-    },
+      "exclude": ["src/testdata/"],
     "rules": {
       "tags": ["recommended"],
       "include": ["ban-untagged-todo"],
@@ -23,7 +26,7 @@
     }
   },
   "fmt": {
-    "files": {
+    
       "include": [
         "src/"
       ],
@@ -39,7 +42,7 @@
         "cli/",
         "conf/"
       ]
-    }
+    
   },
   "imports": {
     "./mod.ts": "./mod.ts",
