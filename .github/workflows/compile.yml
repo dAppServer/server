@@ -5,27 +5,20 @@ on: [push,pull_request]
 
 jobs:
   build:
-    runs-on: ${{ matrix.build.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix: 
-        build:
-        - os: ubuntu-22.04
-          compile: compile-lin
-        - os: macos-12
-          compile: compile-mac
-        - os: macos-12
-          compile: compile-mac-m1 
-        - os: windows-2022
-          compile: compile-win
+        os: [ubuntu-22.04, macos-12, windows-2022]
+        compile: [compile-lin, compile-mac, compile-mac-m1, compile-win]      
     steps:
       - uses: actions/checkout@v4
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x 
-      - run: deno task ${{ matrix.build.compile }}
+      - run: deno task ${{ matrix.compile }}
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.build.compile }}
+          name: ${{ matrix.os }}-${{ matrix.compile }}
           if-no-files-found: error
           path: |
             ${{ github.workspace }}/build/lthn*
