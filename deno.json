@@ -1,6 +1,7 @@
 {
   "tasks": {
     "launch-server": "deno run -A --unstable mod.ts",
+    "dev-server": "deno run -A --watch --unstable mod.ts",
     "compile": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/lthn bundle.js",
     "compile-win": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/lthn.exe --target x86_64-pc-windows-msvc --no-terminal bundle.js",
     "compile-lin": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/lthn --target x86_64-unknown-linux-gnu bundle.js",
@@ -54,7 +55,7 @@
     "@middleware/": "./src/middleware/",
     "std/": "https://deno.land/std@0.182.0/",
     "danet/": "https://deno.land/x/danet@2.0.1/",
-    "danetSwagger/": "https://deno.land/x/danet_swagger@1.6.1/",
+    "danetSwagger/": "https://deno.land/x/danet_swagger@2.0.0/",
     "zip/": "https://deno.land/x/zip@v1.2.5/",
     "jszmq/": "https://deno.land/x/jszmq@v1.3.1/",
     "ini/": "https://deno.land/x/gini@1.1.0/",
