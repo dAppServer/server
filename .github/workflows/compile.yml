@@ -11,12 +11,20 @@ jobs:
         build:
         - os: ubuntu-22.04
           compile: compile-lin
+          artifact_name: lthn
+          asset_name: lethean-server-linux-amd64
         - os: macos-12
           compile: compile-mac
+          artifact_name: lthn
+          asset_name: lethean-server-macos-amd64
         - os: macos-12
-          compile: compile-mac-m1 
+          compile: compile-mac-m1
+          artifact_name: lthn
+          asset_name: lethean-server-macos-aarch64
         - os: windows-2022
           compile: compile-win
+          artifact_name: lthn.exe
+          asset_name: lethean-server-win-amd64
     steps:
       - uses: actions/checkout@v4
       - uses: denoland/setup-deno@v1
@@ -29,3 +37,10 @@ jobs:
           if-no-files-found: error
           path: |
             ${{ github.workspace }}/build/lthn*
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: t${{ github.workspace }}/build/${{ matrix.artifact_name }}
+          asset_name: ${{ matrix.asset_name }}
+          tag: ${{ github.ref }}
