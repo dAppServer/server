@@ -1,5 +1,5 @@
 import  * as path from "std/path/mod.ts";
-import { Injectable } from "danet/mod.ts";
+import { Injectable, Logger } from "danet/mod.ts";
 import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
 
 /**
@@ -7,8 +7,11 @@ import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
  */
 @Injectable()
 export class ObjectService {
+  log: Logger;
 
-  constructor(private fileSystem: FileSystemService) {}
+  constructor(private fileSystem: FileSystemService) {
+    this.log = new Logger("ObjectService");
+  }
 
   /**
    * Get a object from the store
@@ -20,6 +23,7 @@ export class ObjectService {
     try {
       return this.fileSystem.read(path.join("data", "objects", group, object + ".json"))
     } catch (e) {
+      this.log.error(e);
       return false;
     }
   }
@@ -35,6 +39,7 @@ export class ObjectService {
     try {
       return this.fileSystem.write(path.join("data", "objects", group, object + ".json"), data);
     } catch (e) {
+      this.log.error(e);
       return false;
     }
   }
@@ -49,6 +54,7 @@ export class ObjectService {
     try {
       return this.fileSystem.delete(path.join("data", "objects", group, object + ".json"));
     } catch (e) {
+      this.log.error(e);
       return false;
     }
   }
@@ -62,6 +68,7 @@ export class ObjectService {
     try {
       return this.fileSystem.delete(path.join("data", "objects", group), true);
     } catch (e) {
+      this.log.error(e);
       return false;
     }
   }

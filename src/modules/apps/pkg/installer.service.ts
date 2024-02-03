@@ -1,6 +1,6 @@
 import { AppManagerConfig } from "@module/apps/pkg/config.service.ts";
 import  * as path from "std/path/mod.ts";
-import { Injectable } from "danet/mod.ts";
+import { Injectable, Logger } from "danet/mod.ts";
 import { ensureDir } from "std/fs/mod.ts"
 import { ObjectService } from "@module/config/object/object.service.ts";
 import { PluginConfig, PluginType } from "@module/apps/pkg/pkg.interface.ts";
@@ -10,12 +10,14 @@ import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
 @Injectable()
 export class AppManagerInstaller {
 
-  public app: any;
+  public app: any = [];
+  log: any;
 
   constructor(private configService: AppManagerConfig,
               private object: ObjectService,
               private download: LetheanDownloadService,
               private fileSystem: FileSystemService) {
+                this.log = new Logger("AppManagerInstaller");
   }
 
   /**
@@ -47,9 +49,10 @@ export class AppManagerInstaller {
         }
       }
       this.configService.addConfigKey(pluginConfig["code"], this.app);
-      console.log(`Installed ${pluginConfig["name"]} ${pluginConfig["version"]}`);
+      this.log.info(`Installed ${pluginConfig["name"]} ${pluginConfig["version"]}`);
       return true;
     } else {
+      this.log.error(`Package code miss match. ${pluginConfig["code"]} ${name}`);
       throw new Error(`Package code miss match. ${pluginConfig["code"]} ${name}`);
     }
 
@@ -107,6 +110,7 @@ export class AppManagerInstaller {
 
 
     } else {
+      this.log.error(`Plugin type ${plugin["type"]} not known`);
       console.log("Plugin type not known");
       return false;
     }
@@ -144,7 +148,7 @@ export class AppManagerInstaller {
         }
         return this.object.setObject("conf", "menu", JSON.stringify(menu));
       } catch (e) {
-
+        this.log.error(e);
       }
     } else {
       return this.object.setObject("conf", "menu", JSON.stringify([{ app: plugin["code"], ...plugin["menu"]["main"] }]));
@@ -169,6 +173,7 @@ export class AppManagerInstaller {
         });
         return this.object.setObject("conf", menu, JSON.stringify(newMenu));
       } catch (e) {
+        this.log.error(e);
         return false;
       }
     }
