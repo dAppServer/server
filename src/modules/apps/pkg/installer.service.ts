@@ -1,7 +1,7 @@
 import { AppManagerConfig } from "@module/apps/pkg/config.service.ts";
-import  * as path from "std/path/mod.ts";
+import * as path from "std/path/mod.ts";
 import { Injectable, Logger } from "danet/mod.ts";
-import { ensureDir } from "std/fs/mod.ts"
+import { ensureDir } from "std/fs/mod.ts";
 import { ObjectService } from "@module/config/object/object.service.ts";
 import { PluginConfig, PluginType } from "@module/apps/pkg/pkg.interface.ts";
 import { LetheanDownloadService } from "@module/io/tcp/download.service.ts";
@@ -9,15 +9,16 @@ import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
 
 @Injectable()
 export class AppManagerInstaller {
-
   public app: any = [];
   log: any;
 
-  constructor(private configService: AppManagerConfig,
-              private object: ObjectService,
-              private download: LetheanDownloadService,
-              private fileSystem: FileSystemService) {
-                this.log = new Logger("AppManagerInstaller");
+  constructor(
+    private configService: AppManagerConfig,
+    private object: ObjectService,
+    private download: LetheanDownloadService,
+    private fileSystem: FileSystemService
+  ) {
+    this.log = new Logger("AppManagerInstaller");
   }
 
   /**
@@ -28,18 +29,29 @@ export class AppManagerInstaller {
   async install(name: string, pkg: string) {
     // obviously lots wrong here, i know, validation
     const jsonResponse = await fetch(pkg, { cache: "no-cache" });
-    const pluginConfig = await jsonResponse.json() as PluginConfig;
+    const pluginConfig = (await jsonResponse.json()) as PluginConfig;
 
-
+    
     if (pluginConfig["code"] == name) {
+      this.log.log(
+        `Installing ${pluginConfig["name"]} ${pluginConfig["version"]}`
+      );
       /**
        * for types bin and core, we are just downloading backend services to be used by te server
        */
       await this.installDependants(pluginConfig);
       await this.installDownload(pluginConfig);
-      this.object.setObject("apps", pluginConfig["code"], JSON.stringify(pluginConfig));
+      this.object.setObject(
+        "apps",
+        pluginConfig["code"],
+        JSON.stringify(pluginConfig)
+      );
 
-      this.app = { "name": pluginConfig["name"], "version": pluginConfig["version"], "pkg": pkg };
+      this.app = {
+        name: pluginConfig["name"],
+        version: pluginConfig["version"],
+        pkg: pkg,
+      };
 
       if (pluginConfig["type"] == "app") {
         this.app["directory"] = this.getAppDirectory(pluginConfig["code"]);
@@ -49,14 +61,18 @@ export class AppManagerInstaller {
         }
       }
       this.configService.addConfigKey(pluginConfig["code"], this.app);
-      this.log.info(`Installed ${pluginConfig["name"]} ${pluginConfig["version"]}`);
+      this.log.info(
+        `Installed ${pluginConfig["name"]} ${pluginConfig["version"]}`
+      );
       return true;
     } else {
-      this.log.error(`Package code miss match. ${pluginConfig["code"]} ${name}`);
-      throw new Error(`Package code miss match. ${pluginConfig["code"]} ${name}`);
+      this.log.error(
+        `Package code miss match. ${pluginConfig["code"]} ${name}`
+      );
+      throw new Error(
+        `Package code miss match. ${pluginConfig["code"]} ${name}`
+      );
     }
-
-
   }
 
   /**
@@ -65,16 +81,31 @@ export class AppManagerInstaller {
    * @returns {Promise<void>}
    */
   async installDownload(plugin: PluginConfig) {
-
-    if (plugin["type"] === PluginType.BIN || plugin["type"] === PluginType.CORE) {
-
+    if (
+      plugin["type"] === PluginType.BIN ||
+      plugin["type"] === PluginType.CORE
+    ) {
+      
       if (plugin["namespace"]) {
-        await ensureDir(this.fileSystem.path(path.join("data", plugin["namespace"])));
-        await ensureDir(this.fileSystem.path(path.join("conf", plugin["namespace"])));
+        await ensureDir(
+          this.fileSystem.path(path.join("data", plugin["namespace"]))
+        );
+        await ensureDir(
+          this.fileSystem.path(path.join("conf", plugin["namespace"]))
+        );
       }
 
-      if (Deno.build.os === "darwin" && Deno.build.arch == "aarch64" && (plugin["downloads"] && !plugin["downloads"]["aarch64"])) {
-
+      if (
+        Deno.build.os === "darwin" &&
+        Deno.build.arch == "aarch64" &&
+        plugin["downloads"] &&
+        !plugin["downloads"]["aarch64"]
+      ) {
+        this.log.log(
+          `Attemping to download: ${
+            plugin["downloads"]["x86_64"][Deno.build.os]["url"]
+          }`
+        );
         return await this.download.downloadContents(
           plugin["downloads"]["x86_64"][Deno.build.os]["url"],
           this.getAppDirectory(plugin["code"])
@@ -84,12 +115,8 @@ export class AppManagerInstaller {
           plugin["downloads"][Deno.build.arch][Deno.build.os]["url"],
           this.getAppDirectory(plugin["code"])
         );
-
       }
-
-
     } else if (plugin["type"] && PluginType.APP) {
-
       if (plugin["downloads"]) {
         await this.download.downloadContents(
           plugin["downloads"]["app"],
@@ -100,15 +127,22 @@ export class AppManagerInstaller {
           plugin["app"]["url"],
           this.getAppDirectory(plugin["code"])
         );
-        if (plugin["app"]["hooks"] && plugin["app"]["hooks"]["rename"] &&
+        if (
+          plugin["app"]["hooks"] &&
+          plugin["app"]["hooks"]["rename"] &&
           plugin["app"]["hooks"]["rename"]["from"] &&
-          plugin["app"]["hooks"]["rename"]["to"]) {
-          Deno.renameSync(`${this.getAppDirectory(plugin["code"])}/${plugin["app"]["hooks"]["rename"]["from"]}`,
-            `${this.getAppDirectory(plugin["code"])}/${plugin["app"]["hooks"]["rename"]["to"]}`);
+          plugin["app"]["hooks"]["rename"]["to"]
+        ) {
+          Deno.renameSync(
+            `${this.getAppDirectory(plugin["code"])}/${
+              plugin["app"]["hooks"]["rename"]["from"]
+            }`,
+            `${this.getAppDirectory(plugin["code"])}/${
+              plugin["app"]["hooks"]["rename"]["to"]
+            }`
+          );
         }
       }
-
-
     } else {
       this.log.error(`Plugin type ${plugin["type"]} not known`);
       console.log("Plugin type not known");
@@ -116,17 +150,16 @@ export class AppManagerInstaller {
     }
 
     return true;
-
   }
 
   installDependants(plugin: PluginConfig) {
     if (plugin["depends"] && plugin["depends"].length > 0) {
+      this.log.log(`Installing dependants: ${plugin["depends"].join(", ")}`);
       plugin["depends"].forEach((item: string) => {
         console.log(item);
       });
     }
   }
-
 
   /**
    * adds menu entries to application menu
@@ -139,11 +172,13 @@ export class AppManagerInstaller {
     if (menuSrc.length > 1) {
       try {
         let menu = JSON.parse(menuSrc);
-        if (!menu.forEach((item: any) => {
-          if (item["title"]) {
-            return true;
-          }
-        })) {
+        if (
+          !menu.forEach((item: any) => {
+            if (item["title"]) {
+              return true;
+            }
+          })
+        ) {
           menu.push({ app: plugin["code"], ...plugin["menu"]["main"] });
         }
         return this.object.setObject("conf", "menu", JSON.stringify(menu));
@@ -151,7 +186,11 @@ export class AppManagerInstaller {
         this.log.error(e);
       }
     } else {
-      return this.object.setObject("conf", "menu", JSON.stringify([{ app: plugin["code"], ...plugin["menu"]["main"] }]));
+      return this.object.setObject(
+        "conf",
+        "menu",
+        JSON.stringify([{ app: plugin["code"], ...plugin["menu"]["main"] }])
+      );
     }
   }
 
@@ -179,7 +218,6 @@ export class AppManagerInstaller {
     }
 
     return false;
-
   }
 
   /**
@@ -188,10 +226,7 @@ export class AppManagerInstaller {
    * @param {string} code
    * @returns {string}
    */
-  getAppDirectory(code: string
-  ) {
+  getAppDirectory(code: string) {
     return `apps/${code.split("-").join("/")}`;
   }
-
 }
-

@@ -32,9 +32,8 @@ export class AppManagerController {
   }
 
   @Post("install")
-  @ReturnedType(Object)
+  @ReturnedType(ServerResponse)
   async installApp(@Body("code") code: string, @Body("pkg") pkg?: string): Promise<ServerResponse> {
-    this.log.log(`installing app code:${code} pkg:${pkg}`);
     if (await this.apps.installApp(code, pkg)) {
       this.log.log(`App Installed code:${code} pkg:${pkg}`);
       return new ServerResponse(HTTP_STATUS.ACCEPTED, "App Installed");

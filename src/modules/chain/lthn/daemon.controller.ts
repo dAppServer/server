@@ -1,13 +1,14 @@
 import * as path from "std/path/mod.ts";
 import {Body, Controller, Logger, Post} from "danet/mod.ts";
-import {Tag} from "danetSwagger/decorators.ts";
+import {Tag, ReturnedType} from "danetSwagger/decorators.ts";
 import {FileSystemService} from "@module/io/filesystem/fileSystemService.ts";
 import {IniService} from "@module/config/ini/ini.service.ts";
 import {ProcessManager} from "@module/io/process/process.service.ts";
 import {ProcessManagerRequest} from "@module/io/process/process.interface.ts";
 import {BlockchainLetheanDaemonStartDTO, BlockchainLetheanRPCDTO} from "@module/chain/lthn/lethean.interface.ts";
 import {LetheanDownloadService} from "@module/io/tcp/download.service.ts";
-import {ReturnedType} from "https://deno.land/x/danet_swagger@1.6.1/decorators.ts";
+
+import { ServerResponse } from "@interfaces/http.ts";
 
 @Tag("blockchain")
 @Controller("blockchain/lethean")
@@ -23,8 +24,9 @@ export class LetheanDaemonController {
     }
 
     @Post("daemon/start")
-    startDaemon(@Body() body: BlockchainLetheanDaemonStartDTO) {
-        let exeFile = `letheand${Deno.build.os === "windows" ? ".exe" : ""}`;
+    @ReturnedType(ServerResponse)
+    startDaemon(@Body() body: BlockchainLetheanDaemonStartDTO): ServerResponse {
+       
         let cmd: any = {};
 
         const configFile = this.fileSystem.path(path.join("conf", "lthn", body.configFile));
@@ -50,14 +52,15 @@ export class LetheanDaemonController {
             this.fileSystem.ensureDir(body.logDir);
         }
 
-        exeFile = this.fileSystem.path(["apps", 'blockchain', 'lthn', exeFile]);
+        const exeFile = path.join("apps", 'blockchain', 'lthn',`letheand${Deno.build.os === "windows" ? ".exe" : ""}`);
 
         if (!this.fileSystem.isFile(exeFile)) {
-            this.log.error("Lethean Daemon executable not found");
+            this.log.error(`Lethean Daemon executable not found: ${exeFile}`);
+            return new ServerResponse(404, "Lethean Daemon executable not found, please install the daemon");
         }
 
-        return this.process.run(
-            exeFile,
+        this.process.run(
+            this.fileSystem.path(exeFile),
             cmd,
             {
                 key: exeFile.split("/").pop(),
@@ -66,6 +69,7 @@ export class LetheanDaemonController {
                 stdOut: (stdOut: unknown) => console.log(stdOut)
             } as ProcessManagerRequest
         );
+        return new ServerResponse(200, "Daemon started");
 
     }
 

@@ -2,7 +2,7 @@ import { decompress } from "zip/mod.ts";
 import { Untar } from "std/archive/mod.ts";
 import { copy, readerFromStreamReader } from "std/streams/mod.ts";
 import  * as path from "std/path/mod.ts";
-import { Injectable } from "danet/mod.ts";
+import { Injectable, Logger } from "danet/mod.ts";
 import { ensureDir, ensureDirSync } from "std/fs/mod.ts"
 import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
 import { ZeroMQServer } from "@module/io/ipc/zeromq.ts";
@@ -17,8 +17,11 @@ import { DownloadDestination, DownloadedFile } from "@module/io/tcp/download.int
  */
 @Injectable()
 export class LetheanDownloadService {
+  log: Logger;
 
-  constructor(private fileService: FileSystemService) {}
+  constructor(private fileService: FileSystemService) {
+    this.log = new Logger("DownloadService");
+  }
   /**
    * Downloads and extracts a zip file's contents to the dest directory
    *
@@ -31,12 +34,12 @@ export class LetheanDownloadService {
       const filename = url.split("/").pop() ?? "";
       const destination = new DownloadDestination(filename, this.fileService.path(dest));
       this.fileService.ensureDir(destination.dir as string);
-      //console.info(`Attempting to download ${url}`);
+      this.log.log(`Attempting to download ${url}`);
       const fileObj = await this.download(
         new URL(url),
         destination,
       );
-      //console.info(`Extracting to: ${destination.dir}`);
+      this.log.log(`Extracting to: ${destination.dir}`);
     }catch (e) {
       return false
     }

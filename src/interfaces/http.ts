@@ -3,8 +3,8 @@ import { HTTP_STATUS } from "@interfaces/status-codes.ts";
 
 
 export class ServerResponse {
-    @ApiProperty()
-    status!: HTTP_STATUS;
+    @ApiProperty({enum: [200,404], example: 200})
+    status!: number;
     
     @ApiProperty()
     data!: string;
@@ -16,7 +16,7 @@ export class ServerResponse {
     constructor(status: HTTP_STATUS, data: string) {
         this.status = status;
         this.data = data;
-        //this.signature = ;
+        this.signature = '';
     }
 }
 
