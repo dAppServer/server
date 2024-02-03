@@ -1,7 +1,7 @@
 import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
 import { AppManagerInstaller } from "@module/apps/pkg/installer.service.ts";
 import { AppManagerConfig } from "@module/apps/pkg/config.service.ts";
-import { Injectable } from "danet/mod.ts";
+import { Injectable, Logger } from "danet/mod.ts";
 
 /**
  * Install an app from the Lethean repository
@@ -16,8 +16,9 @@ export class AppManager {
     config:
       "https://raw.githubusercontent.com/letheanVPN/lthn-app-setup/main/lthn.json"
   };
-  public apps: any;
+  apps: { [key: string]: string | boolean } = {};
   private config: AppManagerConfig;
+  log: any;
 
   /**
    * Init a plugin on the system
@@ -31,7 +32,7 @@ export class AppManager {
               private installer: AppManagerInstaller
   ) {
     this.apps = this.configService.getConfig();
-
+    this.log = new Logger("AppManager");
   }
 
   loadPlugin(plugin?: { code: string; config: string }) {
@@ -64,11 +65,13 @@ export class AppManager {
     if (!this.apps[name]) {
       this.apps[name] = pkg ? pkg : true;
     }
-    if (pkg) {
+    try {
+      this.log.log(`Installing ${name}`);
       return await this.installer.install(name, pkg);
+    } catch (e) {
+      this.log.error(e);
+      return false;
     }
-
-    return false;
   }
 
   /**
@@ -79,9 +82,13 @@ export class AppManager {
    */
   removeApp(name: string) {
     if (this.apps[name]) {
-      this.installer.uninstall(name);
-      this.configService.removeConfigKey(name);
-      return true;
+      try {
+        this.installer.uninstall(name);
+        this.configService.removeConfigKey(name);
+        return true;
+      } catch (e) {
+        this.log.error(e);
+      }
     }
     return false;
   }
@@ -102,8 +109,12 @@ export class AppManager {
         }
       }
     );
-
-    return await postReq.json();
+      try {
+        return await postReq.json();
+      } catch (e) {
+        this.log.error(e);
+        return false;
+      }
 
   }
 }
