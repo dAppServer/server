@@ -1,5 +1,5 @@
 import * as path from "std/path/mod.ts";
-import {Body, Controller, Post} from "danet/mod.ts";
+import {Body, Controller, Logger, Post} from "danet/mod.ts";
 import {Tag} from "danetSwagger/decorators.ts";
 import {FileSystemService} from "@module/io/filesystem/fileSystemService.ts";
 import {IniService} from "@module/config/ini/ini.service.ts";
@@ -12,11 +12,14 @@ import {ReturnedType} from "https://deno.land/x/danet_swagger@1.6.1/decorators.t
 @Tag("blockchain")
 @Controller("blockchain/lethean")
 export class LetheanDaemonController {
+    log: any;
 
     constructor(private process: ProcessManager,
                 private fileSystem: FileSystemService,
                 private ini: IniService,
                 private download: LetheanDownloadService) {
+
+                    this.log = new Logger('LetheanDaemonController');
     }
 
     @Post("daemon/start")
@@ -27,7 +30,7 @@ export class LetheanDaemonController {
         const configFile = this.fileSystem.path(path.join("conf", "lthn", body.configFile));
 
         if (!this.fileSystem.isFile(path.join("conf", "lthn", body.configFile))) {
-            console.info(`Config file ${configFile} not found`);
+            this.log.log(`Config file ${configFile} not found`);
             if (!this.fileSystem.isDir(path.join("conf", "lthn"))) {
                 this.fileSystem.ensureDir(path.join("conf", "lthn"));
             }
@@ -47,7 +50,11 @@ export class LetheanDaemonController {
             this.fileSystem.ensureDir(body.logDir);
         }
 
-        exeFile = this.fileSystem.path(["cli", 'lthn', exeFile]);
+        exeFile = this.fileSystem.path(["apps", 'blockchain', 'lthn', exeFile]);
+
+        if (!this.fileSystem.isFile(exeFile)) {
+            this.log.error("Lethean Daemon executable not found");
+        }
 
         return this.process.run(
             exeFile,
@@ -90,7 +97,7 @@ export class LetheanDaemonController {
             Deno.build.os === "windows" ? ".exe" : ""
         }`;
         this.process.run(
-            this.fileSystem.path(["cli", exeFile]),
+            this.fileSystem.path(["apps", 'blockchain', 'lthn', exeFile]),
             body,
             {
                 key: exeFile.split("/").pop(),
@@ -107,7 +114,7 @@ export class LetheanDaemonController {
             Deno.build.os === "windows" ? ".exe" : ""
         }`;
         this.process.run(
-            this.fileSystem.path(["cli", exeFile]),
+            this.fileSystem.path(["apps", 'blockchain', 'lthn', exeFile]),
             body,
             {
                 key: exeFile.split("/").pop(),

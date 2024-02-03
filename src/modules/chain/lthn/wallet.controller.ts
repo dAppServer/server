@@ -1,4 +1,4 @@
-import {Body, Controller, Post} from "danet/mod.ts";
+import {Body, Controller, Logger, Post} from "danet/mod.ts";
 import {Tag} from "danetSwagger/decorators.ts";
 import * as path from "std/path/mod.ts";
 import {FileSystemService} from "@module/io/filesystem/fileSystemService.ts";
@@ -10,8 +10,10 @@ import {ReturnedType} from "https://deno.land/x/danet_swagger@1.6.1/decorators.t
 @Tag("blockchain")
 @Controller("blockchain/lethean")
 export class LetheanWalletController {
+    log: any;
     constructor(private process: ProcessManager,
                 private fileSystem: FileSystemService) {
+                    this.log = new Logger('LetheanWalletController');
     }
 
     @Post("wallet/start")
@@ -22,8 +24,11 @@ export class LetheanWalletController {
         body["walletDir"] = this.fileSystem.path(body["walletDir"]);
         body['rpcBindPort'] = body['rpcBindPort'];
         body['trustedDaemon'] = true
-        exeFile = this.fileSystem.path(["cli", 'lthn', exeFile]);
+        exeFile = this.fileSystem.path(["apps", 'blockchain', 'lthn', exeFile]);
 
+        if (!this.fileSystem.isFile(exeFile)) {
+            this.log.error("Wallet executable not found");
+        }
         return this.process.run(
             exeFile,
             body,
