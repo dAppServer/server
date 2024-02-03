@@ -1,13 +1,18 @@
 import { AppManager } from "@module/apps/manager/manager.service.ts";
 import { AppManagerConfig } from "@module/apps/pkg/config.service.ts";
-import { Body, Controller, Get, Query, Post } from "danet/mod.ts";
+import { Body, Controller, Get, Query, Post, Logger } from "danet/mod.ts";
 import { Tag, ReturnedType } from "danetSwagger/decorators.ts";
+import { ServerResponse } from "@interfaces/http.ts";
+import { HTTP_STATUS } from "@interfaces/status-codes.ts";
+
 
 @Tag("Apps")
 @Controller("apps")
 export class AppManagerController {
+  log: any;
 
   constructor(private apps: AppManager, private appConfig: AppManagerConfig) {
+    this.log = new Logger("AppManagerController");
   }
 
   @Get("installed")
@@ -28,9 +33,15 @@ export class AppManagerController {
 
   @Post("install")
   @ReturnedType(Object)
-  async installApp(@Body("code") code: string, @Body("pkg") pkg?: string): Promise<{success: boolean}> {
-      let download = await this.apps.installApp(code, pkg);
-      return { success: true };
+  async installApp(@Body("code") code: string, @Body("pkg") pkg?: string): Promise<ServerResponse> {
+    this.log.log(`installing app code:${code} pkg:${pkg}`);
+    if (await this.apps.installApp(code, pkg)) {
+      this.log.log(`App Installed code:${code} pkg:${pkg}`);
+      return new ServerResponse(HTTP_STATUS.ACCEPTED, "App Installed");
+    } else {
+      this.log.error(`Failed to install app code:${code} pkg:${pkg}`);
+      return new ServerResponse(HTTP_STATUS.INTERNAL_SERVER_ERROR, "Failed to install app");
+    }
   }
 
   @Post("remove")
