@@ -12,9 +12,10 @@ if (Deno.args.length > 0) {
     console.log("Swagger API Docs + JSON Definition");
     Deno.writeTextFileSync("openapi.json", JSON.stringify(await buildSpec()));
     console.log(`openapi.json created in dir: ${Deno.cwd()}`);
+    Deno.exit(0);
   }
 } else {
   const application = await bootstrap();
   await application.listen(Number(Deno.env.get("PORT") || 36911));
 }
-Deno.exit(0);
+
