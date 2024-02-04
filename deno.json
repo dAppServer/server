@@ -2,6 +2,7 @@
   "tasks": {
     "launch-server": "deno run -A --unstable mod.ts",
     "dev-server": "deno run -A --watch --unstable mod.ts",
+    "build-openapi": "deno run -A --unstable mod.ts --openapi",
     "compile": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/lthn bundle.js",
     "compile-win": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/lthn.exe --target x86_64-pc-windows-msvc --no-terminal bundle.js",
     "compile-lin": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/lthn --target x86_64-unknown-linux-gnu bundle.js",
