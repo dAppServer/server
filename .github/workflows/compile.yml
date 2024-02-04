@@ -69,6 +69,7 @@ jobs:
       - run: deno task build-openapi
       
       - name: Generate API Reference
+        shell: bash
         run: |
           mkdir -p public
           echo '<!doctype html><html><head><title>API Reference</title><meta charset="utf-8" />'' > public/index.html"
