@@ -67,6 +67,21 @@ jobs:
           deno-version: v1.x 
 
       - run: deno task build-openapi
+      
+      - name: Generate API Reference
+        run: |
+          mkdir -p public
+          echo '<!doctype html><html><head><title>API Reference</title><meta charset="utf-8" />'' > public/index.html"
+          echo '<meta name="viewport"content="width=device-width, initial-scale=1"/>' >> public/index.html
+          echo '<style>body{margin:0;}</style></head><body><script id="api-reference"type="application/json">' >> public/index.html
+          cat openapi.json >> public/index.html
+          echo '</script><script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script></body></html>' >> public/index.html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
 
       - uses: actions/upload-artifact@v4
         with:
