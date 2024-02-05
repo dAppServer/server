@@ -2,7 +2,7 @@ import { ApiProperty } from "danetSwagger/decorators.ts";
 
 export interface ProcessManagerRequest {
   key: string;
-  command: string[];
+  command: string;
   stdOut: any;
   stdIn: any;
   stdErr: any;
@@ -27,7 +27,7 @@ export class ProcessAddDTO implements ProcessManagerRequest {
   @ApiProperty()
   key: string;
   @ApiProperty()
-  command: string[];
+  command: string;
   @ApiProperty()
   stdOut: any;
   @ApiProperty()
@@ -40,7 +40,7 @@ export class ProcessRunDTO {
   @ApiProperty()
   command: string;
   @ApiProperty()
-  args: string[];
+  args: string;
   @ApiProperty()
   options: ProcessAddDTO;
 }
