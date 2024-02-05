@@ -29,6 +29,7 @@
     "sdk:angular": "openapi-generator generate -i openapi.json -g typescript-angular -o build/api"
   },
   "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.9.0",
     "openpgp": "^5.10.1",
     "pem-ts": "^3.0.0"
   },

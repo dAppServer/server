@@ -775,6 +775,7 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
+        "npm:@openapitools/openapi-generator-cli@^2.9.0",
         "npm:openpgp@^5.10.1",
         "npm:pem-ts@^3.0.0",
         "npm:typescript-deno-plugin@^1.31.0",

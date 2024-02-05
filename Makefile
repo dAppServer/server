@@ -44,7 +44,7 @@ fmt: $(DENO_BIN) ## Format code
 bundle: $(DENO_BIN) ## Bundle code
 	$(call deno,bundle --unstable mod.ts bundle.js)
 
-build-sdk-angular: ## SDK Build: Angular
+build-sdk-typescript-angular: ## SDK Build: Angular
 	bash docs/build-sdk.sh -p typescript-angular
 
 build-sdk-typescript: ## SDK Build: TypeScript
