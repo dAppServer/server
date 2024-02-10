@@ -1,6 +1,6 @@
-FROM debian:bullseye-slim
+FROM debian:bullseye-slim as builder
 
-RUN apt-get update && apt-get install -y curl unzip
+RUN apt-get update && apt-get install -y curl unzip git
 
 RUN curl -fsSL https://deno.land/install.sh | bash
 
@@ -11,6 +11,10 @@ WORKDIR /app
 ENV DENO_INSTALL="/root/.deno"
 
 ENV PATH="$DENO_INSTALL/bin:$PATH"
+
+ENTRYPOINT [ "deno", "task", "dev-server" ]
+
+FROM builder as runner
 
 # This is equivalent to running npm install.
 RUN deno cache --unstable ./mod.ts

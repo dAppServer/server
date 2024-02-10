@@ -29,11 +29,14 @@ endif
 
 include deno.mk
 
-.PHONY: all run build test test-apps test-auth test-crypt test-docker test-io test-rest test-xmrig help fmt vendor
+.PHONY: all run dev build test test-apps test-auth test-crypt test-docker test-io test-rest test-xmrig help fmt vendor
 all: help
 
 run: $(DENO_BIN) ## Run Server
-	$(call deno,run -A -c deno.json --unstable mod.ts)
+	$(call deno,task launch-server)
+
+dev: $(DENO_BIN) ## Run Dev Server
+	$(call deno,task dev-server)
 
 vendor:  $(DENO_BIN) ## Update Vendor bundle
 	$(call deno,vendor -f mod.ts deps.ts deps-test.ts)
