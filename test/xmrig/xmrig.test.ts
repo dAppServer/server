@@ -1,7 +1,7 @@
 
 import { path } from "../../deps.ts";
 import { assertEquals } from "../../deps-test.ts";
-import { XmrigService } from "../../src/modules/mining/xmrig/xmrig.service.ts";
+import { XmrigService } from "../../../../WebstormProjects/app-mining/xmrig/xmrig.service.ts";
 
 Deno.test("XmrigService:isInstalled", async () => {
   const xmrig = new XmrigService()
