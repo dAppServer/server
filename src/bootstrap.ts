@@ -1,7 +1,8 @@
 import { AppModule } from './app.module.ts';
-import { DanetApplication } from "https://deno.land/x/danet@2.0.1/mod.ts";
+import { DanetApplication } from "danet/mod.ts";
 import  * as path from "std/path/mod.ts";
 import { SpecBuilder, SwaggerModule } from "danetSwagger/mod.ts";
+import { Logger } from 'danet/src/logger.ts';
 export const bootstrap = async () => {
   const application = new DanetApplication();
   // LoggerMiddleware must be the first middleware
@@ -11,15 +12,16 @@ export const bootstrap = async () => {
   await application.init(AppModule);
 
   try {
-
+    const logger = new Logger('dAppServer');
     const basePath = path.join(Deno.cwd(), 'apps');
 
     if (Deno.statSync(basePath).isDirectory){
-      console.log('Loading dApp Backends' + basePath)
+      logger.log(`Loading dApp's ${basePath}`)
       for await(const f of Deno.readDir(basePath)){
         const modulePath = path.join(basePath, f.name, `${f.name}.module.ts`)
         if (Deno.statSync(modulePath).isFile){
-          let mod = await import(modulePath);
+          logger.log(`Found App: ${f.name}`)
+          const mod = await import(modulePath);
           await application.bootstrap(mod[`${f.name[0].toUpperCase() + f.name.slice(1)}Module`]);
         }
       }
