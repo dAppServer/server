@@ -8,12 +8,12 @@ export const bootstrap = async () => {
   // LoggerMiddleware must be the first middleware
   // TimingMiddleware must be the second middleware
   // application.addGlobalMiddlewares(LoggerMiddleware,TimingMiddleware, CorsMiddleware, RequestIDMiddleware, JWTAuthMiddleware);
-  application.enableCors();
-  await application.init(AppModule);
+  application.enableCors()
+  await application.init(AppModule)
 
   try {
-    const logger = new Logger('dAppServer');
-    const basePath = path.join(Deno.cwd(), 'apps');
+    const logger = new Logger('dAppServer')
+    const basePath = path.join(Deno.cwd(), 'apps')
 
     if (Deno.statSync(basePath).isDirectory){
       logger.log(`Loading dApp's ${basePath}`)
@@ -21,8 +21,10 @@ export const bootstrap = async () => {
         const modulePath = path.join(basePath, f.name, `${f.name}.module.ts`)
         if (Deno.statSync(modulePath).isFile){
           logger.log(`Found App: ${f.name}`)
-          const mod = await import(modulePath);
-          await application.bootstrap(mod[`${f.name[0].toUpperCase() + f.name.slice(1)}Module`]);
+          const mod = await import(modulePath)
+          await application.bootstrap(mod[`${f.name[0].toUpperCase() + f.name.slice(1)}Module`])
+        } else {
+          logger.info(`Unable to load ${f.name}`)
         }
       }
     }
