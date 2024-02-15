@@ -53,6 +53,9 @@ build-sdk-typescript-angular: ## SDK Build: Angular
 build-sdk-typescript: ## SDK Build: TypeScript
 	bash docs/build-sdk.sh -p typescript
 
+build-sdk-python: ## SDK Build: TypeScript
+	bash docs/build-sdk.sh -p python
+
 build: $(DENO_BIN) bundle ## Build binary for the host machine
 	$(call deno,compile -A --unstable --output build/lthn bundle.js)
 

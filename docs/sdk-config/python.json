@@ -1,7 +1,7 @@
 {
   "additionalProperties": {
-    "packageName": "server-sdk-python",
-    "projectName": "server-sdk-python",
-    "packageUrl": "https://github.com/dappserver/dappserver-sdk-python"
+    "packageName": "dappserver_server_sdk",
+    "projectName": "dappserver_server_sdk",
+    "packageUrl": "https://github.com/dappserver/server-sdk-python"
   }
 }
