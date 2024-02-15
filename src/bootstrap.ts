@@ -1,5 +1,6 @@
 import { AppModule } from './app.module.ts';
-import { DanetApplication } from "danet/mod.ts";
+import { DanetApplication } from "https://deno.land/x/danet@2.0.1/mod.ts";
+import  * as path from "std/path/mod.ts";
 import { SpecBuilder, SwaggerModule } from "danetSwagger/mod.ts";
 export const bootstrap = async () => {
   const application = new DanetApplication();
@@ -9,7 +10,23 @@ export const bootstrap = async () => {
   application.enableCors();
   await application.init(AppModule);
 
+  try {
 
+    const basePath = path.join(Deno.cwd(), 'apps');
+
+    if (Deno.statSync(basePath).isDirectory){
+      console.log('Loading dApp Backends' + basePath)
+      for await(const f of Deno.readDir(basePath)){
+        const modulePath = path.join(basePath, f.name, `${f.name}.module.ts`)
+        if (Deno.statSync(modulePath).isFile){
+          let mod = await import(modulePath);
+          await application.bootstrap(mod[`${f.name[0].toUpperCase() + f.name.slice(1)}Module`]);
+        }
+      }
+    }
+  } catch(e) {
+    console.log('Error: ', e);
+  }
   // Swagger API Docs + JSON Definition
   const spec = new SpecBuilder()
     .setTitle('Lethean Server')
