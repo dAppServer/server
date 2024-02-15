@@ -1,5 +1,5 @@
-import { ProcessManagerRequest } from "@module/io/process/process.interface.ts";
-import { ProcessManagerProcess } from "@module/io/process/processManagerProcess.ts";
+import { ProcessManagerRequest } from "./process.interface.ts";
+import { ProcessManagerProcess } from "./processManagerProcess.ts";
 import { Injectable } from "danet/mod.ts";
 
 /**
@@ -78,7 +78,7 @@ export class ProcessManager {
 
     return this.addProcess({
       key: options.key,
-      command: cmdArgs,
+      command: cmdArgs.join(' '),
       stdIn: options.stdIn,
       stdOut: options.stdOut,
       stdErr: options.stdErr,
