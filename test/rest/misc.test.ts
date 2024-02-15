@@ -1,5 +1,5 @@
 
-import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/file/client.service.ts";
 
 import { LetheanAccount } from "../../src/accounts/user.ts";
 import { OpenPGPService } from "src/modules/cryptography/openpgp/openpgp.ts";
@@ -91,7 +91,7 @@ Deno.test("Error: Path not found -- no auth", async () => {
 //  await request.get("/cert")
 //    .expect(200)
 //    .expect("Content-Type", "text/plain; charset=utf-8")
-//    .expect(FileSystemService.read("users/server.lthn.pub"));
+//    .expect(ClientService.read("users/server.lthn.pub"));
 //});
 
 Deno.test("POST /system/files/read", async () => {

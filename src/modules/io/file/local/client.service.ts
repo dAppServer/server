@@ -5,10 +5,10 @@ import DirEntry = Deno.DirEntry;
 
 /**
  * @class
- * @classdesc This class is responsible for handling the filesystem.
+ * @classdesc This class is responsible for handling the file.
  */
 @Injectable()
-export class FileSystemService {
+export class ClientService {
   /**
    * Return a system path to the Lethean folder
    *
@@ -37,9 +37,9 @@ export class FileSystemService {
    * Read a file from the Lethean folder
    *
    * @openapi
-   * /filesystem/write:
+   * /file/write:
    * post:
-   *    description: Reads a file from the filesystem
+   *    description: Reads a file from the file
    *
    * @returns {string} | false
    * @param path
@@ -89,7 +89,7 @@ export class FileSystemService {
    *
    *  @returns {string[]}
    *  @example
-   *   FileSystemService.list( "./")
+   *   ClientService.list( "./")
    * @param path
    */
    list(path: string): string[] {

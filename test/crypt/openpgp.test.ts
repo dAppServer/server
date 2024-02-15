@@ -1,5 +1,5 @@
 import { OpenPGPService } from "src/modules/cryptography/openpgp/openpgp.ts";
-import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/file/client.service.ts";
 import { assertEquals, assertStringIncludes } from "../../deps-test.ts";
 
 

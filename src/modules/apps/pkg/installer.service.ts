@@ -5,7 +5,7 @@ import { ensureDir } from "std/fs/mod.ts";
 import { ObjectService } from "@module/config/object/object.service.ts";
 import { PluginConfig, PluginType } from "@module/apps/pkg/pkg.interface.ts";
 import { LetheanDownloadService } from "@module/io/tcp/download.service.ts";
-import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
+import { ClientService } from "@module/io/file/local/client.service.ts";
 
 @Injectable()
 export class AppManagerInstaller {
@@ -16,7 +16,7 @@ export class AppManagerInstaller {
     private configService: AppManagerConfig,
     private object: ObjectService,
     private download: LetheanDownloadService,
-    private fileSystem: FileSystemService
+    private fileSystem: ClientService
   ) {
     this.log = new Logger("AppManagerInstaller");
   }

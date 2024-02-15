@@ -1,7 +1,7 @@
 import * as openpgp from "lib/openpgp.mjs";
 import * as path from "std/path/mod.ts";
 import { Injectable } from "danet/mod.ts";
-import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
+import { ClientService } from "@module/io/file/local/client.service.ts";
 import { QuasiSaltService } from "@module/cryptography/hash/quasi-salt.service.ts";
 
 /**
@@ -13,7 +13,7 @@ import { QuasiSaltService } from "@module/cryptography/hash/quasi-salt.service.t
 @Injectable()
 export class OpenPGPService {
 
-  constructor(private fileService: FileSystemService, private quasi: QuasiSaltService) {
+  constructor(private fileService: ClientService, private quasi: QuasiSaltService) {
   }
 
   /**

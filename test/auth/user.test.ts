@@ -1,5 +1,5 @@
 import { LetheanAccount } from "../../src/accounts/user.ts";
-import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/file/client.service.ts";
 import { QuasiSalt } from "src/modules/cryptography/hash/quasi-salt.ts";
 import { OpenPGPService } from "src/modules/cryptography/openpgp/openpgp.ts";
 import { assertEquals } from "../../deps-test.ts";

@@ -1,4 +1,4 @@
-import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
+import { ClientService } from "@module/io/file/local/client.service.ts";
 import { AppManagerInstaller } from "@module/apps/pkg/installer.service.ts";
 import { AppManagerConfig } from "@module/apps/pkg/config.service.ts";
 import { Injectable, Logger } from "danet/mod.ts";
@@ -28,7 +28,7 @@ export class AppManager {
    * @param installer
    */
   constructor(private configService: AppManagerConfig,
-              private fileSystem: FileSystemService,
+              private fileSystem: ClientService,
               private installer: AppManagerInstaller
   ) {
     this.apps = this.configService.getConfig();

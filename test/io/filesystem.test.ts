@@ -1,9 +1,9 @@
 
-import { FileSystemService } from "src/modules/io/filesystem/fileSystemService.ts";
+import { FileSystemService } from "src/modules/io/file/client.service.ts";
 import { path } from "../../deps.ts";
 import { assertEquals } from "../../deps-test.ts";
 
-Deno.test('FileSystemService.path - "root" fs test', async () => {
+Deno.test('ClientService.path - "root" fs test', async () => {
   assertEquals(
     FileSystemService.path("/"),
     Deno.cwd(),
@@ -31,7 +31,7 @@ Deno.test('FileSystemService.path - "root" fs test', async () => {
   );
 });
 
-Deno.test("FileSystemService.isDir", async () => {
+Deno.test("ClientService.isDir", async () => {
   assertEquals(
     FileSystemService.isDir("/"),
     true,
@@ -39,7 +39,7 @@ Deno.test("FileSystemService.isDir", async () => {
   );
 });
 
-Deno.test("FileSystemService.isFile", async () => {
+Deno.test("ClientService.isFile", async () => {
   assertEquals(
     FileSystemService.isFile("/LICENCE"),
     true,
@@ -49,7 +49,7 @@ Deno.test("FileSystemService.isFile", async () => {
   );
 });
 
-Deno.test("FileSystemService.write", async () => {
+Deno.test("ClientService.write", async () => {
   const filePath = "test.txt";
   const fileContent = "Hello World";
 
@@ -60,11 +60,11 @@ Deno.test("FileSystemService.write", async () => {
   );
 });
 
-Deno.test("FileSystemService.delete", async () => {
+Deno.test("ClientService.delete", async () => {
   assertEquals(FileSystemService.delete("test.txt"), true, "File not deleted");
 });
 
-Deno.test("FileSystemService.read", async () => {
+Deno.test("ClientService.read", async () => {
   const filePath = "test.txt";
   const fileContent = "Hello World";
 
@@ -77,7 +77,7 @@ Deno.test("FileSystemService.read", async () => {
   );
 });
 
-Deno.test("FileSystemService.list", async () => {
+Deno.test("ClientService.list", async () => {
   const files = FileSystemService.list("/");
   assertEquals(files.length > 0, true);
 
@@ -90,7 +90,7 @@ Deno.test("FileSystemService.list", async () => {
   });
 });
 
-Deno.test("FileSystemService.ensureDir", async () => {
+Deno.test("ClientService.ensureDir", async () => {
   assertEquals(
     FileSystemService.ensureDir("testing/testing"),
     true,

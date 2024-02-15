@@ -1,23 +1,27 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": "./src",
-    "importHelpers": true,
-    "outDir": "./out-tsc",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "noUnusedLocals": true,
     "allowJs": true,
     "esModuleInterop": true,
     "inlineSourceMap": true,
     "isolatedModules": true,
     "jsx": "react",
-    "lib": ["deno.window", "deno.ns"],
+    "lib": ["deno.window", "deno.unstable", "deno.ns"],
     "module": "esnext",
     "moduleDetection": "force",
     "strict": true,
     "target": "esnext",
     "useDefineForClassFields": true,
+
+    "importHelpers": true,
+    "outDir": "./out-tsc",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noUnusedLocals": true,
+
+
+
+
     "paths": {
         "@module/*": ["src/modules/*"],
         "@types/*": ["src/types/*"],

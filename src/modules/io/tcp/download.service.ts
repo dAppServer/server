@@ -4,7 +4,7 @@ import { copy, readerFromStreamReader } from "std/streams/mod.ts";
 import  * as path from "std/path/mod.ts";
 import { Injectable, Logger } from "danet/mod.ts";
 import { ensureDir, ensureDirSync } from "std/fs/mod.ts"
-import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
+import { ClientService } from "@module/io/file/local/client.service.ts";
 import { ZeroMQServer } from "@module/io/ipc/zeromq.ts";
 import { DownloadDestination, DownloadedFile } from "@module/io/tcp/download.interface.ts";
 
@@ -19,7 +19,7 @@ import { DownloadDestination, DownloadedFile } from "@module/io/tcp/download.int
 export class LetheanDownloadService {
   log: Logger;
 
-  constructor(private fileService: FileSystemService) {
+  constructor(private fileService: ClientService) {
     this.log = new Logger("DownloadService");
   }
   /**

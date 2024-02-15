@@ -1,12 +1,12 @@
-import { FileSystemService } from "@module/io/filesystem/fileSystemService.ts";
+import { ClientService } from "@module/io/file/local/client.service.ts";
 import { Controller, Post, Body } from "danet/mod.ts";
 import { Tag, ReturnedType } from "danetSwagger/decorators.ts";
-import { CreateFileDTO, FilePathCheckDTO, FilePathDTO } from "@module/io/filesystem/local.interface.ts";
+import { CreateFileDTO, FilePathCheckDTO, FilePathDTO } from "@module/io/file/local/interfaces.ts";
 
 @Tag( "Input/Output" )
-@Controller("io/filesystem" )
+@Controller("io/file" )
 export class FileSystemController  {
-  constructor(private fileSystemService: FileSystemService) {}
+  constructor(private fileSystemService: ClientService) {}
 
   /**
    * Lists directory contents
