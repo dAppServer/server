@@ -11,6 +11,6 @@ import { ChainsModule } from "@module/chain/chain.module.ts";
 @Module({
   controllers: [BaseController, SystemController],
   injectables: [],
-  imports: [IOModule, AuthModule, ConfigModule, CryptographyModule, AppsModule, ChainsModule],
+  imports: [IOModule, AuthModule, ConfigModule, CryptographyModule, AppsModule],
 })
 export class AppModule {}

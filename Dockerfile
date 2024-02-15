@@ -12,6 +12,9 @@ ENV DENO_INSTALL="/root/.deno"
 
 ENV PATH="$DENO_INSTALL/bin:$PATH"
 
+# API tcp / ZeroMQ WebSocket / stdIn,stdOut,stdErr Websocket
+EXPOSE 36911 36910 36909
+
 ENTRYPOINT [ "deno", "task", "dev-server" ]
 
 FROM builder as runner
