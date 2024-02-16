@@ -1,0 +1,22 @@
+- `protocols`
+  - `http`: Files related to HTTP protocol interaction, including client and server functions.
+  - `websocket`: Files specific to managing and using WebSockets for two-way communication.
+  - `webdav`: Files dedicated to WebDAV functionality and interactions.
+  - `rpc`: Files dealing with Remote Procedure Calls (RPC) mechanisms used for communication.
+  - `messaging`: Files for handling any message-based protocols.
+  - `vpn`: Contains files related to general VPN protocols like OpenVPN, IKEv2, etc.
+    - `connections`: for managing tunnel establishment and data transfer
+    - `authentication`: for handling credentials and handshake procedures.
+  - `socks`: Contains files specific to the SOCKS5 protocol and its implementation.
+  - `tor`: Files dedicated to interacting with the Tor network and integrating its functionalities.
+  - `encryption`: Holds files pertaining to encryption algorithms and methods used in these protocols.
+  - `authentication`: Houses files responsible for authentication mechanisms employed in different protocols.
+  - `custom`: This can house files related to any custom protocols.
+- `network`
+  - `tcp`: Files solely responsible for TCP socket creation, management, and data transfer.
+  - `udp`: Files specific to UDP socket interaction and datagram handling.
+  - `tls`: Files related to implementing TLS/SSL encryption for secure communication.
+  - `routing`: Files dedicated to handling traffic routing through different protocols and network
+  - `sockets`: General files concerning socket abstraction and common socket operations. If specific socket implementations differ for these protocols, create subfolders within sockets (e.g., `vpn_sockets`, `tor_sockets`)
+  - `transport`: If needed, use this for generic, low-level network transport functionalities not specific to a particular protocol
+  - `tunnels`: Files related to creating and managing virtual network tunnels used by VPNs.
