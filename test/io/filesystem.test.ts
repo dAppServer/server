@@ -1,5 +1,5 @@
 
-import { FileSystemService } from "src/modules/io/file/client.service.ts";
+import { FileSystemService } from "src/modules/io/storage/client.service.ts";
 import { path } from "../../deps.ts";
 import { assertEquals } from "../../deps-test.ts";
 
@@ -104,7 +104,7 @@ Deno.test("ClientService.ensureDir", async () => {
   assertEquals(
     FileSystemService.isFile("testing/testing"),
     false,
-    "testing/testing should not be a file",
+    "testing/testing should not be a storage",
   );
   assertEquals(
     FileSystemService.delete("testing"),

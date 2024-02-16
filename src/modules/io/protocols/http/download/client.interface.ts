@@ -12,7 +12,7 @@ export class DownloadDestination implements DownloadDestination{
   @ApiProperty()
   file: string;
   /**
-   * The destination file mode
+   * The destination storage mode
    */
   @ApiProperty()
   @Optional()
@@ -27,19 +27,19 @@ export class DownloadDestination implements DownloadDestination{
 
 export class DownloadedFile {
   /**
-   * The name of the file
+   * The name of the storage
    */
   file: string;
   /**
-   * The path to the file
+   * The path to the storage
    */
   dir: string;
   /**
-   * The mode of the file
+   * The mode of the storage
    */
   fullPath: string;
   /**
-   * The mode of the file
+   * The mode of the storage
    */
   size: number;
 

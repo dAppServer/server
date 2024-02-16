@@ -1,5 +1,5 @@
 
-import { FileSystemService } from "src/modules/io/file/client.service.ts";
+import { FileSystemService } from "src/modules/io/storage/client.service.ts";
 
 import { LetheanAccount } from "../../src/accounts/user.ts";
 import { OpenPGPService } from "src/modules/cryptography/openpgp/openpgp.ts";
@@ -112,7 +112,7 @@ Deno.test("POST /system/files/read", async () => {
 //    .expect(401);
 //});
 
-Deno.test("POST /system/files/file-check", async () => {
+Deno.test("POST /system/files/storage-check", async () => {
   const request = await superoak(app);
   await request.post("/system/files/file-check")
     .set("Authorization", authToken['access_token'])
@@ -122,7 +122,7 @@ Deno.test("POST /system/files/file-check", async () => {
     .expect('{"result":true}');
 });
 
-Deno.test("POST /system/files/file-check - fail", async () => {
+Deno.test("POST /system/files/storage-check - fail", async () => {
   const request = await superoak(app);
   await request.post("/system/files/file-check")
     .set("Authorization", authToken['access_token'])
@@ -132,9 +132,9 @@ Deno.test("POST /system/files/file-check - fail", async () => {
     .expect('{"result":false}');
 });
 
-//Deno.test("POST /system/files/file-check - no auth", async () => {
+//Deno.test("POST /system/files/storage-check - no auth", async () => {
 //  const request = await superoak(app);
-//  await request.post("/system/files/file-check")
+//  await request.post("/system/files/storage-check")
 //    .set("Content-Type", "application/json")
 //    .send(`{"path": "users/server.lthn.pub"}`)
 //    .expect(401);

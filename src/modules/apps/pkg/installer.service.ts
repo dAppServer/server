@@ -4,8 +4,8 @@ import { Injectable, Logger } from "danet/mod.ts";
 import { ensureDir } from "std/fs/mod.ts";
 import { ObjectService } from "@module/config/object/object.service.ts";
 import { PluginConfig, PluginType } from "@module/apps/pkg/pkg.interface.ts";
-import { LetheanDownloadService } from "@module/io/tcp/download.service.ts";
-import { ClientService } from "@module/io/file/local/client.service.ts";
+import { LetheanDownloadService } from "@module/io/protocols/http/download/client.service.ts";
+import { ClientService } from "@module/io/fs/local/client.service.ts";
 
 @Injectable()
 export class AppManagerInstaller {

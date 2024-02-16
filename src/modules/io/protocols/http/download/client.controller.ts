@@ -1,12 +1,12 @@
 import { Post, Controller, Logger, Body } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
-import { LetheanDownloadService } from "@module/io/tcp/download.service.ts";
-import { DownloadDestination, DownloadedFile, FileDownloadRequest } from "@module/io/tcp/download.interface.ts";
+import { LetheanDownloadService } from "@module/io/protocols/http/download/client.service.ts";
+import { DownloadDestination, DownloadedFile, FileDownloadRequest } from "@module/io/protocols/http/download/client.interface.ts";
 
 
 @Tag("Input/Output")
 @Controller("/io/download")
-export class DownloadController {
+export class DownloadClientController {
 
   constructor(private downloadService: LetheanDownloadService) {}
   private logger: Logger = new Logger('LetheanServer');

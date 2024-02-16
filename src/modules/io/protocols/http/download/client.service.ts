@@ -4,9 +4,9 @@ import { copy, readerFromStreamReader } from "std/streams/mod.ts";
 import  * as path from "std/path/mod.ts";
 import { Injectable, Logger } from "danet/mod.ts";
 import { ensureDir, ensureDirSync } from "std/fs/mod.ts"
-import { ClientService } from "@module/io/file/local/client.service.ts";
-import { ZeroMQServer } from "@module/io/ipc/zeromq.ts";
-import { DownloadDestination, DownloadedFile } from "@module/io/tcp/download.interface.ts";
+import { ClientService } from "@module/io/fs/local/client.service.ts";
+import { ZeroMQServerService } from "@module/io/protocols/websocket/zeromq/server.service.ts";
+import { DownloadDestination, DownloadedFile } from "@module/io/protocols/http/download/client.interface.ts";
 
 
 
@@ -23,7 +23,7 @@ export class LetheanDownloadService {
     this.log = new Logger("DownloadService");
   }
   /**
-   * Downloads and extracts a zip file's contents to the dest directory
+   * Downloads and extracts a zip storage's contents to the dest directory
    *
    * @param {string} url
    * @param {string} dest
@@ -47,7 +47,7 @@ export class LetheanDownloadService {
   }
 
   /**
-   * Downloads a file to the destination
+   * Downloads a storage to the destination
    *
    * @param {URL} url
    * @param {Destination} destination
@@ -103,7 +103,7 @@ export class LetheanDownloadService {
     let total = 0;
     for await (const chunk of response.body!) {
       total += chunk.byteLength;
-      ZeroMQServer.sendPubMessage(
+      ZeroMQServerService.sendPubMessage(
         "download",
         JSON.stringify({
           file: file,

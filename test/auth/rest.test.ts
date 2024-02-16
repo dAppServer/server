@@ -3,7 +3,7 @@ import { assertEquals, expect, superoak } from "../../deps-test.ts";
 import { OpenPGPService } from "src/modules/cryptography/openpgp/openpgp.ts";
 import { QuasiSalt } from "src/modules/cryptography/hash/quasi-salt.ts";
 import { LetheanAccount } from "../../src/accounts/user.ts";
-import { FileSystemService } from "src/modules/io/file/client.service.ts";
+import { FileSystemService } from "src/modules/io/storage/client.service.ts";
 import { AppController } from "../../src/app.controller.ts";
 
 const AppControl = new AppController()

@@ -1,4 +1,4 @@
-import { ClientService } from "@module/io/file/local/client.service.ts";
+import { ClientService } from "@module/io/fs/local/client.service.ts";
 import { AppManagerInstaller } from "@module/apps/pkg/installer.service.ts";
 import { AppManagerConfig } from "@module/apps/pkg/config.service.ts";
 import { Injectable, Logger } from "danet/mod.ts";

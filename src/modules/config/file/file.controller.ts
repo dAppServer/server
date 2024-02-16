@@ -5,13 +5,13 @@ import { ConfigFileLoadDTO, ConfigFileRenderAndLoadDTO, ConfigFileRenderDTO, Con
 import { ObjectService } from "@module/config/object/object.service.ts";
 
 @Tag("Config")
-@Controller("config/file")
+@Controller("config/storage")
 export class FileController {
 
   constructor(private file: ConfigFileService, private object: ObjectService) {}
 
   /**
-   * Render a template file
+   * Render a template storage
    * @param {ConfigFileRenderDTO} body
    * @returns {Promise<any>}
    */
@@ -31,7 +31,7 @@ export class FileController {
   }
 
   /**
-   * Load a template file
+   * Load a template storage
    * @param {ConfigFileLoadDTO} body
    * @returns {string | boolean}
    */
@@ -41,7 +41,7 @@ export class FileController {
   }
 
   /**
-   * Render a template file and load it with a model
+   * Render a template storage and load it with a model
    * @param {ConfigFileRenderAndLoadDTO} body
    * @returns {Promise<any>}
    */

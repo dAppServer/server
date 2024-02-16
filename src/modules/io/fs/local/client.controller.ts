@@ -1,10 +1,10 @@
-import { ClientService } from "@module/io/file/local/client.service.ts";
+import { ClientService } from "@module/io/fs/local/client.service.ts";
 import { Controller, Post, Body } from "danet/mod.ts";
 import { Tag, ReturnedType } from "danetSwagger/decorators.ts";
-import { CreateFileDTO, FilePathCheckDTO, FilePathDTO } from "@module/io/file/local/interfaces.ts";
+import { CreateFileDTO, FilePathCheckDTO, FilePathDTO } from "@module/io/fs/local/interfaces.ts";
 
 @Tag( "Input/Output" )
-@Controller("io/file" )
+@Controller("io/storage" )
 export class FileSystemController  {
   constructor(private fileSystemService: ClientService) {}
 
@@ -29,7 +29,7 @@ export class FileSystemController  {
   }
 
   /**
-   * Reads file contents
+   * Reads storage contents
    * @param {FilePathDTO} body
    * @returns {string | boolean}
    */
@@ -42,7 +42,7 @@ export class FileSystemController  {
   }
 
   /**
-   * Writes file contents
+   * Writes storage contents
    * @param {CreateFileDTO} body
    * @returns {boolean}
    */
@@ -53,11 +53,11 @@ export class FileSystemController  {
   }
 
   /**
-   * Checks if path is a file
+   * Checks if path is a storage
    * @param {FilePathDTO} body
    * @returns {boolean}
    */
-  @Post("is-file")
+  @Post("is-storage")
   @ReturnedType(FilePathCheckDTO)
   isFile(@Body() body: FilePathDTO): FilePathCheckDTO {
     return {

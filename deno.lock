@@ -786,6 +786,9 @@
     "https://esm.sh/v135/source-map@0.6.1/denonext/source-map.mjs": "ccff3bb06dea7c01a2c83cf12113697592e418fd06b55ae2bb4cb0a4e51a98b8"
   },
   "workspace": {
+    "dependencies": [
+      "npm:webdav"
+    ],
     "packageJson": {
       "dependencies": [
         "npm:@openapitools/openapi-generator-cli@^2.9.0",

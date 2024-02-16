@@ -1,6 +1,6 @@
 import  * as path from "std/path/mod.ts";
 import { Injectable, Logger } from "danet/mod.ts";
-import { ClientService } from "@module/io/file/local/client.service.ts";
+import { ClientService } from "@module/io/fs/local/client.service.ts";
 
 /**
  * Store

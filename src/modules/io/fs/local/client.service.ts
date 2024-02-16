@@ -5,7 +5,7 @@ import DirEntry = Deno.DirEntry;
 
 /**
  * @class
- * @classdesc This class is responsible for handling the file.
+ * @classdesc This class is responsible for handling the storage.
  */
 @Injectable()
 export class ClientService {
@@ -34,12 +34,12 @@ export class ClientService {
   }
 
   /**
-   * Read a file from the Lethean folder
+   * Read a storage from the Lethean folder
    *
    * @openapi
-   * /file/write:
+   * /storage/write:
    * post:
-   *    description: Reads a file from the file
+   *    description: Reads a storage from the storage
    *
    * @returns {string} | false
    * @param path
@@ -69,7 +69,7 @@ export class ClientService {
   }
 
   /**
-   * Checks if a file exists
+   * Checks if a storage exists
    *
    * @returns {boolean}
    * @param path
@@ -160,7 +160,7 @@ export class ClientService {
   }
 
   /**
-   * Delete a file
+   * Delete a storage
    *
    * @param filepath string
    * @param recursive

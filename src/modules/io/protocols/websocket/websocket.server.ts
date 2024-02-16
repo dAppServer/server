@@ -1,4 +1,4 @@
-import { ZeroMQServer } from "@module/io/ipc/zeromq.ts";
+import { ZeroMQServerService } from "@module/io/protocols/websocket/zeromq/server.service.ts";
 import { WebSocketClient, WebSocketServer } from "websocket/mod.ts";
 import * as zmq from "jszmq/mod.ts";
 import { Logger } from "danet/mod.ts";
@@ -33,7 +33,7 @@ export class LetheanWebsocketServer {
           daemon = daemon.replace(/"/g, "");
           if (daemon.substr(0, 3) === "cmd") {
             const req = daemon.split(":");
-            ZeroMQServer.sendPubMessage(
+            ZeroMQServerService.sendPubMessage(
               req[1] + "-stdIn",
               `${req[2]}\n`,
             );

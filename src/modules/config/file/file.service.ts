@@ -1,7 +1,7 @@
 import { renderFile, render } from "mustache/mod.ts";
 import  * as path from "std/path/mod.ts";
 import { Injectable } from "danet/mod.ts";
-import { ClientService } from "@module/io/file/local/client.service.ts";
+import { ClientService } from "@module/io/fs/local/client.service.ts";
 
 @Injectable()
 export class ConfigFileService {
@@ -9,7 +9,7 @@ export class ConfigFileService {
   constructor(private fileSystem: ClientService) {}
 
   /**
-   * Render a template file
+   * Render a template storage
    * @param {string} file
    * @param model
    * @returns {Promise<any>}

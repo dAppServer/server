@@ -6,7 +6,7 @@ import { Logger } from "danet/mod.ts";
  *
  * {@link https://zguide.zeromq.org/docs/preface/ ZeroMQ Documentation}.
  */
-export class ZeroMQServer {
+export class ZeroMQServerService {
   /**
    * Pub/Sub Endpoint
    *
@@ -52,21 +52,21 @@ export class ZeroMQServer {
    */
   public static startServer(): void {
 
-    ZeroMQServer.logger.log("Starting ZeroMQ WebSocket: ws://127.0.0.1:36910")
+    ZeroMQServerService.logger.log("Starting ZeroMQ WebSocket: ws://127.0.0.1:36910")
     try {
-      ZeroMQServer.socketServer = new zmq.DenoHttpServer(
+      ZeroMQServerService.socketServer = new zmq.DenoHttpServer(
         "ws://127.0.0.1:36910",
       );
     } catch (e) {
-      ZeroMQServer.logger.warn("ZeroMQ Websocket already running")
+      ZeroMQServerService.logger.warn("ZeroMQ Websocket already running")
       console.info("ZeroMQ Websocket already running");
       return;
     }
 
-    ZeroMQServer.loadPub();
-    ZeroMQServer.loadPush();
-    ZeroMQServer.loadRep();
-    ZeroMQServer.socketServer.listen();
+    ZeroMQServerService.loadPub();
+    ZeroMQServerService.loadPush();
+    ZeroMQServerService.loadRep();
+    ZeroMQServerService.socketServer.listen();
   }
 
   /**
@@ -76,8 +76,8 @@ export class ZeroMQServer {
    * @param {string} message
    */
   public static sendPubMessage(channel: string, message: string) {
-    if (ZeroMQServer.sockets["pubsub"]) {
-      ZeroMQServer.sockets.pubsub.send([channel, message]);
+    if (ZeroMQServerService.sockets["pubsub"]) {
+      ZeroMQServerService.sockets.pubsub.send([channel, message]);
     }
   }
 
@@ -89,7 +89,7 @@ export class ZeroMQServer {
    */
   public static subscribeSubMessage(channel: string, cb: any) {
     const sock = new zmq.Sub();
-    sock.connect(ZeroMQServer.pubEndpoint);
+    sock.connect(ZeroMQServerService.pubEndpoint);
     sock.subscribe(channel);
     console.info("Subscriber connected to port 36910");
     //sock.on("message", console.log);
@@ -102,8 +102,8 @@ export class ZeroMQServer {
    * @param {string} message
    */
   public static sendRepMessage(channel: string, message: string) {
-    if (ZeroMQServer.sockets["reqrep"]) {
-      ZeroMQServer.sockets.reqrep.send([channel, message]);
+    if (ZeroMQServerService.sockets["reqrep"]) {
+      ZeroMQServerService.sockets.reqrep.send([channel, message]);
     }
   }
 
@@ -114,8 +114,8 @@ export class ZeroMQServer {
    * @param {string} message
    */
   public static sendPushMessage(channel: string, message: string) {
-    if (ZeroMQServer.sockets["pushpull"]) {
-      ZeroMQServer.sockets.pushpull.send(message);
+    if (ZeroMQServerService.sockets["pushpull"]) {
+      ZeroMQServerService.sockets.pushpull.send(message);
     }
   }
 
@@ -123,10 +123,10 @@ export class ZeroMQServer {
    * @private
    */
   private static loadRep() {
-    ZeroMQServer.sockets.reqrep = new zmq.Rep();
-    ZeroMQServer.sockets.reqrep.bind(
-      ZeroMQServer.socketServer,
-      ZeroMQServer.repEndpoint,
+    ZeroMQServerService.sockets.reqrep = new zmq.Rep();
+    ZeroMQServerService.sockets.reqrep.bind(
+      ZeroMQServerService.socketServer,
+      ZeroMQServerService.repEndpoint,
     );
   }
 
@@ -134,10 +134,10 @@ export class ZeroMQServer {
    * @private
    */
   private static loadPub() {
-    ZeroMQServer.sockets.pubsub = new zmq.Pub();
-    ZeroMQServer.sockets.pubsub.bind(
-      ZeroMQServer.socketServer,
-      ZeroMQServer.pubEndpoint,
+    ZeroMQServerService.sockets.pubsub = new zmq.Pub();
+    ZeroMQServerService.sockets.pubsub.bind(
+      ZeroMQServerService.socketServer,
+      ZeroMQServerService.pubEndpoint,
     );
   }
 
@@ -145,10 +145,10 @@ export class ZeroMQServer {
    * @private
    */
   private static loadPush() {
-    ZeroMQServer.sockets.pushpull = new zmq.Push();
-    ZeroMQServer.sockets.pushpull.bind(
-      ZeroMQServer.socketServer,
-      ZeroMQServer.pushEndpoint,
+    ZeroMQServerService.sockets.pushpull = new zmq.Push();
+    ZeroMQServerService.sockets.pushpull.bind(
+      ZeroMQServerService.socketServer,
+      ZeroMQServerService.pushEndpoint,
     );
   }
 }

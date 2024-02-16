@@ -1,7 +1,7 @@
 import { Controller, Get } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
-import { ZeroMQServer } from "@module/io/ipc/zeromq.ts";
-import { LetheanWebsocketServer } from "@module/io/tcp/websocket.server.ts";
+import { ZeroMQServerService } from "@module/io/protocols/websocket/zeromq/server.service.ts";
+import { LetheanWebsocketServer } from "@module/io/protocols/websocket/websocket.server.ts";
 
 /**
  * Main system boot, the aim is to reduce lines and includes here, not functionality.
@@ -11,7 +11,7 @@ import { LetheanWebsocketServer } from "@module/io/tcp/websocket.server.ts";
 export class BaseController {
 
   constructor() {
-    ZeroMQServer.startServer();
+    ZeroMQServerService.startServer();
     LetheanWebsocketServer.startServer();
 
   }
