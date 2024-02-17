@@ -1,6 +1,6 @@
 import * as openpgp from "lib/openpgp.mjs";
 import * as path from "std/path/mod.ts";
-import { Injectable } from "danet/mod.ts";
+import { Injectable } from "https://deno.land/x/danet/mod.ts";
 import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";
 import { QuasiSaltService } from "@mod/cryptography/hash/quasi-salt.service.ts";
 

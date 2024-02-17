@@ -1,4 +1,4 @@
-import { Module } from "danet/mod.ts";
+import { Module } from "https://deno.land/x/danet/mod.ts";
 import { HashController } from "@mod/cryptography/hash/hash.controller.ts";
 import { QuasiSaltService } from "@mod/cryptography/hash/quasi-salt.service.ts";
 import { OpenPGPService } from "@mod/cryptography/openpgp/openpgp.service.ts";

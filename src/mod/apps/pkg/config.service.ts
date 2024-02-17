@@ -1,6 +1,6 @@
 import { ObjectService } from "@mod/config/object/object.service.ts";
 import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";
-import { Injectable, Logger } from "danet/mod.ts";
+import { Injectable, Logger } from "https://deno.land/x/danet/mod.ts";
 @Injectable()
 export class AppManagerConfig {
   apps: any;

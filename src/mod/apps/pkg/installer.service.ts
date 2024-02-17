@@ -1,6 +1,6 @@
 import { AppManagerConfig } from "@mod/apps/pkg/config.service.ts";
 import * as path from "std/path/mod.ts";
-import { Injectable, Logger } from "danet/mod.ts";
+import { Injectable, Logger } from "https://deno.land/x/danet/mod.ts";
 import { ensureDir } from "std/fs/mod.ts";
 import { ObjectService } from "@mod/config/object/object.service.ts";
 import { PluginConfig, PluginType } from "@mod/apps/pkg/pkg.interface.ts";

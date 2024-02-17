@@ -1,4 +1,4 @@
-import { ApiProperty, Optional } from "danetSwagger/decorators.ts";
+import { ApiProperty, Optional } from "https://deno.land/x/danet_swagger/decorators.ts";
 import { HTTP_STATUS } from "@interfaces/status-codes.ts";
 
 

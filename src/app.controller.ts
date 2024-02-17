@@ -1,5 +1,5 @@
-import { Controller, Get } from "danet/mod.ts";
-import { Tag } from "danetSwagger/decorators.ts";
+import { Controller, Get } from "https://deno.land/x/danet/mod.ts";
+import { Tag } from "https://deno.land/x/danet_swagger/decorators.ts";
 import { ZeroMQServerService } from "@mod/io/protocols/websocket/zeromq/server.service.ts";
 import { LetheanWebsocketServer } from "@mod/io/protocols/websocket/websocket.server.ts";
 

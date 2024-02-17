@@ -1,5 +1,5 @@
 import * as zmq from "jszmq/mod.ts";
-import { Logger } from "danet/mod.ts";
+import { Logger } from "https://deno.land/x/danet/mod.ts";
 
 /**
  * ZeroMQ Websocket server

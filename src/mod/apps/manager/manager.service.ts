@@ -1,7 +1,7 @@
 import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";
 import { AppManagerInstaller } from "@mod/apps/pkg/installer.service.ts";
 import { AppManagerConfig } from "@mod/apps/pkg/config.service.ts";
-import { Injectable, Logger } from "danet/mod.ts";
+import { Injectable, Logger } from "https://deno.land/x/danet/mod.ts";
 
 /**
  * Install an app from the Lethean repository

@@ -1,8 +1,8 @@
 import {AppModule} from './app.module.ts';
-import {DanetApplication} from "danet/mod.ts";
+
 import * as path from "std/path/mod.ts";
-import {SpecBuilder, SwaggerModule} from "danetSwagger/mod.ts";
-import {Logger} from 'danet/src/logger.ts';
+import {DanetApplication, Logger, SpecBuilder, SwaggerModule} from "@deps";
+
 
 export const bootstrap = async () => {
     const application = new DanetApplication();
@@ -29,7 +29,7 @@ export const bootstrap = async () => {
                         console.log('Error: ', e);
                     }
                 } else {
-                    logger.info(`Unable to load ${f.name}`)
+                    logger.warn(`Unable to load ${f.name}`)
                 }
             }
         }

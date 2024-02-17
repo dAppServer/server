@@ -1,4 +1,4 @@
-import { ApiProperty } from "danetSwagger/decorators.ts";
+import { ApiProperty } from "https://deno.land/x/danet_swagger/decorators.ts";
 
 export class ConfigObjectGetDTO {
   @ApiProperty()

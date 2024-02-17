@@ -1,4 +1,4 @@
-import { Module } from "danet/mod.ts";
+import { Module } from "https://deno.land/x/danet/mod.ts";
 import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";
 import { ModIoFsLocalController } from "@mod/io/fs/local/controller.ts";
 import { DownloadClientController } from "@mod/io/protocols/http/download/client.controller.ts";

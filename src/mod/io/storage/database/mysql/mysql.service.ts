@@ -1,6 +1,6 @@
 // import { Client } from "mysql";
 import { Client } from "https://deno.land/x/mysql@v2.12.1/mod.ts";
-import { Injectable } from "danet/mod.ts";
+import { Injectable } from "https://deno.land/x/danet/mod.ts";
 
 @Injectable()
 export class MysqlService {

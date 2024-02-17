@@ -1,4 +1,4 @@
-import { Module } from "danet/mod.ts";
+import { Module } from "https://deno.land/x/danet/mod.ts";
 import { BaseController } from "./app.controller.ts";
 import { IOModule } from "@mod/io/io.module.ts";
 import { SystemController } from "@mod/system/system.controller.ts";

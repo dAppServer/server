@@ -1,4 +1,4 @@
-import { Module } from "danet/mod.ts";
+import { Module } from "https://deno.land/x/danet/mod.ts";
 import { ObjectService } from "@mod/config/object/object.service.ts";
 import { LetheanDownloadService } from "@mod/io/protocols/http/download/client.service.ts";
 import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";

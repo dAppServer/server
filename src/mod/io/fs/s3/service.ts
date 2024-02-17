@@ -1,6 +1,7 @@
-import {Injectable} from "danet/mod.ts";
+
 //import {S3Client} from "s3Client"
  import {S3Client} from "https://deno.land/x/s3_lite_client@0.7.0/mod.ts";
+import {Injectable} from "@deps";
 
 @Injectable()
 export class ModIoFsS3Service {
@@ -83,7 +84,7 @@ export class ModIoFsS3Service {
     }
 
     async objectGetPresignedURL(key: string, options: { bucketName?: string; parameters?: Record<string, string>; expirySeconds?: number; requestDate?: Date }) {
-        return await this.client.getPresignedUrl(method, key, options)
+        return await this.client.getPresignedUrl('GET', key, options)
     }
 
     async objectPut(key: string, data:string|Uint8Array|ReadableStream, options: {}) {

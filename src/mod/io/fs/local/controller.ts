@@ -1,10 +1,9 @@
 import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";
-import { Controller, Post, Body } from "danet/mod.ts";
-import { Tag, ReturnedType } from "danetSwagger/decorators.ts";
 import { CreateFileDTO, FilePathCheckDTO, FilePathDTO } from "@mod/io/fs/local/interfaces.ts";
+import {Body, Controller, Post, ReturnedType, Tag} from "@deps";
 
 @Tag( "Input/Output" )
-@Controller("io/storage" )
+@Controller("mod/io/fs/local" )
 export class ModIoFsLocalController {
   constructor(private fileSystemService: ModIoFsLocalService) {}
 
@@ -14,7 +13,7 @@ export class ModIoFsLocalController {
    * @returns {string[]}
    */
   @Post("list")
-  getDirectoryList(@Body() body: FilePathDTO) {
+  getDirectoryList(@Body() body: FilePathDTO): string[] {
     return this.fileSystemService.list(body.path);
   }
 
@@ -24,7 +23,7 @@ export class ModIoFsLocalController {
    * @returns {Deno.DirEntry[]}
    */
   @Post("list-detailed")
-  getDetailedDirectoryList(@Body() body: FilePathDTO) {
+  getDetailedDirectoryList(@Body() body: FilePathDTO): Deno.DirEntry[] {
     return this.fileSystemService.detailedList(body.path);
   }
 
@@ -34,7 +33,7 @@ export class ModIoFsLocalController {
    * @returns {string | boolean}
    */
   @Post("read")
-  readFile(@Body() body: FilePathDTO) {
+  readFile(@Body() body: FilePathDTO): string | boolean {
 
     const result = this.fileSystemService.read(body.path);
     if(result === false) return false;
@@ -47,7 +46,7 @@ export class ModIoFsLocalController {
    * @returns {boolean}
    */
   @Post("write")
-  writeFile(@Body() body: CreateFileDTO) {
+  writeFile(@Body() body: CreateFileDTO): boolean {
     const data = atob(body.data);
     return this.fileSystemService.write(body.path, data);
   }

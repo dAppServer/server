@@ -1,4 +1,4 @@
-import { Injectable, DanetMiddleware , HttpContext, NextFunction} from "danet/mod.ts";
+import { Injectable, DanetMiddleware , HttpContext, NextFunction} from "https://deno.land/x/danet/mod.ts";
 import { crypto } from "std/crypto/mod.ts";
 @Injectable()
 export class RequestIDMiddleware implements DanetMiddleware {

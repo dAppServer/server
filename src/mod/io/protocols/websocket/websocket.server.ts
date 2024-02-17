@@ -1,7 +1,7 @@
 import { ZeroMQServerService } from "@mod/io/protocols/websocket/zeromq/server.service.ts";
 import { WebSocketClient, WebSocketServer } from "websocket/mod.ts";
 import * as zmq from "jszmq/mod.ts";
-import { Logger } from "danet/mod.ts";
+import { Logger } from "@deps";
 export interface WebSocketMessageRequest {
   daemon: string;
 }
