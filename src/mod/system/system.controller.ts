@@ -1,6 +1,6 @@
 import { Get, Controller, Logger } from "danet/mod.ts";
 import { Tag } from "danetSwagger/decorators.ts";
-import { ClientService } from "@mod/io/fs/local/client.service.ts";
+import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";
 import { OpenPGPService } from "@mod/cryptography/openpgp/openpgp.service.ts";
 import { QuasiSaltService } from "@mod/cryptography/hash/quasi-salt.service.ts";
 
@@ -8,7 +8,7 @@ import { QuasiSaltService } from "@mod/cryptography/hash/quasi-salt.service.ts";
 @Controller("system")
 export class SystemController {
 
-  constructor(private fileService: ClientService,
+  constructor(private fileService: ModIoFsLocalService,
               private openpgp: OpenPGPService,
               private quasi: QuasiSaltService) {}
   private logger: Logger = new Logger('LetheanServer');

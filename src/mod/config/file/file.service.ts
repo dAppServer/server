@@ -1,12 +1,12 @@
 import { renderFile, render } from "mustache/mod.ts";
 import  * as path from "std/path/mod.ts";
 import { Injectable } from "danet/mod.ts";
-import { ClientService } from "@mod/io/fs/local/client.service.ts";
+import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";
 
 @Injectable()
 export class ConfigFileService {
 
-  constructor(private fileSystem: ClientService) {}
+  constructor(private fileSystem: ModIoFsLocalService) {}
 
   /**
    * Render a template storage

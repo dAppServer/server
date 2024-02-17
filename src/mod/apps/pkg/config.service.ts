@@ -1,5 +1,5 @@
 import { ObjectService } from "@mod/config/object/object.service.ts";
-import { ClientService } from "@mod/io/fs/local/client.service.ts";
+import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";
 import { Injectable, Logger } from "danet/mod.ts";
 @Injectable()
 export class AppManagerConfig {
@@ -7,7 +7,7 @@ export class AppManagerConfig {
   log: Logger;
 
   constructor(private object: ObjectService,
-              private fileSystem: ClientService) {
+              private fileSystem: ModIoFsLocalService) {
     this.apps = this.getConfig()
     this.log = new Logger("AppManagerConfig");
   }

@@ -3,7 +3,7 @@ import {Injectable} from "danet/mod.ts";
  import {S3Client} from "https://deno.land/x/s3_lite_client@0.7.0/mod.ts";
 
 @Injectable()
-export class clientService {
+export class ModIoFsS3Service {
     client: S3Client;
 
     options: {

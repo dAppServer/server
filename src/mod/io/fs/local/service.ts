@@ -8,7 +8,7 @@ import DirEntry = Deno.DirEntry;
  * @classdesc This class is responsible for handling the storage.
  */
 @Injectable()
-export class ClientService {
+export class ModIoFsLocalService {
   /**
    * Return a system path to the Lethean folder
    *

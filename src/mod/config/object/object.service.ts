@@ -1,6 +1,6 @@
 import  * as path from "std/path/mod.ts";
 import { Injectable, Logger } from "danet/mod.ts";
-import { ClientService } from "@mod/io/fs/local/client.service.ts";
+import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";
 
 /**
  * Store
@@ -9,7 +9,7 @@ import { ClientService } from "@mod/io/fs/local/client.service.ts";
 export class ObjectService {
   log: Logger;
 
-  constructor(private fileSystem: ClientService) {
+  constructor(private fileSystem: ModIoFsLocalService) {
     this.log = new Logger("ObjectService");
   }
 
