@@ -18,12 +18,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noUnusedLocals": true,
-
-
-
-
     "paths": {
-        "@module/*": ["src/modules/*"],
+        "@mod/*": ["src/mod/*"],
         "@types/*": ["src/types/*"],
         "@middleware/*": ["src/middleware/*"],
         "@interfaces/*": ["src/interfaces/*"]

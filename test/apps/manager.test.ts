@@ -1,5 +1,5 @@
 import { assertStrictEquals,assertEquals, assertArrayIncludes, path } from "../../deps.ts";
-import { AppManager } from "../../src/modules/apps/manager.service.ts";
+import { AppManager } from "../../src/mod/apps/manager.service.ts";
 
 
 try{

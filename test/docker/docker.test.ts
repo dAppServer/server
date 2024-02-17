@@ -1,6 +1,6 @@
 //import { path } from "../../deps.ts";
 //import { assertEquals } from "../../deps-test.ts";
-//import { DockerService } from "../../src/modules/docker/docker.service.ts";
+//import { DockerService } from "../../src/mod/docker/docker.service.ts";
 //
 //Deno.test("DockerService.listContainers", async () => {
 //  try {
