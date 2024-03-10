@@ -5,10 +5,11 @@ import { SystemController } from "@mod/system/system.controller.ts";
 import { ConfigModule } from "@mod/config/config.module.ts";
 import { CryptographyModule } from "@mod/cryptography/cryptography.module.ts";
 import { AppsModule } from "@mod/apps/apps.module.ts";
+import {DockerModule} from "@mod/docker/docker.module.ts";
 
 @Module({
   controllers: [BaseController, SystemController],
   injectables: [],
-  imports: [IOModule, ConfigModule, CryptographyModule, AppsModule],
+  imports: [IOModule, ConfigModule, CryptographyModule, AppsModule, DockerModule],
 })
 export class AppModule {}

@@ -1,6 +1,7 @@
 //import  * as path from "std/path/mod.ts";
 import { bootstrap } from "./src/bootstrap.ts";
 import { buildSpec } from "./src/openapi.ts";
+
 //const home = Deno.env.get('HOME') ? Deno.env.get('HOME') as string : Deno.cwd();
 
 // if(path.join(home,'Lethean') !== Deno.cwd()){

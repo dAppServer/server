@@ -19,8 +19,8 @@
     "strictPropertyInitialization": false
   },
   "lint": {
-      "include": ["src/"],
-      "exclude": ["src/testdata/"],
+    "include": ["src/"],
+    "exclude": ["src/testdata/"],
     "rules": {
       "tags": ["recommended"],
       "include": ["ban-untagged-todo"],
@@ -28,23 +28,21 @@
     }
   },
   "fmt": {
-    
-      "include": [
-        "src/"
-      ],
-      "exclude": [
-        "src/testdata/",
-        "third_party/",
-        "node_modules/",
-        "cov/",
-        "apps/",
-        "vendor/",
-        "data/",
-        "users/",
-        "cli/",
-        "conf/"
-      ]
-    
+    "include": [
+      "src/"
+    ],
+    "exclude": [
+      "src/testdata/",
+      "third_party/",
+      "node_modules/",
+      "cov/",
+      "apps/",
+      "vendor/",
+      "data/",
+      "users/",
+      "cli/",
+      "conf/"
+    ]
   },
   "imports": {
     "./mod.ts": "./mod.ts",
@@ -56,6 +54,8 @@
     "@interfaces/": "./src/interfaces/",
     "@middleware/": "./src/middleware/",
     "std/": "https://deno.land/std@0.182.0/",
+    "https://deno.land/x/std/": "https://deno.land/std@0.182.0/",
+    "https://deno.land/x/std/io/": "https://deno.land/std@0.182.0/io/",
     "mysql": "https://deno.land/x/mysql@v2.12.1/mod.ts",
     "zip/": "https://deno.land/x/zip@v1.2.5/",
     "jszmq/": "https://deno.land/x/jszmq@v1.3.1/",
@@ -64,12 +64,15 @@
     "mustache/": "https://deno.land/x/mustache@v0.3.0/",
     "websocket/": "https://deno.land/x/websocket@v0.1.3/",
     "openpgp/": "https://deno.land/x/openpgp@v5.7.0/",
-    "s3Client" : "https://deno.land/x/s3_lite_client@0.7.0/mod.ts",
+    "s3Client": "https://deno.land/x/s3_lite_client@0.7.0/mod.ts",
     "webdav": "npm:webdav",
+    "https://deno.land/x/danet/": "https://deno.land/x/danet@2.3.0/",
+    "https://deno.land/x/danet_swagger/": "https://deno.land/x/danet_swagger@2.0.0/",
     "https://deno.land/std/node/util.ts": "node:util",
     "https://deno.land/std/node/events.ts": "node:events",
     "https://deno.land/std/node/assert.ts": "node:assert",
     "https://deno.land/std/node/url.ts": "node:url",
     "https://deno.land/std/node/stream.ts": "node:stream"
-  }
+  },
+  "importMap": "./vendor/import_map.json"
 }
