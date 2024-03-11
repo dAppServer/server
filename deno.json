@@ -68,6 +68,7 @@
     "webdav": "npm:webdav",
     "https://deno.land/x/danet/": "https://deno.land/x/danet@2.3.0/",
     "https://deno.land/x/danet_swagger/": "https://deno.land/x/danet_swagger@2.0.0/",
+    "https://deno.land/x/docker_deno/": "https://deno.land/x/docker_deno@v0.3.0/",
     "https://deno.land/std/node/util.ts": "node:util",
     "https://deno.land/std/node/events.ts": "node:events",
     "https://deno.land/std/node/assert.ts": "node:assert",

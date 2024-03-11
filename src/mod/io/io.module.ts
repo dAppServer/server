@@ -5,11 +5,10 @@ import { DownloadClientController } from "@mod/io/protocols/http/download/client
 import { LetheanDownloadService } from "@mod/io/protocols/http/download/client.service.ts";
 import {ModIoFsS3Service} from "@mod/io/fs/s3/service.ts";
 import {MysqlService} from "@mod/io/storage/database/mysql/mysql.service.ts";
-import {ProcessModule} from "@mod/io/process/process.module.ts";
 
 @Module({
   imports: [
-      ProcessModule
+
   ],
   controllers: [
     ModIoFsLocalController,

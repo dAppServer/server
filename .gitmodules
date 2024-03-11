@@ -1,9 +1,0 @@
-[submodule "src/mod/io/process"]
-	path = src/mod/io/process
-	url = git@github.com:dAppServer/mod-io-process.git
-[submodule "apps/mod-io-process"]
-	path = apps/mod-io-process
-	url = git@github.com:dAppServer/mod-io-process.git
-[submodule "src/mod/docker"]
-	path = src/mod/docker
-	url = git@github.com:dAppServer/mod-docker.git
