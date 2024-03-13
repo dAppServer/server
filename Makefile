@@ -1,4 +1,4 @@
-DENO_VERSION := 1.34.2
+DENO_VERSION := 1.41.2
 DENO_INSTALL := third_party
 
 ifeq ($(OS),Windows_NT)
