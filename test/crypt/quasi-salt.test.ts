@@ -5,19 +5,19 @@ const QuasiSalt = new QuasiSaltService();
 Deno.test("QuasiSalt.hash(test)", async () => {
   assertEquals(
     QuasiSalt.hash("test"),
-    "b1ff8c846af5cdc8e71e096073591dfc1ea2d786558a3fce18f3c2c24a9692cd"
+    "0b4a8c1c92f26ed200b41dfb25525df7516cdae6a958943875345a3a444343a9"
   );
   assertEquals(
     QuasiSalt.hash("tset"),
-    "005fd2c180ccc313e1d9011371b6662d483ead55082f64d7356494e8f7535488"
+    "14ca86fcb4aaee36483dea51cfd88244bf56cebf6028a646c3d36190c3a55ad0"
   );
   assertEquals(
     QuasiSalt.hash("Test"),
-    "3a45e9fa83739d38e018902d9c0d4280ed339d9dcdf875704e2f982f85497f30"
+    "122d88f5b8c0834430cc6e78b016ebeb6ade3428ff32ae4c0a1ccdcb9d424fb5"
   );
   assertEquals(
     QuasiSalt.hash("tseT"),
-    "ebcbb135e71f5ca5e0bb1a659968300d3bbe536964e59d3d8fc5114b8c8189dc"
+    "5c8a24d723d1ee7c4bd2f6e55f1897bb1fb35e277ad275b09ea671368f2c1e52"
   );
 
 });
@@ -42,16 +42,16 @@ Deno.test("QuasiSalt.createSalt(12345) - blank map", async () => {
     "5ae2l"
   );
 
-  const oldMap = QuasiSalt.keyMap
-  QuasiSalt.keyMap = {}
+  const oldMap = QuasiSalt.getKeyMap()
+  QuasiSalt.setKeyMap({})
   assertEquals(
     QuasiSalt.createSalt("12345"),
     "54321"
   );
 
-  QuasiSalt.keyMap = oldMap;
+  QuasiSalt.setKeyMap(oldMap) ;
   assertEquals(
-    QuasiSalt.createSaltV2("12345"),
+    QuasiSalt.createSalt("12345"),
     "5ae2l"
   );
 });
