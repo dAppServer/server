@@ -1,5 +1,3 @@
-import {Image} from "https://deno.land/x/docker_deno/image.ts";
-import {Container} from "https://deno.land/x/docker_deno/container.ts";
 import {Injectable} from "https://deno.land/x/danet/mod.ts";
 import Docker from "https://deno.land/x/docker_deno/mod.ts";
 import { type ContainerCreate } from "https://deno.land/x/docker_deno/mod.ts";

@@ -74,7 +74,7 @@ export class ModIoFsLocalService {
    * @returns {boolean}
    * @param path
    */
-   isFile(path: string) {
+   isFile(path: string): boolean {
     if (path.length == 0) return false;
 
     try {
