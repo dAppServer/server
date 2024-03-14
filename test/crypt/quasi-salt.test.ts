@@ -1,8 +1,7 @@
-import { QuasiSalt } from "src/mod/cryptography/hash/quasi-salt.ts";
-
 import { assertEquals } from "../../deps-test.ts";
+import {QuasiSaltService} from "@mod/cryptography/hash/quasi-salt.service.ts";
 
-
+const QuasiSalt = new QuasiSaltService();
 Deno.test("QuasiSalt.hash(test)", async () => {
   assertEquals(
     QuasiSalt.hash("test"),
@@ -23,9 +22,9 @@ Deno.test("QuasiSalt.hash(test)", async () => {
 
 });
 
-Deno.test("QuasiSalt.createSaltV2(12345)", async () => {
+Deno.test("QuasiSalt.createSalt(12345)", async () => {
   assertEquals(
-    QuasiSalt.createSaltV2("12345"),
+    QuasiSalt.createSalt("12345"),
     "5ae2l"
   );
 });
@@ -36,17 +35,17 @@ Deno.test("QuasiSalt.createSaltV2(12345)", async () => {
  *
  * you can also use to walk through a string looking for a sequence.
  */
-Deno.test("QuasiSalt.createSaltV2(12345) - blank map", async () => {
+Deno.test("QuasiSalt.createSalt(12345) - blank map", async () => {
 
   assertEquals(
-    QuasiSalt.createSaltV2("12345"),
+    QuasiSalt.createSalt("12345"),
     "5ae2l"
   );
 
   const oldMap = QuasiSalt.keyMap
   QuasiSalt.keyMap = {}
   assertEquals(
-    QuasiSalt.createSaltV2("12345"),
+    QuasiSalt.createSalt("12345"),
     "54321"
   );
 
@@ -60,30 +59,30 @@ Deno.test("QuasiSalt.createSaltV2(12345) - blank map", async () => {
 /**
  * version two, same basic idea, better implementation, gives optimal quasi entropy.
  */
-Deno.test("QuasiSalt.createSaltV2(test)", async () => {
+Deno.test("QuasiSalt.createSalt(test)", async () => {
 
   assertEquals(
-    QuasiSalt.createSaltV2("test"),
+    QuasiSalt.createSalt("test"),
     "7z37"
   );
 
 });
-Deno.test("QuasiSalt.hashV2(test)", async () => {
+Deno.test("QuasiSalt.hash(test)", async () => {
 
   assertEquals(
-    QuasiSalt.hashV2("test"),
+    QuasiSalt.hash("test"),
     "0b4a8c1c92f26ed200b41dfb25525df7516cdae6a958943875345a3a444343a9"
   );
   assertEquals(
-    QuasiSalt.hashV2("tset"),
+    QuasiSalt.hash("tset"),
     "14ca86fcb4aaee36483dea51cfd88244bf56cebf6028a646c3d36190c3a55ad0"
   );
   assertEquals(
-    QuasiSalt.hashV2("Test"),
+    QuasiSalt.hash("Test"),
     "122d88f5b8c0834430cc6e78b016ebeb6ade3428ff32ae4c0a1ccdcb9d424fb5"
   );
   assertEquals(
-    QuasiSalt.hashV2("tseT"),
+    QuasiSalt.hash("tseT"),
     "5c8a24d723d1ee7c4bd2f6e55f1897bb1fb35e277ad275b09ea671368f2c1e52"
   );
 
