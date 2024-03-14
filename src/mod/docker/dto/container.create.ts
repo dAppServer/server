@@ -38,7 +38,7 @@ export class Container {
 export class ContainerCreateDTO implements ContainerCreateRequest {
     @ApiProperty()
     name: string;
-    @ApiProperty({$ref: Container})
+    @ApiProperty()
     container: Container;
 
 }

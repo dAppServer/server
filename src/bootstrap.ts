@@ -25,21 +25,21 @@ export const bootstrap = async () => {
                 if (Deno.statSync(modulePath).isFile) {
                     logger.log(`Found App: ${f.name}`)
                     try {
-                        const {code} = await bundle(
-                            new URL(modulePath, import.meta.url),
-                            {
-                                allowRemote: true,
-                                importMap: './vendor/import_map.json'
-                            }
-                        );
-                        await Deno.writeTextFile(path.join(basePath, `${f.name}.dapp`), code)
+                        // const {code} = await bundle(
+                        //     new URL(modulePath, import.meta.url),
+                        //     {
+                        //         allowRemote: true,
+                        //         importMap: './vendor/import_map.json'
+                        //     }
+                        // );
+                       // await Deno.writeTextFile(path.join(basePath, `${f.name}.dapp`), code)
 
                        // const url = new URL(modulePath, import.meta.url);
-                        const mod = await transpile(mod);
+                        //const mod = await transpile(mod);
                         //const mod =  await import(path.join(basePath, `${f.name}.dapp`));
-                        console.log('yo');
-                        console.log(mod);
-                         await application.bootstrap(mod);
+                       // console.log('yo');
+                       // console.log(mod);
+                         //await application.bootstrap(mod);
                        //  await application.bootstrap(mod.get(url.href))
                        // await application.bootstrap(mod[`${f.name[0].toUpperCase() + f.name.slice(1)}Module`])
                     } catch (e) {
