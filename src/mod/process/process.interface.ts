@@ -2,7 +2,7 @@ import { ApiProperty } from "https://deno.land/x/danet_swagger/decorators.ts";
 
 export interface ProcessManagerRequest {
   key: string;
-  command: string;
+  command: any;
   stdOut: any;
   stdIn: any;
   stdErr: any;

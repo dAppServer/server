@@ -16,7 +16,7 @@ import { Injectable } from "https://deno.land/x/danet/mod.ts";
  * 	);
  */
 @Injectable()
-export class ProcessManager {
+export class ProcessService {
   /**
    * Turns on console.log with 1 or 0
    *
@@ -43,18 +43,10 @@ export class ProcessManager {
    * @param {ProcessManagerRequest} options
    * @returns {Promise<void>}
    */
-  run(command: string, args: any, options: ProcessManagerRequest) {
+  run(command: string, args: any, options?: ProcessManagerRequest) {
     if (!args) {
       console.log("No arguments passed to ProcessManager");
       return;
-    }
-
-    if (options.key && ProcessManager.process[options.key]) {
-      return this.getProcess(options.key);
-    }
-
-    if (ProcessManager.debug) {
-      console.log("Arguments passed to ProcessManager:", args);
     }
 
     const cmdArgs = [command];
@@ -63,26 +55,40 @@ export class ProcessManager {
       if (arg === "igd") {
         continue;
       }
-      cmdArgs.push(
-        "--" + arg.replace(/([A-Z])/g, (x) => "-" + x.toLowerCase()) +
-          (args[arg].length > 1 ? `=${args[arg]}` : ""),
-      );
+        cmdArgs.push(args[arg]);
+      // cmdArgs.push(
+      //     "--" + arg.replace(/([A-Z])/g, (x) => "-" + x.toLowerCase()) +
+      //     (args[arg].length > 1 ? `=${args[arg]}` : ""),
+      // );
     }
 
-    if (ProcessManager.debug) {
+    if(!options){
+      options = {
+        key: 'test',
+        command: cmdArgs,
+        stdErr: (stdErr: unknown) => console.log(stdErr),
+        stdIn: (stdIn: unknown) => console.log(stdIn),
+        stdOut: (stdOut: unknown) => console.log(stdOut)
+      } as ProcessManagerRequest;
+    }
+
+    if (options.key && ProcessService.process[options.key]) {
+      return this.getProcess(options.key);
+    }
+
+    if (ProcessService.debug) {
+      console.log("Arguments passed to ProcessManager:", args);
+    }
+
+
+    if (ProcessService.debug) {
       console.log(
         "ProcessManager processed arguments to these:",
         cmdArgs,
       );
     }
 
-    return this.addProcess({
-      key: options.key,
-      command: cmdArgs.join(' '),
-      stdIn: options.stdIn,
-      stdOut: options.stdOut,
-      stdErr: options.stdErr,
-    } as ProcessManagerRequest).run();
+    return this.addProcess(options).run();
   }
 
   /**
@@ -90,13 +96,12 @@ export class ProcessManager {
    *
    * @param {ProcessManagerRequest} process
    * @returns {ProcessManagerProcess}
-   * @private
    */
-  public addProcess(process: ProcessManagerRequest) {
-    if (ProcessManager.process && ProcessManager.process[process.key]) {
-      return ProcessManager.process[process.key];
+  public addProcess(process: ProcessManagerRequest): ProcessManagerProcess {
+    if (ProcessService.process && ProcessService.process[process.key]) {
+      return ProcessService.process[process.key];
     }
-    return ProcessManager.process[process.key] = new ProcessManagerProcess(process);
+    return ProcessService.process[process.key] = new ProcessManagerProcess(process);
   }
 
   /**
@@ -107,10 +112,10 @@ export class ProcessManager {
    * @returns {ProcessManagerProcess}
    */
   public getProcess(key: string) {
-    if (!ProcessManager.process[key]) {
+    if (!ProcessService.process[key]) {
       throw new Error(`Can't find process ${key}`);
     }
-    return ProcessManager.process[key];
+    return ProcessService.process[key];
   }
 
   /**
@@ -120,11 +125,11 @@ export class ProcessManager {
    * @param {string} key
    */
   public startProcess(key: string) {
-    if (!ProcessManager.process[key]) {
+    if (!ProcessService.process[key]) {
       throw new Error(`Can't find process ${key}`);
     }
     //@todo ad a feeder to centralised io handling, eg websocket srv
-    ProcessManager.process[key].run().catch(console.error);
+    ProcessService.process[key].run().catch(console.error);
   }
 
   /**
@@ -134,11 +139,11 @@ export class ProcessManager {
    * @param {string} key
    */
   public stopProcess(key: string) {
-    if (!ProcessManager.process[key]) {
+    if (!ProcessService.process[key]) {
       throw new Error(`Can't find process ${key}`);
     }
 
-    ProcessManager.process[key].process.stop();
+    ProcessService.process[key].process.stop();
   }
 
   /**
@@ -148,10 +153,10 @@ export class ProcessManager {
    * @param {string} key
    */
   public killProcess(key: string) {
-    if (!ProcessManager.process[key]) {
+    if (!ProcessService.process[key]) {
       throw new Error(`Can't find process ${key}`);
     }
 
-    ProcessManager.process[key].process.kill();
+    ProcessService.process[key].process.kill();
   }
 }

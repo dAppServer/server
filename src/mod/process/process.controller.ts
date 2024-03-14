@@ -1,12 +1,14 @@
-import { Controller, Post, Body } from "https://deno.land/x/danet/mod.ts";
+import { Controller, Post, Body, Param, WebSocket } from "https://deno.land/x/danet/mod.ts";
+import { WebSocketController } from "https://deno.land/x/danet/src/router/websocket/decorator.ts";
 import { Tag } from "https://deno.land/x/danet_swagger/decorators.ts";
-import { ProcessManager } from "./process.service.ts";
+import { ProcessService } from "./process.service.ts";
 import { ProcessAddDTO, ProcessKillDTO, ProcessRunDTO, ProcessStartDTO, ProcessStopDTO } from "./process.interface.ts";
+import {OnWebSocketMessage} from "https://deno.land/x/danet@2.3.0/src/router/websocket/decorator.ts";
 
 @Tag( "Process" )
 @Controller("process" )
 export class ProcessController  {
-  constructor(private process: ProcessManager) {}
+  constructor(private process: ProcessService) {}
 
   /**
    * Run a src
@@ -57,5 +59,7 @@ export class ProcessController  {
   killProcess(@Body() body: ProcessKillDTO) {
     return this.process.killProcess(body.key);
   }
+
+
 
 }

@@ -1,4 +1,4 @@
-import { Module } from "https://deno.land/x/danet/mod.ts";
+import { Module, EventEmitter, EventEmitterModule } from "https://deno.land/x/danet/mod.ts";
 import { BaseController } from "./app.controller.ts";
 import { IOModule } from "@mod/io/io.module.ts";
 import { SystemController } from "@mod/system/system.controller.ts";
@@ -11,6 +11,6 @@ import {DockerModule} from "@mod/docker/docker.module.ts";
 @Module({
   controllers: [BaseController, SystemController],
   injectables: [],
-  imports: [IOModule, ConfigModule, CryptographyModule, AppsModule, ProcessModule, DockerModule],
+  imports: [EventEmitterModule, IOModule, ConfigModule, CryptographyModule, AppsModule, ProcessModule, DockerModule],
 })
 export class AppModule {}
