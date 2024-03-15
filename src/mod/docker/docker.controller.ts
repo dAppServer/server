@@ -56,6 +56,10 @@ export class DockerController {
         return await this.docker.listImages();
     }
 
+    @Post('image/pull')
+    async pullImage(@Body() payload: { image: string }): Promise<any>{
+        return await this.docker.pullImage(payload.image);
+    }
 
 
 }

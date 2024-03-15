@@ -65,4 +65,8 @@ export class DockerService {
         return await this.docker.images.list();
     }
 
+    async pullImage(payload: string): Promise<any> {
+        return await this.docker.images.pull(payload);
+    }
+
 }

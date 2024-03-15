@@ -12,7 +12,7 @@ import { Injectable, Logger } from "https://deno.land/x/danet/mod.ts";
 @Injectable()
 export class AppManager {
   plugin: { code: string; config: string } = {
-    code: "lthn-app-setup",
+    code: "lthn-app-settings",
     config:
       "https://raw.githubusercontent.com/letheanVPN/lthn-app-setup/main/lthn.json"
   };
