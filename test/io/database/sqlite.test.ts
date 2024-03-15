@@ -1,12 +1,9 @@
 import {assertEquals} from "https://deno.land/x/std/testing/asserts.ts";
-import {SqliteService} from "@mod/io/storage/database/sqlite.service.ts";
-const sql = new SqliteService();
+import {ModIoStorageDatabaseSqliteService} from "@mod/io/storage/database/sqlite.service.ts";
+const sql = new ModIoStorageDatabaseSqliteService();
 
 Deno.test("Sqlite - Open Database File", async () => {
 
-    console.log(Deno.cwd());
-    console.log(Deno.cwd() + "/database.db");
-    console.log();
     sql.openDatabase("database.db")
     assertEquals(
         sql.createTable("database.db", "test"),

@@ -2,13 +2,10 @@ import {DB} from "https://deno.land/x/sqlite/mod.ts";
 import {Injectable} from "https://deno.land/x/danet/mod.ts";
 
 @Injectable()
-export class SqliteService {
+export class ModIoStorageDatabaseSqliteService {
     private db: {[key: string]: DB} = {};
 
-    constructor() {
-
-    }
-
+    constructor() {}
 
     openDatabase(name: string = "database.db") {
         return this.db[name] = new DB(name);
