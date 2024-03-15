@@ -61,4 +61,8 @@ export class DockerService {
         return await this.docker.containers.restart(id);
     }
 
+    async listImages(): Promise<any> {
+        return await this.docker.images.list();
+    }
+
 }

@@ -51,6 +51,11 @@ export class DockerController {
         return await this.docker.inspectContainer(id);
     }
 
+    @Get('image/list')
+    async listImages(): Promise<any[]>{
+        return await this.docker.listImages();
+    }
+
 
 
 }
