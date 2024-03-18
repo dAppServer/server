@@ -41,6 +41,9 @@ dev: $(DENO_BIN) ## Run Dev Server
 bundle: $(DENO_BIN) ## Bundle code
 	$(call deno,bundle --unstable mod.ts bundle.js)
 
+docker-build: ## Build Docker Image
+    docker build -t lthn/server:latest .
+
 build-sdk-typescript-angular: ## SDK Build: Angular
 	bash docs/build-sdk.sh -p typescript-angular
 

@@ -1,4 +1,4 @@
-//import  * as path from "std/path/mod.ts";
+import  * as path from "https://deno.land/x/std/path/mod.ts";
 import { bootstrap } from "./src/bootstrap.ts";
 import { buildSpec } from "./src/openapi.ts";
 import { Command, HelpCommand, CompletionsCommand, UpgradeCommand, GithubProvider, DenoLandProvider } from "https://deno.land/x/cliffy/command/mod.ts";
@@ -32,7 +32,11 @@ await new Command()
     )
     .action(async (_) => {
       const application = await bootstrap();
+      const staticAssetsPath = path.dirname(path.fromFileUrl(import.meta.url)) +
+            '/dappui/dist/dappui/browser';
+        application.useStaticAssets(staticAssetsPath);
       await application.listen(Number(Deno.env.get("PORT") || 36911));
+
     })
     .command("help", new HelpCommand().global())
     .command("completions", new CompletionsCommand())
