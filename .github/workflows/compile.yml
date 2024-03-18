@@ -16,23 +16,28 @@ jobs:
         build:
         - os: ubuntu-22.04
           compile: compile-lin
-          artifact_name: lthn
-          asset_name: lethean-server-linux-amd64
+          artifact_name: dappserver
+          asset_name: dappserver-linux-amd64
+
+        - os: ubuntu-22.04
+          compile: compile-lin-arm
+          artifact_name: dappserver
+          asset_name: dappserver-linux-arm64
 
         - os: macos-12
           compile: compile-mac
-          artifact_name: lthn
-          asset_name: lethean-server-macos-amd64
+          artifact_name: dappserver
+          asset_name: dappserver-macos-amd64
 
         - os: macos-12
           compile: compile-mac-m1
-          artifact_name: lthn
-          asset_name: lethean-server-macos-aarch64
+          artifact_name: dappserver
+          asset_name: dappserver-macos-aarch64
 
         - os: windows-2022
           compile: compile-win
-          artifact_name: lthn.exe
-          asset_name: lethean-server-win-amd64
+          artifact_name: dappserver.exe
+          asset_name: dappserver-win-amd64
     steps:
       - uses: actions/checkout@v4
 
@@ -47,7 +52,7 @@ jobs:
           name: ${{ matrix.build.os }}-${{ matrix.build.compile }}
           if-no-files-found: error
           path: |
-            ${{ github.workspace }}/build/lthn*
+            ${{ github.workspace }}/build/dappserver*
 
       - name: Upload binaries to release
         if: startsWith(github.ref, 'refs/tags/v')
@@ -92,7 +97,7 @@ jobs:
           path: |
             ${{ github.workspace }}/openapi.json
 
-      - name: Upload binaries to release
+      - name: OpenAPI Spec to release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v2
         with:
