@@ -1,4 +1,4 @@
-import  * as path from "std/path/mod.ts";
+import  * as path from "https://deno.land/x/std/path/mod.ts";
 import { Injectable, Logger } from "https://deno.land/x/danet/mod.ts";
 import { ModIoFsLocalService } from "../../io/fs/local/service.ts";
 

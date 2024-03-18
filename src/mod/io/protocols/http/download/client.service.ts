@@ -1,9 +1,9 @@
-import { decompress } from "zip/mod.ts";
-import { Untar } from "std/archive/mod.ts";
-import { copy, readerFromStreamReader } from "std/streams/mod.ts";
-import  * as path from "std/path/mod.ts";
+import { decompress } from "https://deno.land/x/zip/mod.ts";
+import { Untar } from "https://deno.land/x/std/archive/mod.ts";
+import { copy, readerFromStreamReader } from "https://deno.land/x/std/streams/mod.ts";
+import  * as path from "https://deno.land/x/std/path/mod.ts";
 import { Injectable, Logger } from "https://deno.land/x/danet/mod.ts";
-import { ensureDir, ensureDirSync } from "std/fs/mod.ts"
+import { ensureDir, ensureDirSync } from "https://deno.land/x/std/fs/mod.ts"
 import { ModIoFsLocalService } from "../../../fs/local/service.ts";
 import {DownloadDestination, DownloadedFile} from "./client.interface.ts";
 import {ZeroMQServerService} from "../../websocket/zeromq/server.service.ts";

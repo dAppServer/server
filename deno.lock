@@ -9,7 +9,8 @@
     "https://deno.land/x/hono/request.ts": "https://deno.land/x/hono@v4.0.10/request.ts",
     "https://deno.land/x/hono/types.ts": "https://deno.land/x/hono@v4.0.4/types.ts",
     "https://deno.land/x/hono/utils/url.ts": "https://deno.land/x/hono@v4.0.10/utils/url.ts",
-    "https://deno.land/x/s3_lite_client/mod.ts": "https://deno.land/x/s3_lite_client@0.7.0/mod.ts"
+    "https://deno.land/x/s3_lite_client/mod.ts": "https://deno.land/x/s3_lite_client@0.7.0/mod.ts",
+    "https://deno.land/x/zip/mod.ts": "https://deno.land/x/zip@v1.2.5/mod.ts"
   },
   "remote": {
     "https://cdn.skypack.dev/-/lodash@v4.17.21-K6GEbP02mWFnLA45zAmi/dist=es2019,mode=imports/optimized/lodash.js": "10c4df47937ffc78548d136dd535a021df5f57182a653260d715c0690dd22978",

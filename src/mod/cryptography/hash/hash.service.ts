@@ -1,4 +1,4 @@
-import { crypto, toHashString, DigestAlgorithm } from "std/crypto/mod.ts";
+import { crypto, toHashString, DigestAlgorithm } from "https://deno.land/x/std/crypto/mod.ts";
 import { Injectable } from "https://deno.land/x/danet/mod.ts";
 @Injectable()
 export class HashService {

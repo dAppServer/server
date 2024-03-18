@@ -1,4 +1,4 @@
-import { crypto, toHashString, } from "std/crypto/mod.ts";
+import { crypto, toHashString, } from "https://deno.land/x/std/crypto/mod.ts";
 import { Injectable } from "https://deno.land/x/danet/mod.ts";
 @Injectable()
 export class QuasiSaltService {
