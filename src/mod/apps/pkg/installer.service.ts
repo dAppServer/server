@@ -1,11 +1,11 @@
-import { AppManagerConfig } from "@mod/apps/pkg/config.service.ts";
-import * as path from "std/path/mod.ts";
+import * as path from "https://deno.land/std/path/mod.ts";
 import { Injectable, Logger } from "https://deno.land/x/danet/mod.ts";
-import { ensureDir } from "std/fs/mod.ts";
-import { ObjectService } from "@mod/config/object/object.service.ts";
-import { PluginConfig, PluginType } from "@mod/apps/pkg/pkg.interface.ts";
-import { LetheanDownloadService } from "@mod/io/protocols/http/download/client.service.ts";
-import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";
+import { ensureDir } from "https://deno.land/std/fs/mod.ts";
+import {AppManagerConfig} from "./config.service.ts";
+import { ObjectService } from "../../config/object/object.service.ts";
+import {LetheanDownloadService} from "../../io/protocols/http/download/client.service.ts";
+import { ModIoFsLocalService } from "../../io/fs/local/service.ts";
+import {PluginConfig, PluginType} from "./pkg.interface.ts";
 
 @Injectable()
 export class AppManagerInstaller {

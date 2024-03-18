@@ -6,13 +6,13 @@ Clientside PWA server written using [Danet](https://danet.land/) and [Deno](http
 
 This server is designed to be a secure and private server for running PWA's and other services.
 
-## Requirements
 
-- [Deno](https://deno.land/)
-- [Danet](https://danet.land/)
-- [Make](https://www.gnu.org/software/make/)
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/)
+
+## Install
+    
+```shell
+deno install -A -f -n lthn --unstable https://deno.land/x/lthn/mod.ts
+```
 
 ## Features
 
@@ -35,8 +35,7 @@ This server is designed to be a secure and private server for running PWA's and 
 
 ## Install (Automatic)
 
-When using the Make system Deno is installed automatically relative to this folder into a folder `./third_party`
-you can also install it by running the tests with `make test`
+
 
 ## Install Deno (Manual not needed if using Makefile)
 

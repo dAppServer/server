@@ -1,11 +1,10 @@
 import { Module } from "https://deno.land/x/danet/mod.ts";
-import { ObjectController } from "@mod/config/object/object.controller.ts";
-import { ObjectService } from "@mod/config/object/object.service.ts";
-import { FileController } from "@mod/config/file/file.controller.ts";
-import { ConfigFileService } from "@mod/config/file/file.service.ts";
-import { IniController } from "@mod/config/ini/ini.controller.ts";
-import { IniService } from "@mod/config/ini/ini.service.ts";
-
+import {ObjectController} from "./object/object.controller.ts";
+import { FileController } from "./file/file.controller.ts";
+import {IniController} from "./ini/ini.controller.ts";
+import {ObjectService} from "./object/object.service.ts";
+import { ConfigFileService } from "./file/file.service.ts";
+import { IniService } from "./ini/ini.service.ts";
 @Module({
   controllers: [
     ObjectController,

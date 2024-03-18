@@ -1,8 +1,12 @@
 import { Body, Controller, Post } from "https://deno.land/x/danet/mod.ts";
 import { Tag } from "https://deno.land/x/danet_swagger/decorators.ts"
-import { OpenPGPService } from "@mod/cryptography/openpgp/openpgp.service.ts";
-import { OpenPGPCreateKeyPairDTO, OpenPGPDecryptBYIDDTO, OpenPGPEncryptBYIDDTO, OpenPGPGetPublicKeyDTO, OpenPGPKeyPairDTO, OpenPGPSignBYIDDTO, OpenPGPVerifyBYIDDTO } from "@mod/cryptography/openpgp/openpgp.interface.ts";
-
+import {OpenPGPService} from "./openpgp.service.ts";
+import {
+  OpenPGPCreateKeyPairDTO,
+  OpenPGPDecryptBYIDDTO,
+  OpenPGPEncryptBYIDDTO, OpenPGPGetPublicKeyDTO,
+  OpenPGPKeyPairDTO, OpenPGPSignBYIDDTO, OpenPGPVerifyBYIDDTO
+} from "./openpgp.interface.ts";
 @Tag("Cryptography")
 @Controller("crypto/openpgp")
 export class OpenPGPController {

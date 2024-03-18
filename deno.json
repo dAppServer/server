@@ -1,4 +1,5 @@
 {
+  "unstable": ["cron", "fs", "net"],
   "tasks": {
     "launch-server": "deno run -A --unstable mod.ts server",
     "dev-server": "deno run -A --watch --unstable mod.ts server",
@@ -48,12 +49,6 @@
   "imports": {
     "./mod.ts": "./mod.ts",
     "lib/": "./lib/",
-    "@mod/": "./src/mod/",
-    "@deps": "./src/deps.ts",
-    "@types/": "./src/types/",
-    "@helpers/": "./src/helpers/",
-    "@interfaces/": "./src/interfaces/",
-    "@middleware/": "./src/middleware/",
     "std/": "https://deno.land/std@0.182.0/",
     "https://deno.land/x/std/": "https://deno.land/std@0.182.0/",
     "https://deno.land/x/std/io/": "https://deno.land/std@0.182.0/io/",

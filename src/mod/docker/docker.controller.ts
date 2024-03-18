@@ -1,12 +1,8 @@
 import {Controller, Get, Post, Body, Req, Param} from "https://deno.land/x/danet/mod.ts";
 import {Tag, ReturnedType} from "https://deno.land/x/danet_swagger/decorators.ts";
-import {DockerService} from "@mod/docker/docker.service.ts";
-import {
-    Container,
-    ContainerCreateDTO,
-    ContainerCreateRequest,
-    ContainerCreateResponse
-} from "@mod/docker/dto/container.create.ts";
+import { DockerService } from "./docker.service.ts";
+import {Container, ContainerCreateResponse} from "./dto/container.create.ts";
+
 @Tag("Docker")
 @Controller("docker")
 export class DockerController {
@@ -21,7 +17,7 @@ export class DockerController {
 
     @Post('container/create/:id')
     @ReturnedType(ContainerCreateResponse)
-    async createContainer(@Param('id') name, @Body() payload: Container): Promise<ContainerCreateResponse>{
+    async createContainer(@Param('id') name: string, @Body() payload: Container): Promise<ContainerCreateResponse>{
         return await this.docker.createContainer(name, payload);
 
     }

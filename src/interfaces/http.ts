@@ -1,5 +1,6 @@
 import { ApiProperty, Optional } from "https://deno.land/x/danet_swagger/decorators.ts";
-import { HTTP_STATUS } from "@interfaces/status-codes.ts";
+import { HTTP_STATUS } from "./status-codes.ts";
+
 
 
 export class ServerResponse {

@@ -1,8 +1,13 @@
 import { Body, Controller, Post } from "https://deno.land/x/danet/mod.ts";
 import { Tag } from "https://deno.land/x/danet_swagger/decorators.ts";
-import { ConfigFileService } from "@mod/config/file/file.service.ts";
-import { ConfigFileLoadDTO, ConfigFileRenderAndLoadDTO, ConfigFileRenderDTO, ConfigFileRenderStringDTO } from "@mod/config/file/file.interface.ts";
-import { ObjectService } from "@mod/config/object/object.service.ts";
+import {ConfigFileService} from "./file.service.ts";
+import {ObjectService} from "../object/object.service.ts";
+import {
+  ConfigFileLoadDTO,
+  ConfigFileRenderAndLoadDTO,
+  ConfigFileRenderDTO,
+  ConfigFileRenderStringDTO
+} from "./file.interface.ts";
 
 @Tag("Config")
 @Controller("config/storage")

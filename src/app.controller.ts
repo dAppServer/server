@@ -1,7 +1,7 @@
 import { Controller, Get } from "https://deno.land/x/danet/mod.ts";
 import { Tag } from "https://deno.land/x/danet_swagger/decorators.ts";
-import { ZeroMQServerService } from "@mod/io/protocols/websocket/zeromq/server.service.ts";
-import { LetheanWebsocketServer } from "@mod/io/protocols/websocket/websocket.server.ts";
+import { ZeroMQServerService } from "./mod/io/protocols/websocket/zeromq/server.service.ts";
+import { LetheanWebsocketServer } from "./mod/io/protocols/websocket/websocket.server.ts";
 
 /**
  * Main system boot, the aim is to reduce lines and includes here, not functionality.

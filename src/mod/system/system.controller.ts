@@ -1,8 +1,8 @@
 import { Get, Controller, Logger } from "https://deno.land/x/danet/mod.ts";
 import { Tag } from "https://deno.land/x/danet_swagger/decorators.ts";
-import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";
-import { OpenPGPService } from "@mod/cryptography/openpgp/openpgp.service.ts";
-import { QuasiSaltService } from "@mod/cryptography/hash/quasi-salt.service.ts";
+import {ModIoFsLocalService} from "../io/fs/local/service.ts";
+import {OpenPGPService} from "../cryptography/openpgp/openpgp.service.ts";
+import {QuasiSaltService} from "../cryptography/hash/quasi-salt.service.ts";
 
 @Tag("System")
 @Controller("system")

@@ -1,6 +1,8 @@
-import { ModIoFsLocalService } from "@mod/io/fs/local/service.ts";
-import { CreateFileDTO, FilePathCheckDTO, FilePathDTO } from "@mod/io/fs/local/interfaces.ts";
-import {Body, Controller, Post, ReturnedType, Tag} from "@deps";
+import { ModIoFsLocalService } from "./service.ts";
+import { CreateFileDTO, FilePathCheckDTO, FilePathDTO } from "./interfaces.ts";
+import { ReturnedType, Tag } from "https://deno.land/x/danet_swagger/decorators.ts";
+import { Body, Controller, Post } from "https://deno.land/x/danet/mod.ts";
+
 
 @Tag( "Input/Output" )
 @Controller("mod/io/fs/local" )

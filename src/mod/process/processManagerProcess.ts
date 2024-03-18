@@ -1,6 +1,4 @@
 import { ProcessManagerRequest } from "./process.interface.ts";
-import { Sub } from "https://deno.land/x/jszmq@v1.3.1/mod.ts";
-import {ZeroMQServerService} from "@mod/io/protocols/websocket/zeromq/server.service.ts";
 import { readLines } from "https://deno.land/std@0.220.0/io/mod.ts";
 import { EventEmitterModule, EventEmitter } from 'https://deno.land/x/danet/mod.ts'
 const eventEmitter = new EventEmitter()

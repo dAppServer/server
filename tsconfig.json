@@ -12,19 +12,10 @@
     "strict": true,
     "target": "esnext",
     "useDefineForClassFields": true,
-
     "importHelpers": true,
     "outDir": "./out-tsc",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noUnusedLocals": true,
-    "paths": {
-        "@mod/*": ["src/mod/*"],
-        "@deps": ["src/deps.ts"],
-        "@types/*": ["src/types/*"],
-        "@middleware/*": ["src/middleware/*"],
-        "@interfaces/*": ["src/interfaces/*"]
-        },
+    "noUnusedLocals": true
     }
-  }
 }
