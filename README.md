@@ -2,20 +2,34 @@
 [![lethean-server](https://github.com/dAppServer/server/actions/workflows/compile.yml/badge.svg)](https://github.com/dAppServer/server/actions/workflows/compile.yml)
 [![Coverage Status](https://coveralls.io/repos/github/dAppServer/server/badge.svg?branch=main)](https://coveralls.io/github/dAppServer/server?branch=main)
 
-Clientside PWA server mainly used within a GUI application but can be used to run a local internet accessible server (at your risk)
+Clientside PWA server written using [Danet](https://danet.land/) and [Deno](https://deno.land/)
 
-We use Deno which is a TypeScript runtime built with Rust and TypeScript, there is no nodeJS runtime but you can use some packages as there is compatability.
+This server is designed to be a secure and private server for running PWA's and other services.
 
 ## Requirements
 
-- Deno Documentation: https://deno.land/manual/introduction 
-- Deno API Reference: https://deno.land/api 
-- Deno Standard Library: https://deno.land/std?doc
+- [Deno](https://deno.land/)
+- [Danet](https://danet.land/)
+- [Make](https://www.gnu.org/software/make/)
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-Deno packages, adding a new package is fine, but please run `make vendor` whenever a new package is added,
-this is because the `./vendor` folder has a code copy so that the system can be loaded with the below command.
+## Features
 
-`deno run https://raw.githubusercontent.com/dAppServer/server/main/mod.ts`
+- [x] Static File Server
+- [x] Filesystem Service
+- [x] Download Service
+- [x] Process Manager
+- [x] Process stdIn/stdOut ZeroMQ WebSocket
+- [x] OpenPGP / CryptPkcs8 / QuasiSalt
+- [x] Json object store
+- [x] `.ini` service
+- [x] handlebars based Config file generator
+- [x] Package manager to install 3rd party apps
+- [x] Docker container control
+- [x] REST API
+- [x] Websocket API
+
 
 # Development setup
 
@@ -35,12 +49,21 @@ git clone https://github.com/dAppServer/server.git
 cd server
 make run
 ```
+## Deno Tasks
 
-## Build commands
+```shell
+deno task dev-server
+deno task test
+deno task compile
+deno task compile-lin
+deno task compile-lin-arm
+deno task compile-mac
+deno task compile-mac-m1
+deno task compile-win
 
-We use Make as many people know this and means you dont need to remember command flags;
+```
 
-Dependencies need to be listed in `./deps.ts`
+## Make commands
 
 ```shell
  make build-linux                    Build binary for Linux
@@ -60,35 +83,4 @@ Dependencies need to be listed in `./deps.ts`
  make test-xmrig                     Run Testsuite: xmrig
  make test                           Run full testsuite
  make vendor                         Update Vendor bundle
-```
-
-# Application API's / Services
-
-- Static File Server
-- Filesystem Service
-- Download Service
-- Process Manager
-- Process stdIn/stdOut ZeroMQ WebSocket
-- OpenPGP / CryptPkcs8 / QuasiSalt
-- Json object store
-- `.ini` service
-- handlebars based Config file generator 
-- Package manager to install 3rd party PWAs
-
-
-## Development Server
-
-```shell
-deno run --reload --allow-all --unstable https://raw.githubusercontent.com/letheanVPN/lethean-server/main/mod.ts
-```
-https://hub.docker.com/r/lthn/server
-
-`docker pull lthn/server:latest`
-
-## documentation
-
-```shell
-cd docs
-pip install mkdocs-material mkdocs-git-revision-date-localized-plugin pillow cairosvg
-mkdocs serve
 ```

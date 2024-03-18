@@ -42,7 +42,7 @@ await new Command()
           main: "mod.ts",
           args: ["--allow-all", "--unstable"],
           provider: [
-              //new DenoLandProvider({ name: "lthn"}),
+              new DenoLandProvider({ name: "lthn"}),
               new GithubProvider({ repository: "dappserver/server" }),
           ],
         }),
