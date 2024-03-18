@@ -10,7 +10,7 @@ import packageFile from "./package.json" with { type: "json" };
 // }
 await new Command()
     .name('lthn')
-    .version(packageFile.version)
+    .version(`v${packageFile.version}`)
     .command(
         "openapi",
         "Creates OpenAPI definition json file.",
