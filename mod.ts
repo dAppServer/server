@@ -3,6 +3,8 @@ import { bootstrap } from "./src/bootstrap.ts";
 import { buildSpec } from "./src/openapi.ts";
 import { Command, HelpCommand, CompletionsCommand, UpgradeCommand, GithubProvider, DenoLandProvider } from "https://deno.land/x/cliffy/command/mod.ts";
 import packageFile from "./package.json" with { type: "json" };
+import {ModIoFsLocalService} from "./src/mod/io/fs/local/service.ts";
+const fs = new ModIoFsLocalService();
 //const home = Deno.env.get('HOME') ? Deno.env.get('HOME') as string : Deno.cwd();
 
 // if(path.join(home,'Lethean') !== Deno.cwd()){
@@ -34,7 +36,10 @@ await new Command()
       const application = await bootstrap();
       const staticAssetsPath = path.dirname(path.fromFileUrl(import.meta.url)) +
             '/dappui/dist/dappui/browser';
-        application.useStaticAssets(staticAssetsPath);
+
+      if(fs.isDir('dappui/dist/dappui/browser')) {
+          application.useStaticAssets(staticAssetsPath);
+      }
       await application.listen(Number(Deno.env.get("PORT") || 36911));
 
     })
