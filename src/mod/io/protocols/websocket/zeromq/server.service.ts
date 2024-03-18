@@ -1,4 +1,4 @@
-import * as zmq from "jszmq/mod.ts";
+import * as zmq from "https://deno.land/x/jszmq/mod.ts";
 import { Logger } from "https://deno.land/x/danet/mod.ts";
 
 /**
