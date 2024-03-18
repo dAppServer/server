@@ -27,7 +27,7 @@
     "test": "make test",
     "fmt": "make fmt",
     "sdk:angular": "openapi-generator generate -i openapi.json -g typescript-angular -o build/api",
-    "postversion": "git push && git push --tags"
+    "postversion": "deno task bundle && git add bundle.js && git commit -m \"bundle update\" && git push && git push --tags"
   },
   "dependencies": {
     "@openapitools/openapi-generator-cli": "^2.9.0",

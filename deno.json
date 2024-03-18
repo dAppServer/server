@@ -4,6 +4,7 @@
     "launch-server": "deno run -A --unstable mod.ts server",
     "dev-server": "deno run -A --watch --unstable mod.ts server",
     "build-openapi": "deno run -A --unstable mod.ts openapi",
+    "bundle": "deno bundle --unstable mod.ts bundle.js",
     "compile": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/dappserver bundle.js",
     "compile-win": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/dappserver.exe --target x86_64-pc-windows-msvc --no-terminal bundle.js",
     "compile-lin": "deno bundle --unstable mod.ts bundle.js && deno compile -A --unstable --output build/dappserver --target x86_64-unknown-linux-gnu bundle.js",
