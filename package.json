@@ -26,7 +26,8 @@
     "server:build:windows": "make build-windows",
     "test": "make test",
     "fmt": "make fmt",
-    "sdk:angular": "openapi-generator generate -i openapi.json -g typescript-angular -o build/api"
+    "sdk:angular": "openapi-generator generate -i openapi.json -g typescript-angular -o build/api",
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "@openapitools/openapi-generator-cli": "^2.9.0",
