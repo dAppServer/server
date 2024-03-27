@@ -38,6 +38,11 @@ export class ProcessService {
     return await ProcessService.process[command].output()
 
   }
+  start(command: string, args?: string[]){
+    this.add(command, args)
+    return ProcessService.process[command].spawn()
+
+  }
 
   add(command: string, args: string[] = []){
     ProcessService.process[command] = new Deno.Command(command, {args: args})
@@ -71,7 +76,7 @@ export class ProcessService {
    * @returns {Promise<void>}
    * @deprecated
    */
-  start(command: string, args: any, options?: ProcessManagerRequest) {
+  startmm(command: string, args: any, options?: ProcessManagerRequest) {
     if (!args) {
       console.log("No arguments passed to ProcessManager");
       return;
