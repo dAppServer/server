@@ -3,7 +3,7 @@ import { bundle, transpile } from "https://deno.land/x/emit/mod.ts";
 import * as path from "https://deno.land/x/std/path/mod.ts";
 import {DanetApplication, Logger} from "https://deno.land/x/danet/mod.ts";
 import {SpecBuilder, SwaggerModule} from "https://deno.land/x/danet_swagger/mod.ts";
-
+import { expandGlob } from "https://deno.land/x/std/fs/expand_glob.ts";
 
 export const bootstrap = async () => {
     const application = new DanetApplication();
@@ -19,29 +19,15 @@ export const bootstrap = async () => {
 
         if (Deno.statSync(basePath).isDirectory) {
             logger.log(`Loading dApp's ${basePath}`)
-            for await(const f of Deno.readDir(basePath)) {
-                logger.log(`Checking: ${f.name}.module.ts`)
-                const modulePath = path.join(basePath, f.name, `${f.name}.module.ts`)
-                if (Deno.statSync(modulePath).isFile) {
+            for await(const f of expandGlob(path.join(basePath, '**\/*.module.ts'))) {
+                logger.log(`Checking: ${f.path}`)
+                if (Deno.statSync(f.path).isFile) {
                     logger.log(`Found App: ${f.name}`)
                     try {
-                        // const {code} = await bundle(
-                        //     new URL(modulePath, import.meta.url),
-                        //     {
-                        //         allowRemote: true,
-                        //         importMap: './vendor/import_map.json'
-                        //     }
-                        // );
-                       // await Deno.writeTextFile(path.join(basePath, `${f.name}.dapp`), code)
-
-                       // const url = new URL(modulePath, import.meta.url);
-                        //const mod = await transpile(mod);
-                        //const mod =  await import(path.join(basePath, `${f.name}.dapp`));
-                       // console.log('yo');
-                       // console.log(mod);
-                         //await application.bootstrap(mod);
-                       //  await application.bootstrap(mod.get(url.href))
-                       // await application.bootstrap(mod[`${f.name[0].toUpperCase() + f.name.slice(1)}Module`])
+                        const module =  await import(f.path)
+                        for(const key in module) {
+                            await application.bootstrap(module[key])
+                        }
                     } catch (e) {
                         console.log('Error: ', e);
                     }
