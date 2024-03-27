@@ -32,14 +32,15 @@ const cmds = await new Command()
         "start",
         "Starts the server.",
     )
-    .action(async (_) => {
+    .option("-u, --ui <path:string>", "UI HTML files.")
+    .action(async (options) => {
       const application = await bootstrap();
-      const staticAssetsPath = path.dirname(path.fromFileUrl(import.meta.url)) +
-            '/dappui/dist/dappui/browser';
-
-      if(fs.isDir('dappui/dist/dappui/browser')) {
+      if(options['ui']){
+          const staticAssetsPath = path.dirname(path.fromFileUrl(import.meta.url)) +'/'+ options['ui'];
+          console.log('Static Assets Path:', staticAssetsPath)
           application.useStaticAssets(staticAssetsPath);
       }
+
       await application.listen(Number(Deno.env.get("PORT") || 36911));
 
     })
@@ -59,5 +60,6 @@ const cmds = await new Command()
     .parse(Deno.args);
 
 if(Deno.args.length === 0){
+    console.log('No command provided, use --help for more information')
   Deno.exit(0)
 }
