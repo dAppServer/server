@@ -7,10 +7,19 @@ import { CryptographyModule } from "./mod/cryptography/cryptography.module.ts";
 import { AppsModule } from "./mod/apps/apps.module.ts";
 import {ProcessModule} from "./mod/process/process.module.ts";
 import {DockerModule} from "./mod/docker/docker.module.ts";
+import {BlockchainLTHNModule} from "./blockchain/lthn/lthn.module.ts";
 
 @Module({
   controllers: [BaseController, SystemController],
   injectables: [],
-  imports: [EventEmitterModule, IOModule, ConfigModule, CryptographyModule, AppsModule, ProcessModule, DockerModule],
+  imports: [
+      EventEmitterModule,
+    IOModule,
+    ConfigModule,
+    CryptographyModule,
+    AppsModule,
+    ProcessModule,
+    DockerModule,
+    BlockchainLTHNModule],
 })
 export class AppModule {}
