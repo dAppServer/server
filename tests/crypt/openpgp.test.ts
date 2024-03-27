@@ -1,7 +1,7 @@
 import { assertEquals, assertStringIncludes } from "../../deps-test.ts";
-import {ModIoFsLocalService} from "@mod/io/fs/local/service.ts";
-import {OpenPGPService} from "@mod/cryptography/openpgp/openpgp.service.ts";
-import {QuasiSaltService} from "@mod/cryptography/hash/quasi-salt.service.ts";
+import {ModIoFsLocalService} from "../../src/mod/io/fs/local/service.ts";
+import {QuasiSaltService} from "../../src/mod/cryptography/hash/quasi-salt.service.ts";
+import {OpenPGPService} from "../../src/mod/cryptography/openpgp/openpgp.service.ts";
 
 const filesystem = new ModIoFsLocalService();
 const salt = new QuasiSaltService();

@@ -1,7 +1,7 @@
 
 import { assertEquals } from "../../deps-test.ts";
-import {ModIoFsLocalService} from "@mod/io/fs/local/service.ts";
-import  * as path from "std/path/mod.ts";
+import  * as path from "https://deno.land/x/std/path/mod.ts";
+import { ModIoFsLocalService } from "../../src/mod/io/fs/local/service.ts";
 const filesystem = new ModIoFsLocalService();
 Deno.test('ClientService.path - "root" fs test', async () => {
   assertEquals(

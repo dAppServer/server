@@ -1,5 +1,5 @@
 import { assertEquals } from "../../deps-test.ts";
-import {QuasiSaltService} from "@mod/cryptography/hash/quasi-salt.service.ts";
+import {QuasiSaltService} from "../../src/mod/cryptography/hash/quasi-salt.service.ts";
 
 const QuasiSalt = new QuasiSaltService();
 Deno.test("QuasiSalt.hash(test)", async () => {

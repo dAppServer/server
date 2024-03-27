@@ -2,11 +2,22 @@
 [![lethean-server](https://github.com/dAppServer/server/actions/workflows/compile.yml/badge.svg)](https://github.com/dAppServer/server/actions/workflows/compile.yml)
 [![Coverage Status](https://coveralls.io/repos/github/dAppServer/server/badge.svg?branch=main)](https://coveralls.io/github/dAppServer/server?branch=main)
 
-Clientside PWA server written using [Danet](https://danet.land/) and [Deno](https://deno.land/)
+Clientside PWA server written using [Danet](https://danet.land/) and [Deno](https://deno.land/) for [Lethean VPN](https://lt.hn/) Web3 apps, 
 
-This server is designed to be a secure and private server for running PWA's and other services.
+When porting app's for the web to desktop, this project provides a server 
+that can be used to host your app's backend on the client machine.
 
+It enables a webapp to run as a standalone desktop app, with the backend running on the client machine.
+Using typical HTTP/REST API's, the app can communicate with the backend server to access files, data, sqlite.
 
+It is written in Deno, a secure runtime for JavaScript and TypeScript.
+It is designed to be easy to use and secure by default.
+
+It can be run as just a backend service, or as a full desktop app with a frontend served by the backend.
+
+We use this with GoLang for desktop as a backend server for an Angular app and a frontend for our docker container admin ui's.
+
+It will by default run on localhost:36911 alowing multiple configurations for both server and clientside use cases
 
 ## Install
     

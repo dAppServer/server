@@ -10,7 +10,7 @@ const fs = new ModIoFsLocalService();
 // if(path.join(home,'Lethean') !== Deno.cwd()){
 //   Deno.chdir(path.join(home,'Lethean'))
 // }
-await new Command()
+const cmds = await new Command()
     .name('lthn')
     .version(`v${packageFile.version}`)
     .command(
@@ -58,4 +58,6 @@ await new Command()
     )
     .parse(Deno.args);
 
-
+if(Deno.args.length === 0){
+  Deno.exit(0)
+}

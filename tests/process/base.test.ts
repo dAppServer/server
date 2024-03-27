@@ -1,5 +1,5 @@
 import {assertEquals} from "https://deno.land/std@0.129.0/testing/asserts.ts";
-import {ProcessService} from "@mod/process/process.service.ts";
+import {ProcessService} from "../../src/mod/process/process.service.ts";
 
 const process = new ProcessService();
 // Deno.test("ClientService.isDir", async () => {
