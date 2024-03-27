@@ -16,8 +16,9 @@ export class ProcessController  {
    * @returns {ProcessManagerProcess | Promise<void>}
    */
   @Post("run")
-  runProcess(@Body() body: ProcessRunDTO) {
-    return this.process.run(body.command, body.args, body.options);
+  async runProcess(@Body() body: ProcessRunDTO) {
+    const { code, stdout, stderr } = await this.process.run(body.command, body.args);
+    return { code, out: new TextDecoder().decode(stdout), error: new TextDecoder().decode(stderr) };
   }
 
 
@@ -57,7 +58,7 @@ export class ProcessController  {
    */
   @Post("kill")
   killProcess(@Body() body: ProcessKillDTO) {
-    return this.process.killProcess(body.key);
+    return this.process.kill(body.key);
   }
 
 

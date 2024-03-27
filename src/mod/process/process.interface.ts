@@ -40,7 +40,5 @@ export class ProcessRunDTO {
   @ApiProperty()
   command: string;
   @ApiProperty()
-  args: string;
-  @ApiProperty()
-  options: ProcessAddDTO;
+  args: { [name: string]: any };
 }

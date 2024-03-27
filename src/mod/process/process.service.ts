@@ -33,7 +33,7 @@ export class ProcessService {
    */
   private static process: { [name: string]: any } = {};
 
-  async start(command: string, args?: string[]){
+  async run(command: string, args?: string[]){
     this.add(command, args)
     return await ProcessService.process[command].output()
 
@@ -71,7 +71,7 @@ export class ProcessService {
    * @returns {Promise<void>}
    * @deprecated
    */
-  run(command: string, args: any, options?: ProcessManagerRequest) {
+  start(command: string, args: any, options?: ProcessManagerRequest) {
     if (!args) {
       console.log("No arguments passed to ProcessManager");
       return;
