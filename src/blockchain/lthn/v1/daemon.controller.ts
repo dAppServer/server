@@ -57,7 +57,7 @@ export class BlockchainLTHNV1DaemonController {
      */
     @Post()
     async start() {
-        const { code } =  await this.process.start('apps/blockchain/lthn/letheand' )
+        const { code } =  await this.process.start('apps/blockchain/lthn/bin/letheand' )
         return { code, msg: "Daemon started" }
     }
 
@@ -90,7 +90,7 @@ export class BlockchainLTHNV1DaemonController {
             this.fileSystem.ensureDir(body.logDir);
         }
 
-        const exeFile = path.join("apps", 'blockchain', 'lthn',`letheand${Deno.build.os === "windows" ? ".exe" : ""}`);
+        const exeFile = path.join("apps", 'blockchain', 'lthn', 'bin',`letheand${Deno.build.os === "windows" ? ".exe" : ""}`);
 
         if (!this.fileSystem.isFile(exeFile)) {
             this.log.error(`Lethean Daemon executable not found: ${exeFile}`);
@@ -133,7 +133,7 @@ export class BlockchainLTHNV1DaemonController {
             Deno.build.os === "windows" ? ".exe" : ""
         }`;
         this.process.start(
-            this.fileSystem.path(["apps", 'blockchain', 'lthn', exeFile]),
+            this.fileSystem.path(["apps", 'blockchain', 'lthn', 'bin', exeFile]),
             body
         );
     }
@@ -144,7 +144,7 @@ export class BlockchainLTHNV1DaemonController {
             Deno.build.os === "windows" ? ".exe" : ""
         }`;
         this.process.start(
-            this.fileSystem.path(["apps", 'blockchain', 'lthn', exeFile]),
+            this.fileSystem.path(["apps", 'blockchain', 'lthn', 'bin', exeFile]),
             body
         );
     }
@@ -157,7 +157,7 @@ export class BlockchainLTHNV1DaemonController {
             'mac': 'https://github.com/letheanVPN/blockchain-iz/releases/latest/download/lethean-cli-macos.tar'
         }
         if(urls[Deno.build.os]){
-            this.download.downloadContents(urls[Deno.build.os], 'apps/blockchain/lthn').catch((err) => {
+            this.download.downloadContents(urls[Deno.build.os], 'apps/blockchain/lthn/bin').catch((err) => {
                 console.log(err);
             });
             return {status: 'Download Requested'};
