@@ -17,7 +17,7 @@ export class ProcessController  {
    */
   @Post("run")
   async runProcess(@Body() body: ProcessRunDTO) {
-    const { code, stdout, stderr } = await this.process.run(body.command, body.args);
+    const { code, stdout, stderr } = await this.process.run(body.command);
     return { code, out: new TextDecoder().decode(stdout), error: new TextDecoder().decode(stderr) };
   }
 
