@@ -31,7 +31,34 @@ export class ProcessService {
    * @type {{[p: string]: ProcessManagerProcess}}
    * @private
    */
-  private static process: { [name: string]: ProcessManagerProcess } = {};
+  private static process: { [name: string]: any } = {};
+
+  async start(command: string, args?: string[]){
+    this.add(command, args)
+    return await ProcessService.process[command].output()
+
+  }
+
+  add(command: string, args: string[] = []){
+    ProcessService.process[command] = new Deno.Command(command, {args: args})
+  }
+
+  list(){
+    return Object.keys(ProcessService.process)
+  }
+
+  /**
+   * Sends a force quit to the src
+   *
+   * @example ProcessManager.killProcess('letheand.exe')
+   * @param {string} key
+   */
+  public kill(key: string) {
+    if (!ProcessService.process[key]) {
+      throw new Error(`Can't find process ${key}`);
+    }
+    delete ProcessService.process[key];
+  }
 
   /**
    * Creates a src record and then starts it...
@@ -42,6 +69,7 @@ export class ProcessService {
    * @param args
    * @param {ProcessManagerRequest} options
    * @returns {Promise<void>}
+   * @deprecated
    */
   run(command: string, args: any, options?: ProcessManagerRequest) {
     if (!args) {
@@ -96,6 +124,7 @@ export class ProcessService {
    *
    * @param {ProcessManagerRequest} process
    * @returns {ProcessManagerProcess}
+   * @deprecated
    */
   public addProcess(process: ProcessManagerRequest): ProcessManagerProcess {
     if (ProcessService.process && ProcessService.process[process.key]) {
@@ -110,6 +139,7 @@ export class ProcessService {
    * @example ProcessManager.getProcess('letheand.exe')
    * @param {string} key
    * @returns {ProcessManagerProcess}
+   * @deprecated
    */
   public getProcess(key: string) {
     if (!ProcessService.process[key]) {
@@ -123,6 +153,7 @@ export class ProcessService {
    *
    * @example ProcessManager.startProcess('letheand.exe')
    * @param {string} key
+   * @deprecated
    */
   public startProcess(key: string) {
     if (!ProcessService.process[key]) {
@@ -137,6 +168,7 @@ export class ProcessService {
    *
    * @example ProcessManager.stopProcess('letheand.exe')
    * @param {string} key
+   * @deprecated
    */
   public stopProcess(key: string) {
     if (!ProcessService.process[key]) {
@@ -146,17 +178,4 @@ export class ProcessService {
     ProcessService.process[key].process.stop();
   }
 
-  /**
-   * Sends a force quit to the src
-   *
-   * @example ProcessManager.killProcess('letheand.exe')
-   * @param {string} key
-   */
-  public killProcess(key: string) {
-    if (!ProcessService.process[key]) {
-      throw new Error(`Can't find process ${key}`);
-    }
-
-    ProcessService.process[key].process.kill();
-  }
 }
