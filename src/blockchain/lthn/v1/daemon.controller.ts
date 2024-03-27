@@ -120,7 +120,7 @@ export class BlockchainLTHNV1DaemonController {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: body["req"]
+                body: JSON.stringify(body["req"])
             }
         );
         return await postReq.text();
