@@ -25,22 +25,15 @@ It will by default run on localhost:36911 alowing multiple configurations for bo
 deno install -A -f -n lthn --unstable https://deno.land/x/lthn/mod.ts
 ```
 
-## Features
+## Services
 
-- [x] Static File Server
-- [x] Filesystem Service
-- [x] Download Service
-- [x] Process Manager
-- [x] Process stdIn/stdOut ZeroMQ WebSocket
-- [x] OpenPGP / CryptPkcs8 / QuasiSalt
-- [x] Json object store
-- [x] `.ini` service
-- [x] handlebars based Config file generator
-- [x] Package manager to install 3rd party apps
-- [x] Docker container control
-- [x] REST API
-- [x] Websocket API
-
+- `const fs = new ModIoFsLocalService();`
+- `const crypt = new ModCryptService();`
+- `const salt = new QuasiSaltService();`
+- `const openpgp = new OpenPGPService(fs, salt);`
+- `const sqlite = new ModIoStorageDatabaseSqliteService();`
+- `const process = new ProcessService();`
+- `const docker = new DockerService();`
 
 # Development setup
 
