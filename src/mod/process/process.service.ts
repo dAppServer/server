@@ -33,12 +33,26 @@ export class ProcessService {
    */
   private static process: { [name: string]: any } = {};
 
+  /**
+   * Runs and returns a process output
+   * @param command
+   * @param args
+   */
   async run(command: string, args?: string[]){
     this.add(command, args)
     return await ProcessService.process[command].output()
 
   }
+
+  /**
+   * Starts a long-running process
+   * @param command
+   * @param args
+   */
   start(command: string, args?: string[]){
+    if(ProcessService.process[command]){
+        return true
+    }
     this.add(command, args)
     return ProcessService.process[command].spawn()
 
